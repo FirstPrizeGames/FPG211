@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pricing · Personal Profile</title>
+    <script>
+      (() => {
+        const savedTheme = localStorage.getItem("profile-theme");
+        const prefersDark = matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          savedTheme || (prefersDark ? "dark" : "light");
+        document.documentElement.lang =
+          localStorage.getItem("profile-language") || "ko";
+        document.documentElement.dataset.accent =
+          localStorage.getItem("profile-accent") || "neutral";
+        if (localStorage.getItem("profile-fast-render") === "true") {
+          document.documentElement.dataset.fastRender = "true";
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="loading-bar" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <main class="shell">
+      <nav class="topbar" aria-label="요금제 메뉴">
+        <div class="nav-links">
+          <a href="/#about" data-i18n="nav.about">About</a>
+          <a href="/#work" data-i18n="nav.work">Work</a>
+          <a href="/#contact" data-i18n="nav.contact">Contact</a>
+          <a class="is-active" href="/Pricing" data-i18n="nav.pricing">Pricing</a>
+          <a href="/settings" data-i18n="nav.settings">Settings</a>
+        </div>
+      </nav>
+
+      <section class="pricing-hero">
+        <div>
+          <p class="eyebrow" data-i18n="pricing.eyebrow">Pricing</p>
+          <h1 data-i18n="pricing.title">프로필 활용 방식에 맞게 선택하세요.</h1>
+          <p data-i18n="pricing.lead">
+            구급대원 경력 소개, 교육 이력 정리, 포트폴리오 확장까지 필요한 범위에 맞춰 구성했습니다.
+          </p>
+        </div>
+        <div class="currency-switch" role="tablist" aria-label="통화 선택" data-currency-switch>
+          <span class="currency-thumb" aria-hidden="true"></span>
+          <button class="is-active" type="button" role="tab" aria-selected="true" data-currency-choice="krw">
+            KRW
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-currency-choice="usd">
+            USD
+          </button>
+        </div>
+      </section>
+
+      <section class="pricing-grid" aria-label="요금제 정보">
+        <article class="pricing-card">
+          <p class="eyebrow" data-i18n="plans.free">Free</p>
+          <h2 data-i18n="plans.freePrice" data-price-plan="free">₩0</h2>
+          <p data-i18n="pricing.freeBody">구급대원으로서의 기본 소개와 연락 정보를 담기 좋은 구성입니다.</p>
+          <ul>
+            <li data-i18n="pricing.freeOne">핵심 소개와 직무 요약</li>
+            <li data-i18n="pricing.freeTwo">주요 역량 3개 표시</li>
+            <li data-i18n="pricing.freeThree">테마, 언어, 접근성 설정</li>
+            <li data-i18n="pricing.freeFour">기본 연락 링크</li>
+          </ul>
+          <a class="button ghost" href="/settings" data-i18n="pricing.chooseFree">Free로 시작</a>
+        </article>
+
+        <article class="pricing-card is-featured">
+          <p class="eyebrow" data-i18n="plans.pro">Pro</p>
+          <h2 data-i18n="plans.proPrice" data-price-plan="pro">₩12,000</h2>
+          <p data-i18n="pricing.proBody">현장 경험, 교육 이수, 자격 사항을 더 자세히 보여주기 위한 구성입니다.</p>
+          <ul>
+            <li data-i18n="pricing.proOne">현장 대응 경험 강조</li>
+            <li data-i18n="pricing.proTwo">교육/자격 정보 섹션</li>
+            <li data-i18n="pricing.proThree">Pro 전용 강조 컬러</li>
+            <li data-i18n="pricing.proFour">추천서와 활동 이력 확장</li>
+          </ul>
+          <a
+            class="button primary"
+            href="https://www.patreon.com/checkout/FirstPrizeGames?rid=27763619&vanity=15446106"
+            target="_blank"
+            rel="noreferrer"
+            data-i18n="pricing.choosePro"
+          >
+            Pro 선택
+          </a>
+        </article>
+
+        <article class="pricing-card">
+          <p class="eyebrow" data-i18n="plans.team">Team</p>
+          <h2 data-i18n="plans.teamPrice" data-price-plan="team">문의</h2>
+          <p data-i18n="pricing.teamBody">구급대, 교육팀, 응급의료 관련 조직 소개에 맞춘 확장 구성입니다.</p>
+          <ul>
+            <li data-i18n="pricing.teamOne">팀/기관 소개 페이지</li>
+            <li data-i18n="pricing.teamTwo">구성원 프로필 정리</li>
+            <li data-i18n="pricing.teamThree">교육 및 활동 정보 구조화</li>
+            <li data-i18n="pricing.teamFour">Team 전용 컬러와 공유 문의 흐름</li>
+          </ul>
+          <a
+            class="button ghost"
+            href="https://www.patreon.com/checkout/FirstPrizeGames?rid=27763742&vanity=15446106"
+            target="_blank"
+            rel="noreferrer"
+            data-i18n="pricing.contactSales"
+          >
+            문의하기
+          </a>
+        </article>
+      </section>
+
+      <section class="comparison-section" aria-label="요금제 비교">
+        <div class="section-heading">
+          <p class="eyebrow" data-i18n="pricing.compareEyebrow">Compare</p>
+          <h2 data-i18n="pricing.compareTitle">기능 비교</h2>
+        </div>
+        <div class="comparison-table" role="table" aria-label="요금제 기능 비교">
+          <div class="comparison-row comparison-head" role="row">
+            <span role="columnheader" data-i18n="pricing.compareFeature">기능</span>
+            <span role="columnheader" data-i18n="plans.free">Free</span>
+            <span role="columnheader" data-i18n="plans.pro">Pro</span>
+            <span role="columnheader" data-i18n="plans.team">Team</span>
+          </div>
+          <div class="comparison-row" role="row">
+            <span role="cell" data-i18n="pricing.compareProfile">개인 프로필 구성</span>
+            <strong role="cell" data-i18n="pricing.compareBasic">기본</strong>
+            <strong role="cell" data-i18n="pricing.compareAdvanced">확장</strong>
+            <strong role="cell" data-i18n="pricing.compareOrg">조직형</strong>
+          </div>
+          <div class="comparison-row" role="row">
+            <span role="cell" data-i18n="pricing.compareExperience">현장 경험 정리</span>
+            <strong role="cell">3</strong>
+            <strong role="cell">6+</strong>
+            <strong role="cell" data-i18n="pricing.compareUnlimited">무제한</strong>
+          </div>
+          <div class="comparison-row" role="row">
+            <span role="cell" data-i18n="pricing.compareCredentials">교육/자격 섹션</span>
+            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
+            <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
+            <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
+          </div>
+          <div class="comparison-row" role="row">
+            <span role="cell" data-i18n="pricing.compareAccent">프리미엄 강조 컬러</span>
+            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
+            <strong role="cell">Pro Gold</strong>
+            <strong role="cell">Team Cyan</strong>
+          </div>
+          <div class="comparison-row" role="row">
+            <span role="cell" data-i18n="pricing.compareTeam">팀/기관 소개</span>
+            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
+            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
+            <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="faq-section" aria-label="자주 묻는 질문">
+        <div class="section-heading">
+          <p class="eyebrow" data-i18n="pricing.faqEyebrow">FAQ</p>
+          <h2 data-i18n="pricing.faqTitle">자주 묻는 질문</h2>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary data-i18n="pricing.faqOneQuestion">결제는 어디에서 진행되나요?</summary>
+            <p data-i18n="pricing.faqOneAnswer">
+              Pro와 Team 플랜은 Patreon checkout 링크를 통해 진행됩니다.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="pricing.faqTwoQuestion">결제하면 프리미엄 컬러가 자동으로 풀리나요?</summary>
+            <p data-i18n="pricing.faqTwoAnswer">
+              현재는 링크 연결 방식이라 자동 잠금 해제는 아직 지원하지 않습니다. 나중에 Patreon 연동을 추가하면 자동으로 연결할 수 있습니다.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="pricing.faqThreeQuestion">달러와 한화 표시는 실제 환율인가요?</summary>
+            <p data-i18n="pricing.faqThreeAnswer">
+              현재는 안내용 고정 가격입니다. 실제 결제 금액은 Patreon checkout 화면을 기준으로 확인해야 합니다.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="pricing.faqFourQuestion">Team 플랜은 누구에게 적합한가요?</summary>
+            <p data-i18n="pricing.faqFourAnswer">
+              구급대, 교육팀, 응급의료 관련 조직처럼 여러 사람의 프로필과 활동 정보를 함께 보여주려는 경우에 적합합니다.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <footer class="site-info" aria-label="사이트 정보">
+        <div class="info-tabs" role="tablist" aria-label="사이트 정보 탭">
+          <button
+            class="is-active"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="licenses-panel"
+            id="licenses-tab"
+            data-info-tab="licenses"
+            data-i18n="info.licensesTab"
+          >
+            오픈소스 라이선스
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="privacy-panel"
+            id="privacy-tab"
+            data-info-tab="privacy"
+            data-i18n="info.privacyTab"
+          >
+            개인정보처리방침
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="copyright-panel"
+            id="copyright-tab"
+            data-info-tab="copyright"
+            data-i18n="info.copyrightTab"
+          >
+            저작권 정보
+          </button>
+        </div>
+        <div
+          class="info-panel is-active"
+          id="licenses-panel"
+          role="tabpanel"
+          aria-labelledby="licenses-tab"
+          data-info-panel="licenses"
+        >
+          <p data-i18n="info.licensesBody">
+            이 프로필 템플릿은 외부 프레임워크 없이 HTML, CSS, JavaScript로 제작되었습니다.
+            사용된 시스템 글꼴은 각 운영체제의 라이선스를 따릅니다.
+          </p>
+        </div>
+        <div
+          class="info-panel"
+          id="privacy-panel"
+          role="tabpanel"
+          aria-labelledby="privacy-tab"
+          data-info-panel="privacy"
+          hidden
+        >
+          <p data-i18n="info.privacyBody">
+            이 사이트는 별도의 서버 저장 없이 브라우저의 로컬 저장소를 사용해 테마, 언어, 설정 상태만 보관합니다.
+          </p>
+        </div>
+        <div
+          class="info-panel"
+          id="copyright-panel"
+          role="tabpanel"
+          aria-labelledby="copyright-tab"
+          data-info-panel="copyright"
+          hidden
+        >
+          <p data-i18n="info.copyrightBody">
+            © 2026 김유진. 모든 프로필 문구, 이미지, 구성 요소의 권리는 해당 소유자에게 있습니다.
+          </p>
+        </div>
+      </footer>
+    </main>
+    <script src="../script.js"></script>
+  </body>
+</html>

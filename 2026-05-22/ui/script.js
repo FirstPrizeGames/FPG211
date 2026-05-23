@@ -343,7 +343,7 @@ const getInitialTheme = () => {
 
 const getInitialLanguage = () => {
   const savedLanguage = localStorage.getItem("profile-language");
-  return savedLanguage === "en" || savedLanguage === "ko" ? savedLanguage : "ko";
+  return savedLanguage === "en" || savedLanguage === "ko" ? savedLanguage : "en";
 };
 
 let currentLanguage = getInitialLanguage();
@@ -529,9 +529,9 @@ const clearSiteCache = () => {
   document.documentElement.dataset.theme = "light";
   document.documentElement.dataset.accent = "neutral";
   document.documentElement.dataset.fastRender = "false";
-  setLanguage("ko");
+  setLanguage("en");
   setDensity("comfortable");
-  setCurrency("krw");
+  setCurrency("usd");
   setAccent("neutral");
 
   settingToggles.forEach((button) => {

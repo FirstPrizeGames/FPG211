@@ -11,7 +11,7 @@
         document.documentElement.dataset.theme =
           savedTheme || (prefersDark ? "dark" : "light");
         document.documentElement.lang =
-          localStorage.getItem("profile-language") || "ko";
+          localStorage.getItem("profile-language") || "en";
         document.documentElement.dataset.accent =
           localStorage.getItem("profile-accent") || "neutral";
         if (localStorage.getItem("profile-fast-render") === "true") {
@@ -114,7 +114,7 @@
           <h2 data-i18n="home.contactTitle">새로운 협업을 기다리고 있습니다.</h2>
         </div>
         <div class="contact-links">
-          <a href="coming soon">coming soon</a>
+          <a href="mailto:hello@example.com">hello@example.com</a>
           <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">LinkedIn</a>
           <a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a>
           <button class="icon-button" type="button" data-share-link aria-label="페이지 링크 복사">
@@ -199,7 +199,7 @@
           hidden
         >
           <p data-i18n="info.copyrightBody">
-            © 2026 First PrizeGames 모든 프로필 문구, 이미지, 구성 요소의 권리는 해당 소유자에게 있습니다.
+            © 2026 김유진. 모든 프로필 문구, 이미지, 구성 요소의 권리는 해당 소유자에게 있습니다.
           </p>
         </div>
       </footer>

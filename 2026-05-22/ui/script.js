@@ -882,6 +882,8 @@ const setMobileMenuOpen = (isOpen) => {
 const setupBrandLogo = () => {
   if (!brandLogoImage) return;
 
+  brandLogoImage.setAttribute("draggable", "false");
+
   brandLogoImage.addEventListener("load", () => {
     brandLogoImage.closest(".brand-logo")?.classList.add("has-image");
   });
@@ -889,6 +891,9 @@ const setupBrandLogo = () => {
   brandLogoImage.addEventListener("error", () => {
     brandLogoImage.closest(".brand-logo")?.classList.remove("has-image");
   });
+
+  brandLogoImage.addEventListener("dragstart", (event) => event.preventDefault());
+  brandLogoImage.addEventListener("contextmenu", (event) => event.preventDefault());
 };
 
 const updateScrollProgress = () => {

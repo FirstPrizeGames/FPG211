@@ -385,6 +385,8 @@ summary {
   height: 100%;
   object-fit: cover;
   opacity: 0;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 .brand-logo.has-image img {

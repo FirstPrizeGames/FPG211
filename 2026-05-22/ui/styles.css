@@ -170,12 +170,6 @@
 [data-kid-mode="true"] .settings-sidebar a,
 [data-kid-mode="true"] .faq-topic-nav a,
 [data-kid-mode="true"] .info-tabs button,
-[data-kid-mode="true"] .report-bug-button {
-  min-height: 48px;
-  font-size: 14px;
-  font-weight: 850;
-}
-
 [data-kid-mode="true"] .feedback-cta {
   min-height: 64px;
   font-size: 17px;
@@ -375,7 +369,6 @@ button,
 .accent-menu button,
 .currency-switch button,
 .info-tabs button,
-.report-bug-button,
 .toggle,
 summary {
   -webkit-user-drag: none;
@@ -522,7 +515,7 @@ summary {
 .accent-trigger::before,
 .accent-menu button::before,
 .info-tabs button::before,
-.report-bug-button::before {
+.info-tabs button::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -556,7 +549,7 @@ summary {
 .accent-trigger:hover::before,
 .accent-menu button:hover::before,
 .info-tabs button:hover::before,
-.report-bug-button:hover::before {
+.info-tabs button:hover::before {
   opacity: 1;
   transform: translateX(42%);
 }
@@ -577,7 +570,6 @@ summary {
 .accent-trigger:focus-visible,
 .accent-menu button:focus-visible,
 .info-tabs button:focus-visible,
-.report-bug-button:focus-visible,
 .feedback-cta:focus-visible,
 .toggle:focus-visible {
   outline: 2px solid var(--accent);
@@ -1034,27 +1026,6 @@ h3 {
 .info-tabs button.is-active {
   background: var(--ink);
   color: var(--bg);
-}
-
-.report-bug-button {
-  position: relative;
-  display: inline-grid;
-  place-items: center;
-  min-height: 48px;
-  overflow: hidden;
-  padding: 0 20px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--pill-bg);
-  color: var(--ink);
-  font-size: 13px;
-  font-weight: 850;
-  white-space: nowrap;
-}
-
-.report-bug-button:hover {
-  border-color: var(--accent);
-  color: var(--accent);
 }
 
 .feedback-hero {
@@ -2005,6 +1976,10 @@ h3 {
   font-size: clamp(28px, 5vw, 44px);
 }
 
+.feedback-dialog-panel {
+  width: min(640px, 100%);
+}
+
 .cache-dialog-panel > p:not(.eyebrow) {
   margin: 0;
   color: var(--ink);
@@ -2038,6 +2013,17 @@ h3 {
 }
 
 .cache-confirm-button:hover {
+  border-color: #ff5416;
+}
+
+.feedback-confirm-button {
+  border-color: #ff5416;
+  border-radius: 999px;
+  background: #ff5416;
+  color: #ffffff;
+}
+
+.feedback-confirm-button:hover {
   border-color: #ff5416;
 }
 
@@ -2370,10 +2356,6 @@ h3 {
 
   .info-tabs {
     grid-template-columns: 1fr;
-  }
-
-  .report-bug-button {
-    width: 100%;
   }
 
   .feedback-cta {

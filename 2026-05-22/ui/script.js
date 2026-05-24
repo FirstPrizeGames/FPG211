@@ -29,9 +29,12 @@ const scrollProgress = document.querySelector(".scroll-progress");
 const mobileMenuButton = document.querySelector("[data-mobile-menu-toggle]");
 const mobileMenu = document.querySelector("[data-mobile-menu]");
 const brandLogoImage = document.querySelector(".brand-logo img");
+const feedbackOpen = document.querySelector("[data-feedback-open]");
+const feedbackWarning = document.querySelector("[data-feedback-warning]");
+const feedbackCancel = document.querySelector("[data-feedback-cancel]");
 const highlightTargets = [
   ...document.querySelectorAll(
-    ".brand-logo, .nav-links a, .mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .report-bug-button, .toggle",
+    ".brand-logo, .nav-links a, .mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .toggle",
   ),
 ];
 const sections = navLinks
@@ -80,6 +83,10 @@ const translations = {
     "feedback.title": "의견을 남겨주세요.",
     "feedback.lead": "버그, 개선 아이디어, 보기 불편한 부분을 알려주시면 다음 업데이트에 반영할 수 있습니다.",
     "feedback.cta": "Google Forms로 피드백 남기기",
+    "feedback.warningTitle": "외부 양식으로 이동합니다.",
+    "feedback.warningBody": "Google Forms가 새 페이지에서 열립니다. 이름이나 연락처 같은 개인정보는 필요한 경우에만 입력해 주세요.",
+    "feedback.cancel": "취소",
+    "feedback.continue": "계속하기",
     "settings.title": "프로필 설정",
     "settings.lead":
       "공개 정보, 알림, 표시 방식을 차분하게 관리할 수 있는 개인 프로필 설정 화면입니다.",
@@ -138,7 +145,6 @@ const translations = {
     "info.licensesTab": "오픈소스 라이선스",
     "info.privacyTab": "개인정보처리방침",
     "info.copyrightTab": "저작권 정보",
-    "info.reportBug": "버그 신고",
     "info.licensesBody":
       "이 프로필 템플릿은 외부 프레임워크 없이 HTML, CSS, JavaScript로 제작되었습니다. 사용된 시스템 글꼴은 각 운영체제의 라이선스를 따릅니다.",
     "info.privacyBody":
@@ -216,7 +222,7 @@ const translations = {
       "홈, Pricing, Bio, FAQ, Settings 메뉴를 통해 준비된 페이지로 이동할 수 있습니다.",
     "errorFaq.threeQuestion": "문제가 계속되면 어떻게 하나요?",
     "errorFaq.threeAnswer":
-      "하단의 Report bug 버튼이나 Discord 커뮤니티 링크를 통해 잘못된 주소를 알려주세요.",
+      "상단의 Feedback 탭이나 Google Forms 링크를 통해 잘못된 주소를 알려주세요.",
     "errorFaq.fourQuestion": "광고 차단기가 영향을 줄 수 있나요?",
     "errorFaq.fourAnswer":
       "일부 광고 차단기는 버튼, 커뮤니티 링크, 안내 배너 같은 요소를 숨길 수 있습니다. 기능이 보이지 않으면 이 사이트를 허용 목록에 추가해 주세요.",
@@ -288,7 +294,7 @@ const translations = {
       "현재는 온라인 연락과 협업 문의를 먼저 받는 방식이 가장 좋습니다. 필요한 경우에는 일정, 목적, 장소, 안전한 만남 방식이 분명할 때 따로 논의할 수 있습니다.",
     "meetFaq.twoQuestion": "2. 어디로 연락하면 되나요?",
     "meetFaq.twoAnswer":
-      "사이트의 Contact 링크나 Report bug 버튼으로 연결된 커뮤니티를 통해 문의할 수 있습니다. 급하지 않은 내용은 목적과 필요한 정보를 함께 남겨주세요.",
+      "사이트의 Contact 링크나 Feedback 페이지를 통해 문의할 수 있습니다. 급하지 않은 내용은 목적과 필요한 정보를 함께 남겨주세요.",
   },
   en: {
     "nav.home": "Home",
@@ -330,6 +336,10 @@ const translations = {
     "feedback.title": "Share your feedback.",
     "feedback.lead": "Send bugs, improvement ideas, or anything that feels uncomfortable to use so it can be improved in the next update.",
     "feedback.cta": "Leave feedback on Google Forms",
+    "feedback.warningTitle": "You are leaving for an external form.",
+    "feedback.warningBody": "Google Forms will open on a new page. Only enter personal information such as your name or contact details if it is necessary.",
+    "feedback.cancel": "Cancel",
+    "feedback.continue": "Continue",
     "settings.title": "Profile settings",
     "settings.lead":
       "Manage public information, notifications, display mode, and language in one calm profile settings screen.",
@@ -392,7 +402,6 @@ const translations = {
     "info.licensesTab": "Open Source Licenses",
     "info.privacyTab": "Privacy Policy",
     "info.copyrightTab": "Copyright",
-    "info.reportBug": "Report bug",
     "info.licensesBody":
       "This profile template is built with plain HTML, CSS, and JavaScript without external frameworks. System fonts follow the license of each operating system.",
     "info.privacyBody":
@@ -471,7 +480,7 @@ const translations = {
       "Use the Home, Pricing, Bio, FAQ, and Settings links to move to pages that are ready.",
     "errorFaq.threeQuestion": "What if the problem keeps happening?",
     "errorFaq.threeAnswer":
-      "Use the Report bug button or the Discord community link to share the broken address.",
+      "Use the Feedback tab or the Google Forms link to share the broken address.",
     "errorFaq.fourQuestion": "Can an ad blocker affect this page?",
     "errorFaq.fourAnswer":
       "Some ad blockers can hide buttons, community links, or notice banners. If something is missing, please allow this site in your blocker.",
@@ -543,7 +552,7 @@ const translations = {
       "For now, online contact and collaboration inquiries are the best first step. If needed, an in-person meeting can be discussed when the schedule, purpose, place, and safety expectations are clear.",
     "meetFaq.twoQuestion": "2. Where should I contact you?",
     "meetFaq.twoAnswer":
-      "You can use the Contact links on the site or the community connected through the Report bug button. For non-urgent messages, include the purpose and any useful details.",
+      "You can use the Contact links on the site or the Feedback page. For non-urgent messages, include the purpose and any useful details.",
   },
 };
 
@@ -786,6 +795,13 @@ const showClearCacheWarning = () => {
   clearCacheWarning.hidden = false;
 };
 
+const showFeedbackWarning = (event) => {
+  if (!feedbackWarning) return;
+
+  event.preventDefault();
+  feedbackWarning.hidden = false;
+};
+
 const setAccentMenuOpen = (isOpen) => {
   accentSelect?.classList.toggle("is-open", isOpen);
   accentTrigger?.setAttribute("aria-expanded", String(isOpen));
@@ -799,6 +815,16 @@ const closeClearCacheWarning = () => {
   window.setTimeout(() => {
     clearCacheWarning.hidden = true;
     clearCacheWarning.classList.remove("is-closing");
+  }, 170);
+};
+
+const closeFeedbackWarning = () => {
+  if (!feedbackWarning || feedbackWarning.hidden) return;
+
+  feedbackWarning.classList.add("is-closing");
+  window.setTimeout(() => {
+    feedbackWarning.hidden = true;
+    feedbackWarning.classList.remove("is-closing");
   }, 170);
 };
 
@@ -1005,6 +1031,11 @@ clearCacheCancel?.addEventListener("click", () => {
 clearCacheConfirm?.addEventListener("click", clearSiteCache);
 clearCacheWarning?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === clearCacheWarning) closeClearCacheWarning();
+});
+feedbackOpen?.addEventListener("click", showFeedbackWarning);
+feedbackCancel?.addEventListener("click", closeFeedbackWarning);
+feedbackWarning?.addEventListener("click", (event) => {
+  if (event.button === 0 && event.target === feedbackWarning) closeFeedbackWarning();
 });
 shareLinkButton?.addEventListener("click", copyShareLink);
 adblockDismiss?.addEventListener("click", () => {

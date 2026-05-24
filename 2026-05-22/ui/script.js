@@ -26,9 +26,12 @@ const infoTabs = [...document.querySelectorAll("[data-info-tab]")];
 const infoPanels = [...document.querySelectorAll("[data-info-panel]")];
 const loadingBar = document.querySelector(".loading-bar");
 const scrollProgress = document.querySelector(".scroll-progress");
+const mobileMenuButton = document.querySelector("[data-mobile-menu-toggle]");
+const mobileMenu = document.querySelector("[data-mobile-menu]");
+const brandLogoImage = document.querySelector(".brand-logo img");
 const highlightTargets = [
   ...document.querySelectorAll(
-    ".nav-links a, .button, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .report-bug-button, .toggle",
+    ".brand-logo, .nav-links a, .mobile-menu-button, .button, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .report-bug-button, .toggle",
   ),
 ];
 const sections = navLinks
@@ -43,7 +46,12 @@ const translations = {
     "nav.contact": "Contact",
     "nav.pricing": "Pricing",
     "nav.bio": "Bio",
+    "nav.faq": "FAQ",
     "nav.settings": "Settings",
+    "nav.menu": "메뉴",
+    "faqTopics.emt": "EMT",
+    "faqTopics.game": "게임 개발자",
+    "faqTopics.meet": "만남",
     "home.lead":
       "현장에서 빠른 판단과 침착한 대응으로 생명을 지키는 구급대원입니다.",
     "home.roleLabel": "Role",
@@ -120,7 +128,7 @@ const translations = {
     "info.licensesTab": "오픈소스 라이선스",
     "info.privacyTab": "개인정보처리방침",
     "info.copyrightTab": "저작권 정보",
-    "info.reportBug": "Report bug",
+    "info.reportBug": "버그 신고",
     "info.licensesBody":
       "이 프로필 템플릿은 외부 프레임워크 없이 HTML, CSS, JavaScript로 제작되었습니다. 사용된 시스템 글꼴은 각 운영체제의 라이선스를 따릅니다.",
     "info.privacyBody":
@@ -188,6 +196,20 @@ const translations = {
     "error.body": "요청한 주소가 변경되었거나 아직 준비되지 않은 페이지일 수 있습니다.",
     "error.home": "홈으로 이동",
     "error.settings": "설정 열기",
+    "errorFaq.eyebrow": "FAQ",
+    "errorFaq.title": "자주 묻는 질문",
+    "errorFaq.oneQuestion": "왜 404 페이지가 보이나요?",
+    "errorFaq.oneAnswer":
+      "주소가 잘못 입력되었거나, 페이지 이름이 바뀌었거나, 아직 공개되지 않은 경로일 수 있습니다.",
+    "errorFaq.twoQuestion": "어디로 이동하면 되나요?",
+    "errorFaq.twoAnswer":
+      "홈, Pricing, Bio, FAQ, Settings 메뉴를 통해 준비된 페이지로 이동할 수 있습니다.",
+    "errorFaq.threeQuestion": "문제가 계속되면 어떻게 하나요?",
+    "errorFaq.threeAnswer":
+      "하단의 Report bug 버튼이나 Discord 커뮤니티 링크를 통해 잘못된 주소를 알려주세요.",
+    "errorFaq.fourQuestion": "광고 차단기가 영향을 줄 수 있나요?",
+    "errorFaq.fourAnswer":
+      "일부 광고 차단기는 버튼, 커뮤니티 링크, 안내 배너 같은 요소를 숨길 수 있습니다. 기능이 보이지 않으면 이 사이트를 허용 목록에 추가해 주세요.",
     "share.copy": "페이지 링크 복사",
     "share.copied": "페이지 링크 복사됨",
     "adblock.message":
@@ -213,6 +235,50 @@ const translations = {
     "bio.likeThree": "환자 살리는 것을 목표로 함",
     "bio.likeFour": "BBQ 파티",
     "bio.likeFive": "더 많은",
+    "careerFaq.eyebrow": "FAQ",
+    "careerFaq.title": "미국에서 응급구조사가 되는 기본 경로",
+    "careerFaq.lead":
+      "미국에서는 주마다 세부 요건이 다르지만, 일반적으로 EMT 교육, 국가 시험, 주 면허 과정을 거쳐 현장 응급의료 분야에 진입합니다.",
+    "careerFaq.oneQuestion": "1. EMT와 Paramedic은 어떻게 다른가요?",
+    "careerFaq.oneAnswer":
+      "EMT는 응급의료 입문 단계로 기본 평가, CPR, 산소 투여, 출혈 조절, 기본 처치를 배웁니다. Paramedic은 더 긴 교육을 거쳐 약물 투여, 심전도 해석, 고급 기도 관리 같은 고급 처치를 수행할 수 있습니다.",
+    "careerFaq.twoQuestion": "2. 시작하려면 무엇이 필요한가요?",
+    "careerFaq.twoAnswer":
+      "보통 고등학교 졸업 또는 GED, CPR/BLS 자격, 신원 조회, 예방접종 기록, 운전면허가 요구될 수 있습니다. 정확한 조건은 교육기관과 주 EMS 사무소 기준을 확인해야 합니다.",
+    "careerFaq.threeQuestion": "3. EMT가 되는 순서는 어떻게 되나요?",
+    "careerFaq.threeAnswer":
+      "주 승인 EMT 과정을 수료하고, 실습과 임상 시간을 마친 뒤 NREMT 같은 인증 시험을 통과합니다. 이후 거주하거나 근무할 주에 면허를 신청하면 EMT로 일할 수 있습니다.",
+    "careerFaq.fourQuestion": "4. Paramedic이 되려면 얼마나 걸리나요?",
+    "careerFaq.fourAnswer":
+      "EMT 이후 Paramedic 과정은 보통 1년에서 2년 정도 걸립니다. 프로그램에 따라 대학 학점, 임상 실습, 구급차 현장 실습, 국가 인증 시험이 포함됩니다.",
+    "careerFaq.fiveQuestion": "5. 주마다 면허가 다른가요?",
+    "careerFaq.fiveAnswer":
+      "네. NREMT 인증은 많은 주에서 사용하지만, 실제 근무 권한은 주 면허와 지역 의료지침에 따릅니다. 이사하거나 다른 주에서 일하려면 해당 주의 EMS 사무소에서 상호 인정 또는 추가 요건을 확인해야 합니다.",
+    "careerFaq.sixQuestion": "6. 준비할 때 중요한 점은 무엇인가요?",
+    "careerFaq.sixAnswer":
+      "체력, 의사소통, 침착한 판단, 팀워크가 중요합니다. 또한 지역 EMS 시스템, 병원 전 응급처치 기준, 환자 개인정보 보호 규정을 꾸준히 익히는 것이 도움이 됩니다.",
+    "gameFaq.eyebrow": "FAQ",
+    "gameFaq.title": "게임 개발자로 가는 기본 경로",
+    "gameFaq.oneQuestion": "1. 게임 개발은 어디서 시작하면 좋나요?",
+    "gameFaq.oneAnswer":
+      "작은 게임을 직접 완성하는 것부터 시작하는 것이 좋습니다. Unity, Unreal Engine, Godot, Roblox Studio 중 하나를 고르고, 캐릭터 이동, 충돌, 점수, UI처럼 기본 기능을 만들어보면 전체 흐름을 빠르게 이해할 수 있습니다.",
+    "gameFaq.twoQuestion": "2. 어떤 언어를 배우면 좋나요?",
+    "gameFaq.twoAnswer":
+      "Unity는 C#, Unreal Engine은 C++, Godot은 GDScript 또는 C#, Roblox는 Lua를 많이 사용합니다. 처음에는 엔진 하나와 언어 하나를 정해서 작게 반복하는 편이 더 안정적입니다.",
+    "gameFaq.threeQuestion": "3. 포트폴리오는 어떻게 만들면 되나요?",
+    "gameFaq.threeAnswer":
+      "완성된 작은 게임 2~3개, 플레이 영상, 담당한 기능 설명, 문제를 어떻게 해결했는지 정리한 문서가 도움이 됩니다. 단순한 아이디어보다 실제로 플레이 가능한 결과물이 더 강합니다.",
+    "gameFaq.fourQuestion": "4. 혼자 개발해도 괜찮나요?",
+    "gameFaq.fourAnswer":
+      "괜찮습니다. 처음에는 혼자 전체 과정을 경험해보는 것이 좋고, 이후에는 아트, 사운드, 기획, 프로그래밍 역할을 나누는 작은 팀 프로젝트를 해보면 협업 감각을 키울 수 있습니다.",
+    "meetFaq.eyebrow": "FAQ",
+    "meetFaq.title": "당신을 만날 수 있나요?",
+    "meetFaq.oneQuestion": "1. 직접 만날 수 있나요?",
+    "meetFaq.oneAnswer":
+      "현재는 온라인 연락과 협업 문의를 먼저 받는 방식이 가장 좋습니다. 필요한 경우에는 일정, 목적, 장소, 안전한 만남 방식이 분명할 때 따로 논의할 수 있습니다.",
+    "meetFaq.twoQuestion": "2. 어디로 연락하면 되나요?",
+    "meetFaq.twoAnswer":
+      "사이트의 Contact 링크나 Report bug 버튼으로 연결된 커뮤니티를 통해 문의할 수 있습니다. 급하지 않은 내용은 목적과 필요한 정보를 함께 남겨주세요.",
   },
   en: {
     "nav.about": "About",
@@ -220,7 +286,12 @@ const translations = {
     "nav.contact": "Contact",
     "nav.pricing": "Pricing",
     "nav.bio": "Bio",
+    "nav.faq": "FAQ",
     "nav.settings": "Settings",
+    "nav.menu": "Menu",
+    "faqTopics.emt": "EMT",
+    "faqTopics.game": "Game Developer",
+    "faqTopics.meet": "Meet",
     "home.lead":
       "An emergency responder who protects lives through quick judgment and calm action in the field.",
     "home.roleLabel": "Role",
@@ -370,6 +441,20 @@ const translations = {
     "error.body": "The page may have moved, or it may not be ready yet.",
     "error.home": "Go home",
     "error.settings": "Open settings",
+    "errorFaq.eyebrow": "FAQ",
+    "errorFaq.title": "Frequently asked questions",
+    "errorFaq.oneQuestion": "Why am I seeing a 404 page?",
+    "errorFaq.oneAnswer":
+      "The address may be typed incorrectly, the page name may have changed, or the route may not be public yet.",
+    "errorFaq.twoQuestion": "Where should I go next?",
+    "errorFaq.twoAnswer":
+      "Use the Home, Pricing, Bio, FAQ, and Settings links to move to pages that are ready.",
+    "errorFaq.threeQuestion": "What if the problem keeps happening?",
+    "errorFaq.threeAnswer":
+      "Use the Report bug button or the Discord community link to share the broken address.",
+    "errorFaq.fourQuestion": "Can an ad blocker affect this page?",
+    "errorFaq.fourAnswer":
+      "Some ad blockers can hide buttons, community links, or notice banners. If something is missing, please allow this site in your blocker.",
     "share.copy": "Copy page link",
     "share.copied": "Page link copied",
     "adblock.message":
@@ -395,6 +480,50 @@ const translations = {
     "bio.likeThree": "Aims to save the patient",
     "bio.likeFour": "BBQ Party",
     "bio.likeFive": "More",
+    "careerFaq.eyebrow": "FAQ",
+    "careerFaq.title": "How to become an emergency medical provider in the United States",
+    "careerFaq.lead":
+      "Requirements vary by state, but the usual path starts with EMT training, a certification exam, and state licensure before moving into field emergency medical work.",
+    "careerFaq.oneQuestion": "1. What is the difference between an EMT and a Paramedic?",
+    "careerFaq.oneAnswer":
+      "EMT is the entry level for emergency medical care and focuses on assessment, CPR, oxygen, bleeding control, and basic treatment. A Paramedic completes more training and may provide advanced care such as medications, ECG interpretation, and advanced airway management.",
+    "careerFaq.twoQuestion": "2. What do you usually need before starting?",
+    "careerFaq.twoAnswer":
+      "Programs may require a high school diploma or GED, CPR/BLS certification, background checks, immunization records, and a driver's license. Exact requirements should be checked with the training program and the state EMS office.",
+    "careerFaq.threeQuestion": "3. What is the basic EMT pathway?",
+    "careerFaq.threeAnswer":
+      "Complete a state-approved EMT course, finish required skills and clinical work, pass a certification exam such as the NREMT, then apply for licensure in the state where you plan to work.",
+    "careerFaq.fourQuestion": "4. How long does it take to become a Paramedic?",
+    "careerFaq.fourAnswer":
+      "After EMT, Paramedic programs commonly take about one to two years. Depending on the program, they may include college credit, clinical rotations, ambulance field internships, and a national certification exam.",
+    "careerFaq.fiveQuestion": "5. Is licensure different in each state?",
+    "careerFaq.fiveAnswer":
+      "Yes. NREMT certification is widely used, but the authority to work comes from state licensure and local medical protocols. If you move or work in another state, check that state's EMS office for reciprocity or extra requirements.",
+    "careerFaq.sixQuestion": "6. What should someone focus on while preparing?",
+    "careerFaq.sixAnswer":
+      "Physical readiness, communication, calm judgment, and teamwork matter a lot. It also helps to keep learning local EMS systems, prehospital care standards, and patient privacy rules.",
+    "gameFaq.eyebrow": "FAQ",
+    "gameFaq.title": "A basic path toward becoming a game developer",
+    "gameFaq.oneQuestion": "1. Where should game development start?",
+    "gameFaq.oneAnswer":
+      "Start by finishing a small playable game. Pick one tool such as Unity, Unreal Engine, Godot, or Roblox Studio, then build basics like character movement, collision, scoring, and UI to understand the full loop.",
+    "gameFaq.twoQuestion": "2. Which programming language should you learn?",
+    "gameFaq.twoAnswer":
+      "Unity commonly uses C#, Unreal Engine uses C++, Godot uses GDScript or C#, and Roblox uses Lua. At first, it is usually better to choose one engine and one language, then repeat small projects.",
+    "gameFaq.threeQuestion": "3. What should go into a portfolio?",
+    "gameFaq.threeAnswer":
+      "Two or three finished small games, gameplay videos, notes on the features you built, and short explanations of problems you solved can help. A playable result is stronger than an idea alone.",
+    "gameFaq.fourQuestion": "4. Is solo development okay?",
+    "gameFaq.fourAnswer":
+      "Yes. Solo projects are useful for learning the whole process. Later, small team projects with art, sound, design, and programming roles can help you build collaboration skills.",
+    "meetFaq.eyebrow": "FAQ",
+    "meetFaq.title": "Can I meet you?",
+    "meetFaq.oneQuestion": "1. Can we meet in person?",
+    "meetFaq.oneAnswer":
+      "For now, online contact and collaboration inquiries are the best first step. If needed, an in-person meeting can be discussed when the schedule, purpose, place, and safety expectations are clear.",
+    "meetFaq.twoQuestion": "2. Where should I contact you?",
+    "meetFaq.twoAnswer":
+      "You can use the Contact links on the site or the community connected through the Report bug button. For non-urgent messages, include the purpose and any useful details.",
   },
 };
 
@@ -649,7 +778,7 @@ const addRipple = (event) => {
   const target = event.currentTarget;
   const rect = target.getBoundingClientRect();
   const ripple = document.createElement("span");
-  const rippleSize = Math.hypot(rect.width, rect.height) * 2;
+  const rippleSize = Math.hypot(rect.width, rect.height) * 2.45;
 
   ripple.className = "ripple";
   ripple.style.setProperty("--ripple-size", `${rippleSize}px`);
@@ -743,6 +872,25 @@ const setActiveLink = () => {
   });
 };
 
+const setMobileMenuOpen = (isOpen) => {
+  const topbar = mobileMenuButton?.closest(".topbar");
+
+  topbar?.classList.toggle("is-open", isOpen);
+  mobileMenuButton?.setAttribute("aria-expanded", String(isOpen));
+};
+
+const setupBrandLogo = () => {
+  if (!brandLogoImage) return;
+
+  brandLogoImage.addEventListener("load", () => {
+    brandLogoImage.closest(".brand-logo")?.classList.add("has-image");
+  });
+
+  brandLogoImage.addEventListener("error", () => {
+    brandLogoImage.closest(".brand-logo")?.classList.remove("has-image");
+  });
+};
+
 const updateScrollProgress = () => {
   if (!scrollProgress) return;
 
@@ -768,6 +916,7 @@ setLanguage(currentLanguage);
 setTheme(getInitialTheme());
 setupSettingToggles();
 setupToggleRightTrack();
+setupBrandLogo();
 setDensity(localStorage.getItem("profile-density") || "comfortable");
 setupPremiumAccentLocks();
 setAccent(localStorage.getItem("profile-accent") || "neutral");
@@ -803,6 +952,15 @@ accentChoices.forEach((button) => {
 
 accentTrigger?.addEventListener("click", () => {
   setAccentMenuOpen(!accentSelect?.classList.contains("is-open"));
+});
+
+mobileMenuButton?.addEventListener("click", () => {
+  const topbar = mobileMenuButton.closest(".topbar");
+  setMobileMenuOpen(!topbar?.classList.contains("is-open"));
+});
+
+mobileMenu?.querySelectorAll("a").forEach((link) => {
+  link.addEventListener("click", () => setMobileMenuOpen(false));
 });
 
 clearCacheButton?.addEventListener("click", showClearCacheWarning);

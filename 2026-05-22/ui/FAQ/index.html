@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAQ · Personal Profile</title>
+    <script>
+      (() => {
+        const savedTheme = localStorage.getItem("profile-theme");
+        const prefersDark = matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          savedTheme || (prefersDark ? "dark" : "light");
+        document.documentElement.lang =
+          localStorage.getItem("profile-language") || "en";
+        document.documentElement.dataset.accent =
+          localStorage.getItem("profile-accent") || "neutral";
+        document.documentElement.dataset.density =
+          localStorage.getItem("profile-density") || "comfortable";
+        if (localStorage.getItem("profile-fast-render") === "true") {
+          document.documentElement.dataset.fastRender = "true";
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="loading-bar" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
+    <div class="adblock-notice" data-adblock-notice hidden>
+      <p data-i18n="adblock.message">
+        광고 차단기가 일부 사이트 기능을 제한할 수 있습니다. 문제가 보이면 이 사이트를 허용 목록에 추가해 주세요.
+      </p>
+      <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
+    </div>
+    <main class="shell">
+      <nav class="topbar" aria-label="FAQ 메뉴">
+        <a class="brand-logo" href="/" aria-label="Home">
+          <img src="/assets/logo.png" alt="" />
+          <span>FP</span>
+        </a>
+        <button class="mobile-menu-button" type="button" aria-expanded="false" data-mobile-menu-toggle>
+          <span data-i18n="nav.menu">Menu</span>
+          <span aria-hidden="true">⌄</span>
+        </button>
+        <div class="nav-links" data-mobile-menu>
+          <a href="/#about" data-i18n="nav.about">About</a>
+          <a href="/#work" data-i18n="nav.work">Work</a>
+          <a href="/#contact" data-i18n="nav.contact">Contact</a>
+          <a href="/Pricing" data-i18n="nav.pricing">Pricing</a>
+          <a href="/Bio" data-i18n="nav.bio">Bio</a>
+          <a class="is-active" href="/FAQ" data-i18n="nav.faq">FAQ</a>
+          <a href="/settings" data-i18n="nav.settings">Settings</a>
+        </div>
+      </nav>
+
+      <section class="bio-hero">
+        <p class="eyebrow" data-i18n="careerFaq.eyebrow">FAQ</p>
+        <h1 data-i18n="careerFaq.title">미국에서 응급구조사가 되는 기본 경로</h1>
+        <p data-i18n="careerFaq.lead">
+          미국에서는 주마다 세부 요건이 다르지만, 일반적으로 EMT 교육, 국가 시험, 주 면허 과정을 거쳐 현장 응급의료 분야에 진입합니다.
+        </p>
+      </section>
+
+      <nav class="faq-topic-nav" aria-label="FAQ 주제 이동">
+        <a href="#emt-faq" data-i18n="faqTopics.emt">EMT</a>
+        <a href="#game-dev-faq" data-i18n="faqTopics.game">Game Developer</a>
+        <a href="#meet-faq" data-i18n="faqTopics.meet">Meet</a>
+      </nav>
+
+      <section class="faq-section" id="emt-faq" aria-label="미국 응급구조사 FAQ">
+        <div class="faq-list">
+          <details open>
+            <summary data-i18n="careerFaq.oneQuestion">1. EMT와 Paramedic은 어떻게 다른가요?</summary>
+            <p data-i18n="careerFaq.oneAnswer">
+              EMT는 응급의료 입문 단계로 기본 평가, CPR, 산소 투여, 출혈 조절, 기본 처치를 배웁니다. Paramedic은 더 긴 교육을 거쳐 약물 투여, 심전도 해석, 고급 기도 관리 같은 고급 처치를 수행할 수 있습니다.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="careerFaq.twoQuestion">2. 시작하려면 무엇이 필요한가요?</summary>
+            <p data-i18n="careerFaq.twoAnswer">
+              보통 고등학교 졸업 또는 GED, CPR/BLS 자격, 신원 조회, 예방접종 기록, 운전면허가 요구될 수 있습니다. 정확한 조건은 교육기관과 주 EMS 사무소 기준을 확인해야 합니다.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="careerFaq.threeQuestion">3. EMT가 되는 순서는 어떻게 되나요?</summary>
+            <p data-i18n="careerFaq.threeAnswer">
+              주 승인 EMT 과정을 수료하고, 실습과 임상 시간을 마친 뒤 NREMT 같은 인증 시험을 통과합니다. 이후 거주하거나 근무할 주에 면허를 신청하면 EMT로 일할 수 있습니다.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="careerFaq.fourQuestion">4. Paramedic이 되려면 얼마나 걸리나요?</summary>
+            <p data-i18n="careerFaq.fourAnswer">
+              EMT 이후 Paramedic 과정은 보통 1년에서 2년 정도 걸립니다. 프로그램에 따라 대학 학점, 임상 실습, 구급차 현장 실습, 국가 인증 시험이 포함됩니다.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="careerFaq.fiveQuestion">5. 주마다 면허가 다른가요?</summary>
+            <p data-i18n="careerFaq.fiveAnswer">
+              네. NREMT 인증은 많은 주에서 사용하지만, 실제 근무 권한은 주 면허와 지역 의료지침에 따릅니다. 이사하거나 다른 주에서 일하려면 해당 주의 EMS 사무소에서 상호 인정 또는 추가 요건을 확인해야 합니다.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="careerFaq.sixQuestion">6. 준비할 때 중요한 점은 무엇인가요?</summary>
+            <p data-i18n="careerFaq.sixAnswer">
+              체력, 의사소통, 침착한 판단, 팀워크가 중요합니다. 또한 지역 EMS 시스템, 병원 전 응급처치 기준, 환자 개인정보 보호 규정을 꾸준히 익히는 것이 도움이 됩니다.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <section class="faq-section faq-topic-section" id="game-dev-faq" aria-label="게임 개발자 FAQ">
+        <div class="section-heading">
+          <p class="eyebrow" data-i18n="gameFaq.eyebrow">FAQ</p>
+          <h2 data-i18n="gameFaq.title">게임 개발자로 가는 기본 경로</h2>
+        </div>
+        <div class="faq-list">
+          <details open>
+            <summary data-i18n="gameFaq.oneQuestion">1. 게임 개발은 어디서 시작하면 좋나요?</summary>
+            <p data-i18n="gameFaq.oneAnswer">
+              작은 게임을 직접 완성하는 것부터 시작하는 것이 좋습니다. Unity, Unreal Engine, Godot, Roblox Studio 중 하나를 고르고, 캐릭터 이동, 충돌, 점수, UI처럼 기본 기능을 만들어보면 전체 흐름을 빠르게 이해할 수 있습니다.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="gameFaq.twoQuestion">2. 어떤 언어를 배우면 좋나요?</summary>
+            <p data-i18n="gameFaq.twoAnswer">
+              Unity는 C#, Unreal Engine은 C++, Godot은 GDScript 또는 C#, Roblox는 Lua를 많이 사용합니다. 처음에는 엔진 하나와 언어 하나를 정해서 작게 반복하는 편이 더 안정적입니다.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="gameFaq.threeQuestion">3. 포트폴리오는 어떻게 만들면 되나요?</summary>
+            <p data-i18n="gameFaq.threeAnswer">
+              완성된 작은 게임 2~3개, 플레이 영상, 담당한 기능 설명, 문제를 어떻게 해결했는지 정리한 문서가 도움이 됩니다. 단순한 아이디어보다 실제로 플레이 가능한 결과물이 더 강합니다.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="gameFaq.fourQuestion">4. 혼자 개발해도 괜찮나요?</summary>
+            <p data-i18n="gameFaq.fourAnswer">
+              괜찮습니다. 처음에는 혼자 전체 과정을 경험해보는 것이 좋고, 이후에는 아트, 사운드, 기획, 프로그래밍 역할을 나누는 작은 팀 프로젝트를 해보면 협업 감각을 키울 수 있습니다.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <section class="faq-section faq-topic-section" id="meet-faq" aria-label="만남 FAQ">
+        <div class="section-heading">
+          <p class="eyebrow" data-i18n="meetFaq.eyebrow">FAQ</p>
+          <h2 data-i18n="meetFaq.title">당신을 만날 수 있나요?</h2>
+        </div>
+        <div class="faq-list">
+          <details open>
+            <summary data-i18n="meetFaq.oneQuestion">1. 직접 만날 수 있나요?</summary>
+            <p data-i18n="meetFaq.oneAnswer">
+              현재는 온라인 연락과 협업 문의를 먼저 받는 방식이 가장 좋습니다. 필요한 경우에는 일정, 목적, 장소, 안전한 만남 방식이 분명할 때 따로 논의할 수 있습니다.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="meetFaq.twoQuestion">2. 어디로 연락하면 되나요?</summary>
+            <p data-i18n="meetFaq.twoAnswer">
+              사이트의 Contact 링크나 Report bug 버튼으로 연결된 커뮤니티를 통해 문의할 수 있습니다. 급하지 않은 내용은 목적과 필요한 정보를 함께 남겨주세요.
+            </p>
+          </details>
+        </div>
+      </section>
+    </main>
+    <script src="../script.js"></script>
+  </body>
+</html>

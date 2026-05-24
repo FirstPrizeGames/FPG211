@@ -35,26 +35,85 @@
     </div>
     <main class="shell">
       <nav class="topbar" aria-label="오류 페이지 메뉴">
-        <div class="nav-links">
+        <a class="brand-logo" href="/" aria-label="Home">
+          <img src="/assets/logo.png" alt="" />
+          <span>FP</span>
+        </a>
+        <button class="mobile-menu-button" type="button" aria-expanded="false" data-mobile-menu-toggle>
+          <span data-i18n="nav.menu">Menu</span>
+          <span aria-hidden="true">⌄</span>
+        </button>
+        <div class="nav-links" data-mobile-menu>
           <a href="/#about" data-i18n="nav.about">About</a>
           <a href="/#work" data-i18n="nav.work">Work</a>
           <a href="/#contact" data-i18n="nav.contact">Contact</a>
           <a href="/Pricing" data-i18n="nav.pricing">Pricing</a>
           <a href="/Bio" data-i18n="nav.bio">Bio</a>
+          <a href="/FAQ" data-i18n="nav.faq">FAQ</a>
           <a href="/settings" data-i18n="nav.settings">Settings</a>
         </div>
       </nav>
 
       <section class="error-page" aria-labelledby="error-title">
-        <p class="eyebrow" data-i18n="error.eyebrow">404</p>
-        <p class="error-code" data-i18n="error.code">404_NOT_FOUND</p>
-        <h1 id="error-title" data-i18n="error.title">페이지를 찾을 수 없습니다.</h1>
-        <p data-i18n="error.body">
-          요청한 주소가 변경되었거나 아직 준비되지 않은 페이지일 수 있습니다.
-        </p>
-        <div class="actions">
-          <a class="button primary" href="/" data-i18n="error.home">홈으로 이동</a>
-          <a class="button ghost" href="/settings" data-i18n="error.settings">설정 열기</a>
+        <div class="error-copy">
+          <p class="eyebrow" data-i18n="error.eyebrow">404</p>
+          <p class="error-code" data-i18n="error.code">404_NOT_FOUND</p>
+          <h1 id="error-title" data-i18n="error.title">페이지를 찾을 수 없습니다.</h1>
+          <p data-i18n="error.body">
+            요청한 주소가 변경되었거나 아직 준비되지 않은 페이지일 수 있습니다.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="/" data-i18n="error.home">홈으로 이동</a>
+            <a class="button ghost" href="/settings" data-i18n="error.settings">설정 열기</a>
+          </div>
+        </div>
+        <div class="error-character" aria-hidden="true">
+          <div class="character-shadow"></div>
+          <div class="character-card">
+            <span class="character-signal"></span>
+            <div class="character-head">
+              <span class="character-eye"></span>
+              <span class="character-eye"></span>
+            </div>
+            <div class="character-body">
+              <span class="character-badge">404</span>
+              <span class="character-line"></span>
+              <span class="character-line short"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="faq-section error-faq-section" aria-label="404 자주 묻는 질문">
+        <div class="section-heading">
+          <p class="eyebrow" data-i18n="errorFaq.eyebrow">FAQ</p>
+          <h2 data-i18n="errorFaq.title">자주 묻는 질문</h2>
+        </div>
+        <div class="faq-list">
+          <details open>
+            <summary data-i18n="errorFaq.oneQuestion">왜 404 페이지가 보이나요?</summary>
+            <p data-i18n="errorFaq.oneAnswer">
+              주소가 잘못 입력되었거나, 페이지 이름이 바뀌었거나, 아직 공개되지 않은 경로일 수 있습니다.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="errorFaq.twoQuestion">어디로 이동하면 되나요?</summary>
+            <p data-i18n="errorFaq.twoAnswer">
+              홈, Pricing, Bio, FAQ, Settings 메뉴를 통해 준비된 페이지로 이동할 수 있습니다.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="errorFaq.threeQuestion">문제가 계속되면 어떻게 하나요?</summary>
+            <p data-i18n="errorFaq.threeAnswer">
+              하단의 Report bug 버튼이나 Discord 커뮤니티 링크를 통해 잘못된 주소를 알려주세요.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="errorFaq.fourQuestion">광고 차단기가 영향을 줄 수 있나요?</summary>
+            <p data-i18n="errorFaq.fourAnswer">
+              일부 광고 차단기는 버튼, 커뮤니티 링크, 안내 배너 같은 요소를 숨길 수 있습니다. 기능이 보이지 않으면 이 사이트를 허용 목록에 추가해 주세요.
+            </p>
+          </details>
         </div>
       </section>
     </main>

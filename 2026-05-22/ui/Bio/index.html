@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bio · Personal Profile</title>
+    <script>
+      (() => {
+        const savedTheme = localStorage.getItem("profile-theme");
+        const prefersDark = matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          savedTheme || (prefersDark ? "dark" : "light");
+        document.documentElement.lang =
+          localStorage.getItem("profile-language") || "en";
+        document.documentElement.dataset.accent =
+          localStorage.getItem("profile-accent") || "neutral";
+        if (localStorage.getItem("profile-fast-render") === "true") {
+          document.documentElement.dataset.fastRender = "true";
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="loading-bar" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
+    <div class="adblock-notice" data-adblock-notice hidden>
+      <p data-i18n="adblock.message">
+        광고 차단기가 일부 사이트 기능을 제한할 수 있습니다. 문제가 보이면 이 사이트를 허용 목록에 추가해 주세요.
+      </p>
+      <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
+    </div>
+    <main class="shell">
+      <nav class="topbar" aria-label="자기소개 메뉴">
+        <div class="nav-links">
+          <a href="/#about" data-i18n="nav.about">About</a>
+          <a href="/#work" data-i18n="nav.work">Work</a>
+          <a href="/#contact" data-i18n="nav.contact">Contact</a>
+          <a href="/Pricing" data-i18n="nav.pricing">Pricing</a>
+          <a class="is-active" href="/Bio" data-i18n="nav.bio">Bio</a>
+          <a href="/settings" data-i18n="nav.settings">Settings</a>
+        </div>
+      </nav>
+
+      <section class="bio-hero">
+        <p class="eyebrow" data-i18n="bio.eyebrow">Bio</p>
+        <h1 data-i18n="bio.title">응급 현장에 필요한 침착함을 믿습니다.</h1>
+        <p data-i18n="bio.lead">
+          저는 환자의 가장 불안한 순간에 도착해 상황을 빠르게 읽고, 필요한 처치와 이송을 연결하는 구급대원입니다.
+        </p>
+      </section>
+
+      <section class="bio-content" aria-label="자기소개">
+        <article>
+          <h2 data-i18n="bio.sectionOneTitle">현장에서의 태도</h2>
+          <p data-i18n="bio.sectionOneBody">
+            응급 상황에서는 빠른 판단만큼 차분한 태도가 중요하다고 생각합니다. 환자의 상태를 확인하고, 보호자와 동료에게 필요한 정보를 명확히 전달하며, 안전한 처치가 이어질 수 있도록 현장을 정리합니다.
+          </p>
+        </article>
+        <article>
+          <h2 data-i18n="bio.sectionTwoTitle">중요하게 생각하는 기준</h2>
+          <p data-i18n="bio.sectionTwoBody">
+            기본에 충실한 평가, 팀과의 정확한 소통, 환자를 향한 존중을 기준으로 움직입니다. 긴박한 순간일수록 절차와 원칙을 놓치지 않는 것이 더 나은 결과로 이어진다고 믿습니다.
+          </p>
+        </article>
+        <article>
+          <h2 data-i18n="bio.sectionThreeTitle">앞으로의 방향</h2>
+          <p data-i18n="bio.sectionThreeBody">
+            현장 경험을 바탕으로 더 나은 응급의료 대응과 교육, 기록 문화에 기여하고 싶습니다. 누군가에게 가장 힘든 순간을 조금 더 안전하게 지나가게 하는 사람이 되는 것이 목표입니다.
+          </p>
+        </article>
+      </section>
+
+      <section class="likes-section" aria-label="좋아하는 것들">
+        <div class="section-heading">
+          <p class="eyebrow" data-i18n="bio.likesEyebrow">Likes</p>
+          <h2 data-i18n="bio.likesTitle">좋아하는 것들</h2>
+        </div>
+        <div class="likes-list">
+          <span data-i18n="bio.likeOne">게임 UI & UX 디자인, 게임 개발</span>
+          <span data-i18n="bio.likeTwo">Roblox, Baldi's Basics 게임</span>
+          <span data-i18n="bio.likeThree">환자 살리는 것을 목표로 함</span>
+          <span data-i18n="bio.likeFour">BBQ 파티</span>
+          <span data-i18n="bio.likeFive">더 많은</span>
+        </div>
+      </section>
+    </main>
+    <script src="../script.js"></script>
+  </body>
+</html>

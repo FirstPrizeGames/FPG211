@@ -12,6 +12,9 @@ const premiumNote = document.querySelector("[data-premium-note]");
 const clearCacheButton = document.querySelector("[data-clear-cache]");
 const clearCacheNote = document.querySelector("[data-clear-cache-note]");
 const shareLinkButton = document.querySelector("[data-share-link]");
+const adblockBait = document.querySelector(".adblock-bait");
+const adblockNotice = document.querySelector("[data-adblock-notice]");
+const adblockDismiss = document.querySelector("[data-adblock-dismiss]");
 const currencySwitch = document.querySelector("[data-currency-switch]");
 const currencyChoices = [...document.querySelectorAll("[data-currency-choice]")];
 const priceLabels = [...document.querySelectorAll("[data-price-plan]")];
@@ -22,7 +25,7 @@ const loadingBar = document.querySelector(".loading-bar");
 const scrollProgress = document.querySelector(".scroll-progress");
 const highlightTargets = [
   ...document.querySelectorAll(
-    ".nav-links a, .button, .contact-links a, .icon-button, .settings-sidebar a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .toggle",
+    ".nav-links a, .button, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .toggle",
   ),
 ];
 const sections = navLinks
@@ -36,8 +39,8 @@ const translations = {
     "nav.work": "Work",
     "nav.contact": "Contact",
     "nav.pricing": "Pricing",
+    "nav.bio": "Bio",
     "nav.settings": "Settings",
-    "home.eyebrow": "Personal Profile",
     "home.lead":
       "현장에서 빠른 판단과 침착한 대응으로 생명을 지키는 구급대원입니다.",
     "home.roleLabel": "Role",
@@ -178,14 +181,37 @@ const translations = {
     "error.settings": "설정 열기",
     "share.copy": "페이지 링크 복사",
     "share.copied": "페이지 링크 복사됨",
+    "adblock.message":
+      "광고 차단기가 일부 사이트 기능을 제한할 수 있습니다. 문제가 보이면 이 사이트를 허용 목록에 추가해 주세요.",
+    "adblock.dismiss": "닫기",
+    "bio.eyebrow": "Bio",
+    "bio.title": "응급 현장에 필요한 침착함을 믿습니다.",
+    "bio.lead":
+      "저는 환자의 가장 불안한 순간에 도착해 상황을 빠르게 읽고, 필요한 처치와 이송을 연결하는 구급대원입니다.",
+    "bio.sectionOneTitle": "현장에서의 태도",
+    "bio.sectionOneBody":
+      "응급 상황에서는 빠른 판단만큼 차분한 태도가 중요하다고 생각합니다. 환자의 상태를 확인하고, 보호자와 동료에게 필요한 정보를 명확히 전달하며, 안전한 처치가 이어질 수 있도록 현장을 정리합니다.",
+    "bio.sectionTwoTitle": "중요하게 생각하는 기준",
+    "bio.sectionTwoBody":
+      "기본에 충실한 평가, 팀과의 정확한 소통, 환자를 향한 존중을 기준으로 움직입니다. 긴박한 순간일수록 절차와 원칙을 놓치지 않는 것이 더 나은 결과로 이어진다고 믿습니다.",
+    "bio.sectionThreeTitle": "앞으로의 방향",
+    "bio.sectionThreeBody":
+      "현장 경험을 바탕으로 더 나은 응급의료 대응과 교육, 기록 문화에 기여하고 싶습니다. 누군가에게 가장 힘든 순간을 조금 더 안전하게 지나가게 하는 사람이 되는 것이 목표입니다.",
+    "bio.likesEyebrow": "Likes",
+    "bio.likesTitle": "좋아하는 것들",
+    "bio.likeOne": "게임 UI & UX 디자인, 게임 개발",
+    "bio.likeTwo": "Roblox, Baldi's Basics 게임",
+    "bio.likeThree": "환자 살리는 것을 목표로 함",
+    "bio.likeFour": "BBQ 파티",
+    "bio.likeFive": "더 많은",
   },
   en: {
     "nav.about": "About",
     "nav.work": "Work",
     "nav.contact": "Contact",
     "nav.pricing": "Pricing",
+    "nav.bio": "Bio",
     "nav.settings": "Settings",
-    "home.eyebrow": "Personal Profile",
     "home.lead":
       "An emergency responder who protects lives through quick judgment and calm action in the field.",
     "home.roleLabel": "Role",
@@ -330,6 +356,29 @@ const translations = {
     "error.settings": "Open settings",
     "share.copy": "Copy page link",
     "share.copied": "Page link copied",
+    "adblock.message":
+      "An ad blocker may limit some site features. If something looks broken, please allow this site.",
+    "adblock.dismiss": "Dismiss",
+    "bio.eyebrow": "Bio",
+    "bio.title": "I believe in calm action when every second matters.",
+    "bio.lead":
+      "I am an emergency responder who arrives during a patient's most uncertain moments, reads the scene quickly, and connects them to the care and transport they need.",
+    "bio.sectionOneTitle": "How I work in the field",
+    "bio.sectionOneBody":
+      "In emergencies, calm presence matters as much as quick judgment. I assess the patient's condition, communicate clearly with guardians and teammates, and help keep the scene organized for safe care.",
+    "bio.sectionTwoTitle": "Standards I value",
+    "bio.sectionTwoBody":
+      "I work from sound assessment, precise team communication, and respect for every patient. In urgent moments, staying close to procedure and fundamentals leads to better outcomes.",
+    "bio.sectionThreeTitle": "Where I am heading",
+    "bio.sectionThreeBody":
+      "I want to use field experience to contribute to better emergency response, training, and documentation culture. My goal is to help people move through their hardest moments with more safety and clarity.",
+    "bio.likesEyebrow": "Likes",
+    "bio.likesTitle": "Things I like",
+    "bio.likeOne": "Game UI & UX design, game development",
+    "bio.likeTwo": "Roblox, Baldi's Basics",
+    "bio.likeThree": "Aims to save the patient",
+    "bio.likeFour": "BBQ Party",
+    "bio.likeFive": "More",
   },
 };
 
@@ -584,6 +633,23 @@ const copyShareLink = async () => {
   }
 };
 
+const detectAdblock = () => {
+  if (!adblockBait || !adblockNotice || localStorage.getItem("adblock-notice-dismissed") === "true") {
+    return;
+  }
+
+  window.setTimeout(() => {
+    const style = window.getComputedStyle(adblockBait);
+    const isBlocked =
+      adblockBait.offsetParent === null ||
+      adblockBait.offsetHeight === 0 ||
+      style.display === "none" ||
+      style.visibility === "hidden";
+
+    if (isBlocked) adblockNotice.hidden = false;
+  }, 700);
+};
+
 const setActiveLink = () => {
   if (!sections.length) return;
 
@@ -662,6 +728,10 @@ accentTrigger?.addEventListener("click", () => {
 
 clearCacheButton?.addEventListener("click", clearSiteCache);
 shareLinkButton?.addEventListener("click", copyShareLink);
+adblockDismiss?.addEventListener("click", () => {
+  localStorage.setItem("adblock-notice-dismissed", "true");
+  if (adblockNotice) adblockNotice.hidden = true;
+});
 
 document.addEventListener("click", (event) => {
   if (!accentSelect?.contains(event.target)) setAccentMenuOpen(false);
@@ -670,6 +740,8 @@ document.addEventListener("click", (event) => {
 highlightTargets.forEach((target) => {
   target.addEventListener("pointerdown", addRipple);
 });
+
+detectAdblock();
 
 infoTabs.forEach((tab) => {
   tab.addEventListener("click", () => {

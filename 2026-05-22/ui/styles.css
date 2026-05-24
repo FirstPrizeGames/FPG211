@@ -249,22 +249,46 @@ body {
 
 .loading-bar {
   right: 0;
+  z-index: 120;
+  height: 4px;
+  overflow: hidden;
   background: var(--segment-bg);
+  opacity: 1;
+  --loading-progress: 0.18;
+  transition: opacity 260ms ease;
 }
 
 .loading-bar::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--ink);
-  transform: scaleX(0);
+  background:
+    linear-gradient(90deg, var(--accent), var(--ink), var(--accent));
+  background-size: 180% 100%;
+  transform: scaleX(var(--loading-progress));
   transform-origin: left center;
-  animation: loadingFill 900ms cubic-bezier(0.2, 0, 0, 1) forwards;
+  transition: transform 460ms cubic-bezier(0.2, 0, 0, 1);
+  animation: loadingSweep 920ms linear infinite;
+}
+
+.loading-bar::before {
+  content: "";
+  position: absolute;
+  inset: -7px 0;
+  background:
+    linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 42%, transparent), transparent);
+  filter: blur(8px);
+  opacity: 0.8;
+  transform: translateX(-100%);
+  animation: loadingGlow 1200ms ease-in-out infinite;
 }
 
 .loading-bar.is-hidden {
   opacity: 0;
-  transition: opacity 240ms ease;
+}
+
+.loading-bar.is-complete {
+  --loading-progress: 1;
 }
 
 .scroll-progress {
@@ -326,17 +350,23 @@ body {
   font-weight: 850;
 }
 
-@keyframes loadingFill {
+@keyframes loadingSweep {
   0% {
-    transform: scaleX(0);
-  }
-
-  55% {
-    transform: scaleX(0.72);
+    background-position: 0% 50%;
   }
 
   100% {
-    transform: scaleX(1);
+    background-position: 180% 50%;
+  }
+}
+
+@keyframes loadingGlow {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
   }
 }
 
@@ -726,8 +756,25 @@ summary {
   inset: 0;
   background:
     var(--hero-tint),
-    url("assets/profile-hero.png") center / cover;
+    url("assets/profile-hero-1280.jpg") center / cover;
   transform: scale(1.01);
+}
+
+@supports (content-visibility: auto) {
+  .content-band,
+  .split-band,
+  .contact-band,
+  .site-info,
+  .pricing-section,
+  .compare-section,
+  .faq-section,
+  .bio-section,
+  .settings-layout,
+  .feedback-section,
+  .error-faq {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 720px;
+  }
 }
 
 .profile-panel {
@@ -2172,7 +2219,7 @@ h3 {
   .hero-media {
     background:
       var(--hero-tint-mobile),
-      url("assets/profile-hero.png") center / cover;
+      url("assets/profile-hero-1280.jpg") center / cover;
   }
 
   .profile-panel {

@@ -991,16 +991,51 @@ const updateScrollProgress = () => {
   scrollProgress.style.transform = `scaleX(${Math.min(Math.max(progress, 0), 1)})`;
 };
 
+const setLoadingProgress = (progress) => {
+  loadingBar?.style.setProperty("--loading-progress", String(progress));
+};
+
+const showLoadingBar = () => {
+  if (!loadingBar) return;
+
+  loadingBar.classList.remove("is-hidden", "is-complete");
+  setLoadingProgress(0.2);
+  window.requestAnimationFrame(() => setLoadingProgress(0.72));
+};
+
+const finishLoadingBar = () => {
+  if (!loadingBar) return;
+
+  setLoadingProgress(0.94);
+  window.setTimeout(() => {
+    loadingBar.classList.add("is-complete");
+    window.setTimeout(() => loadingBar.classList.add("is-hidden"), 260);
+  }, 140);
+};
+
+const isInternalPageLink = (link) => {
+  if (!link) return false;
+
+  const url = new URL(link.href, window.location.href);
+  return (
+    ["http:", "https:", "file:"].includes(url.protocol) &&
+    url.origin === window.location.origin &&
+    url.pathname !== window.location.pathname &&
+    !link.hasAttribute("download") &&
+    link.target !== "_blank"
+  );
+};
+
 setActiveLink();
 window.addEventListener("scroll", setActiveLink, { passive: true });
 updateScrollProgress();
 window.addEventListener("scroll", updateScrollProgress, { passive: true });
 window.addEventListener("resize", updateScrollProgress);
 
-window.addEventListener("load", () => {
-  window.setTimeout(() => {
-    loadingBar?.classList.add("is-hidden");
-  }, 920);
+showLoadingBar();
+window.addEventListener("load", finishLoadingBar);
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) finishLoadingBar();
 });
 
 setLanguage(currentLanguage);
@@ -1075,6 +1110,19 @@ adblockDismiss?.addEventListener("click", () => {
 
 document.addEventListener("click", (event) => {
   if (!accentSelect?.contains(event.target)) setAccentMenuOpen(false);
+
+  const link = event.target.closest?.("a[href]");
+  if (
+    event.button === 0 &&
+    !event.defaultPrevented &&
+    !event.metaKey &&
+    !event.ctrlKey &&
+    !event.shiftKey &&
+    !event.altKey &&
+    isInternalPageLink(link)
+  ) {
+    showLoadingBar();
+  }
 });
 
 highlightTargets.forEach((target) => {

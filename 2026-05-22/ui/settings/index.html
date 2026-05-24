@@ -14,6 +14,8 @@
           localStorage.getItem("profile-language") || "en";
         document.documentElement.dataset.accent =
           localStorage.getItem("profile-accent") || "neutral";
+        document.documentElement.dataset.density =
+          localStorage.getItem("profile-density") || "comfortable";
         if (localStorage.getItem("profile-fast-render") === "true") {
           document.documentElement.dataset.fastRender = "true";
         }
@@ -232,15 +234,6 @@
                   type="button"
                   role="option"
                   aria-selected="false"
-                  data-accent-choice="blue"
-                  data-i18n="settings.accentBlue"
-                >
-                  Blue
-                </button>
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected="false"
                   data-accent-choice="green"
                   data-i18n="settings.accentGreen"
                 >
@@ -254,6 +247,33 @@
                   data-i18n="settings.accentRose"
                 >
                   Rose
+                </button>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected="false"
+                  data-accent-choice="orange"
+                  data-i18n="settings.accentOrange"
+                >
+                  Orange
+                </button>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected="false"
+                  data-accent-choice="blue"
+                  data-i18n="settings.accentBlue"
+                >
+                  Blue
+                </button>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected="false"
+                  data-accent-choice="purple"
+                  data-i18n="settings.accentPurple"
+                >
+                  Purple
                 </button>
                 <button
                   type="button"
@@ -308,42 +328,79 @@
         </div>
       </section>
 
+      <div class="cache-dialog" data-clear-cache-warning hidden>
+        <div class="cache-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="cache-dialog-title">
+          <p class="eyebrow" data-i18n="settings.storageTab">Storage</p>
+          <h2 id="cache-dialog-title" data-i18n="settings.clearCacheTitle">브라우저 캐시 정리</h2>
+          <p data-i18n="settings.clearCacheWarning">
+            저장된 테마, 언어, 표시 설정이 모두 삭제됩니다. 계속하시겠습니까?
+          </p>
+          <div class="cache-warning-actions">
+            <button
+              class="button cache-cancel-button"
+              type="button"
+              data-clear-cache-cancel
+              data-i18n="settings.clearCacheCancel"
+            >
+              취소
+            </button>
+            <button
+              class="button cache-confirm-button"
+              type="button"
+              data-clear-cache-confirm
+              data-i18n="settings.clearCacheConfirm"
+            >
+              정리하기
+            </button>
+          </div>
+        </div>
+      </div>
+
       <footer class="site-info" aria-label="사이트 정보">
-        <div class="info-tabs" role="tablist" aria-label="사이트 정보 탭">
-          <button
-            class="is-active"
-            type="button"
-            role="tab"
-            aria-selected="true"
-            aria-controls="licenses-panel"
-            id="licenses-tab"
-            data-info-tab="licenses"
-            data-i18n="info.licensesTab"
+        <div class="info-actions">
+          <div class="info-tabs" role="tablist" aria-label="사이트 정보 탭">
+            <button
+              class="is-active"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="licenses-panel"
+              id="licenses-tab"
+              data-info-tab="licenses"
+              data-i18n="info.licensesTab"
+            >
+              오픈소스 라이선스
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="privacy-panel"
+              id="privacy-tab"
+              data-info-tab="privacy"
+              data-i18n="info.privacyTab"
+            >
+              개인정보처리방침
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="copyright-panel"
+              id="copyright-tab"
+              data-info-tab="copyright"
+              data-i18n="info.copyrightTab"
+            >
+              저작권 정보
+            </button>
+          </div>
+          <a
+            class="report-bug-button"
+            href="https://discord.gg/bDHgzxtvTt"
+            data-i18n="info.reportBug"
           >
-            오픈소스 라이선스
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected="false"
-            aria-controls="privacy-panel"
-            id="privacy-tab"
-            data-info-tab="privacy"
-            data-i18n="info.privacyTab"
-          >
-            개인정보처리방침
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected="false"
-            aria-controls="copyright-panel"
-            id="copyright-tab"
-            data-info-tab="copyright"
-            data-i18n="info.copyrightTab"
-          >
-            저작권 정보
-          </button>
+            Report bug
+          </a>
         </div>
         <div
           class="info-panel is-active"

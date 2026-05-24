@@ -14,6 +14,8 @@
           localStorage.getItem("profile-language") || "en";
         document.documentElement.dataset.accent =
           localStorage.getItem("profile-accent") || "neutral";
+        document.documentElement.dataset.density =
+          localStorage.getItem("profile-density") || "comfortable";
         if (localStorage.getItem("profile-fast-render") === "true") {
           document.documentElement.dataset.fastRender = "true";
         }
@@ -198,41 +200,50 @@
       </section>
 
       <footer class="site-info" aria-label="사이트 정보">
-        <div class="info-tabs" role="tablist" aria-label="사이트 정보 탭">
-          <button
-            class="is-active"
-            type="button"
-            role="tab"
-            aria-selected="true"
-            aria-controls="licenses-panel"
-            id="licenses-tab"
-            data-info-tab="licenses"
-            data-i18n="info.licensesTab"
+        <div class="info-actions">
+          <div class="info-tabs" role="tablist" aria-label="사이트 정보 탭">
+            <button
+              class="is-active"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="licenses-panel"
+              id="licenses-tab"
+              data-info-tab="licenses"
+              data-i18n="info.licensesTab"
+            >
+              오픈소스 라이선스
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="privacy-panel"
+              id="privacy-tab"
+              data-info-tab="privacy"
+              data-i18n="info.privacyTab"
+            >
+              개인정보처리방침
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="copyright-panel"
+              id="copyright-tab"
+              data-info-tab="copyright"
+              data-i18n="info.copyrightTab"
+            >
+              저작권 정보
+            </button>
+          </div>
+          <a
+            class="report-bug-button"
+            href="https://discord.gg/bDHgzxtvTt"
+            data-i18n="info.reportBug"
           >
-            오픈소스 라이선스
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected="false"
-            aria-controls="privacy-panel"
-            id="privacy-tab"
-            data-info-tab="privacy"
-            data-i18n="info.privacyTab"
-          >
-            개인정보처리방침
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected="false"
-            aria-controls="copyright-panel"
-            id="copyright-tab"
-            data-info-tab="copyright"
-            data-i18n="info.copyrightTab"
-          >
-            저작권 정보
-          </button>
+            Report bug
+          </a>
         </div>
         <div
           class="info-panel is-active"

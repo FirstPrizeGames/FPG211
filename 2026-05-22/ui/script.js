@@ -10,6 +10,9 @@ const accentPreview = document.querySelector("[data-accent-preview]");
 const accentLabel = document.querySelector("[data-accent-label]");
 const premiumNote = document.querySelector("[data-premium-note]");
 const clearCacheButton = document.querySelector("[data-clear-cache]");
+const clearCacheWarning = document.querySelector("[data-clear-cache-warning]");
+const clearCacheCancel = document.querySelector("[data-clear-cache-cancel]");
+const clearCacheConfirm = document.querySelector("[data-clear-cache-confirm]");
 const clearCacheNote = document.querySelector("[data-clear-cache-note]");
 const shareLinkButton = document.querySelector("[data-share-link]");
 const adblockBait = document.querySelector(".adblock-bait");
@@ -25,7 +28,7 @@ const loadingBar = document.querySelector(".loading-bar");
 const scrollProgress = document.querySelector(".scroll-progress");
 const highlightTargets = [
   ...document.querySelectorAll(
-    ".nav-links a, .button, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .toggle",
+    ".nav-links a, .button, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .report-bug-button, .toggle",
   ),
 ];
 const sections = navLinks
@@ -94,6 +97,9 @@ const translations = {
     "settings.clearCacheTitle": "브라우저 캐시 정리",
     "settings.clearCacheBody": "이 사이트에 저장된 테마, 언어, 표시 설정을 삭제하고 기본값으로 되돌립니다.",
     "settings.clearCacheButton": "캐시 정리",
+    "settings.clearCacheWarning": "저장된 테마, 언어, 표시 설정이 모두 삭제됩니다. 계속하시겠습니까?",
+    "settings.clearCacheCancel": "취소",
+    "settings.clearCacheConfirm": "정리하기",
     "settings.clearCacheDone": "저장된 설정을 정리했습니다.",
     "settings.accentTitle": "강조 컬러",
     "settings.accentBody": "버튼, 진행 바, 포커스 표시 등에 사용할 포인트 컬러를 선택합니다.",
@@ -101,6 +107,8 @@ const translations = {
     "settings.accentBlue": "Blue",
     "settings.accentGreen": "Green",
     "settings.accentRose": "Rose",
+    "settings.accentOrange": "Orange",
+    "settings.accentPurple": "Purple",
     "settings.accentProGold": "Pro Gold",
     "settings.accentTeamCyan": "Team Cyan",
     "settings.premiumLocked": "이 강조 컬러는 Patreon 후원 후 사용할 수 있습니다.",
@@ -112,6 +120,7 @@ const translations = {
     "info.licensesTab": "오픈소스 라이선스",
     "info.privacyTab": "개인정보처리방침",
     "info.copyrightTab": "저작권 정보",
+    "info.reportBug": "Report bug",
     "info.licensesBody":
       "이 프로필 템플릿은 외부 프레임워크 없이 HTML, CSS, JavaScript로 제작되었습니다. 사용된 시스템 글꼴은 각 운영체제의 라이선스를 따릅니다.",
     "info.privacyBody":
@@ -268,6 +277,10 @@ const translations = {
     "settings.clearCacheBody":
       "Removes this site's saved theme, language, and display preferences and restores defaults.",
     "settings.clearCacheButton": "Clear cache",
+    "settings.clearCacheWarning":
+      "Saved theme, language, and display settings will be deleted. Do you want to continue?",
+    "settings.clearCacheCancel": "Cancel",
+    "settings.clearCacheConfirm": "Clear",
     "settings.clearCacheDone": "Saved settings have been cleared.",
     "settings.accentTitle": "Accent color",
     "settings.accentBody": "Choose the point color used for buttons, progress bars, and focus states.",
@@ -275,6 +288,8 @@ const translations = {
     "settings.accentBlue": "Blue",
     "settings.accentGreen": "Green",
     "settings.accentRose": "Rose",
+    "settings.accentOrange": "Orange",
+    "settings.accentPurple": "Purple",
     "settings.accentProGold": "Pro Gold",
     "settings.accentTeamCyan": "Team Cyan",
     "settings.premiumLocked": "This accent color is available after supporting on Patreon.",
@@ -286,6 +301,7 @@ const translations = {
     "info.licensesTab": "Open Source Licenses",
     "info.privacyTab": "Privacy Policy",
     "info.copyrightTab": "Copyright",
+    "info.reportBug": "Report bug",
     "info.licensesBody":
       "This profile template is built with plain HTML, CSS, and JavaScript without external frameworks. System fonts follow the license of each operating system.",
     "info.privacyBody":
@@ -486,6 +502,7 @@ const setupSettingToggles = () => {
 };
 
 const setDensity = (density) => {
+  document.documentElement.dataset.density = density;
   localStorage.setItem("profile-density", density);
 
   densityChoices.forEach((button) => {
@@ -514,6 +531,8 @@ const setAccent = (accent) => {
     blue: "settings.accentBlue",
     green: "settings.accentGreen",
     rose: "settings.accentRose",
+    orange: "settings.accentOrange",
+    purple: "settings.accentPurple",
     "pro-gold": "settings.accentProGold",
     "team-cyan": "settings.accentTeamCyan",
   };
@@ -563,6 +582,8 @@ const setupPremiumAccentLocks = () => {
 };
 
 const clearSiteCache = () => {
+  closeClearCacheWarning();
+
   [
     "profile-theme",
     "profile-language",
@@ -596,13 +617,35 @@ const clearSiteCache = () => {
   }, 2600);
 };
 
+const showClearCacheWarning = () => {
+  if (!clearCacheWarning) {
+    clearSiteCache();
+    return;
+  }
+
+  if (clearCacheNote) clearCacheNote.hidden = true;
+  clearCacheWarning.hidden = false;
+};
+
 const setAccentMenuOpen = (isOpen) => {
   accentSelect?.classList.toggle("is-open", isOpen);
   accentTrigger?.setAttribute("aria-expanded", String(isOpen));
   if (accentMenu) accentMenu.hidden = !isOpen;
 };
 
+const closeClearCacheWarning = () => {
+  if (!clearCacheWarning || clearCacheWarning.hidden) return;
+
+  clearCacheWarning.classList.add("is-closing");
+  window.setTimeout(() => {
+    clearCacheWarning.hidden = true;
+    clearCacheWarning.classList.remove("is-closing");
+  }, 170);
+};
+
 const addRipple = (event) => {
+  if (event.button !== 0) return;
+
   const target = event.currentTarget;
   const rect = target.getBoundingClientRect();
   const ripple = document.createElement("span");
@@ -615,6 +658,41 @@ const addRipple = (event) => {
 
   target.appendChild(ripple);
   ripple.addEventListener("animationend", () => ripple.remove());
+};
+
+const updateToggleTrackPosition = (button, event) => {
+  const rect = button.getBoundingClientRect();
+  button.style.setProperty("--track-x", `${event.clientX - rect.left}px`);
+  button.style.setProperty("--track-y", `${event.clientY - rect.top}px`);
+};
+
+const stopToggleRightTrack = (button) => {
+  button.classList.remove("is-right-tracking");
+};
+
+const setupToggleRightTrack = () => {
+  settingToggles.forEach((button) => {
+    button.addEventListener("pointerdown", (event) => {
+      if (event.button !== 2) return;
+
+      event.preventDefault();
+      updateToggleTrackPosition(button, event);
+      button.classList.add("is-right-tracking");
+      button.setPointerCapture?.(event.pointerId);
+    });
+
+    button.addEventListener("pointermove", (event) => {
+      if (!button.classList.contains("is-right-tracking")) return;
+      updateToggleTrackPosition(button, event);
+    });
+
+    button.addEventListener("pointerup", (event) => {
+      if (event.button === 2) stopToggleRightTrack(button);
+    });
+
+    button.addEventListener("pointercancel", () => stopToggleRightTrack(button));
+    button.addEventListener("contextmenu", (event) => event.preventDefault());
+  });
 };
 
 const copyShareLink = async () => {
@@ -689,6 +767,7 @@ window.addEventListener("load", () => {
 setLanguage(currentLanguage);
 setTheme(getInitialTheme());
 setupSettingToggles();
+setupToggleRightTrack();
 setDensity(localStorage.getItem("profile-density") || "comfortable");
 setupPremiumAccentLocks();
 setAccent(localStorage.getItem("profile-accent") || "neutral");
@@ -726,7 +805,14 @@ accentTrigger?.addEventListener("click", () => {
   setAccentMenuOpen(!accentSelect?.classList.contains("is-open"));
 });
 
-clearCacheButton?.addEventListener("click", clearSiteCache);
+clearCacheButton?.addEventListener("click", showClearCacheWarning);
+clearCacheCancel?.addEventListener("click", () => {
+  closeClearCacheWarning();
+});
+clearCacheConfirm?.addEventListener("click", clearSiteCache);
+clearCacheWarning?.addEventListener("click", (event) => {
+  if (event.button === 0 && event.target === clearCacheWarning) closeClearCacheWarning();
+});
 shareLinkButton?.addEventListener("click", copyShareLink);
 adblockDismiss?.addEventListener("click", () => {
   localStorage.setItem("adblock-notice-dismissed", "true");

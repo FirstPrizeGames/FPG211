@@ -57,6 +57,7 @@ const translations = {
     "faqTopics.emt": "EMT",
     "faqTopics.game": "게임 개발자",
     "faqTopics.meet": "만남",
+    "faqTopics.site": "사이트",
     "home.lead":
       "현장에서 빠른 판단과 침착한 대응으로 생명을 지키는 구급대원입니다.",
     "home.roleLabel": "Role",
@@ -295,6 +296,20 @@ const translations = {
     "meetFaq.twoQuestion": "2. 어디로 연락하면 되나요?",
     "meetFaq.twoAnswer":
       "사이트의 Contact 링크나 Feedback 페이지를 통해 문의할 수 있습니다. 급하지 않은 내용은 목적과 필요한 정보를 함께 남겨주세요.",
+    "siteFaq.eyebrow": "FAQ",
+    "siteFaq.title": "사이트 운영 안내",
+    "siteFaq.deployQuestion": "1. 사이트 배포는 어떻게 하나요?",
+    "siteFaq.deployAnswer":
+      "GitHub에 파일을 올리고 Vercel에서 프로젝트를 연결하면 배포할 수 있습니다. 이 사이트는 정적 페이지라서 Root Directory만 올바르게 지정하면 별도 빌드 없이 공개할 수 있습니다.",
+    "siteFaq.contactQuestion": "2. 문의는 어디로 하면 되나요?",
+    "siteFaq.contactAnswer":
+      "홈의 Contact 섹션이나 상단 Feedback 탭을 통해 문의할 수 있습니다. 일반 문의는 목적과 필요한 정보를 함께 남겨주세요.",
+    "siteFaq.feedbackQuestion": "3. 피드백은 어떻게 남기나요?",
+    "siteFaq.feedbackAnswer":
+      "Feedback 페이지의 Google Forms 버튼을 통해 버그, 개선 아이디어, 보기 불편한 부분을 보낼 수 있습니다.",
+    "siteFaq.privacyQuestion": "4. 개인정보는 어떻게 처리되나요?",
+    "siteFaq.privacyAnswer":
+      "이 사이트는 기본적으로 브라우저 로컬 저장소에 테마, 언어, 표시 설정만 저장합니다. Google Forms에 입력한 내용은 해당 양식의 제출 데이터로 처리됩니다.",
   },
   en: {
     "nav.home": "Home",
@@ -310,6 +325,7 @@ const translations = {
     "faqTopics.emt": "EMT",
     "faqTopics.game": "Game Developer",
     "faqTopics.meet": "Meet",
+    "faqTopics.site": "Site",
     "home.lead":
       "An emergency responder who protects lives through quick judgment and calm action in the field.",
     "home.roleLabel": "Role",
@@ -553,6 +569,20 @@ const translations = {
     "meetFaq.twoQuestion": "2. Where should I contact you?",
     "meetFaq.twoAnswer":
       "You can use the Contact links on the site or the Feedback page. For non-urgent messages, include the purpose and any useful details.",
+    "siteFaq.eyebrow": "FAQ",
+    "siteFaq.title": "Site operation guide",
+    "siteFaq.deployQuestion": "1. How do I deploy the site?",
+    "siteFaq.deployAnswer":
+      "Upload the files to GitHub and connect the project in Vercel. Because this is a static site, it can be published without a separate build as long as the Root Directory is set correctly.",
+    "siteFaq.contactQuestion": "2. Where should inquiries go?",
+    "siteFaq.contactAnswer":
+      "Use the Contact section on the home page or the Feedback tab in the top menu. For general inquiries, include the purpose and useful details.",
+    "siteFaq.feedbackQuestion": "3. How can feedback be sent?",
+    "siteFaq.feedbackAnswer":
+      "Use the Google Forms button on the Feedback page to send bugs, improvement ideas, or anything that feels uncomfortable to use.",
+    "siteFaq.privacyQuestion": "4. How is privacy handled?",
+    "siteFaq.privacyAnswer":
+      "By default, this site stores only theme, language, and display preferences in browser local storage. Anything entered in Google Forms is handled as form submission data.",
   },
 };
 

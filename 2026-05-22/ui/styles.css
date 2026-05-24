@@ -514,7 +514,6 @@ summary {
 .density-segment button::before,
 .accent-trigger::before,
 .accent-menu button::before,
-.info-tabs button::before,
 .info-tabs button::before {
   content: "";
   position: absolute;
@@ -548,7 +547,6 @@ summary {
 .density-segment button:hover::before,
 .accent-trigger:hover::before,
 .accent-menu button:hover::before,
-.info-tabs button:hover::before,
 .info-tabs button:hover::before {
   opacity: 1;
   transform: translateX(42%);
@@ -982,9 +980,9 @@ h3 {
 
 .site-info {
   display: grid;
-  gap: 14px;
+  gap: 12px;
   margin-top: clamp(56px, 8vw, 96px);
-  padding: 24px 0 0;
+  padding: 24px 0 6px;
   border-top: 1px solid var(--line);
 }
 
@@ -998,13 +996,6 @@ h3 {
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--segment-bg);
-}
-
-.info-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
 }
 
 .info-tabs button {
@@ -1096,8 +1087,10 @@ h3 {
 
 .info-panel {
   max-width: 760px;
+  min-height: 42px;
   color: var(--muted);
   font-size: 14px;
+  line-height: 1.6;
 }
 
 .info-panel p {
@@ -2347,10 +2340,6 @@ h3 {
   .density-segment,
   .accent-select,
   .info-tabs {
-    width: 100%;
-  }
-
-  .info-actions {
     width: 100%;
   }
 

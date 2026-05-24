@@ -4,6 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pricing · Personal Profile</title>
+    <meta
+      name="description"
+      content="Compare profile plans for personal, professional, and team-focused profile pages."
+    />
+    <meta name="theme-color" content="#efefec" />
+    <meta property="og:title" content="Pricing · Personal Profile" />
+    <meta
+      property="og:description"
+      content="Compare Free, Pro, and Team profile options with USD and KRW display."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/assets/profile-hero.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Pricing · Personal Profile" />
+    <meta
+      name="twitter:description"
+      content="Compare Free, Pro, and Team profile options with USD and KRW display."
+    />
+    <meta name="twitter:image" content="/assets/profile-hero.png" />
     <script>
       (() => {
         const savedTheme = localStorage.getItem("profile-theme");
@@ -214,43 +233,41 @@
       </section>
 
       <footer class="site-info" aria-label="사이트 정보">
-        <div class="info-actions">
-          <div class="info-tabs" role="tablist" aria-label="사이트 정보 탭">
-            <button
-              class="is-active"
-              type="button"
-              role="tab"
-              aria-selected="true"
-              aria-controls="licenses-panel"
-              id="licenses-tab"
-              data-info-tab="licenses"
-              data-i18n="info.licensesTab"
-            >
-              오픈소스 라이선스
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected="false"
-              aria-controls="privacy-panel"
-              id="privacy-tab"
-              data-info-tab="privacy"
-              data-i18n="info.privacyTab"
-            >
-              개인정보처리방침
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected="false"
-              aria-controls="copyright-panel"
-              id="copyright-tab"
-              data-info-tab="copyright"
-              data-i18n="info.copyrightTab"
-            >
-              저작권 정보
-            </button>
-          </div>
+        <div class="info-tabs" role="tablist" aria-label="사이트 정보 탭">
+          <button
+            class="is-active"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="licenses-panel"
+            id="licenses-tab"
+            data-info-tab="licenses"
+            data-i18n="info.licensesTab"
+          >
+            오픈소스 라이선스
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="privacy-panel"
+            id="privacy-tab"
+            data-info-tab="privacy"
+            data-i18n="info.privacyTab"
+          >
+            개인정보처리방침
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="copyright-panel"
+            id="copyright-tab"
+            data-info-tab="copyright"
+            data-i18n="info.copyrightTab"
+          >
+            저작권 정보
+          </button>
         </div>
         <div
           class="info-panel is-active"

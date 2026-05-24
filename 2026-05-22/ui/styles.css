@@ -153,6 +153,50 @@
   transform: none;
 }
 
+[data-kid-mode="true"] {
+  --muted: color-mix(in srgb, var(--ink) 72%, var(--bg));
+  --density-card: 1.12;
+  --density-gap: 1.16;
+}
+
+[data-kid-mode="true"] body {
+  font-size: 17px;
+}
+
+[data-kid-mode="true"] .nav-links a,
+[data-kid-mode="true"] .mobile-menu-button,
+[data-kid-mode="true"] .button,
+[data-kid-mode="true"] .contact-links a,
+[data-kid-mode="true"] .settings-sidebar a,
+[data-kid-mode="true"] .faq-topic-nav a,
+[data-kid-mode="true"] .info-tabs button,
+[data-kid-mode="true"] .report-bug-button {
+  min-height: 48px;
+  font-size: 14px;
+  font-weight: 850;
+}
+
+[data-kid-mode="true"] .feedback-cta {
+  min-height: 64px;
+  font-size: 17px;
+}
+
+[data-kid-mode="true"] .setting-card,
+[data-kid-mode="true"] .pricing-card,
+[data-kid-mode="true"] .faq-list details,
+[data-kid-mode="true"] .work-item,
+[data-kid-mode="true"] .bio-content article {
+  border-color: color-mix(in srgb, var(--ink) 30%, var(--line));
+}
+
+[data-kid-mode="true"] .ripple,
+[data-kid-mode="true"] .error-character,
+[data-kid-mode="true"] .character-eye,
+[data-kid-mode="true"] .character-signal {
+  animation-duration: 1ms !important;
+  animation-iteration-count: 1 !important;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -318,6 +362,7 @@ button,
 .brand-logo,
 .nav-links a,
 .mobile-menu-button,
+.feedback-cta,
 .contact-links a,
 .icon-button,
 .adblock-notice button,
@@ -447,6 +492,20 @@ summary {
   transition: background 180ms ease, color 180ms ease;
 }
 
+.nav-links a.nav-feedback-link {
+  min-width: 92px;
+  border: 1px solid #ff5416;
+  background: color-mix(in srgb, #ff5416 12%, transparent);
+  color: #ff5416;
+  font-weight: 850;
+}
+
+.nav-links a.nav-feedback-link:hover,
+.nav-links a.nav-feedback-link.is-active {
+  background: #ff5416;
+  color: #ffffff;
+}
+
 .brand-logo::before,
 .nav-links a::before,
 .mobile-menu-button::before,
@@ -519,6 +578,7 @@ summary {
 .accent-menu button:focus-visible,
 .info-tabs button:focus-visible,
 .report-bug-button:focus-visible,
+.feedback-cta:focus-visible,
 .toggle:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
@@ -651,6 +711,12 @@ summary {
 .nav-links a.is-active {
   background: var(--ink);
   color: var(--bg);
+}
+
+.nav-links a.nav-feedback-link:hover,
+.nav-links a.nav-feedback-link.is-active {
+  background: #ff5416;
+  color: #ffffff;
 }
 
 .hero {
@@ -989,6 +1055,72 @@ h3 {
 .report-bug-button:hover {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+.feedback-hero {
+  display: grid;
+  gap: 18px;
+  align-content: center;
+  min-height: calc(100vh - 140px);
+  padding: clamp(74px, 12vw, 132px) 0 clamp(48px, 8vw, 96px);
+}
+
+.feedback-hero h1 {
+  max-width: 820px;
+}
+
+.feedback-hero p:last-of-type {
+  max-width: 700px;
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(18px, 2.4vw, 23px);
+}
+
+.feedback-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: fit-content;
+  min-width: min(100%, 320px);
+  min-height: 62px;
+  overflow: hidden;
+  padding: 0 28px;
+  border: 1px solid #ff5416;
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, #ff5416 0%, #ff7a1a 58%, #ff9f43 100%);
+  color: #ffffff;
+  box-shadow: 0 18px 40px color-mix(in srgb, #ff5416 28%, transparent);
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.feedback-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.34),
+      transparent
+    );
+  opacity: 0;
+  transform: translateX(-44%);
+  transition: opacity 220ms ease, transform 480ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.feedback-cta:hover::before {
+  opacity: 1;
+  transform: translateX(44%);
+}
+
+.feedback-cta > span:not(.ripple) {
+  position: relative;
+  z-index: 1;
 }
 
 .info-panel {
@@ -2050,6 +2182,10 @@ h3 {
     padding: 0 10px;
   }
 
+  .nav-links a:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
   .hero {
     min-height: 760px;
   }
@@ -2237,6 +2373,10 @@ h3 {
   }
 
   .report-bug-button {
+    width: 100%;
+  }
+
+  .feedback-cta {
     width: 100%;
   }
 

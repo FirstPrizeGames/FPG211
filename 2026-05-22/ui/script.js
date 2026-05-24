@@ -31,7 +31,7 @@ const mobileMenu = document.querySelector("[data-mobile-menu]");
 const brandLogoImage = document.querySelector(".brand-logo img");
 const highlightTargets = [
   ...document.querySelectorAll(
-    ".brand-logo, .nav-links a, .mobile-menu-button, .button, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .report-bug-button, .toggle",
+    ".brand-logo, .nav-links a, .mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .report-bug-button, .toggle",
   ),
 ];
 const sections = navLinks
@@ -41,6 +41,7 @@ const sections = navLinks
 
 const translations = {
   ko: {
+    "nav.home": "Home",
     "nav.about": "About",
     "nav.work": "Work",
     "nav.contact": "Contact",
@@ -48,6 +49,7 @@ const translations = {
     "nav.bio": "Bio",
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
+    "nav.feedback": "Feedback",
     "nav.menu": "메뉴",
     "faqTopics.emt": "EMT",
     "faqTopics.game": "게임 개발자",
@@ -74,6 +76,10 @@ const translations = {
     "home.workThreeBody":
       "환자, 보호자, 동료와 필요한 정보를 명확히 공유하고 안전한 현장 운영을 돕습니다.",
     "home.contactTitle": "새로운 협업을 기다리고 있습니다.",
+    "feedback.eyebrow": "Feedback",
+    "feedback.title": "의견을 남겨주세요.",
+    "feedback.lead": "버그, 개선 아이디어, 보기 불편한 부분을 알려주시면 다음 업데이트에 반영할 수 있습니다.",
+    "feedback.cta": "Google Forms로 피드백 남기기",
     "settings.title": "프로필 설정",
     "settings.lead":
       "공개 정보, 알림, 표시 방식을 차분하게 관리할 수 있는 개인 프로필 설정 화면입니다.",
@@ -95,6 +101,8 @@ const translations = {
     "settings.contactOff": "연락처 표시 꺼짐",
     "settings.fastRenderOn": "빠른 렌더링 켜짐",
     "settings.fastRenderOff": "빠른 렌더링 꺼짐",
+    "settings.kidModeOn": "Kid mode 켜짐",
+    "settings.kidModeOff": "Kid mode 꺼짐",
     "settings.themeTitle": "테마 모드",
     "settings.themeBody": "프로필 화면의 밝기를 라이트, 다크, 밝기 끄기 모드로 선택합니다.",
     "settings.lightsOff": "밝기 끄기",
@@ -102,6 +110,8 @@ const translations = {
     "settings.languageBody": "프로필과 설정 화면에 표시되는 언어를 선택합니다.",
     "settings.fastRenderTitle": "빠른 렌더링",
     "settings.fastRenderBody": "블러, 그림자, 애니메이션을 줄여 화면을 더 가볍게 표시합니다.",
+    "settings.kidModeTitle": "Kid mode",
+    "settings.kidModeBody": "더 큰 글자, 또렷한 대비, 줄어든 움직임으로 화면을 편하게 표시합니다.",
     "settings.clearCacheTitle": "브라우저 캐시 정리",
     "settings.clearCacheBody": "이 사이트에 저장된 테마, 언어, 표시 설정을 삭제하고 기본값으로 되돌립니다.",
     "settings.clearCacheButton": "캐시 정리",
@@ -281,6 +291,7 @@ const translations = {
       "사이트의 Contact 링크나 Report bug 버튼으로 연결된 커뮤니티를 통해 문의할 수 있습니다. 급하지 않은 내용은 목적과 필요한 정보를 함께 남겨주세요.",
   },
   en: {
+    "nav.home": "Home",
     "nav.about": "About",
     "nav.work": "Work",
     "nav.contact": "Contact",
@@ -288,6 +299,7 @@ const translations = {
     "nav.bio": "Bio",
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
+    "nav.feedback": "Feedback",
     "nav.menu": "Menu",
     "faqTopics.emt": "EMT",
     "faqTopics.game": "Game Developer",
@@ -314,6 +326,10 @@ const translations = {
     "home.workThreeBody":
       "Shares essential information with patients, guardians, and teammates while supporting safe scene operations.",
     "home.contactTitle": "Open to thoughtful new collaborations.",
+    "feedback.eyebrow": "Feedback",
+    "feedback.title": "Share your feedback.",
+    "feedback.lead": "Send bugs, improvement ideas, or anything that feels uncomfortable to use so it can be improved in the next update.",
+    "feedback.cta": "Leave feedback on Google Forms",
     "settings.title": "Profile settings",
     "settings.lead":
       "Manage public information, notifications, display mode, and language in one calm profile settings screen.",
@@ -337,6 +353,8 @@ const translations = {
     "settings.contactOff": "Contact visibility off",
     "settings.fastRenderOn": "Fast rendering on",
     "settings.fastRenderOff": "Fast rendering off",
+    "settings.kidModeOn": "Kid mode on",
+    "settings.kidModeOff": "Kid mode off",
     "settings.themeTitle": "Theme mode",
     "settings.themeBody": "Choose a light, dark, or lights-off appearance for the profile.",
     "settings.lightsOff": "Lights Off",
@@ -344,6 +362,8 @@ const translations = {
     "settings.languageBody": "Choose the language used across the profile and settings pages.",
     "settings.fastRenderTitle": "Fast rendering",
     "settings.fastRenderBody": "Reduces blur, shadows, and animation so the interface renders more lightly.",
+    "settings.kidModeTitle": "Kid mode",
+    "settings.kidModeBody": "Makes the interface easier to read with larger text, stronger contrast, and reduced motion.",
     "settings.clearCacheTitle": "Clear browser cache",
     "settings.clearCacheBody":
       "Removes this site's saved theme, language, and display preferences and restores defaults.",
@@ -594,6 +614,7 @@ const getToggleLabelKey = (key, isOn) => {
     "profile-public": isOn ? "settings.profileOn" : "settings.profileOff",
     "contact-visible": isOn ? "settings.contactOn" : "settings.contactOff",
     "fast-render": isOn ? "settings.fastRenderOn" : "settings.fastRenderOff",
+    "kid-mode": isOn ? "settings.kidModeOn" : "settings.kidModeOff",
   };
 
   return labels[key];
@@ -605,6 +626,10 @@ const updateSettingToggle = (button, isOn) => {
 
   if (button.dataset.toggleKey === "fast-render") {
     document.documentElement.dataset.fastRender = isOn ? "true" : "false";
+  }
+
+  if (button.dataset.toggleKey === "kid-mode") {
+    document.documentElement.dataset.kidMode = isOn ? "true" : "false";
   }
 
   const labelKey = getToggleLabelKey(button.dataset.toggleKey, isOn);
@@ -624,6 +649,9 @@ const setupSettingToggles = () => {
       localStorage.setItem(storageKey, String(nextValue));
       if (button.dataset.toggleKey === "fast-render") {
         document.documentElement.dataset.fastRender = nextValue ? "true" : "false";
+      }
+      if (button.dataset.toggleKey === "kid-mode") {
+        document.documentElement.dataset.kidMode = nextValue ? "true" : "false";
       }
       updateSettingToggle(button, nextValue);
     });
@@ -723,18 +751,20 @@ const clearSiteCache = () => {
     "profile-setting-profile-public",
     "profile-setting-contact-visible",
     "profile-setting-fast-render",
+    "profile-setting-kid-mode",
   ].forEach((key) => localStorage.removeItem(key));
 
   document.documentElement.dataset.theme = "light";
   document.documentElement.dataset.accent = "neutral";
   document.documentElement.dataset.fastRender = "false";
+  document.documentElement.dataset.kidMode = "false";
   setLanguage("en");
   setDensity("comfortable");
   setCurrency("usd");
   setAccent("neutral");
 
   settingToggles.forEach((button) => {
-    const defaultOn = button.dataset.toggleKey !== "fast-render";
+    const defaultOn = !["fast-render", "kid-mode"].includes(button.dataset.toggleKey);
     updateSettingToggle(button, defaultOn);
   });
 

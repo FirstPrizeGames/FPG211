@@ -17,6 +17,10 @@
     {
       "source": "/FAQ",
       "destination": "/FAQ/index.html"
+    },
+    {
+      "source": "/feedback",
+      "destination": "/feedback/index.html"
     }
   ]
 }

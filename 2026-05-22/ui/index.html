@@ -170,6 +170,27 @@
         </div>
       </section>
 
+      <div class="cache-dialog share-dialog" data-share-dialog hidden>
+        <div class="cache-dialog-panel share-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="share-dialog-title">
+          <p class="eyebrow" data-i18n="share.eyebrow">Share</p>
+          <h2 id="share-dialog-title" data-i18n="share.title">페이지 공유</h2>
+          <p data-i18n="share.body">아래 링크를 복사해서 원하는 곳에 공유할 수 있습니다.</p>
+          <label class="share-link-field">
+            <span data-i18n="share.linkLabel">공유 링크</span>
+            <input type="text" data-share-url readonly />
+          </label>
+          <p class="share-status" data-share-status hidden data-i18n="share.copied">페이지 링크 복사됨</p>
+          <div class="cache-warning-actions">
+            <button class="button cache-cancel-button" type="button" data-share-close data-i18n="share.close">
+              닫기
+            </button>
+            <button class="button cache-confirm-button share-copy-button" type="button" data-share-copy data-i18n="share.copy">
+              페이지 링크 복사
+            </button>
+          </div>
+        </div>
+      </div>
+
       <footer class="site-info" aria-label="사이트 정보">
         <div class="info-tabs" role="tablist" aria-label="사이트 정보 탭">
           <button

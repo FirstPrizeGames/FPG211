@@ -15,6 +15,11 @@ const clearCacheCancel = document.querySelector("[data-clear-cache-cancel]");
 const clearCacheConfirm = document.querySelector("[data-clear-cache-confirm]");
 const clearCacheNote = document.querySelector("[data-clear-cache-note]");
 const shareLinkButton = document.querySelector("[data-share-link]");
+const shareDialog = document.querySelector("[data-share-dialog]");
+const shareClose = document.querySelector("[data-share-close]");
+const shareCopy = document.querySelector("[data-share-copy]");
+const shareUrl = document.querySelector("[data-share-url]");
+const shareStatus = document.querySelector("[data-share-status]");
 const adblockBait = document.querySelector(".adblock-bait");
 const adblockNotice = document.querySelector("[data-adblock-notice]");
 const adblockDismiss = document.querySelector("[data-adblock-dismiss]");
@@ -229,6 +234,11 @@ const translations = {
       "일부 광고 차단기는 버튼, 커뮤니티 링크, 안내 배너 같은 요소를 숨길 수 있습니다. 기능이 보이지 않으면 이 사이트를 허용 목록에 추가해 주세요.",
     "share.copy": "페이지 링크 복사",
     "share.copied": "페이지 링크 복사됨",
+    "share.eyebrow": "Share",
+    "share.title": "페이지 공유",
+    "share.body": "아래 링크를 복사해서 원하는 곳에 공유할 수 있습니다.",
+    "share.linkLabel": "공유 링크",
+    "share.close": "닫기",
     "adblock.message":
       "광고 차단기가 일부 사이트 기능을 제한할 수 있습니다. 문제가 보이면 이 사이트를 허용 목록에 추가해 주세요.",
     "adblock.dismiss": "닫기",
@@ -502,6 +512,11 @@ const translations = {
       "Some ad blockers can hide buttons, community links, or notice banners. If something is missing, please allow this site in your blocker.",
     "share.copy": "Copy page link",
     "share.copied": "Page link copied",
+    "share.eyebrow": "Share",
+    "share.title": "Share this page",
+    "share.body": "Copy this link and share it wherever you want.",
+    "share.linkLabel": "Share link",
+    "share.close": "Close",
     "adblock.message":
       "An ad blocker may limit some site features. If something looks broken, please allow this site.",
     "adblock.dismiss": "Dismiss",
@@ -858,6 +873,16 @@ const closeFeedbackWarning = () => {
   }, 170);
 };
 
+const closeShareDialog = () => {
+  if (!shareDialog || shareDialog.hidden) return;
+
+  shareDialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    shareDialog.hidden = true;
+    shareDialog.classList.remove("is-closing");
+  }, 170);
+};
+
 const addRipple = (event) => {
   if (event.button !== 0) return;
 
@@ -910,20 +935,32 @@ const setupToggleRightTrack = () => {
   });
 };
 
+const showShareDialog = () => {
+  if (!shareDialog) return;
+
+  if (shareUrl) shareUrl.value = window.location.href;
+  if (shareStatus) shareStatus.hidden = true;
+  shareDialog.hidden = false;
+  window.setTimeout(() => shareUrl?.select(), 40);
+};
+
 const copyShareLink = async () => {
-  if (!shareLinkButton) return;
+  const url = shareUrl?.value || window.location.href;
 
   try {
-    await navigator.clipboard.writeText(window.location.href);
-    shareLinkButton.classList.add("is-copied");
-    shareLinkButton.setAttribute("aria-label", translate("share.copied"));
-    window.setTimeout(() => {
-      shareLinkButton.classList.remove("is-copied");
-      shareLinkButton.setAttribute("aria-label", translate("share.copy"));
-    }, 1800);
+    await navigator.clipboard.writeText(url);
   } catch {
-    shareLinkButton.setAttribute("aria-label", translate("share.copy"));
+    shareUrl?.select();
+    document.execCommand?.("copy");
   }
+
+  shareLinkButton?.classList.add("is-copied");
+  shareLinkButton?.setAttribute("aria-label", translate("share.copied"));
+  if (shareStatus) shareStatus.hidden = false;
+  window.setTimeout(() => {
+    shareLinkButton?.classList.remove("is-copied");
+    shareLinkButton?.setAttribute("aria-label", translate("share.copy"));
+  }, 1800);
 };
 
 const detectAdblock = () => {
@@ -1102,7 +1139,12 @@ feedbackCancel?.addEventListener("click", closeFeedbackWarning);
 feedbackWarning?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === feedbackWarning) closeFeedbackWarning();
 });
-shareLinkButton?.addEventListener("click", copyShareLink);
+shareLinkButton?.addEventListener("click", showShareDialog);
+shareClose?.addEventListener("click", closeShareDialog);
+shareCopy?.addEventListener("click", copyShareLink);
+shareDialog?.addEventListener("click", (event) => {
+  if (event.button === 0 && event.target === shareDialog) closeShareDialog();
+});
 adblockDismiss?.addEventListener("click", () => {
   localStorage.setItem("adblock-notice-dismissed", "true");
   if (adblockNotice) adblockNotice.hidden = true;

@@ -402,7 +402,42 @@ button,
 .toggle,
 summary {
   -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
   user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
+.button *,
+.nav-links a *,
+.mobile-menu-button *,
+.feedback-cta *,
+.icon-button *,
+.settings-sidebar a *,
+.faq-topic-nav a *,
+.theme-segment button *,
+.language-segment button *,
+.density-segment button *,
+.accent-trigger *,
+.accent-menu button *,
+.currency-switch button *,
+.info-tabs button *,
+.toggle * {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.share-link-field,
+.share-link-field *,
+.share-link-field input {
+  -webkit-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+  touch-action: auto;
 }
 
 .shell {
@@ -2020,6 +2055,10 @@ h3 {
   width: min(640px, 100%);
 }
 
+.share-dialog-panel {
+  width: min(620px, 100%);
+}
+
 .cache-dialog-panel > p:not(.eyebrow) {
   margin: 0;
   color: var(--ink);
@@ -2060,6 +2099,54 @@ h3 {
   border-color: #ff5416;
   border-radius: 999px;
   background: #ff5416;
+  color: #ffffff;
+}
+
+.share-link-field {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.share-link-field input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+}
+
+.share-link-field input:focus {
+  outline: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  outline-offset: 3px;
+}
+
+.share-status {
+  margin: -4px 0 0;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.share-status[hidden] {
+  display: none;
+}
+
+.share-copy-button {
+  border-color: #ff5416;
+  background: #ff5416;
+  color: #ffffff;
+}
+
+.share-copy-button:hover {
+  border-color: #ff5416;
+  background: color-mix(in srgb, #ff5416 88%, #ffffff);
   color: #ffffff;
 }
 

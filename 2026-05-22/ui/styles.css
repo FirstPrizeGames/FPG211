@@ -1070,9 +1070,9 @@ h3 {
 
 .info-tabs {
   display: inline-grid;
-  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 4px;
-  width: fit-content;
+  width: min(100%, 760px);
   max-width: 100%;
   padding: 4px;
   border: 1px solid var(--line);
@@ -1093,7 +1093,8 @@ h3 {
   font: inherit;
   font-size: 13px;
   font-weight: 800;
-  white-space: nowrap;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .info-tabs button.is-active {
@@ -2248,6 +2249,30 @@ h3 {
 [data-accent-choice="team-cyan"],
 [data-accent-preview="team-cyan"] {
   --swatch-color: #0b7285;
+}
+
+@media (max-width: 900px) {
+  .site-info {
+    gap: 14px;
+  }
+
+  .info-tabs {
+    grid-template-columns: 1fr;
+    width: 100%;
+    border-radius: 18px;
+    padding: 6px;
+  }
+
+  .info-tabs button {
+    min-height: 44px;
+    border-radius: 14px;
+    padding: 0 16px;
+    white-space: normal;
+  }
+
+  .info-panel {
+    max-width: none;
+  }
 }
 
 @media (max-width: 760px) {

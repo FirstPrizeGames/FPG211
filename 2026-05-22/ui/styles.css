@@ -967,6 +967,8 @@ h3 {
 }
 
 .button {
+  appearance: none;
+  -webkit-appearance: none;
   position: relative;
   overflow: hidden;
   display: inline-flex;
@@ -978,10 +980,13 @@ h3 {
   border: 1px solid var(--dark);
   border-radius: 999px;
   background: transparent;
+  color: var(--ink);
   cursor: pointer;
   font: inherit;
   font-size: 14px;
   font-weight: 800;
+  line-height: 1;
+  text-align: center;
 }
 
 .button.primary {
@@ -991,6 +996,11 @@ h3 {
 
 .button.ghost {
   background: transparent;
+  color: var(--dark);
+}
+
+.profile-panel .button.ghost {
+  color: var(--ink);
 }
 
 .content-band,

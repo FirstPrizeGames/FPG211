@@ -91,7 +91,7 @@ const translations = {
     "home.workThreeTitle": "현장 소통과 안전 확인",
     "home.workThreeBody":
       "환자, 보호자, 동료와 필요한 정보를 명확히 공유하고 안전한 현장 운영을 돕습니다.",
-    "home.contactTitle": "새로운 협업을 기다리고 있습니다.",
+    "home.contactTitle": "이 페이지를 공유하고 필요한 의견을 남겨주세요.",
     "feedback.eyebrow": "Feedback",
     "feedback.title": "의견을 남겨주세요.",
     "feedback.lead": "버그, 개선 아이디어, 보기 불편한 부분을 알려주시면 다음 업데이트에 반영할 수 있습니다.",
@@ -112,9 +112,9 @@ const translations = {
     "settings.accentTab": "Accent",
     "settings.layoutTab": "Layout",
     "settings.profileTitle": "프로필 공개",
-    "settings.profileBody": "검색과 공유 링크에서 이름, 역할, 소개 문구를 표시합니다.",
+    "settings.profileBody": "검색과 공유 링크에서 역할과 소개 문구를 표시합니다.",
     "settings.contactTitle": "연락처 표시",
-    "settings.contactBody": "메일 주소를 프로필 하단에 노출하고 협업 문의를 받을 수 있게 합니다.",
+    "settings.contactBody": "Feedback 탭을 통해 문의와 개선 의견을 받을 수 있게 안내합니다.",
     "settings.profileOn": "프로필 공개 켜짐",
     "settings.profileOff": "프로필 공개 꺼짐",
     "settings.contactOn": "연락처 표시 켜짐",
@@ -166,7 +166,7 @@ const translations = {
     "info.privacyBody":
       "이 사이트는 별도의 서버 저장 없이 브라우저의 로컬 저장소를 사용해 테마, 언어, 설정 상태만 보관합니다.",
     "info.copyrightBody":
-      "© 2026 First PrizeGames. 모든 프로필 문구, 이미지, 구성 요소의 권리는 해당 소유자에게 있습니다.",
+      "© 2026 Profile Site. 모든 프로필 문구, 이미지, 구성 요소의 권리는 해당 소유자에게 있습니다.",
     "plans.free": "Free",
     "plans.freePrice": "₩0",
     "plans.pro": "Pro",
@@ -177,11 +177,11 @@ const translations = {
     "pricing.title": "프로필 활용 방식에 맞게 선택하세요.",
     "pricing.lead":
       "구급대원 경력 소개, 교육 이력 정리, 포트폴리오 확장까지 필요한 범위에 맞춰 구성했습니다.",
-    "pricing.freeBody": "구급대원으로서의 기본 소개와 연락 정보를 담기 좋은 구성입니다.",
+    "pricing.freeBody": "구급대원으로서의 기본 소개와 공유 흐름을 담기 좋은 구성입니다.",
     "pricing.freeOne": "핵심 소개와 직무 요약",
     "pricing.freeTwo": "주요 역량 3개 표시",
     "pricing.freeThree": "테마, 언어, 접근성 설정",
-    "pricing.freeFour": "기본 연락 링크",
+    "pricing.freeFour": "공유 및 피드백 흐름",
     "pricing.chooseFree": "Free로 시작",
     "pricing.proBody": "현장 경험, 교육 이수, 자격 사항을 더 자세히 보여주기 위한 구성입니다.",
     "pricing.proOne": "현장 대응 경험 강조",
@@ -235,7 +235,7 @@ const translations = {
       "주소가 잘못 입력되었거나, 페이지 이름이 바뀌었거나, 아직 공개되지 않은 경로일 수 있습니다.",
     "errorFaq.twoQuestion": "어디로 이동하면 되나요?",
     "errorFaq.twoAnswer":
-      "홈, Pricing, Bio, FAQ, Settings 메뉴를 통해 준비된 페이지로 이동할 수 있습니다.",
+      "Home, Pricing, Bio, FAQ, Settings 메뉴를 통해 준비된 페이지로 이동할 수 있습니다.",
     "errorFaq.threeQuestion": "문제가 계속되면 어떻게 하나요?",
     "errorFaq.threeAnswer":
       "상단의 Feedback 탭이나 Google Forms 링크를 통해 잘못된 주소를 알려주세요.",
@@ -270,9 +270,9 @@ const translations = {
     "bio.likesTitle": "좋아하는 것들",
     "bio.likeOne": "게임 UI & UX 디자인, 게임 개발",
     "bio.likeTwo": "Roblox, Baldi's Basics 게임",
-    "bio.likeThree": "환자 살리는 것을 목표로 함",
+    "bio.likeThree": "현장에서 사람을 돕는 일",
     "bio.likeFour": "BBQ 파티",
-    "bio.likeFive": "더 많은",
+    "bio.likeFive": "새로운 도구 배우기",
     "careerFaq.eyebrow": "FAQ",
     "careerFaq.title": "미국에서 응급구조사가 되는 기본 경로",
     "careerFaq.lead":
@@ -324,7 +324,7 @@ const translations = {
       "GitHub에 파일을 올리고 Vercel에서 프로젝트를 연결하면 배포할 수 있습니다. 이 사이트는 정적 페이지라서 Root Directory만 올바르게 지정하면 별도 빌드 없이 공개할 수 있습니다.",
     "siteFaq.contactQuestion": "2. 문의는 어디로 하면 되나요?",
     "siteFaq.contactAnswer":
-      "홈의 Contact 섹션이나 상단 Feedback 탭을 통해 문의할 수 있습니다. 일반 문의는 목적과 필요한 정보를 함께 남겨주세요.",
+      "상단 Feedback 탭을 통해 문의와 개선 의견을 보낼 수 있습니다. 일반 문의는 목적과 필요한 정보를 함께 남겨주세요.",
     "siteFaq.feedbackQuestion": "3. 피드백은 어떻게 남기나요?",
     "siteFaq.feedbackAnswer":
       "Feedback 페이지의 Google Forms 버튼을 통해 버그, 개선 아이디어, 보기 불편한 부분을 보낼 수 있습니다.",
@@ -368,7 +368,7 @@ const translations = {
     "home.workThreeTitle": "Scene communication and safety",
     "home.workThreeBody":
       "Shares essential information with patients, guardians, and teammates while supporting safe scene operations.",
-    "home.contactTitle": "Open to thoughtful new collaborations.",
+    "home.contactTitle": "Share this page or send feedback when needed.",
     "feedback.eyebrow": "Feedback",
     "feedback.title": "Share your feedback.",
     "feedback.lead": "Send bugs, improvement ideas, or anything that feels uncomfortable to use so it can be improved in the next update.",
@@ -390,10 +390,10 @@ const translations = {
     "settings.layoutTab": "Layout",
     "settings.profileTitle": "Public profile",
     "settings.profileBody":
-      "Show your name, role, and introduction in search and shared links.",
+      "Show your role and introduction in search and shared links.",
     "settings.contactTitle": "Contact visibility",
     "settings.contactBody":
-      "Show your email at the bottom of the profile so collaborators can reach you.",
+      "Guide visitors to the Feedback tab for inquiries and improvement ideas.",
     "settings.profileOn": "Public profile on",
     "settings.profileOff": "Public profile off",
     "settings.contactOn": "Contact visibility on",
@@ -447,7 +447,7 @@ const translations = {
     "info.privacyBody":
       "This site stores only theme, language, and setting preferences in your browser local storage. No separate server-side profile data is collected.",
     "info.copyrightBody":
-      "© 2026 First PrizeGames. All profile copy, images, and interface components belong to their respective owners.",
+      "© 2026 Profile Site. All profile copy, images, and interface components belong to their respective owners.",
     "plans.free": "Free",
     "plans.freePrice": "$0",
     "plans.pro": "Pro",
@@ -458,11 +458,11 @@ const translations = {
     "pricing.title": "Choose the setup that fits your profile.",
     "pricing.lead":
       "Built for emergency responder career summaries, training records, and profile expansion.",
-    "pricing.freeBody": "A focused setup for your essential responder profile and contact details.",
+    "pricing.freeBody": "A focused setup for your essential responder profile and sharing flow.",
     "pricing.freeOne": "Core introduction and role summary",
     "pricing.freeTwo": "Three key strengths",
     "pricing.freeThree": "Theme, language, and accessibility settings",
-    "pricing.freeFour": "Basic contact links",
+    "pricing.freeFour": "Sharing and feedback flow",
     "pricing.chooseFree": "Start with Free",
     "pricing.proBody": "A fuller setup for field experience, training history, and certifications.",
     "pricing.proOne": "Highlighted response experience",
@@ -552,9 +552,9 @@ const translations = {
     "bio.likesTitle": "Things I like",
     "bio.likeOne": "Game UI & UX design, game development",
     "bio.likeTwo": "Roblox, Baldi's Basics",
-    "bio.likeThree": "Aims to save the patient",
+    "bio.likeThree": "Helping people in the field",
     "bio.likeFour": "BBQ Party",
-    "bio.likeFive": "More",
+    "bio.likeFive": "Learning new tools",
     "careerFaq.eyebrow": "FAQ",
     "careerFaq.title": "How to become an emergency medical provider in the United States",
     "careerFaq.lead":
@@ -598,7 +598,7 @@ const translations = {
       "For now, online contact and collaboration inquiries are the best first step. If needed, an in-person meeting can be discussed when the schedule, purpose, place, and safety expectations are clear.",
     "meetFaq.twoQuestion": "2. Where should I contact you?",
     "meetFaq.twoAnswer":
-      "You can use the Contact links on the site or the Feedback page. For non-urgent messages, include the purpose and any useful details.",
+      "Use the Feedback page for inquiries or improvement ideas. For non-urgent messages, include the purpose and any useful details.",
     "siteFaq.eyebrow": "FAQ",
     "siteFaq.title": "Site operation guide",
     "siteFaq.deployQuestion": "1. How do I deploy the site?",
@@ -606,7 +606,7 @@ const translations = {
       "Upload the files to GitHub and connect the project in Vercel. Because this is a static site, it can be published without a separate build as long as the Root Directory is set correctly.",
     "siteFaq.contactQuestion": "2. Where should inquiries go?",
     "siteFaq.contactAnswer":
-      "Use the Contact section on the home page or the Feedback tab in the top menu. For general inquiries, include the purpose and useful details.",
+      "Use the Feedback tab in the top menu for inquiries or improvement ideas. For general inquiries, include the purpose and useful details.",
     "siteFaq.feedbackQuestion": "3. How can feedback be sent?",
     "siteFaq.feedbackAnswer":
       "Use the Google Forms button on the Feedback page to send bugs, improvement ideas, or anything that feels uncomfortable to use.",
@@ -1019,7 +1019,7 @@ const copyShareLink = async () => {
 
 const shareToExternalTarget = async (target) => {
   const url = shareUrl?.value || window.location.href;
-  const title = document.title || "Personal Profile";
+  const title = document.title || "Emergency Responder Profile";
 
   if (target === "native") {
     if (navigator.share) {

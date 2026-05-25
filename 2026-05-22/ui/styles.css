@@ -1160,6 +1160,7 @@ h3 {
 .info-tabs button.is-active {
   background: var(--ink);
   color: var(--bg);
+  animation: softTabPop 220ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .feedback-hero {
@@ -1236,6 +1237,10 @@ h3 {
   line-height: 1.6;
 }
 
+.info-panel.is-active {
+  animation: softPanelIn 260ms cubic-bezier(0.2, 0, 0, 1);
+}
+
 .info-panel p {
   margin: 0;
 }
@@ -1286,7 +1291,7 @@ h3 {
   height: calc(100% - 8px);
   border-radius: 999px;
   background: var(--ink);
-  transition: transform 220ms cubic-bezier(0.2, 0, 0, 1);
+  transition: transform 280ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .currency-switch[data-currency="usd"] .currency-thumb {
@@ -1310,6 +1315,7 @@ h3 {
 
 .currency-switch button.is-active {
   color: var(--bg);
+  animation: softTabPop 220ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .pricing-grid {
@@ -2000,6 +2006,8 @@ h3 {
   border-radius: 8px;
   background: var(--panel-solid);
   box-shadow: var(--shadow);
+  transform-origin: top right;
+  animation: popoverIn 240ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .accent-menu[hidden] {
@@ -2072,6 +2080,7 @@ h3 {
   color: var(--accent);
   font-size: 13px;
   font-weight: 750;
+  animation: softPanelIn 240ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .cache-button {
@@ -2096,7 +2105,8 @@ h3 {
   place-items: center;
   padding: 20px;
   background: rgba(0, 0, 0, 0.42);
-  animation: dialogBackdropIn 180ms ease-out;
+  backdrop-filter: blur(4px);
+  animation: dialogBackdropIn 240ms ease-out;
 }
 
 .cache-dialog-panel {
@@ -2108,16 +2118,16 @@ h3 {
   border-radius: 8px;
   background: var(--panel-solid);
   box-shadow: var(--shadow);
-  animation: dialogPanelIn 220ms cubic-bezier(0.2, 0, 0, 1);
+  animation: dialogPanelIn 340ms cubic-bezier(0.16, 1, 0.3, 1);
   transform-origin: center;
 }
 
 .cache-dialog.is-closing {
-  animation: dialogBackdropOut 160ms ease-in forwards;
+  animation: dialogBackdropOut 180ms ease-in forwards;
 }
 
 .cache-dialog.is-closing .cache-dialog-panel {
-  animation: dialogPanelOut 160ms ease-in forwards;
+  animation: dialogPanelOut 180ms ease-in forwards;
 }
 
 .cache-dialog-panel h2 {
@@ -2241,6 +2251,7 @@ h3 {
   color: var(--accent);
   font-size: 13px;
   font-weight: 850;
+  animation: softPanelIn 220ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .share-status[hidden] {
@@ -2286,7 +2297,12 @@ h3 {
 @keyframes dialogPanelIn {
   from {
     opacity: 0;
-    transform: translateY(12px) scale(0.96);
+    transform: translateY(18px) scale(0.94);
+  }
+
+  62% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.01);
   }
 
   to {
@@ -2307,6 +2323,44 @@ h3 {
   }
 }
 
+@keyframes popoverIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes softPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes softTabPop {
+  from {
+    transform: scale(0.96);
+  }
+
+  70% {
+    transform: scale(1.025);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
 .cache-note {
   grid-column: 1 / -1;
   margin: -4px 0 0;
@@ -2317,6 +2371,7 @@ h3 {
   color: var(--ink);
   font-size: 13px;
   font-weight: 750;
+  animation: softPanelIn 240ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .storage-meter {

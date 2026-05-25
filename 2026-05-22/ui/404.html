@@ -49,7 +49,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260525-feedback-button" />
+    <link rel="stylesheet" href="styles.css?v=20260525-action-buttons" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -90,8 +90,8 @@
             요청한 주소가 변경되었거나 아직 준비되지 않은 페이지일 수 있습니다.
           </p>
           <div class="actions">
-            <a class="button primary" href="/" data-i18n="error.home">홈으로 이동</a>
-            <a class="button ghost" href="/settings" data-i18n="error.settings">설정 열기</a>
+          <button class="button primary" type="button" data-go-url="/" data-i18n="error.home">홈으로 이동</button>
+          <button class="button ghost" type="button" data-go-url="/settings" data-i18n="error.settings">설정 열기</button>
           </div>
         </div>
         <div class="error-character" aria-hidden="true">
@@ -160,6 +160,6 @@
         </svg>
       </button>
     </div>
-    <script src="script.js?v=20260525-feedback-button" defer></script>
+    <script src="script.js?v=20260525-action-buttons" defer></script>
   </body>
 </html>

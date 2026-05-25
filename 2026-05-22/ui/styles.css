@@ -977,6 +977,9 @@ h3 {
   padding: 0 18px;
   border: 1px solid var(--dark);
   border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
   font-size: 14px;
   font-weight: 800;
 }

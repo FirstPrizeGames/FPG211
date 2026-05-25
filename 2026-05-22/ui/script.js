@@ -38,6 +38,7 @@ const loadingBar = document.querySelector(".loading-bar");
 const scrollProgress = document.querySelector(".scroll-progress");
 const scrollActions = document.querySelector("[data-scroll-actions]");
 const scrollActionButtons = [...document.querySelectorAll("[data-scroll-to]")];
+const actionButtons = [...document.querySelectorAll("[data-go-url]")];
 const mobileMenuButton = document.querySelector("[data-mobile-menu-toggle]");
 const mobileMenu = document.querySelector("[data-mobile-menu]");
 const brandLogoImage = document.querySelector(".brand-logo img");
@@ -1146,6 +1147,26 @@ const scrollPageTo = (target) => {
   });
 };
 
+const goToActionUrl = (button) => {
+  const targetUrl = button.dataset.goUrl;
+  if (!targetUrl) return;
+
+  if (targetUrl.startsWith("#")) {
+    document.querySelector(targetUrl)?.scrollIntoView({
+      behavior: document.documentElement.dataset.fastRender === "true" ? "auto" : "smooth",
+      block: "start",
+    });
+    return;
+  }
+
+  if (button.dataset.goTarget === "_blank") {
+    window.open(targetUrl, "_blank", "noopener,noreferrer");
+    return;
+  }
+
+  window.location.href = targetUrl;
+};
+
 const setLoadingProgress = (progress) => {
   loadingBar?.style.setProperty("--loading-progress", String(progress));
 };
@@ -1275,6 +1296,9 @@ shareDialog?.addEventListener("click", (event) => {
 });
 scrollActionButtons.forEach((button) => {
   button.addEventListener("click", () => scrollPageTo(button.dataset.scrollTo));
+});
+actionButtons.forEach((button) => {
+  button.addEventListener("click", () => goToActionUrl(button));
 });
 adblockDismiss?.addEventListener("click", () => {
   localStorage.setItem("adblock-notice-dismissed", "true");

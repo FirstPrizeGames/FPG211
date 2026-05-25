@@ -1965,10 +1965,22 @@ h3 {
 }
 
 .accent-chevron {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
   color: var(--muted);
-  font-size: 18px;
-  line-height: 1;
   transition: transform 160ms ease;
+}
+
+.accent-chevron svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .accent-select.is-open .accent-chevron {
@@ -2138,6 +2150,7 @@ h3 {
   width: 100%;
   min-height: 50px;
   border-radius: 999px;
+  white-space: normal;
 }
 
 .cache-cancel-button {
@@ -2302,6 +2315,56 @@ h3 {
   border-radius: 8px;
   background: var(--card-bg-strong);
   color: var(--ink);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.storage-meter {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 8px;
+  min-width: min(100%, 320px);
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card-bg-strong);
+}
+
+.storage-meter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.storage-meter-header strong {
+  color: var(--accent);
+}
+
+.storage-meter-track {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--segment-bg);
+}
+
+.storage-meter-track span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: #ff5416;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 240ms ease;
+}
+
+.storage-meter p {
+  margin: 0;
+  color: var(--muted);
   font-size: 13px;
   font-weight: 750;
 }
@@ -2611,6 +2674,30 @@ h3 {
 }
 
 @media (max-width: 480px) {
+  .adblock-notice {
+    grid-template-columns: 1fr;
+    right: 10px;
+    bottom: 10px;
+    width: calc(100% - 20px);
+  }
+
+  .adblock-notice button {
+    width: 100%;
+  }
+
+  .cache-dialog {
+    padding: 12px;
+  }
+
+  .cache-dialog-panel {
+    gap: 14px;
+    padding: 22px;
+  }
+
+  .cache-warning-actions {
+    grid-template-columns: 1fr;
+  }
+
   .scroll-actions {
     right: max(12px, env(safe-area-inset-right));
     bottom: max(12px, env(safe-area-inset-bottom));

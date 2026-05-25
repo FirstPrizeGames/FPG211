@@ -14,6 +14,10 @@ const clearCacheWarning = document.querySelector("[data-clear-cache-warning]");
 const clearCacheCancel = document.querySelector("[data-clear-cache-cancel]");
 const clearCacheConfirm = document.querySelector("[data-clear-cache-confirm]");
 const clearCacheNote = document.querySelector("[data-clear-cache-note]");
+const storageMeter = document.querySelector("[data-storage-meter]");
+const storagePercent = document.querySelector("[data-storage-percent]");
+const storageBar = document.querySelector("[data-storage-bar]");
+const storageUsage = document.querySelector("[data-storage-usage]");
 const shareLinkButton = document.querySelector("[data-share-link]");
 const shareDialog = document.querySelector("[data-share-dialog]");
 const shareClose = document.querySelector("[data-share-close]");
@@ -135,6 +139,9 @@ const translations = {
     "settings.clearCacheCancel": "취소",
     "settings.clearCacheConfirm": "정리하기",
     "settings.clearCacheDone": "저장된 설정을 정리했습니다.",
+    "settings.storageUsageTitle": "저장용량",
+    "settings.storageUsageLoading": "저장용량을 확인하는 중입니다.",
+    "settings.storageUsageUnsupported": "이 브라우저에서는 저장용량 표시를 지원하지 않습니다.",
     "settings.accentTitle": "강조 컬러",
     "settings.accentBody": "버튼, 진행 바, 포커스 표시 등에 사용할 포인트 컬러를 선택합니다.",
     "settings.accentNeutral": "Neutral",
@@ -413,6 +420,9 @@ const translations = {
     "settings.clearCacheCancel": "Cancel",
     "settings.clearCacheConfirm": "Clear",
     "settings.clearCacheDone": "Saved settings have been cleared.",
+    "settings.storageUsageTitle": "Storage usage",
+    "settings.storageUsageLoading": "Checking storage usage.",
+    "settings.storageUsageUnsupported": "This browser does not support storage usage details.",
     "settings.accentTitle": "Accent color",
     "settings.accentBody": "Choose the point color used for buttons, progress bars, and focus states.",
     "settings.accentNeutral": "Neutral",
@@ -666,6 +676,7 @@ const setLanguage = (language) => {
   settingToggles.forEach((button) => {
     updateSettingToggle(button, button.classList.contains("is-on"));
   });
+  updateStorageEstimate();
 };
 
 const getToggleLabelKey = (key, isOn) => {
@@ -833,6 +844,44 @@ const clearSiteCache = () => {
   clearSiteCache.timeoutId = window.setTimeout(() => {
     clearCacheNote.hidden = true;
   }, 2600);
+  updateStorageEstimate();
+};
+
+const formatBytes = (bytes) => {
+  if (!Number.isFinite(bytes) || bytes <= 0) return "0 KB";
+
+  const units = ["B", "KB", "MB", "GB"];
+  let value = bytes;
+  let unitIndex = 0;
+
+  while (value >= 1024 && unitIndex < units.length - 1) {
+    value /= 1024;
+    unitIndex += 1;
+  }
+
+  const maximumFractionDigits = value >= 10 || unitIndex === 0 ? 0 : 1;
+  return `${value.toLocaleString(undefined, { maximumFractionDigits })} ${units[unitIndex]}`;
+};
+
+const updateStorageEstimate = async () => {
+  if (!storageMeter) return;
+
+  if (!navigator.storage?.estimate) {
+    storageMeter.classList.add("is-unsupported");
+    if (storagePercent) storagePercent.textContent = "--";
+    if (storageUsage) storageUsage.textContent = translate("settings.storageUsageUnsupported");
+    if (storageBar) storageBar.style.transform = "scaleX(0)";
+    return;
+  }
+
+  const estimate = await navigator.storage.estimate();
+  const usage = estimate.usage || 0;
+  const quota = estimate.quota || 0;
+  const percent = quota > 0 ? Math.min((usage / quota) * 100, 100) : 0;
+
+  if (storagePercent) storagePercent.textContent = `${percent.toFixed(percent < 1 ? 2 : 1)}%`;
+  if (storageUsage) storageUsage.textContent = `${formatBytes(usage)} / ${formatBytes(quota)}`;
+  if (storageBar) storageBar.style.transform = `scaleX(${Math.max(percent / 100, usage > 0 ? 0.02 : 0)})`;
 };
 
 const showClearCacheWarning = () => {
@@ -1149,6 +1198,7 @@ setDensity(localStorage.getItem("profile-density") || "comfortable");
 setupPremiumAccentLocks();
 setAccent(localStorage.getItem("profile-accent") || "neutral");
 setCurrency(localStorage.getItem("profile-currency") || (currentLanguage === "ko" ? "krw" : "usd"));
+updateStorageEstimate();
 
 themeChoices.forEach((button) => {
   button.addEventListener("click", () => setTheme(button.dataset.themeChoice));

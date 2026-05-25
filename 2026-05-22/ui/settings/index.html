@@ -48,7 +48,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260525-scroll" />
+    <link rel="stylesheet" href="../styles.css?v=20260525-mobile" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -256,6 +256,16 @@
             <button class="button cache-button" type="button" data-clear-cache data-i18n="settings.clearCacheButton">
               캐시 정리
             </button>
+            <div class="storage-meter" data-storage-meter>
+              <div class="storage-meter-header">
+                <span data-i18n="settings.storageUsageTitle">저장용량</span>
+                <strong data-storage-percent>--</strong>
+              </div>
+              <div class="storage-meter-track" aria-hidden="true">
+                <span data-storage-bar></span>
+              </div>
+              <p data-storage-usage data-i18n="settings.storageUsageLoading">저장용량을 확인하는 중입니다.</p>
+            </div>
             <p class="cache-note" data-clear-cache-note data-i18n="settings.clearCacheDone" hidden>
               저장된 설정을 정리했습니다.
             </p>
@@ -277,7 +287,11 @@
               >
                 <span class="accent-dot" data-accent-preview="neutral"></span>
                 <span data-accent-label data-i18n="settings.accentNeutral">Neutral</span>
-                <span class="accent-chevron" aria-hidden="true">⌄</span>
+                <span class="accent-chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </span>
               </button>
               <div class="accent-menu" role="listbox" aria-label="강조 컬러 선택" data-accent-menu hidden>
                 <button
@@ -507,6 +521,6 @@
         </svg>
       </button>
     </div>
-    <script src="../script.js?v=20260525-scroll" defer></script>
+    <script src="../script.js?v=20260525-mobile" defer></script>
   </body>
 </html>

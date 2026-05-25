@@ -297,6 +297,66 @@ body {
   transform: scaleX(0);
 }
 
+.scroll-actions {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 80;
+  display: grid;
+  gap: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.scroll-actions.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.scroll-actions button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel-solid);
+  color: var(--ink);
+  box-shadow: 0 14px 34px rgba(15, 15, 15, 0.14);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.scroll-actions button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.scroll-actions button:disabled {
+  cursor: default;
+  opacity: 0.42;
+}
+
+.scroll-actions svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .adblock-bait {
   position: absolute;
   left: -9999px;
@@ -2128,6 +2188,41 @@ h3 {
   outline-offset: 3px;
 }
 
+.share-socials {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.share-socials button {
+  position: relative;
+  min-height: 46px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 850;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.share-socials button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.share-socials button:first-child {
+  border-color: color-mix(in srgb, #ff5416 44%, var(--line));
+  background: color-mix(in srgb, #ff5416 12%, var(--panel));
+}
+
 .share-status {
   margin: -4px 0 0;
   color: var(--accent);
@@ -2516,6 +2611,20 @@ h3 {
 }
 
 @media (max-width: 480px) {
+  .scroll-actions {
+    right: max(12px, env(safe-area-inset-right));
+    bottom: max(12px, env(safe-area-inset-bottom));
+  }
+
+  .scroll-actions button {
+    width: 42px;
+    height: 42px;
+  }
+
+  .share-socials {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .topbar {
     flex-direction: column;
   }

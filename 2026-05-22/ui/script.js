@@ -20,6 +20,7 @@ const shareClose = document.querySelector("[data-share-close]");
 const shareCopy = document.querySelector("[data-share-copy]");
 const shareUrl = document.querySelector("[data-share-url]");
 const shareStatus = document.querySelector("[data-share-status]");
+const shareTargets = [...document.querySelectorAll("[data-share-target]")];
 const adblockBait = document.querySelector(".adblock-bait");
 const adblockNotice = document.querySelector("[data-adblock-notice]");
 const adblockDismiss = document.querySelector("[data-adblock-dismiss]");
@@ -31,6 +32,8 @@ const infoTabs = [...document.querySelectorAll("[data-info-tab]")];
 const infoPanels = [...document.querySelectorAll("[data-info-panel]")];
 const loadingBar = document.querySelector(".loading-bar");
 const scrollProgress = document.querySelector(".scroll-progress");
+const scrollActions = document.querySelector("[data-scroll-actions]");
+const scrollActionButtons = [...document.querySelectorAll("[data-scroll-to]")];
 const mobileMenuButton = document.querySelector("[data-mobile-menu-toggle]");
 const mobileMenu = document.querySelector("[data-mobile-menu]");
 const brandLogoImage = document.querySelector(".brand-logo img");
@@ -39,7 +42,7 @@ const feedbackWarning = document.querySelector("[data-feedback-warning]");
 const feedbackCancel = document.querySelector("[data-feedback-cancel]");
 const highlightTargets = [
   ...document.querySelectorAll(
-    ".brand-logo, .nav-links a, .mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .toggle",
+    ".brand-logo, .nav-links a, .mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .share-socials button, .scroll-actions button, .toggle",
   ),
 ];
 const sections = navLinks
@@ -239,6 +242,7 @@ const translations = {
     "share.body": "아래 링크를 복사해서 원하는 곳에 공유할 수 있습니다.",
     "share.linkLabel": "공유 링크",
     "share.close": "닫기",
+    "share.native": "기기 공유",
     "adblock.message":
       "광고 차단기가 일부 사이트 기능을 제한할 수 있습니다. 문제가 보이면 이 사이트를 허용 목록에 추가해 주세요.",
     "adblock.dismiss": "닫기",
@@ -517,6 +521,7 @@ const translations = {
     "share.body": "Copy this link and share it wherever you want.",
     "share.linkLabel": "Share link",
     "share.close": "Close",
+    "share.native": "Device share",
     "adblock.message":
       "An ad blocker may limit some site features. If something looks broken, please allow this site.",
     "adblock.dismiss": "Dismiss",
@@ -963,6 +968,32 @@ const copyShareLink = async () => {
   }, 1800);
 };
 
+const shareToExternalTarget = async (target) => {
+  const url = shareUrl?.value || window.location.href;
+  const title = document.title || "Personal Profile";
+
+  if (target === "native") {
+    if (navigator.share) {
+      await navigator.share({ title, url });
+      return;
+    }
+
+    await copyShareLink();
+    return;
+  }
+
+  const encodedUrl = encodeURIComponent(url);
+  const encodedTitle = encodeURIComponent(title);
+  const shareUrls = {
+    x: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+  };
+
+  if (!shareUrls[target]) return;
+  window.open(shareUrls[target], "_blank", "noopener,noreferrer,width=720,height=640");
+};
+
 const detectAdblock = () => {
   if (!adblockBait || !adblockNotice || localStorage.getItem("adblock-notice-dismissed") === "true") {
     return;
@@ -1028,6 +1059,37 @@ const updateScrollProgress = () => {
   scrollProgress.style.transform = `scaleX(${Math.min(Math.max(progress, 0), 1)})`;
 };
 
+const updateScrollActions = () => {
+  if (!scrollActions) return;
+
+  const scrollableHeight =
+    document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const canScroll = scrollableHeight > 120;
+  const isPastTop = window.scrollY > 180;
+  const isNearBottom = scrollableHeight - window.scrollY < 180;
+
+  scrollActions.classList.toggle("is-visible", canScroll && (isPastTop || !isNearBottom));
+  scrollActionButtons.forEach((button) => {
+    const target = button.dataset.scrollTo;
+    button.disabled =
+      !canScroll ||
+      (target === "top" && !isPastTop) ||
+      (target === "bottom" && isNearBottom);
+  });
+};
+
+const scrollPageTo = (target) => {
+  const top =
+    target === "bottom"
+      ? document.documentElement.scrollHeight - window.innerHeight
+      : 0;
+
+  window.scrollTo({
+    top: Math.max(top, 0),
+    behavior: document.documentElement.dataset.fastRender === "true" ? "auto" : "smooth",
+  });
+};
+
 const setLoadingProgress = (progress) => {
   loadingBar?.style.setProperty("--loading-progress", String(progress));
 };
@@ -1068,6 +1130,9 @@ window.addEventListener("scroll", setActiveLink, { passive: true });
 updateScrollProgress();
 window.addEventListener("scroll", updateScrollProgress, { passive: true });
 window.addEventListener("resize", updateScrollProgress);
+updateScrollActions();
+window.addEventListener("scroll", updateScrollActions, { passive: true });
+window.addEventListener("resize", updateScrollActions);
 
 showLoadingBar();
 window.addEventListener("load", finishLoadingBar);
@@ -1142,8 +1207,16 @@ feedbackWarning?.addEventListener("click", (event) => {
 shareLinkButton?.addEventListener("click", showShareDialog);
 shareClose?.addEventListener("click", closeShareDialog);
 shareCopy?.addEventListener("click", copyShareLink);
+shareTargets.forEach((button) => {
+  button.addEventListener("click", () => {
+    shareToExternalTarget(button.dataset.shareTarget).catch(() => {});
+  });
+});
 shareDialog?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === shareDialog) closeShareDialog();
+});
+scrollActionButtons.forEach((button) => {
+  button.addEventListener("click", () => scrollPageTo(button.dataset.scrollTo));
 });
 adblockDismiss?.addEventListener("click", () => {
   localStorage.setItem("adblock-notice-dismissed", "true");

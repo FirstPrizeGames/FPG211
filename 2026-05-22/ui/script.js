@@ -44,6 +44,8 @@ const brandLogoImage = document.querySelector(".brand-logo img");
 const feedbackOpen = document.querySelector("[data-feedback-open]");
 const feedbackWarning = document.querySelector("[data-feedback-warning]");
 const feedbackCancel = document.querySelector("[data-feedback-cancel]");
+const feedbackConfirm = document.querySelector("[data-feedback-confirm]");
+const feedbackFormUrl = "https://forms.gle/214q7yY6gbTUwK9u7";
 const highlightTargets = [
   ...document.querySelectorAll(
     ".brand-logo, .nav-links a, .mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .share-socials button, .scroll-actions button, .toggle",
@@ -897,8 +899,13 @@ const showClearCacheWarning = () => {
 const showFeedbackWarning = (event) => {
   if (!feedbackWarning) return;
 
-  event.preventDefault();
+  event?.preventDefault();
   feedbackWarning.hidden = false;
+};
+
+const openFeedbackForm = () => {
+  closeFeedbackWarning();
+  window.open(feedbackFormUrl, "_blank", "noopener,noreferrer");
 };
 
 const setAccentMenuOpen = (isOpen) => {
@@ -1251,6 +1258,7 @@ clearCacheWarning?.addEventListener("click", (event) => {
 });
 feedbackOpen?.addEventListener("click", showFeedbackWarning);
 feedbackCancel?.addEventListener("click", closeFeedbackWarning);
+feedbackConfirm?.addEventListener("click", openFeedbackForm);
 feedbackWarning?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === feedbackWarning) closeFeedbackWarning();
 });

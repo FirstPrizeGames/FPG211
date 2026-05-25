@@ -48,7 +48,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260525-motion" />
+    <link rel="stylesheet" href="../styles.css?v=20260525-feedback-button" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -86,10 +86,10 @@
         <p data-i18n="feedback.lead">
           버그, 개선 아이디어, 보기 불편한 부분을 알려주시면 다음 업데이트에 반영할 수 있습니다.
         </p>
-        <a class="feedback-cta" href="https://forms.gle/214q7yY6gbTUwK9u7" data-feedback-open>
+        <button class="feedback-cta" type="button" data-feedback-open>
           <span data-i18n="feedback.cta">Google Forms로 피드백 남기기</span>
           <span aria-hidden="true">↗</span>
-        </a>
+        </button>
       </section>
 
       <div class="cache-dialog feedback-dialog" data-feedback-warning hidden>
@@ -103,9 +103,9 @@
             <button class="button cache-cancel-button" type="button" data-feedback-cancel data-i18n="feedback.cancel">
               취소
             </button>
-            <a class="button feedback-confirm-button" href="https://forms.gle/214q7yY6gbTUwK9u7" data-feedback-confirm data-i18n="feedback.continue">
+            <button class="button feedback-confirm-button" type="button" data-feedback-confirm data-i18n="feedback.continue">
               계속하기
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -126,6 +126,6 @@
         </svg>
       </button>
     </div>
-    <script src="../script.js?v=20260525-motion" defer></script>
+    <script src="../script.js?v=20260525-feedback-button" defer></script>
   </body>
 </html>

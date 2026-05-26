@@ -195,6 +195,12 @@
   box-sizing: border-box;
 }
 
+*,
+*::before,
+*::after {
+  -webkit-tap-highlight-color: transparent;
+}
+
 html {
   scroll-behavior: smooth;
   scrollbar-color: var(--accent) var(--soft);
@@ -438,7 +444,24 @@ a {
 button,
 a,
 select,
-summary {
+summary,
+input,
+textarea,
+label,
+details,
+svg,
+[role="button"],
+[role="tab"],
+[role="option"],
+[data-go-url],
+[data-scroll-to],
+[data-share-target],
+[data-theme-choice],
+[data-language-choice],
+[data-density-choice],
+[data-currency-choice],
+[data-accent-choice],
+[data-toggle-key] {
   -webkit-tap-highlight-color: transparent;
 }
 

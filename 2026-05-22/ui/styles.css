@@ -2311,6 +2311,10 @@ h3 {
   width: min(620px, 100%);
 }
 
+.subscribe-dialog-panel {
+  width: min(660px, 100%);
+}
+
 .cache-dialog-panel > p:not(.eyebrow) {
   margin: 0;
   color: var(--ink);
@@ -2352,6 +2356,13 @@ h3 {
   border-color: #ff5416;
   border-radius: 999px;
   background: #ff5416;
+  color: #ffffff;
+}
+
+.subscribe-confirm-button {
+  border: 0;
+  border-radius: 999px;
+  background: #7c3aed;
   color: #ffffff;
 }
 
@@ -2441,6 +2452,11 @@ h3 {
 
 .feedback-confirm-button:hover {
   border-color: #ff5416;
+}
+
+.subscribe-confirm-button:hover {
+  background: color-mix(in srgb, #7c3aed 88%, #ffffff);
+  color: #ffffff;
 }
 
 @keyframes dialogBackdropIn {

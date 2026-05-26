@@ -48,7 +48,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260526-ultra-compare" />
+    <link rel="stylesheet" href="../styles.css?v=20260526-i18n-audit" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -61,8 +61,8 @@
       <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
     </div>
     <main class="shell">
-      <nav class="topbar" aria-label="설정 메뉴">
-        <a class="brand-logo" href="/" aria-label="Home">
+      <nav class="topbar" aria-label="설정 메뉴" data-i18n-aria-label="aria.settingsMenu">
+        <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
           <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
           <span>FP</span>
         </a>
@@ -90,8 +90,8 @@
         </div>
       </section>
 
-      <section class="settings-band" aria-label="프로필 설정">
-        <aside class="settings-sidebar" aria-label="설정 분류">
+      <section class="settings-band" aria-label="프로필 설정" data-i18n-aria-label="aria.settingsPanel">
+        <aside class="settings-sidebar" aria-label="설정 분류" data-i18n-aria-label="aria.settingsCategories">
           <a class="is-active" href="#profile">
             <svg aria-hidden="true" viewBox="0 0 24 24">
               <path d="M20 21a8 8 0 0 0-16 0" />
@@ -194,11 +194,11 @@
             <div>
               <p class="eyebrow" data-i18n="settings.displayTab">Display</p>
               <h3 data-i18n="settings.themeTitle">테마 모드</h3>
-              <p data-i18n="settings.themeBody">프로필 화면의 밝기를 라이트 또는 다크 모드로 선택합니다.</p>
+              <p data-i18n="settings.themeBody">프로필 화면의 밝기를 라이트, 다크, 밝기 끄기 모드로 선택합니다.</p>
             </div>
-            <div class="theme-segment" aria-label="테마 모드 선택">
-              <button class="is-active" type="button" data-theme-choice="light">Light</button>
-              <button type="button" data-theme-choice="dark">Dark</button>
+            <div class="theme-segment" aria-label="테마 모드 선택" data-i18n-aria-label="aria.themeMode">
+              <button class="is-active" type="button" data-theme-choice="light" data-i18n="settings.themeLight">라이트</button>
+              <button type="button" data-theme-choice="dark" data-i18n="settings.themeDark">다크</button>
               <button type="button" data-theme-choice="lights-off" data-i18n="settings.lightsOff">
                 밝기 끄기
               </button>
@@ -211,7 +211,7 @@
               <h3 data-i18n="settings.languageTitle">언어</h3>
               <p data-i18n="settings.languageBody">프로필과 설정 화면에 표시되는 언어를 선택합니다.</p>
             </div>
-            <div class="language-segment" aria-label="언어 선택">
+            <div class="language-segment" aria-label="언어 선택" data-i18n-aria-label="aria.language">
               <button class="is-active" type="button" data-language-choice="ko">한국어</button>
               <button type="button" data-language-choice="en">English</button>
             </div>
@@ -293,7 +293,7 @@
                   </svg>
                 </span>
               </button>
-              <div class="accent-menu" role="listbox" aria-label="강조 컬러 선택" data-accent-menu hidden>
+              <div class="accent-menu" role="listbox" aria-label="강조 컬러 선택" data-accent-menu hidden data-i18n-aria-label="aria.accent">
                 <button
                   class="is-active"
                   type="button"
@@ -382,7 +382,7 @@
               <h3 data-i18n="settings.densityTitle">화면 밀도</h3>
               <p data-i18n="settings.densityBody">프로필 정보와 작업 목록의 간격을 선택합니다.</p>
             </div>
-            <div class="density-segment" aria-label="화면 밀도 선택">
+            <div class="density-segment" aria-label="화면 밀도 선택" data-i18n-aria-label="aria.density">
               <button type="button" data-density-choice="compact" data-i18n="settings.densityCompact">
                 Compact
               </button>
@@ -430,8 +430,8 @@
         </div>
       </div>
 
-      <footer class="site-info" aria-label="사이트 정보">
-        <div class="info-tabs" role="tablist" aria-label="사이트 정보 탭">
+      <footer class="site-info" aria-label="사이트 정보" data-i18n-aria-label="aria.siteInfo">
+        <div class="info-tabs" role="tablist" aria-label="사이트 정보 탭" data-i18n-aria-label="aria.siteInfoTabs">
           <button
             class="is-active"
             type="button"
@@ -505,15 +505,15 @@
         </div>
       </footer>
     </main>
-    <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls">
-      <button type="button" data-scroll-to="top" aria-label="맨 위로 이동">
+    <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
+      <button type="button" data-scroll-to="top" aria-label="맨 위로 이동" data-i18n-aria-label="aria.scrollTop">
         <svg aria-hidden="true" viewBox="0 0 24 24">
           <path d="M12 5 5 12" />
           <path d="m12 5 7 7" />
           <path d="M12 6v13" />
         </svg>
       </button>
-      <button type="button" data-scroll-to="bottom" aria-label="맨 아래로 이동">
+      <button type="button" data-scroll-to="bottom" aria-label="맨 아래로 이동" data-i18n-aria-label="aria.scrollBottom">
         <svg aria-hidden="true" viewBox="0 0 24 24">
           <path d="M12 19 5 12" />
           <path d="m12 19 7-7" />
@@ -521,6 +521,6 @@
         </svg>
       </button>
     </div>
-    <script src="../script.js?v=20260526-ultra-compare" defer></script>
+    <script src="../script.js?v=20260526-i18n-audit" defer></script>
   </body>
 </html>

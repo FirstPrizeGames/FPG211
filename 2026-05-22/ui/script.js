@@ -31,6 +31,10 @@ const adblockDismiss = document.querySelector("[data-adblock-dismiss]");
 const currencySwitch = document.querySelector("[data-currency-switch]");
 const currencyChoices = [...document.querySelectorAll("[data-currency-choice]")];
 const priceLabels = [...document.querySelectorAll("[data-price-plan]")];
+const subscribeButtons = [...document.querySelectorAll("[data-subscribe-url]")];
+const subscribeWarning = document.querySelector("[data-subscribe-warning]");
+const subscribeCancel = document.querySelector("[data-subscribe-cancel]");
+const subscribeConfirm = document.querySelector("[data-subscribe-confirm]");
 const settingToggles = [...document.querySelectorAll("[data-toggle-key]")];
 const infoTabs = [...document.querySelectorAll("[data-info-tab]")];
 const infoPanels = [...document.querySelectorAll("[data-info-panel]")];
@@ -47,6 +51,7 @@ const feedbackWarning = document.querySelector("[data-feedback-warning]");
 const feedbackCancel = document.querySelector("[data-feedback-cancel]");
 const feedbackConfirm = document.querySelector("[data-feedback-confirm]");
 const feedbackFormUrl = "https://forms.gle/214q7yY6gbTUwK9u7";
+let pendingSubscribeUrl = "";
 const highlightTargets = [
   ...document.querySelectorAll(
     ".brand-logo, .nav-links a, .mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .share-socials button, .scroll-actions button, .toggle",
@@ -69,6 +74,45 @@ const translations = {
     "nav.settings": "Settings",
     "nav.feedback": "Feedback",
     "nav.menu": "메뉴",
+    "aria.home": "홈",
+    "aria.profileMenu": "프로필 메뉴",
+    "aria.bioMenu": "자기소개 메뉴",
+    "aria.faqMenu": "FAQ 메뉴",
+    "aria.pricingMenu": "요금제 메뉴",
+    "aria.settingsMenu": "설정 메뉴",
+    "aria.feedbackMenu": "피드백 메뉴",
+    "aria.errorMenu": "오류 페이지 메뉴",
+    "aria.profileSummary": "프로필 요약",
+    "aria.contactSection": "연락 섹션으로 이동",
+    "aria.workSection": "작업 섹션으로 이동",
+    "aria.copyPageLink": "페이지 링크 복사",
+    "aria.externalShare": "외부 공유",
+    "aria.siteInfo": "사이트 정보",
+    "aria.siteInfoTabs": "사이트 정보 탭",
+    "aria.scrollControls": "페이지 스크롤 컨트롤",
+    "aria.scrollTop": "맨 위로 이동",
+    "aria.scrollBottom": "맨 아래로 이동",
+    "aria.errorFaq": "404 자주 묻는 질문",
+    "aria.bioContent": "자기소개",
+    "aria.likes": "좋아하는 것들",
+    "aria.faqTopics": "FAQ 주제 이동",
+    "aria.emtFaq": "미국 응급구조사 FAQ",
+    "aria.gameFaq": "게임 개발자 FAQ",
+    "aria.meetFaq": "만남 FAQ",
+    "aria.siteFaq": "사이트 운영 FAQ",
+    "aria.pricingControls": "요금제 표시 설정",
+    "aria.currency": "통화 선택",
+    "aria.pricingInfo": "요금제 정보",
+    "aria.ultraPlan": "Ultra 요금제",
+    "aria.planComparison": "요금제 비교",
+    "aria.planComparisonTable": "요금제 기능 비교",
+    "aria.faq": "자주 묻는 질문",
+    "aria.settingsPanel": "프로필 설정",
+    "aria.settingsCategories": "설정 분류",
+    "aria.themeMode": "테마 모드 선택",
+    "aria.language": "언어 선택",
+    "aria.accent": "강조 컬러 선택",
+    "aria.density": "화면 밀도 선택",
     "faqTopics.emt": "EMT",
     "faqTopics.game": "게임 개발자",
     "faqTopics.meet": "만남",
@@ -129,6 +173,8 @@ const translations = {
     "settings.themeTitle": "테마 모드",
     "settings.themeBody": "프로필 화면의 밝기를 라이트, 다크, 밝기 끄기 모드로 선택합니다.",
     "settings.lightsOff": "밝기 끄기",
+    "settings.themeLight": "라이트",
+    "settings.themeDark": "다크",
     "settings.languageTitle": "언어",
     "settings.languageBody": "프로필과 설정 화면에 표시되는 언어를 선택합니다.",
     "settings.fastRenderTitle": "빠른 렌더링",
@@ -209,6 +255,11 @@ const translations = {
     "pricing.ultraThree": "Participating in joint planning",
     "pricing.ultraFour": "Unreleased cuts",
     "pricing.chooseUltra": "Ultra 선택",
+    "pricing.subscribeEyebrow": "Subscription",
+    "pricing.subscribeWarningTitle": "외부 결제 페이지로 이동합니다.",
+    "pricing.subscribeWarningBody": "Patreon checkout이 새 페이지에서 열립니다. 결제 전 플랜 이름과 금액을 다시 확인해 주세요.",
+    "pricing.subscribeCancel": "취소",
+    "pricing.subscribeContinue": "계속하기",
     "pricing.compareEyebrow": "Compare",
     "pricing.compareTitle": "기능 비교",
     "pricing.compareFeature": "기능",
@@ -364,6 +415,45 @@ const translations = {
     "nav.settings": "Settings",
     "nav.feedback": "Feedback",
     "nav.menu": "Menu",
+    "aria.home": "Home",
+    "aria.profileMenu": "Profile menu",
+    "aria.bioMenu": "Bio menu",
+    "aria.faqMenu": "FAQ menu",
+    "aria.pricingMenu": "Pricing menu",
+    "aria.settingsMenu": "Settings menu",
+    "aria.feedbackMenu": "Feedback menu",
+    "aria.errorMenu": "Error page menu",
+    "aria.profileSummary": "Profile summary",
+    "aria.contactSection": "Go to contact section",
+    "aria.workSection": "Go to work section",
+    "aria.copyPageLink": "Copy page link",
+    "aria.externalShare": "External share options",
+    "aria.siteInfo": "Site information",
+    "aria.siteInfoTabs": "Site information tabs",
+    "aria.scrollControls": "Page scroll controls",
+    "aria.scrollTop": "Scroll to top",
+    "aria.scrollBottom": "Scroll to bottom",
+    "aria.errorFaq": "404 frequently asked questions",
+    "aria.bioContent": "Bio",
+    "aria.likes": "Favorite things",
+    "aria.faqTopics": "FAQ topic navigation",
+    "aria.emtFaq": "United States EMT FAQ",
+    "aria.gameFaq": "Game developer FAQ",
+    "aria.meetFaq": "Meeting FAQ",
+    "aria.siteFaq": "Site operations FAQ",
+    "aria.pricingControls": "Pricing display settings",
+    "aria.currency": "Currency selection",
+    "aria.pricingInfo": "Pricing information",
+    "aria.ultraPlan": "Ultra plan",
+    "aria.planComparison": "Plan comparison",
+    "aria.planComparisonTable": "Plan feature comparison",
+    "aria.faq": "Frequently asked questions",
+    "aria.settingsPanel": "Profile settings",
+    "aria.settingsCategories": "Settings categories",
+    "aria.themeMode": "Theme mode selection",
+    "aria.language": "Language selection",
+    "aria.accent": "Accent color selection",
+    "aria.density": "Display density selection",
     "faqTopics.emt": "EMT",
     "faqTopics.game": "Game Developer",
     "faqTopics.meet": "Meet",
@@ -426,6 +516,8 @@ const translations = {
     "settings.themeTitle": "Theme mode",
     "settings.themeBody": "Choose a light, dark, or lights-off appearance for the profile.",
     "settings.lightsOff": "Lights Off",
+    "settings.themeLight": "Light",
+    "settings.themeDark": "Dark",
     "settings.languageTitle": "Language",
     "settings.languageBody": "Choose the language used across the profile and settings pages.",
     "settings.fastRenderTitle": "Fast rendering",
@@ -509,6 +601,11 @@ const translations = {
     "pricing.ultraThree": "Participating in joint planning",
     "pricing.ultraFour": "Unreleased cuts",
     "pricing.chooseUltra": "Choose Ultra",
+    "pricing.subscribeEyebrow": "Subscription",
+    "pricing.subscribeWarningTitle": "You are leaving for an external checkout.",
+    "pricing.subscribeWarningBody": "Patreon checkout will open on a new page. Please confirm the plan name and amount before paying.",
+    "pricing.subscribeCancel": "Cancel",
+    "pricing.subscribeContinue": "Continue",
     "pricing.compareEyebrow": "Compare",
     "pricing.compareTitle": "Feature comparison",
     "pricing.compareFeature": "Feature",
@@ -703,6 +800,10 @@ const setLanguage = (language) => {
 
   document.querySelectorAll("[data-i18n]").forEach((element) => {
     element.textContent = translate(element.dataset.i18n);
+  });
+
+  document.querySelectorAll("[data-i18n-aria-label]").forEach((element) => {
+    element.setAttribute("aria-label", translate(element.dataset.i18nAriaLabel));
   });
 
   languageChoices.forEach((button) => {
@@ -942,9 +1043,26 @@ const showFeedbackWarning = (event) => {
   feedbackWarning.hidden = false;
 };
 
+const showSubscribeWarning = (button) => {
+  pendingSubscribeUrl = button.dataset.subscribeUrl || "";
+  if (!subscribeWarning) {
+    if (pendingSubscribeUrl) window.open(pendingSubscribeUrl, "_blank", "noopener,noreferrer");
+    return;
+  }
+
+  subscribeWarning.hidden = false;
+};
+
 const openFeedbackForm = () => {
   closeFeedbackWarning();
   window.open(feedbackFormUrl, "_blank", "noopener,noreferrer");
+};
+
+const openSubscriptionCheckout = () => {
+  const url = pendingSubscribeUrl;
+  closeSubscribeWarning();
+  pendingSubscribeUrl = "";
+  if (url) window.open(url, "_blank", "noopener,noreferrer");
 };
 
 const setAccentMenuOpen = (isOpen) => {
@@ -970,6 +1088,16 @@ const closeFeedbackWarning = () => {
   window.setTimeout(() => {
     feedbackWarning.hidden = true;
     feedbackWarning.classList.remove("is-closing");
+  }, 170);
+};
+
+const closeSubscribeWarning = () => {
+  if (!subscribeWarning || subscribeWarning.hidden) return;
+
+  subscribeWarning.classList.add("is-closing");
+  window.setTimeout(() => {
+    subscribeWarning.hidden = true;
+    subscribeWarning.classList.remove("is-closing");
   }, 170);
 };
 
@@ -1320,6 +1448,14 @@ feedbackCancel?.addEventListener("click", closeFeedbackWarning);
 feedbackConfirm?.addEventListener("click", openFeedbackForm);
 feedbackWarning?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === feedbackWarning) closeFeedbackWarning();
+});
+subscribeButtons.forEach((button) => {
+  button.addEventListener("click", () => showSubscribeWarning(button));
+});
+subscribeCancel?.addEventListener("click", closeSubscribeWarning);
+subscribeConfirm?.addEventListener("click", openSubscriptionCheckout);
+subscribeWarning?.addEventListener("click", (event) => {
+  if (event.button === 0 && event.target === subscribeWarning) closeSubscribeWarning();
 });
 shareLinkButton?.addEventListener("click", showShareDialog);
 shareClose?.addEventListener("click", closeShareDialog);

@@ -48,7 +48,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260526-ultra-compare" />
+    <link rel="stylesheet" href="../styles.css?v=20260526-i18n-audit" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -61,8 +61,8 @@
       <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
     </div>
     <main class="shell">
-      <nav class="topbar" aria-label="요금제 메뉴">
-        <a class="brand-logo" href="/" aria-label="Home">
+      <nav class="topbar" aria-label="요금제 메뉴" data-i18n-aria-label="aria.pricingMenu">
+        <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
           <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
           <span>FP</span>
         </a>
@@ -90,8 +90,8 @@
         </div>
       </section>
 
-      <div class="pricing-controls" aria-label="요금제 표시 설정">
-        <div class="currency-switch" role="tablist" aria-label="통화 선택" data-currency-switch>
+      <div class="pricing-controls" aria-label="요금제 표시 설정" data-i18n-aria-label="aria.pricingControls">
+        <div class="currency-switch" role="tablist" aria-label="통화 선택" data-currency-switch data-i18n-aria-label="aria.currency">
           <span class="currency-thumb" aria-hidden="true"></span>
           <button class="is-active" type="button" role="tab" aria-selected="true" data-currency-choice="krw">
             KRW
@@ -102,7 +102,7 @@
         </div>
       </div>
 
-      <section class="pricing-grid" aria-label="요금제 정보">
+      <section class="pricing-grid" aria-label="요금제 정보" data-i18n-aria-label="aria.pricingInfo">
         <article class="pricing-card">
           <p class="eyebrow" data-i18n="plans.free">Free</p>
           <div class="plan-price-line">
@@ -138,8 +138,7 @@
           <button
             class="button primary"
             type="button"
-            data-go-url="https://www.patreon.com/checkout/FirstPrizeGames?rid=27763619&vanity=15446106"
-            data-go-target="_blank"
+            data-subscribe-url="https://www.patreon.com/checkout/FirstPrizeGames?rid=27763619&vanity=15446106"
             data-i18n="pricing.choosePro"
           >
             Pro 선택
@@ -162,8 +161,7 @@
           <button
             class="button ghost"
             type="button"
-            data-go-url="https://www.patreon.com/checkout/FirstPrizeGames?rid=27763742&vanity=15446106"
-            data-go-target="_blank"
+            data-subscribe-url="https://www.patreon.com/checkout/FirstPrizeGames?rid=27763742&vanity=15446106"
             data-i18n="pricing.chooseTeam"
           >
             Team 선택
@@ -171,7 +169,7 @@
         </article>
       </section>
 
-      <section class="ultra-plan-section" aria-label="Ultra 요금제">
+      <section class="ultra-plan-section" aria-label="Ultra 요금제" data-i18n-aria-label="aria.ultraPlan">
         <article class="pricing-card ultra-card">
           <div class="plan-card-top">
             <p class="eyebrow" data-i18n="plans.ultra">Ultra</p>
@@ -191,8 +189,7 @@
           <button
             class="button primary ultra-button"
             type="button"
-            data-go-url="https://www.patreon.com/checkout/FirstPrizeGames?rid=28684752&vanity=15446106"
-            data-go-target="_blank"
+            data-subscribe-url="https://www.patreon.com/checkout/FirstPrizeGames?rid=28684752&vanity=15446106"
             data-i18n="pricing.chooseUltra"
           >
             Ultra 선택
@@ -200,12 +197,35 @@
         </article>
       </section>
 
-      <section class="comparison-section" aria-label="요금제 비교">
+      <div class="cache-dialog subscribe-dialog" data-subscribe-warning hidden>
+        <div
+          class="cache-dialog-panel subscribe-dialog-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="subscribe-dialog-title"
+        >
+          <p class="eyebrow" data-i18n="pricing.subscribeEyebrow">Subscription</p>
+          <h2 id="subscribe-dialog-title" data-i18n="pricing.subscribeWarningTitle">외부 결제 페이지로 이동합니다.</h2>
+          <p data-i18n="pricing.subscribeWarningBody">
+            Patreon checkout이 새 페이지에서 열립니다. 결제 전 플랜 이름과 금액을 다시 확인해 주세요.
+          </p>
+          <div class="cache-warning-actions">
+            <button class="button cache-cancel-button" type="button" data-subscribe-cancel data-i18n="pricing.subscribeCancel">
+              취소
+            </button>
+            <button class="button subscribe-confirm-button" type="button" data-subscribe-confirm data-i18n="pricing.subscribeContinue">
+              계속하기
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <section class="comparison-section" aria-label="요금제 비교" data-i18n-aria-label="aria.planComparison">
         <div class="section-heading">
           <p class="eyebrow" data-i18n="pricing.compareEyebrow">Compare</p>
           <h2 data-i18n="pricing.compareTitle">기능 비교</h2>
         </div>
-        <div class="comparison-table" role="table" aria-label="요금제 기능 비교">
+        <div class="comparison-table" role="table" aria-label="요금제 기능 비교" data-i18n-aria-label="aria.planComparisonTable">
           <div class="comparison-row comparison-head" role="row">
             <span role="columnheader" data-i18n="pricing.compareFeature">기능</span>
             <span role="columnheader" data-i18n="plans.free">Free</span>
@@ -272,7 +292,7 @@
         </div>
       </section>
 
-      <section class="faq-section" aria-label="자주 묻는 질문">
+      <section class="faq-section" aria-label="자주 묻는 질문" data-i18n-aria-label="aria.faq">
         <div class="section-heading">
           <p class="eyebrow" data-i18n="pricing.faqEyebrow">FAQ</p>
           <h2 data-i18n="pricing.faqTitle">자주 묻는 질문</h2>
@@ -281,7 +301,7 @@
           <details>
             <summary data-i18n="pricing.faqOneQuestion">결제는 어디에서 진행되나요?</summary>
             <p data-i18n="pricing.faqOneAnswer">
-              Pro와 Team 플랜은 Patreon checkout 링크를 통해 진행됩니다.
+              Pro, Team, Ultra 플랜은 Patreon checkout 링크를 통해 진행됩니다.
             </p>
           </details>
           <details>
@@ -305,8 +325,8 @@
         </div>
       </section>
 
-      <footer class="site-info" aria-label="사이트 정보">
-        <div class="info-tabs" role="tablist" aria-label="사이트 정보 탭">
+      <footer class="site-info" aria-label="사이트 정보" data-i18n-aria-label="aria.siteInfo">
+        <div class="info-tabs" role="tablist" aria-label="사이트 정보 탭" data-i18n-aria-label="aria.siteInfoTabs">
           <button
             class="is-active"
             type="button"
@@ -380,15 +400,15 @@
         </div>
       </footer>
     </main>
-    <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls">
-      <button type="button" data-scroll-to="top" aria-label="맨 위로 이동">
+    <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
+      <button type="button" data-scroll-to="top" aria-label="맨 위로 이동" data-i18n-aria-label="aria.scrollTop">
         <svg aria-hidden="true" viewBox="0 0 24 24">
           <path d="M12 5 5 12" />
           <path d="m12 5 7 7" />
           <path d="M12 6v13" />
         </svg>
       </button>
-      <button type="button" data-scroll-to="bottom" aria-label="맨 아래로 이동">
+      <button type="button" data-scroll-to="bottom" aria-label="맨 아래로 이동" data-i18n-aria-label="aria.scrollBottom">
         <svg aria-hidden="true" viewBox="0 0 24 24">
           <path d="M12 19 5 12" />
           <path d="m12 19 7-7" />
@@ -396,6 +416,6 @@
         </svg>
       </button>
     </div>
-    <script src="../script.js?v=20260526-ultra-compare" defer></script>
+    <script src="../script.js?v=20260526-i18n-audit" defer></script>
   </body>
 </html>

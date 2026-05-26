@@ -1294,12 +1294,20 @@ h3 {
 }
 
 .pricing-hero {
-  display: flex;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   align-items: end;
-  justify-content: space-between;
-  gap: 14px;
-  padding: clamp(74px, 12vw, 132px) 0 clamp(30px, 5vw, 56px);
-  border-bottom: 1px solid var(--line);
+  min-height: clamp(360px, 48vw, 520px);
+  margin-top: 16px;
+  overflow: hidden;
+  padding: clamp(34px, 7vw, 72px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 46%),
+    var(--card-bg-strong);
+  box-shadow: 0 22px 70px rgba(15, 15, 15, 0.08);
 }
 
 .pricing-hero p:last-child {
@@ -1307,6 +1315,12 @@ h3 {
   margin: 0;
   color: var(--muted);
   font-size: clamp(18px, 2.4vw, 22px);
+}
+
+.pricing-controls {
+  display: flex;
+  justify-content: center;
+  padding-top: calc(clamp(18px, 4vw, 32px) * var(--density-section));
 }
 
 .currency-switch {
@@ -1319,7 +1333,8 @@ h3 {
   padding: 4px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--segment-bg);
+  background: var(--panel-solid);
+  box-shadow: 0 12px 30px rgba(15, 15, 15, 0.08);
 }
 
 .currency-thumb {
@@ -1360,28 +1375,94 @@ h3 {
 .pricing-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: calc(12px * var(--density-gap));
-  padding-top: calc(clamp(34px, 6vw, 64px) * var(--density-section));
+  align-items: stretch;
+  gap: calc(16px * var(--density-gap));
+  padding-top: calc(clamp(16px, 3vw, 28px) * var(--density-section));
 }
 
 .pricing-card {
+  position: relative;
   display: grid;
   align-content: start;
-  gap: 18px;
-  min-height: 440px;
+  grid-template-rows: auto auto auto 1fr auto;
+  gap: 16px;
+  min-height: 460px;
+  overflow: hidden;
   padding: calc(clamp(22px, 3vw, 30px) * var(--density-card));
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--card-bg);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.pricing-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: color-mix(in srgb, var(--accent) 48%, transparent);
+  opacity: 0.72;
+}
+
+.pricing-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
+  box-shadow: 0 18px 52px rgba(15, 15, 15, 0.1);
+  transform: translateY(-2px);
 }
 
 .pricing-card.is-featured {
+  border-color: color-mix(in srgb, var(--accent) 62%, var(--line));
   background: var(--card-bg-strong);
-  box-shadow: var(--shadow);
+  box-shadow: 0 24px 70px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.pricing-card.is-featured::before {
+  height: 5px;
+  background: #ff5416;
+  opacity: 1;
 }
 
 .pricing-card h2 {
   font-size: clamp(38px, 5vw, 54px);
+}
+
+.plan-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.plan-price-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.billing-pill {
+  display: inline-grid;
+  place-items: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.plan-badge {
+  display: inline-grid;
+  place-items: center;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #ff5416;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
 }
 
 .pricing-card p {
@@ -1392,7 +1473,7 @@ h3 {
 .pricing-card ul {
   display: grid;
   gap: 10px;
-  margin: 8px 0 10px;
+  margin: 4px 0 12px;
   padding: 0;
   list-style: none;
 }
@@ -1406,18 +1487,56 @@ h3 {
 .pricing-card li::before {
   content: "";
   position: absolute;
-  top: 0.72em;
+  top: 0.62em;
   left: 0;
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
 .pricing-card .button {
   align-self: end;
   width: 100%;
   min-height: 52px;
+}
+
+.ultra-plan-section {
+  display: grid;
+  justify-items: center;
+  padding-top: calc(clamp(18px, 4vw, 36px) * var(--density-section));
+}
+
+.ultra-card {
+  width: min(100%, 760px);
+  min-height: 0;
+  border-color: color-mix(in srgb, #ff5416 62%, var(--line));
+  background:
+    linear-gradient(135deg, color-mix(in srgb, #ff5416 12%, transparent), transparent 54%),
+    var(--card-bg-strong);
+  box-shadow: 0 24px 72px color-mix(in srgb, #ff5416 18%, transparent);
+}
+
+.ultra-card::before {
+  height: 5px;
+  background: linear-gradient(90deg, #ff5416, #ff9f43);
+  opacity: 1;
+}
+
+.ultra-card ul {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ultra-badge {
+  background: #ff5416;
+  color: #ffffff;
+}
+
+.button.primary.ultra-button {
+  border: 0;
+  background: #7c3aed;
+  color: #ffffff;
 }
 
 .error-page {
@@ -1645,7 +1764,7 @@ h3 {
 
 .comparison-row {
   display: grid;
-  grid-template-columns: minmax(180px, 1.3fr) repeat(3, minmax(120px, 1fr));
+  grid-template-columns: minmax(180px, 1.35fr) repeat(4, minmax(110px, 1fr));
   min-height: 62px;
   border-top: 1px solid var(--line);
 }
@@ -2641,7 +2760,7 @@ h3 {
   }
 
   .comparison-row {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     min-height: 0;
     overflow: hidden;
     border: 1px solid var(--line);
@@ -2701,6 +2820,10 @@ h3 {
     content: "Team";
   }
 
+  .comparison-row > strong:nth-of-type(4)::before {
+    content: "Ultra";
+  }
+
   .settings-sidebar {
     position: static;
     display: flex;
@@ -2753,8 +2876,20 @@ h3 {
   }
 
   .pricing-hero {
-    align-items: start;
-    flex-direction: column;
+    min-height: auto;
+    padding: 28px;
+  }
+
+  .pricing-card {
+    min-height: 0;
+  }
+
+  .pricing-card:hover {
+    transform: none;
+  }
+
+  .ultra-card ul {
+    grid-template-columns: 1fr;
   }
 
   .theme-segment,

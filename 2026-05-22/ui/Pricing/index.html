@@ -48,7 +48,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260526-team-price" />
+    <link rel="stylesheet" href="../styles.css?v=20260526-ultra-compare" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -88,6 +88,9 @@
             구급대원 경력 소개, 교육 이력 정리, 포트폴리오 확장까지 필요한 범위에 맞춰 구성했습니다.
           </p>
         </div>
+      </section>
+
+      <div class="pricing-controls" aria-label="요금제 표시 설정">
         <div class="currency-switch" role="tablist" aria-label="통화 선택" data-currency-switch>
           <span class="currency-thumb" aria-hidden="true"></span>
           <button class="is-active" type="button" role="tab" aria-selected="true" data-currency-choice="krw">
@@ -97,12 +100,15 @@
             USD
           </button>
         </div>
-      </section>
+      </div>
 
       <section class="pricing-grid" aria-label="요금제 정보">
         <article class="pricing-card">
           <p class="eyebrow" data-i18n="plans.free">Free</p>
-          <h2 data-i18n="plans.freePrice" data-price-plan="free">₩0</h2>
+          <div class="plan-price-line">
+            <h2 data-i18n="plans.freePrice" data-price-plan="free">₩0</h2>
+            <span class="billing-pill" data-i18n="plans.monthly">월간</span>
+          </div>
           <p data-i18n="pricing.freeBody">구급대원으로서의 기본 소개와 공유 흐름을 담기 좋은 구성입니다.</p>
           <ul>
             <li data-i18n="pricing.freeOne">핵심 소개와 직무 요약</li>
@@ -114,8 +120,14 @@
         </article>
 
         <article class="pricing-card is-featured">
-          <p class="eyebrow" data-i18n="plans.pro">Pro</p>
-          <h2 data-i18n="plans.proPrice" data-price-plan="pro">₩29,000</h2>
+          <div class="plan-card-top">
+            <p class="eyebrow" data-i18n="plans.pro">Pro</p>
+            <span class="plan-badge" data-i18n="plans.recommended">추천</span>
+          </div>
+          <div class="plan-price-line">
+            <h2 data-i18n="plans.proPrice" data-price-plan="pro">₩29,000</h2>
+            <span class="billing-pill" data-i18n="plans.monthly">월간</span>
+          </div>
           <p data-i18n="pricing.proBody">현장 경험, 교육 이수, 자격 사항을 더 자세히 보여주기 위한 구성입니다.</p>
           <ul>
             <li data-i18n="pricing.proOne">현장 대응 경험 강조</li>
@@ -136,7 +148,10 @@
 
         <article class="pricing-card">
           <p class="eyebrow" data-i18n="plans.team">Team</p>
-          <h2 data-i18n="plans.teamPrice" data-price-plan="team">₩169,000</h2>
+          <div class="plan-price-line">
+            <h2 data-i18n="plans.teamPrice" data-price-plan="team">₩169,000</h2>
+            <span class="billing-pill" data-i18n="plans.monthly">월간</span>
+          </div>
           <p data-i18n="pricing.teamBody">팀 단위 프로필, 공동 소개, 활동 정리를 위한 확장 플랜입니다.</p>
           <ul>
             <li data-i18n="pricing.teamOne">팀 소개와 공동 프로필 구성</li>
@@ -156,6 +171,35 @@
         </article>
       </section>
 
+      <section class="ultra-plan-section" aria-label="Ultra 요금제">
+        <article class="pricing-card ultra-card">
+          <div class="plan-card-top">
+            <p class="eyebrow" data-i18n="plans.ultra">Ultra</p>
+            <span class="plan-badge ultra-badge" data-i18n="plans.topTier">최상위</span>
+          </div>
+          <div class="plan-price-line">
+            <h2 data-i18n="plans.ultraPrice" data-price-plan="ultra">₩299,000</h2>
+            <span class="billing-pill" data-i18n="plans.monthly">월간</span>
+          </div>
+          <p data-i18n="pricing.ultraBody">가장 빠른 대응과 공동 기획 참여를 원하는 사용자를 위한 최상위 플랜입니다.</p>
+          <ul>
+            <li data-i18n="pricing.ultraOne">First, the response</li>
+            <li data-i18n="pricing.ultraTwo">Request priority processing</li>
+            <li data-i18n="pricing.ultraThree">Participating in joint planning</li>
+            <li data-i18n="pricing.ultraFour">Unreleased cuts</li>
+          </ul>
+          <button
+            class="button primary ultra-button"
+            type="button"
+            data-go-url="https://www.patreon.com/checkout/FirstPrizeGames?rid=28684752&vanity=15446106"
+            data-go-target="_blank"
+            data-i18n="pricing.chooseUltra"
+          >
+            Ultra 선택
+          </button>
+        </article>
+      </section>
+
       <section class="comparison-section" aria-label="요금제 비교">
         <div class="section-heading">
           <p class="eyebrow" data-i18n="pricing.compareEyebrow">Compare</p>
@@ -167,22 +211,26 @@
             <span role="columnheader" data-i18n="plans.free">Free</span>
             <span role="columnheader" data-i18n="plans.pro">Pro</span>
             <span role="columnheader" data-i18n="plans.team">Team</span>
+            <span role="columnheader" data-i18n="plans.ultra">Ultra</span>
           </div>
           <div class="comparison-row" role="row">
             <span role="cell" data-i18n="pricing.compareProfile">개인 프로필 구성</span>
             <strong role="cell" data-i18n="pricing.compareBasic">기본</strong>
             <strong role="cell" data-i18n="pricing.compareAdvanced">확장</strong>
             <strong role="cell" data-i18n="pricing.compareOrg">조직형</strong>
+            <strong role="cell" data-i18n="pricing.compareTopTier">최상위</strong>
           </div>
           <div class="comparison-row" role="row">
             <span role="cell" data-i18n="pricing.compareExperience">현장 경험 정리</span>
             <strong role="cell">3</strong>
             <strong role="cell">6+</strong>
             <strong role="cell" data-i18n="pricing.compareUnlimited">무제한</strong>
+            <strong role="cell" data-i18n="pricing.compareUnlimited">무제한</strong>
           </div>
           <div class="comparison-row" role="row">
             <span role="cell" data-i18n="pricing.compareCredentials">교육/자격 섹션</span>
             <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
+            <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
             <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
             <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
           </div>
@@ -191,9 +239,32 @@
             <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
             <strong role="cell">Pro Gold</strong>
             <strong role="cell">Team Cyan</strong>
+            <strong role="cell" data-i18n="pricing.compareUltraPurple">Ultra Purple</strong>
           </div>
           <div class="comparison-row" role="row">
             <span role="cell" data-i18n="pricing.compareTeam">팀/기관 소개</span>
+            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
+            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
+            <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
+            <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
+          </div>
+          <div class="comparison-row" role="row">
+            <span role="cell" data-i18n="pricing.comparePriority">요청 우선 처리</span>
+            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
+            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
+            <strong role="cell" data-i18n="pricing.comparePriorityValue">우선</strong>
+            <strong role="cell" data-i18n="pricing.compareTopPriority">최우선</strong>
+          </div>
+          <div class="comparison-row" role="row">
+            <span role="cell" data-i18n="pricing.comparePlanning">공동 기획 참여</span>
+            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
+            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
+            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
+            <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
+          </div>
+          <div class="comparison-row" role="row">
+            <span role="cell" data-i18n="pricing.compareUnreleased">미공개 컷</span>
+            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
             <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
             <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
             <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
@@ -325,6 +396,6 @@
         </svg>
       </button>
     </div>
-    <script src="../script.js?v=20260526-team-price" defer></script>
+    <script src="../script.js?v=20260526-ultra-compare" defer></script>
   </body>
 </html>

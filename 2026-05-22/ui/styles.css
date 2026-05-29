@@ -613,11 +613,19 @@ summary {
   font-weight: 850;
 }
 
-.mobile-menu-button span:last-child {
+.mobile-menu-icon {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
   transition: transform 180ms ease;
 }
 
-.topbar.is-open .mobile-menu-button span:last-child {
+.topbar.is-open .mobile-menu-icon {
   transform: rotate(180deg);
 }
 

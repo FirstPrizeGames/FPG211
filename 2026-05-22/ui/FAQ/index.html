@@ -48,7 +48,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260529-creator" />
+    <link rel="stylesheet" href="../styles.css?v=20260529-mobile-menu-icon" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -68,7 +68,9 @@
         </a>
         <button class="mobile-menu-button" type="button" aria-expanded="false" data-mobile-menu-toggle>
           <span data-i18n="nav.menu">Menu</span>
-          <span aria-hidden="true">⌄</span>
+          <svg class="mobile-menu-icon" aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
         </button>
         <div class="nav-links" data-mobile-menu>
           <a href="/" data-i18n="nav.home">Home</a>
@@ -240,6 +242,6 @@
         </svg>
       </button>
     </div>
-    <script src="../script.js?v=20260529-creator" defer></script>
+    <script src="../script.js?v=20260529-mobile-menu-icon" defer></script>
   </body>
 </html>

@@ -1797,6 +1797,40 @@ h3 {
   padding-top: 4px;
 }
 
+.creator-plan-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.creator-plan-list div {
+  display: grid;
+  gap: 8px;
+  min-height: 144px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-solid);
+}
+
+.creator-plan-list strong {
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.creator-plan-list span {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.creator-note {
+  padding: 14px 16px;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+
 .creator-resource-links a {
   position: relative;
   overflow: hidden;
@@ -2921,6 +2955,14 @@ h3 {
 
   .comparison-row > strong:nth-of-type(4)::before {
     content: "Ultra";
+  }
+
+  .creator-plan-list {
+    grid-template-columns: 1fr;
+  }
+
+  .creator-plan-list div {
+    min-height: 0;
   }
 
   .settings-sidebar {

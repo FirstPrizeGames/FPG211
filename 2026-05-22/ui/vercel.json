@@ -7,6 +7,10 @@
       "destination": "/settings/index.html"
     },
     {
+      "source": "/Creator",
+      "destination": "/Creator/index.html"
+    },
+    {
       "source": "/Pricing",
       "destination": "/Pricing/index.html"
     },

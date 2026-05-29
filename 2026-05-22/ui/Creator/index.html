@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Creator · Emergency Responder Profile</title>
+    <meta
+      name="description"
+      content="A long practical guide for creating games with Unity, covering planning, scenes, GameObjects, C# scripts, UI, testing, and builds."
+    />
+    <meta name="theme-color" content="#efefec" />
+    <meta property="og:title" content="Creator · Emergency Responder Profile" />
+    <meta
+      property="og:description"
+      content="Learn a practical workflow for creating games with Unity from idea to playable build."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/assets/profile-hero.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Creator · Emergency Responder Profile" />
+    <meta
+      name="twitter:description"
+      content="Learn a practical workflow for creating games with Unity from idea to playable build."
+    />
+    <meta name="twitter:image" content="/assets/profile-hero.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <script>
+      (() => {
+        const savedTheme = localStorage.getItem("profile-theme");
+        const prefersDark = matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          savedTheme || (prefersDark ? "dark" : "light");
+        document.documentElement.lang =
+          localStorage.getItem("profile-language") || "en";
+        document.documentElement.dataset.accent =
+          localStorage.getItem("profile-accent") || "neutral";
+        document.documentElement.dataset.density =
+          localStorage.getItem("profile-density") || "comfortable";
+        if (
+          localStorage.getItem("profile-fast-render") === "true" ||
+          localStorage.getItem("profile-setting-fast-render") === "true"
+        ) {
+          document.documentElement.dataset.fastRender = "true";
+        }
+        if (localStorage.getItem("profile-setting-kid-mode") === "true") {
+          document.documentElement.dataset.kidMode = "true";
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="../styles.css?v=20260529-creator" />
+  </head>
+  <body>
+    <div class="loading-bar" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
+    <div class="adblock-notice" data-adblock-notice hidden>
+      <p data-i18n="adblock.message">
+        광고 차단기가 일부 사이트 기능을 제한할 수 있습니다. 문제가 보이면 이 사이트를 허용 목록에 추가해 주세요.
+      </p>
+      <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
+    </div>
+    <main class="shell">
+      <nav class="topbar" aria-label="Creator 메뉴" data-i18n-aria-label="aria.creatorMenu">
+        <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
+          <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
+          <span>FP</span>
+        </a>
+        <button class="mobile-menu-button" type="button" aria-expanded="false" data-mobile-menu-toggle>
+          <span data-i18n="nav.menu">Menu</span>
+          <span aria-hidden="true">⌄</span>
+        </button>
+        <div class="nav-links" data-mobile-menu>
+          <a href="/" data-i18n="nav.home">Home</a>
+          <a class="is-active" href="/Creator" data-i18n="nav.creator">Creator</a>
+          <a href="/Bio" data-i18n="nav.bio">Bio</a>
+          <a href="/FAQ" data-i18n="nav.faq">FAQ</a>
+          <a href="/Pricing" data-i18n="nav.pricing">Pricing</a>
+          <a href="/settings" data-i18n="nav.settings">Settings</a>
+          <a class="nav-feedback-link" href="/feedback" data-i18n="nav.feedback">Feedback</a>
+        </div>
+      </nav>
+
+      <section class="bio-hero creator-hero">
+        <p class="eyebrow" data-i18n="creator.eyebrow">Creator</p>
+        <h1 data-i18n="creator.title">Unity로 게임을 만드는 기본 흐름</h1>
+        <p data-i18n="creator.lead">
+          Unity는 2D와 3D 게임을 모두 만들 수 있는 엔진입니다. 처음에는 큰 게임보다 작은 플레이 가능한 장면을 완성하는 것을 목표로 잡고, 아이디어, 씬 구성, 오브젝트, C# 스크립트, UI, 테스트, 빌드 순서로 차근차근 진행하는 편이 좋습니다.
+        </p>
+      </section>
+
+      <section class="creator-guide" aria-label="Unity 제작 가이드" data-i18n-aria-label="aria.creatorGuide">
+        <article>
+          <p class="eyebrow" data-i18n="creator.stepOneEyebrow">Step 01</p>
+          <h2 data-i18n="creator.stepOneTitle">작게 시작할 아이디어를 정합니다.</h2>
+          <p data-i18n="creator.stepOneBody">
+            처음부터 오픈월드, 온라인 멀티플레이, 거대한 스토리 게임을 만들려고 하면 프로젝트가 금방 무거워집니다. 첫 게임은 한 문장으로 설명할 수 있어야 합니다. 예를 들어 “플레이어가 장애물을 피해서 점수를 얻는다”, “작은 맵에서 아이템을 모아 문을 연다”, “적을 피하면서 제한 시간 안에 도착한다”처럼 핵심 행동이 분명해야 합니다. 이 한 문장이 정해지면 필요한 기능도 자연스럽게 줄어듭니다.
+          </p>
+          <ul>
+            <li data-i18n="creator.stepOnePointA">핵심 조작은 이동, 점프, 상호작용처럼 1~3개로 제한합니다.</li>
+            <li data-i18n="creator.stepOnePointB">첫 목표는 완벽한 게임이 아니라 끝까지 플레이 가능한 작은 버전입니다.</li>
+            <li data-i18n="creator.stepOnePointC">아이디어 문서에는 목표, 조작, 승리 조건, 실패 조건만 먼저 적습니다.</li>
+          </ul>
+        </article>
+
+        <article>
+          <p class="eyebrow" data-i18n="creator.stepTwoEyebrow">Step 02</p>
+          <h2 data-i18n="creator.stepTwoTitle">Unity 프로젝트와 씬 구조를 만듭니다.</h2>
+          <p data-i18n="creator.stepTwoBody">
+            Unity Hub에서 새 프로젝트를 만들 때 2D 게임이면 2D 템플릿, 3D 게임이면 3D 템플릿을 선택합니다. 프로젝트를 열면 Scene, Game, Hierarchy, Inspector, Project 창을 자주 쓰게 됩니다. Scene 창에서는 월드를 배치하고, Game 창에서는 실제 플레이 화면을 확인합니다. Hierarchy는 현재 씬에 있는 오브젝트 목록이고, Inspector는 선택한 오브젝트의 설정을 바꾸는 곳입니다.
+          </p>
+          <ul>
+            <li data-i18n="creator.stepTwoPointA">Scenes, Scripts, Prefabs, Art, Audio, Materials 폴더를 먼저 만들어 정리합니다.</li>
+            <li data-i18n="creator.stepTwoPointB">MainMenu, Level01, GameOver처럼 씬 이름을 역할 기준으로 정합니다.</li>
+            <li data-i18n="creator.stepTwoPointC">자주 재사용할 오브젝트는 Prefab으로 만들어 관리합니다.</li>
+          </ul>
+        </article>
+
+        <article>
+          <p class="eyebrow" data-i18n="creator.stepThreeEyebrow">Step 03</p>
+          <h2 data-i18n="creator.stepThreeTitle">GameObject와 Component 개념을 이해합니다.</h2>
+          <p data-i18n="creator.stepThreeBody">
+            Unity에서 대부분의 대상은 GameObject입니다. 플레이어, 카메라, 적, 바닥, 아이템, 버튼도 모두 GameObject가 될 수 있습니다. GameObject 자체는 빈 그릇에 가깝고, 실제 기능은 Component가 담당합니다. Transform은 위치와 회전, 크기를 담당하고, Sprite Renderer나 Mesh Renderer는 화면에 보이게 만들며, Collider와 Rigidbody는 충돌과 물리를 처리합니다. 스크립트도 Component로 붙습니다.
+          </p>
+          <ul>
+            <li data-i18n="creator.stepThreePointA">보이는 것, 움직이는 것, 충돌하는 것을 각각 어떤 Component가 담당하는지 나눠서 생각합니다.</li>
+            <li data-i18n="creator.stepThreePointB">플레이어 오브젝트에는 렌더러, 충돌체, 이동 스크립트가 함께 붙는 경우가 많습니다.</li>
+            <li data-i18n="creator.stepThreePointC">Inspector에서 값을 조정하며 느낌을 맞추는 과정이 Unity 제작의 큰 장점입니다.</li>
+          </ul>
+        </article>
+
+        <article>
+          <p class="eyebrow" data-i18n="creator.stepFourEyebrow">Step 04</p>
+          <h2 data-i18n="creator.stepFourTitle">C# 스크립트로 규칙을 만듭니다.</h2>
+          <p data-i18n="creator.stepFourBody">
+            Unity 게임의 행동 규칙은 보통 C# 스크립트로 작성합니다. 처음에는 문법 전체를 외우기보다 “입력을 받는다”, “위치를 바꾼다”, “충돌을 감지한다”, “점수를 올린다”, “UI를 갱신한다” 같은 작은 목표로 나누면 접근하기 쉽습니다. Start는 처음 한 번 실행되는 초기화에 자주 쓰이고, Update는 매 프레임 확인해야 하는 입력이나 상태 갱신에 자주 쓰입니다.
+          </p>
+          <ul>
+            <li data-i18n="creator.stepFourPointA">플레이어 이동, 카메라 추적, 점수 관리, 게임 상태 관리를 별도 스크립트로 나눕니다.</li>
+            <li data-i18n="creator.stepFourPointB">숫자 값은 Inspector에서 조절할 수 있게 public 필드나 SerializeField로 노출합니다.</li>
+            <li data-i18n="creator.stepFourPointC">에러가 나면 Console 창의 첫 번째 에러부터 읽고, 파일명과 줄 번호를 확인합니다.</li>
+          </ul>
+        </article>
+
+        <article>
+          <p class="eyebrow" data-i18n="creator.stepFiveEyebrow">Step 05</p>
+          <h2 data-i18n="creator.stepFiveTitle">레벨과 게임 감각을 반복해서 조정합니다.</h2>
+          <p data-i18n="creator.stepFiveBody">
+            기능이 작동하기 시작하면 그다음은 감각입니다. 이동 속도, 점프 높이, 적의 속도, 카메라 거리, 아이템 배치, 체크포인트 위치처럼 플레이 느낌을 만드는 요소를 반복해서 조정합니다. Unity의 Play Mode는 이런 반복에 강합니다. 값을 바꾸고 직접 플레이하면서 너무 어렵거나 지루한 부분을 줄여 나가면 게임이 조금씩 살아납니다.
+          </p>
+          <ul>
+            <li data-i18n="creator.stepFivePointA">초반 30초 안에 플레이어가 목표를 이해할 수 있게 배치합니다.</li>
+            <li data-i18n="creator.stepFivePointB">실패해도 바로 다시 시도할 수 있게 재시작 흐름을 짧게 만듭니다.</li>
+            <li data-i18n="creator.stepFivePointC">난이도는 적 수보다 위치, 타이밍, 회복 기회로 조절하는 편이 더 섬세합니다.</li>
+          </ul>
+        </article>
+
+        <article>
+          <p class="eyebrow" data-i18n="creator.stepSixEyebrow">Step 06</p>
+          <h2 data-i18n="creator.stepSixTitle">UI, 사운드, 피드백을 추가합니다.</h2>
+          <p data-i18n="creator.stepSixBody">
+            게임은 규칙만으로 완성되지 않습니다. 플레이어가 지금 무엇을 했고, 무엇이 변했는지 알아차릴 수 있어야 합니다. 점수, 체력, 목표, 남은 시간 같은 UI를 넣고, 버튼 클릭음, 점프 소리, 충돌음, 성공 효과를 추가하면 행동의 결과가 분명해집니다. 화면 흔들림, 짧은 파티클, 색 변화 같은 피드백도 과하지 않게 쓰면 게임이 훨씬 반응성 있게 느껴집니다.
+          </p>
+          <ul>
+            <li data-i18n="creator.stepSixPointA">UI는 먼저 읽기 쉽고 작은 화면에서도 눌리기 쉬워야 합니다.</li>
+            <li data-i18n="creator.stepSixPointB">사운드는 중요한 행동에만 배치해 피로감을 줄입니다.</li>
+            <li data-i18n="creator.stepSixPointC">피드백 효과는 플레이를 방해하지 않는 짧은 시간 안에 끝나게 만듭니다.</li>
+          </ul>
+        </article>
+
+        <article>
+          <p class="eyebrow" data-i18n="creator.stepSevenEyebrow">Step 07</p>
+          <h2 data-i18n="creator.stepSevenTitle">테스트하고 빌드합니다.</h2>
+          <p data-i18n="creator.stepSevenBody">
+            완성에 가까워질수록 직접 만든 사람의 눈에는 문제가 잘 보이지 않습니다. 다른 사람에게 짧게 플레이해 달라고 부탁하고, 어디서 막혔는지, 어떤 버튼을 눌러야 할지 헷갈렸는지, 다시 하고 싶은지 확인합니다. 이후 File 또는 Build Settings에서 목표 플랫폼을 정하고 빌드합니다. PC, WebGL, 모바일 등 플랫폼마다 조작, 성능, 화면 비율 문제가 다르기 때문에 빌드 후 실제 환경에서 확인하는 과정이 필요합니다.
+          </p>
+          <ul>
+            <li data-i18n="creator.stepSevenPointA">버그 목록은 재현 방법, 예상 결과, 실제 결과로 나눠 적습니다.</li>
+            <li data-i18n="creator.stepSevenPointB">빌드 전에는 사용하지 않는 테스트 오브젝트와 임시 로그를 정리합니다.</li>
+            <li data-i18n="creator.stepSevenPointC">첫 배포는 작게 하고, 피드백을 받아 다음 버전을 만드는 흐름이 안전합니다.</li>
+          </ul>
+        </article>
+
+        <article>
+          <p class="eyebrow" data-i18n="creator.resourcesEyebrow">Resources</p>
+          <h2 data-i18n="creator.resourcesTitle">처음 배울 때 보면 좋은 공식 자료</h2>
+          <p data-i18n="creator.resourcesBody">
+            Unity는 공식 문서와 Unity Learn을 통해 기본 개념, 2D 제작, 에디터 사용법, 스크립팅, 샘플 프로젝트를 제공합니다. 막힐 때는 무작정 영상을 많이 보기보다 현재 만드는 기능과 직접 관련된 문서를 찾아보는 습관이 좋습니다.
+          </p>
+          <div class="creator-resource-links">
+            <a href="https://docs.unity.com/" target="_blank" rel="noopener noreferrer" data-i18n="creator.docsLink">Unity Documentation</a>
+            <a href="https://learn.unity.com/" target="_blank" rel="noopener noreferrer" data-i18n="creator.learnLink">Unity Learn</a>
+            <a href="https://unity.com/features/2d" target="_blank" rel="noopener noreferrer" data-i18n="creator.twoDLink">Unity 2D Tools</a>
+          </div>
+        </article>
+      </section>
+    </main>
+    <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
+      <button type="button" data-scroll-to="top" aria-label="맨 위로 이동" data-i18n-aria-label="aria.scrollTop">
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M12 5 5 12" />
+          <path d="m12 5 7 7" />
+          <path d="M12 6v13" />
+        </svg>
+      </button>
+      <button type="button" data-scroll-to="bottom" aria-label="맨 아래로 이동" data-i18n-aria-label="aria.scrollBottom">
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M12 19 5 12" />
+          <path d="m12 19 7-7" />
+          <path d="M12 18V5" />
+        </svg>
+      </button>
+    </div>
+    <script src="../script.js?v=20260529-creator" defer></script>
+  </body>
+</html>

@@ -97,6 +97,7 @@ const translations = {
     "context.qr": "QR 코드 만들기",
     "context.top": "맨 위로 이동",
     "context.refresh": "새로고침",
+    "context.forward": "앞으로 가기",
     "context.print": "인쇄",
     "context.creator": "Creator 열기",
     "context.feedback": "Feedback 열기",
@@ -567,6 +568,7 @@ const translations = {
     "context.qr": "Create QR Code",
     "context.top": "Back to top",
     "context.refresh": "Refresh",
+    "context.forward": "Forward",
     "context.print": "Print page",
     "context.creator": "Open Creator",
     "context.feedback": "Open Feedback",
@@ -1825,6 +1827,11 @@ const handleContextMenuAction = async (action) => {
 
   if (action === "refresh") {
     window.location.reload();
+    return;
+  }
+
+  if (action === "forward") {
+    window.history.forward();
     return;
   }
 

@@ -42,6 +42,8 @@ const subscribeWarning = document.querySelector("[data-subscribe-warning]");
 const subscribeCancel = document.querySelector("[data-subscribe-cancel]");
 const subscribeConfirm = document.querySelector("[data-subscribe-confirm]");
 const settingToggles = [...document.querySelectorAll("[data-toggle-key]")];
+const homeTabs = [...document.querySelectorAll("[data-home-tab]")];
+const homePanels = [...document.querySelectorAll("[data-home-panel]")];
 const infoTabs = [...document.querySelectorAll("[data-info-tab]")];
 const infoPanels = [...document.querySelectorAll("[data-info-panel]")];
 const loadingBar = document.querySelector(".loading-bar");
@@ -66,7 +68,7 @@ let contextClipboardCheckId = 0;
 let contextTargetElement = null;
 const highlightTargets = [
   ...document.querySelectorAll(
-    ".brand-logo, .nav-links a, .mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .share-socials button, .scroll-actions button, .context-menu button, .toggle",
+    ".brand-logo, .nav-links a, .mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .home-tabs button, .info-tabs button, .share-socials button, .scroll-actions button, .context-menu button, .toggle",
   ),
 ];
 const sections = navLinks
@@ -126,12 +128,16 @@ const translations = {
     "search.feedbackBody": "버그, 개선 의견, 사용성 피드백을 Google Forms로 보냅니다.",
     "aria.home": "홈",
     "aria.profileMenu": "프로필 메뉴",
+    "aria.homeTabs": "홈 섹션 탭",
     "aria.creatorMenu": "Creator 메뉴",
     "aria.bioMenu": "자기소개 메뉴",
     "aria.faqMenu": "FAQ 메뉴",
     "aria.pricingMenu": "요금제 메뉴",
     "aria.settingsMenu": "설정 메뉴",
     "aria.feedbackMenu": "피드백 메뉴",
+    "aria.feedbackGuide": "피드백 안내",
+    "aria.feedbackTopics": "피드백 주제",
+    "aria.feedbackPrivacy": "개인정보 안내",
     "aria.errorMenu": "오류 페이지 메뉴",
     "aria.profileSummary": "프로필 요약",
     "aria.creatorGuide": "Unity 제작 가이드",
@@ -177,6 +183,7 @@ const translations = {
     "home.focusLabel": "Focus",
     "home.focusValue": "Prehospital Care",
     "home.viewWork": "View Work",
+    "home.tabsTitle": "홈 정보를 탭으로 정리했습니다.",
     "home.aboutTitle": "가장 긴급한 순간에 차분하게 도착합니다.",
     "home.aboutBody":
       "응급 현장에서 환자의 상태를 빠르게 파악하고 필요한 처치를 연결하는 일을 하고 있습니다. 긴박한 순간일수록 기본에 충실한 판단, 팀과의 명확한 소통, 환자를 향한 존중을 중요하게 생각합니다.",
@@ -274,6 +281,21 @@ const translations = {
     "feedback.title": "의견을 남겨주세요.",
     "feedback.lead": "버그, 개선 아이디어, 보기 불편한 부분을 알려주시면 다음 업데이트에 반영할 수 있습니다.",
     "feedback.cta": "Google Forms로 피드백 남기기",
+    "feedback.panelEyebrow": "Guide",
+    "feedback.panelTitle": "짧아도 괜찮습니다.",
+    "feedback.panelBody": "어떤 페이지에서 문제가 있었는지, 무엇을 기대했는지, 실제로 무엇이 보였는지만 적어도 충분합니다.",
+    "feedback.statusOne": "버그 제보",
+    "feedback.statusTwo": "디자인 문제",
+    "feedback.statusThree": "기능 제안",
+    "feedback.topicOneTitle": "버그와 깨진 화면",
+    "feedback.topicOneBody": "버튼이 반응하지 않거나, 모바일에서 레이아웃이 이상하거나, 페이지 이동이 막히는 문제를 알려주세요.",
+    "feedback.topicTwoTitle": "읽기 불편한 문구",
+    "feedback.topicTwoBody": "어색한 영어/한국어 문장, 너무 딱딱한 안내, 이해하기 어려운 설정 이름을 보낼 수 있습니다.",
+    "feedback.topicThreeTitle": "다음에 필요한 기능",
+    "feedback.topicThreeBody": "공유, 접근성, 가격 페이지, 설정, 우클릭 메뉴처럼 더 개선되면 좋은 부분을 제안해 주세요.",
+    "feedback.privacyEyebrow": "Privacy",
+    "feedback.privacyTitle": "개인정보는 필요한 만큼만 입력하세요.",
+    "feedback.privacyBody": "피드백 양식은 외부 Google Forms에서 열립니다. 답장을 원하지 않는다면 이름, 이메일, 연락처를 비워두는 편이 좋습니다.",
     "feedback.warningTitle": "외부 양식으로 이동합니다.",
     "feedback.warningBody": "Google Forms가 새 페이지에서 열립니다. 이름이나 연락처 같은 개인정보는 필요한 경우에만 입력해 주세요.",
     "feedback.cancel": "취소",
@@ -597,12 +619,16 @@ const translations = {
     "search.feedbackBody": "Send bugs, improvement ideas, and usability feedback through Google Forms.",
     "aria.home": "Home",
     "aria.profileMenu": "Profile menu",
+    "aria.homeTabs": "Home section tabs",
     "aria.creatorMenu": "Creator menu",
     "aria.bioMenu": "Bio menu",
     "aria.faqMenu": "FAQ menu",
     "aria.pricingMenu": "Pricing menu",
     "aria.settingsMenu": "Settings menu",
     "aria.feedbackMenu": "Feedback menu",
+    "aria.feedbackGuide": "Feedback guide",
+    "aria.feedbackTopics": "Feedback topics",
+    "aria.feedbackPrivacy": "Privacy note",
     "aria.errorMenu": "Error page menu",
     "aria.profileSummary": "Profile summary",
     "aria.creatorGuide": "Unity creation guide",
@@ -648,6 +674,7 @@ const translations = {
     "home.focusLabel": "Focus",
     "home.focusValue": "Prehospital Care",
     "home.viewWork": "View Work",
+    "home.tabsTitle": "Home details are organized into tabs.",
     "home.aboutTitle": "Arriving calmly when every second matters.",
     "home.aboutBody":
       "I assess patients quickly in emergency scenes and connect them to the care they need. In urgent moments, I value sound fundamentals, clear team communication, and respect for every patient.",
@@ -745,6 +772,21 @@ const translations = {
     "feedback.title": "Share your feedback.",
     "feedback.lead": "Send bugs, improvement ideas, or anything that feels uncomfortable to use so it can be improved in the next update.",
     "feedback.cta": "Leave feedback on Google Forms",
+    "feedback.panelEyebrow": "Guide",
+    "feedback.panelTitle": "Short notes are fine.",
+    "feedback.panelBody": "It is enough to say which page had a problem, what you expected, and what actually appeared.",
+    "feedback.statusOne": "Bug report",
+    "feedback.statusTwo": "Design issue",
+    "feedback.statusThree": "Feature idea",
+    "feedback.topicOneTitle": "Bugs and broken screens",
+    "feedback.topicOneBody": "Report buttons that do not respond, mobile layouts that look wrong, or page navigation that gets blocked.",
+    "feedback.topicTwoTitle": "Text that feels unclear",
+    "feedback.topicTwoBody": "Send awkward English or Korean copy, overly stiff notices, or setting names that are hard to understand.",
+    "feedback.topicThreeTitle": "Useful next features",
+    "feedback.topicThreeBody": "Suggest improvements for sharing, accessibility, pricing, settings, or the custom context menu.",
+    "feedback.privacyEyebrow": "Privacy",
+    "feedback.privacyTitle": "Only enter the personal details you need.",
+    "feedback.privacyBody": "The feedback form opens in Google Forms. If you do not need a reply, it is better to leave your name, email, and contact details blank.",
     "feedback.warningTitle": "You are leaving for an external form.",
     "feedback.warningBody": "Google Forms will open on a new page. Only enter personal information such as your name or contact details if it is necessary.",
     "feedback.cancel": "Cancel",
@@ -1391,6 +1433,22 @@ const createQrDialog = () => {
   qrImage = document.querySelector("[data-qr-image]");
   qrUrl = document.querySelector("[data-qr-url]");
   qrStatus = document.querySelector("[data-qr-status]");
+};
+
+const selectHomeTab = (selectedTab) => {
+  if (!selectedTab) return;
+
+  homeTabs.forEach((button) => {
+    const isActive = button.dataset.homeTab === selectedTab;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-selected", String(isActive));
+  });
+
+  homePanels.forEach((panel) => {
+    const isActive = panel.dataset.homePanel === selectedTab;
+    panel.classList.toggle("is-active", isActive);
+    panel.hidden = !isActive;
+  });
 };
 
 const normalizeSearchText = (value) => value.toLowerCase().replace(/\s+/g, " ").trim();
@@ -2086,6 +2144,7 @@ const goToActionUrl = (button) => {
   if (!targetUrl) return;
 
   if (targetUrl.startsWith("#")) {
+    if (button.dataset.homeOpen) selectHomeTab(button.dataset.homeOpen);
     document.querySelector(targetUrl)?.scrollIntoView({
       behavior: document.documentElement.dataset.fastRender === "true" ? "auto" : "smooth",
       block: "start",
@@ -2155,6 +2214,12 @@ createShareDialog();
 createSiteSearchDialog();
 createQrDialog();
 setLanguage(currentLanguage);
+if (homeTabs.length) {
+  const activeHomeTab =
+    homeTabs.find((button) => button.classList.contains("is-active"))?.dataset.homeTab ||
+    homeTabs[0].dataset.homeTab;
+  selectHomeTab(activeHomeTab);
+}
 setupSiteSearch();
 setTheme(getInitialTheme());
 setupSettingToggles();
@@ -2180,6 +2245,10 @@ densityChoices.forEach((button) => {
 
 currencyChoices.forEach((button) => {
   button.addEventListener("click", () => setCurrency(button.dataset.currencyChoice));
+});
+
+homeTabs.forEach((tab) => {
+  tab.addEventListener("click", () => selectHomeTab(tab.dataset.homeTab));
 });
 
 accentChoices.forEach((button) => {

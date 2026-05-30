@@ -1666,6 +1666,9 @@ const isNativeContextTarget = (target) =>
     ),
   );
 
+const shouldUseNativeContextMenu = () =>
+  window.matchMedia?.("(max-width: 760px), (hover: none), (pointer: coarse)").matches;
+
 const isEditableTextTarget = (target) =>
   Boolean(target?.matches?.("input:not([type]), input[type='text'], input[type='search'], input[type='email'], input[type='url'], input[type='tel'], textarea, [contenteditable='true']"));
 
@@ -1710,6 +1713,7 @@ const updateContextPasteState = async () => {
 const showContextMenu = (event) => {
   if (
     !contextMenu ||
+    shouldUseNativeContextMenu() ||
     localStorage.getItem("profile-setting-custom-context-menu") === "false" ||
     isNativeContextTarget(event.target)
   ) {

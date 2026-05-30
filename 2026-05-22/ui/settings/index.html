@@ -50,7 +50,7 @@
           localStorage.getItem("profile-setting-sidebar-nav") === "false" ? "top" : "sidebar";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260531-mobile-cleanup" />
+    <link rel="stylesheet" href="../styles.css?v=20260531-footer-cleanup" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -511,81 +511,6 @@
           </div>
         </div>
       </div>
-
-      <footer class="site-info" aria-label="사이트 정보" data-i18n-aria-label="aria.siteInfo">
-        <div class="info-tabs" role="tablist" aria-label="사이트 정보 탭" data-i18n-aria-label="aria.siteInfoTabs">
-          <button
-            class="is-active"
-            type="button"
-            role="tab"
-            aria-selected="true"
-            aria-controls="licenses-panel"
-            id="licenses-tab"
-            data-info-tab="licenses"
-            data-i18n="info.licensesTab"
-          >
-            오픈소스 라이선스
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected="false"
-            aria-controls="privacy-panel"
-            id="privacy-tab"
-            data-info-tab="privacy"
-            data-i18n="info.privacyTab"
-          >
-            개인정보처리방침
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected="false"
-            aria-controls="copyright-panel"
-            id="copyright-tab"
-            data-info-tab="copyright"
-            data-i18n="info.copyrightTab"
-          >
-            저작권 정보
-          </button>
-        </div>
-        <div
-          class="info-panel is-active"
-          id="licenses-panel"
-          role="tabpanel"
-          aria-labelledby="licenses-tab"
-          data-info-panel="licenses"
-        >
-          <p data-i18n="info.licensesBody">
-            이 프로필 템플릿은 외부 프레임워크 없이 HTML, CSS, JavaScript로 제작되었습니다.
-            사용된 시스템 글꼴은 각 운영체제의 라이선스를 따릅니다.
-          </p>
-        </div>
-        <div
-          class="info-panel"
-          id="privacy-panel"
-          role="tabpanel"
-          aria-labelledby="privacy-tab"
-          data-info-panel="privacy"
-          hidden
-        >
-          <p data-i18n="info.privacyBody">
-            이 사이트는 별도의 서버 저장 없이 브라우저의 로컬 저장소를 사용해 테마, 언어, 설정 상태만 보관합니다.
-          </p>
-        </div>
-        <div
-          class="info-panel"
-          id="copyright-panel"
-          role="tabpanel"
-          aria-labelledby="copyright-tab"
-          data-info-panel="copyright"
-          hidden
-        >
-          <p data-i18n="info.copyrightBody">
-            © 2026 Profile Site. 모든 프로필 문구, 이미지, 구성 요소의 권리는 해당 소유자에게 있습니다.
-          </p>
-        </div>
-      </footer>
     </main>
     <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
       <button type="button" data-scroll-to="top" aria-label="맨 위로 이동" data-i18n-aria-label="aria.scrollTop">
@@ -669,6 +594,6 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260531-mobile-cleanup" defer></script>
+    <script src="../script.js?v=20260531-footer-cleanup" defer></script>
   </body>
 </html>

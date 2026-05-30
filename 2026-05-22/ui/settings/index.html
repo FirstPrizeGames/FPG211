@@ -48,7 +48,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260530-home-redesign" />
+    <link rel="stylesheet" href="../styles.css?v=20260530-settings-console" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -86,15 +86,33 @@
       <section class="settings-hero">
         <div class="settings-copy">
           <p class="eyebrow" data-i18n="nav.settings">Settings</p>
-          <h1 data-i18n="settings.title">프로필 설정</h1>
+          <h1 data-i18n="settings.title">설정 관리 콘솔</h1>
           <p data-i18n="settings.lead">
-            공개 정보, 알림, 표시 방식을 차분하게 관리할 수 있는 개인 프로필 설정 화면입니다.
+            공개 상태, 표시 방식, 성능, 저장소 설정을 한 화면에서 관리합니다.
           </p>
+        </div>
+        <div class="settings-overview" aria-label="설정 상태 요약" data-i18n-aria-label="aria.settingsOverview">
+          <div>
+            <span data-i18n="settings.overviewProfile">Profile</span>
+            <strong data-i18n="settings.overviewProfileValue">Public</strong>
+          </div>
+          <div>
+            <span data-i18n="settings.overviewTheme">Theme</span>
+            <strong data-i18n="settings.overviewThemeValue">Synced</strong>
+          </div>
+          <div>
+            <span data-i18n="settings.overviewStorage">Storage</span>
+            <strong data-storage-percent>--</strong>
+          </div>
         </div>
       </section>
 
       <section class="settings-band" aria-label="프로필 설정" data-i18n-aria-label="aria.settingsPanel">
         <aside class="settings-sidebar" aria-label="설정 분류" data-i18n-aria-label="aria.settingsCategories">
+          <div class="settings-sidebar-title">
+            <span data-i18n="settings.sidebarEyebrow">Workspace</span>
+            <strong data-i18n="settings.sidebarTitle">Controls</strong>
+          </div>
           <a class="is-active" href="#profile">
             <svg aria-hidden="true" viewBox="0 0 24 24">
               <path d="M20 21a8 8 0 0 0-16 0" />
@@ -163,6 +181,10 @@
         </aside>
 
         <div class="settings-stack">
+          <div class="settings-group-label">
+            <span data-i18n="settings.groupIdentity">Identity & access</span>
+            <p data-i18n="settings.groupIdentityBody">공개 프로필과 방문자 연결 방식을 관리합니다.</p>
+          </div>
           <article class="setting-card" id="profile">
             <div>
               <p class="eyebrow" data-i18n="settings.profileTab">Profile</p>
@@ -193,6 +215,10 @@
             ></button>
           </article>
 
+          <div class="settings-group-label">
+            <span data-i18n="settings.groupExperience">Experience</span>
+            <p data-i18n="settings.groupExperienceBody">방문자가 보는 화면의 테마, 언어, 접근성을 조정합니다.</p>
+          </div>
           <article class="setting-card" id="display">
             <div>
               <p class="eyebrow" data-i18n="settings.displayTab">Display</p>
@@ -235,21 +261,6 @@
             </div>
           </article>
 
-          <article class="setting-card" id="performance">
-            <div>
-              <p class="eyebrow" data-i18n="settings.performanceTab">Performance</p>
-              <h3 data-i18n="settings.fastRenderTitle">빠른 렌더링</h3>
-              <p data-i18n="settings.fastRenderBody">블러, 그림자, 애니메이션을 줄여 화면을 더 가볍게 표시합니다.</p>
-            </div>
-            <button
-              class="toggle"
-              type="button"
-              aria-label="빠른 렌더링 꺼짐"
-              aria-pressed="false"
-              data-toggle-key="fast-render"
-            ></button>
-          </article>
-
           <article class="setting-card" id="kid-mode">
             <div>
               <p class="eyebrow" data-i18n="settings.displayTab">Display</p>
@@ -262,6 +273,25 @@
               aria-label="Kid mode 꺼짐"
               aria-pressed="false"
               data-toggle-key="kid-mode"
+            ></button>
+          </article>
+
+          <div class="settings-group-label">
+            <span data-i18n="settings.groupSystem">System</span>
+            <p data-i18n="settings.groupSystemBody">렌더링, 저장용량, 브라우저 캐시를 관리합니다.</p>
+          </div>
+          <article class="setting-card" id="performance">
+            <div>
+              <p class="eyebrow" data-i18n="settings.performanceTab">Performance</p>
+              <h3 data-i18n="settings.fastRenderTitle">빠른 렌더링</h3>
+              <p data-i18n="settings.fastRenderBody">블러, 그림자, 애니메이션을 줄여 화면을 더 가볍게 표시합니다.</p>
+            </div>
+            <button
+              class="toggle"
+              type="button"
+              aria-label="빠른 렌더링 꺼짐"
+              aria-pressed="false"
+              data-toggle-key="fast-render"
             ></button>
           </article>
 
@@ -289,6 +319,10 @@
             </p>
           </article>
 
+          <div class="settings-group-label">
+            <span data-i18n="settings.groupBrand">Brand system</span>
+            <p data-i18n="settings.groupBrandBody">강조 컬러와 화면 밀도를 사이트 톤에 맞춥니다.</p>
+          </div>
           <article class="setting-card" id="accent">
             <div>
               <p class="eyebrow" data-i18n="settings.accentTab">Accent</p>
@@ -605,6 +639,6 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260530-home-redesign" defer></script>
+    <script src="../script.js?v=20260530-settings-console" defer></script>
   </body>
 </html>

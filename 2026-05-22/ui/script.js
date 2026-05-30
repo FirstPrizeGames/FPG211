@@ -15,7 +15,7 @@ const clearCacheCancel = document.querySelector("[data-clear-cache-cancel]");
 const clearCacheConfirm = document.querySelector("[data-clear-cache-confirm]");
 const clearCacheNote = document.querySelector("[data-clear-cache-note]");
 const storageMeter = document.querySelector("[data-storage-meter]");
-const storagePercent = document.querySelector("[data-storage-percent]");
+const storagePercents = [...document.querySelectorAll("[data-storage-percent]")];
 const storageBar = document.querySelector("[data-storage-bar]");
 const storageUsage = document.querySelector("[data-storage-usage]");
 const shareLinkButton = document.querySelector("[data-share-link]");
@@ -168,6 +168,7 @@ const translations = {
     "aria.faq": "자주 묻는 질문",
     "aria.settingsPanel": "프로필 설정",
     "aria.settingsCategories": "설정 분류",
+    "aria.settingsOverview": "설정 상태 요약",
     "aria.themeMode": "테마 모드 선택",
     "aria.language": "언어 선택",
     "aria.accent": "강조 컬러 선택",
@@ -306,9 +307,24 @@ const translations = {
     "feedback.warningBody": "Google Forms가 새 페이지에서 열립니다. 이름이나 연락처 같은 개인정보는 필요한 경우에만 입력해 주세요.",
     "feedback.cancel": "취소",
     "feedback.continue": "계속하기",
-    "settings.title": "프로필 설정",
+    "settings.title": "설정 관리 콘솔",
     "settings.lead":
-      "공개 정보, 알림, 표시 방식을 차분하게 관리할 수 있는 개인 프로필 설정 화면입니다.",
+      "공개 상태, 표시 방식, 성능, 저장소 설정을 한 화면에서 관리합니다.",
+    "settings.overviewProfile": "Profile",
+    "settings.overviewProfileValue": "Public",
+    "settings.overviewTheme": "Theme",
+    "settings.overviewThemeValue": "Synced",
+    "settings.overviewStorage": "Storage",
+    "settings.sidebarEyebrow": "Workspace",
+    "settings.sidebarTitle": "Controls",
+    "settings.groupIdentity": "Identity & access",
+    "settings.groupIdentityBody": "공개 프로필과 방문자 연결 방식을 관리합니다.",
+    "settings.groupExperience": "Experience",
+    "settings.groupExperienceBody": "방문자가 보는 화면의 테마, 언어, 접근성을 조정합니다.",
+    "settings.groupSystem": "System",
+    "settings.groupSystemBody": "렌더링, 저장용량, 브라우저 캐시를 관리합니다.",
+    "settings.groupBrand": "Brand system",
+    "settings.groupBrandBody": "강조 컬러와 화면 밀도를 사이트 톤에 맞춥니다.",
     "settings.profileTab": "Profile",
     "settings.privacyTab": "Privacy",
     "settings.displayTab": "Display",
@@ -665,6 +681,7 @@ const translations = {
     "aria.faq": "Frequently asked questions",
     "aria.settingsPanel": "Profile settings",
     "aria.settingsCategories": "Settings categories",
+    "aria.settingsOverview": "Settings status summary",
     "aria.themeMode": "Theme mode selection",
     "aria.language": "Language selection",
     "aria.accent": "Accent color selection",
@@ -803,9 +820,24 @@ const translations = {
     "feedback.warningBody": "Google Forms will open on a new page. Only enter personal information such as your name or contact details if it is necessary.",
     "feedback.cancel": "Cancel",
     "feedback.continue": "Continue",
-    "settings.title": "Profile settings",
+    "settings.title": "Settings management console",
     "settings.lead":
-      "Manage public information, notifications, display mode, and language in one calm profile settings screen.",
+      "Manage public status, display behavior, performance, and storage settings from one screen.",
+    "settings.overviewProfile": "Profile",
+    "settings.overviewProfileValue": "Public",
+    "settings.overviewTheme": "Theme",
+    "settings.overviewThemeValue": "Synced",
+    "settings.overviewStorage": "Storage",
+    "settings.sidebarEyebrow": "Workspace",
+    "settings.sidebarTitle": "Controls",
+    "settings.groupIdentity": "Identity & access",
+    "settings.groupIdentityBody": "Manage the public profile and how visitors connect with you.",
+    "settings.groupExperience": "Experience",
+    "settings.groupExperienceBody": "Adjust theme, language, and accessibility for visitors.",
+    "settings.groupSystem": "System",
+    "settings.groupSystemBody": "Manage rendering, storage usage, and browser cache.",
+    "settings.groupBrand": "Brand system",
+    "settings.groupBrandBody": "Match accent color and display density to the site tone.",
     "settings.profileTab": "Profile",
     "settings.privacyTab": "Privacy",
     "settings.displayTab": "Display",
@@ -1610,7 +1642,9 @@ const updateStorageEstimate = async () => {
 
   if (!navigator.storage?.estimate) {
     storageMeter.classList.add("is-unsupported");
-    if (storagePercent) storagePercent.textContent = "--";
+    storagePercents.forEach((storagePercent) => {
+      storagePercent.textContent = "--";
+    });
     if (storageUsage) storageUsage.textContent = translate("settings.storageUsageUnsupported");
     if (storageBar) storageBar.style.transform = "scaleX(0)";
     return;
@@ -1621,7 +1655,9 @@ const updateStorageEstimate = async () => {
   const quota = estimate.quota || 0;
   const percent = quota > 0 ? Math.min((usage / quota) * 100, 100) : 0;
 
-  if (storagePercent) storagePercent.textContent = `${percent.toFixed(percent < 1 ? 2 : 1)}%`;
+  storagePercents.forEach((storagePercent) => {
+    storagePercent.textContent = `${percent.toFixed(percent < 1 ? 2 : 1)}%`;
+  });
   if (storageUsage) storageUsage.textContent = `${formatBytes(usage)} / ${formatBytes(quota)}`;
   if (storageBar) storageBar.style.transform = `scaleX(${Math.max(percent / 100, usage > 0 ? 0.02 : 0)})`;
 };

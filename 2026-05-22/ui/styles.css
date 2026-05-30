@@ -2293,17 +2293,81 @@ h3 {
   color: var(--muted);
 }
 
+.settings-copy {
+  display: grid;
+  align-content: end;
+  gap: 16px;
+}
+
 .settings-copy p {
-  max-width: 640px;
-  margin: 18px 0 0;
+  max-width: 720px;
+  margin: 0;
   color: var(--muted);
-  font-size: clamp(18px, 2.4vw, 22px);
+  font-size: clamp(18px, 2.2vw, 22px);
+  line-height: 1.48;
+}
+
+.settings-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 440px);
+  gap: clamp(24px, 5vw, 64px);
+  align-items: stretch;
+  min-height: 360px;
+  margin-top: 16px;
+  padding: clamp(32px, 6vw, 64px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 11%, transparent), transparent 52%),
+    var(--card-bg-strong);
+}
+
+.settings-hero h1 {
+  max-width: 780px;
+}
+
+.settings-overview {
+  display: grid;
+  gap: 10px;
+  align-content: end;
+}
+
+.settings-overview div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  min-height: 74px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-solid);
+}
+
+.settings-overview span,
+.settings-sidebar-title span,
+.settings-group-label span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.settings-overview strong {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 900;
 }
 
 .settings-band {
   display: grid;
-  grid-template-columns: 240px minmax(0, 1fr);
-  gap: clamp(24px, 5vw, 56px);
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+  gap: 0;
+  margin-top: clamp(28px, 5vw, 56px);
+  overflow: clip;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-solid);
 }
 
 .settings-sidebar {
@@ -2311,7 +2375,26 @@ h3 {
   top: 98px;
   align-self: start;
   display: grid;
-  gap: 8px;
+  align-content: start;
+  gap: 4px;
+  min-height: 100%;
+  padding: 18px;
+  border-right: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel-solid) 76%, var(--soft));
+}
+
+.settings-sidebar-title {
+  display: grid;
+  gap: 5px;
+  padding: 2px 8px 14px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 8px;
+}
+
+.settings-sidebar-title strong {
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.1;
 }
 
 .settings-sidebar a {
@@ -2320,12 +2403,13 @@ h3 {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 14px;
+  min-height: 42px;
+  padding: 10px 11px;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 6px;
   color: var(--muted);
-  font-size: 14px;
-  font-weight: 750;
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .settings-sidebar svg {
@@ -2341,36 +2425,73 @@ h3 {
 
 .settings-sidebar a:hover,
 .settings-sidebar a.is-active {
-  border-color: var(--line);
-  background: var(--pill-bg);
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+  background: color-mix(in srgb, var(--accent) 10%, var(--pill-bg));
   color: var(--ink);
 }
 
 .settings-stack {
   display: grid;
-  gap: calc(12px * var(--density-gap));
+  gap: 0;
+  padding: clamp(18px, 3vw, 30px);
+}
+
+.settings-group-label {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+  padding: 24px 2px 12px;
+}
+
+.settings-group-label:first-child {
+  padding-top: 0;
+}
+
+.settings-group-label p {
+  max-width: 680px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .setting-card {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(190px, auto);
+  gap: 24px;
   align-items: center;
-  min-height: 118px;
-  padding: calc(clamp(20px, 3vw, 28px) * var(--density-card));
+  min-height: 96px;
+  padding: calc(clamp(18px, 2.4vw, 24px) * var(--density-card));
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 0;
   background: var(--card-bg);
 }
 
+.setting-card + .setting-card {
+  border-top: 0;
+}
+
+.settings-group-label + .setting-card {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.setting-card:has(+ .settings-group-label),
+.settings-stack > .setting-card:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
 .setting-card h3 {
-  font-size: clamp(20px, 2.4vw, 26px);
+  font-size: clamp(19px, 2vw, 24px);
 }
 
 .setting-card p {
   max-width: 620px;
-  margin: 10px 0 0;
+  margin: 8px 0 0;
   color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .toggle {
@@ -2458,8 +2579,8 @@ h3 {
   min-width: 180px;
   padding: 4px;
   border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--segment-bg);
+  border-radius: 8px;
+  background: var(--panel-solid);
 }
 
 .theme-segment {
@@ -2474,7 +2595,7 @@ h3 {
   overflow: hidden;
   min-height: 36px;
   border: 0;
-  border-radius: 999px;
+  border-radius: 6px;
   background: transparent;
   color: var(--muted);
   cursor: pointer;
@@ -2488,6 +2609,7 @@ h3 {
 .density-segment button.is-active {
   background: var(--ink);
   color: var(--bg);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--ink) 14%, transparent);
 }
 
 .density-segment {
@@ -2512,7 +2634,7 @@ h3 {
   overflow: hidden;
   padding: 0 12px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 8px;
   background: var(--panel-solid);
   color: var(--ink);
   cursor: pointer;
@@ -2647,6 +2769,7 @@ h3 {
   border-color: var(--line);
   background: var(--panel-solid);
   color: var(--ink);
+  min-width: 160px;
 }
 
 .cache-button:hover {
@@ -3416,6 +3539,19 @@ h3 {
     grid-template-columns: 1fr;
   }
 
+  .settings-hero {
+    min-height: auto;
+    padding: 24px;
+  }
+
+  .settings-overview {
+    align-content: start;
+  }
+
+  .settings-overview div {
+    min-height: 62px;
+  }
+
   .home-tabs {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3526,8 +3662,20 @@ h3 {
     gap: 8px;
     max-width: 100%;
     overflow-x: auto;
-    padding-bottom: 4px;
+    min-height: 0;
+    padding: 12px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
     scrollbar-width: thin;
+  }
+
+  .settings-sidebar-title {
+    flex: 0 0 auto;
+    min-width: 120px;
+    padding: 6px 12px 6px 4px;
+    border-right: 1px solid var(--line);
+    border-bottom: 0;
+    margin: 0 2px 0 0;
   }
 
   .settings-sidebar a {
@@ -3540,8 +3688,13 @@ h3 {
   }
 
   .setting-card {
+    grid-template-columns: 1fr;
     gap: 16px;
     min-height: 0;
+  }
+
+  .settings-stack {
+    padding: 14px;
   }
 
   .setting-card > .toggle,

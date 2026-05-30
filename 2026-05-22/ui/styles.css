@@ -662,8 +662,10 @@ summary {
 
 .nav-links a {
   position: relative;
-  display: inline-grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   overflow: hidden;
   min-width: 0;
   min-height: 40px;
@@ -676,6 +678,24 @@ summary {
   text-align: center;
   white-space: nowrap;
   transition: background 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.nav-links a > span,
+.nav-links a > svg {
+  position: relative;
+  z-index: 1;
+}
+
+.nav-icon {
+  display: none;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .nav-links a.nav-feedback-link {
@@ -693,6 +713,77 @@ summary {
   background:
     linear-gradient(135deg, #ff5416 0%, #ff8a2a 100%);
   color: #ffffff;
+}
+
+@media (min-width: 1024px) {
+  [data-nav-layout="sidebar"] .shell {
+    width: min(1240px, calc(100% - 32px));
+    padding-left: 248px;
+  }
+
+  [data-nav-layout="sidebar"] .topbar {
+    position: fixed;
+    top: 16px;
+    left: max(16px, env(safe-area-inset-left));
+    bottom: 16px;
+    width: 220px;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 22px;
+    overflow: visible;
+  }
+
+  [data-nav-layout="sidebar"] .brand-logo {
+    display: none;
+  }
+
+  [data-nav-layout="sidebar"] .nav-links {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 6px;
+    width: 100%;
+    padding: 6px;
+    border-radius: 18px;
+    overflow: visible;
+  }
+
+  [data-nav-layout="sidebar"] .nav-links a {
+    justify-content: flex-start;
+    gap: 12px;
+    min-height: 52px;
+    width: 100%;
+    padding: 0 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  [data-nav-layout="sidebar"] .nav-links a:not(.nav-feedback-link) .nav-icon {
+    display: block;
+    width: 25px;
+    height: 25px;
+    stroke-width: 2.15;
+  }
+
+  [data-nav-layout="sidebar"] .nav-links a.nav-feedback-link {
+    justify-content: center;
+    margin-top: auto;
+    min-width: 0;
+    text-align: center;
+  }
+
+  [data-nav-layout="sidebar"] .nav-links a:hover,
+  [data-nav-layout="sidebar"] .nav-links a.is-active {
+    transform: none;
+  }
 }
 
 .brand-logo::before,

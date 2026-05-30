@@ -341,6 +341,7 @@ const translations = {
     "settings.profileTab": "Profile",
     "settings.privacyTab": "Privacy",
     "settings.displayTab": "Display",
+    "settings.navigationTab": "Navigation",
     "settings.languageTab": "Language",
     "settings.performanceTab": "Performance",
     "settings.storageTab": "Storage",
@@ -354,6 +355,8 @@ const translations = {
     "settings.profileOff": "프로필 공개 꺼짐",
     "settings.contactOn": "연락처 표시 켜짐",
     "settings.contactOff": "연락처 표시 꺼짐",
+    "settings.sidebarNavOn": "사이드바 내비게이션 켜짐",
+    "settings.sidebarNavOff": "사이드바 내비게이션 꺼짐",
     "settings.fastRenderOn": "빠른 렌더링 켜짐",
     "settings.fastRenderOff": "빠른 렌더링 꺼짐",
     "settings.kidModeOn": "Kid mode 켜짐",
@@ -365,6 +368,8 @@ const translations = {
     "settings.lightsOff": "밝기 끄기",
     "settings.themeLight": "라이트",
     "settings.themeDark": "다크",
+    "settings.navigationTitle": "사이드바 내비게이션",
+    "settings.navigationBody": "데스크톱 화면에서 상단 메뉴를 왼쪽 세로 버튼 리스트로 표시합니다.",
     "settings.languageTitle": "언어",
     "settings.languageBody": "프로필과 설정 화면에 표시되는 언어를 선택합니다.",
     "settings.fastRenderTitle": "빠른 렌더링",
@@ -877,6 +882,7 @@ const translations = {
     "settings.profileTab": "Profile",
     "settings.privacyTab": "Privacy",
     "settings.displayTab": "Display",
+    "settings.navigationTab": "Navigation",
     "settings.languageTab": "Language",
     "settings.performanceTab": "Performance",
     "settings.storageTab": "Storage",
@@ -892,6 +898,8 @@ const translations = {
     "settings.profileOff": "Public profile off",
     "settings.contactOn": "Contact visibility on",
     "settings.contactOff": "Contact visibility off",
+    "settings.sidebarNavOn": "Sidebar navigation on",
+    "settings.sidebarNavOff": "Sidebar navigation off",
     "settings.fastRenderOn": "Fast rendering on",
     "settings.fastRenderOff": "Fast rendering off",
     "settings.kidModeOn": "Kid mode on",
@@ -903,6 +911,8 @@ const translations = {
     "settings.lightsOff": "Lights Off",
     "settings.themeLight": "Light",
     "settings.themeDark": "Dark",
+    "settings.navigationTitle": "Sidebar navigation",
+    "settings.navigationBody": "Show the desktop menu as a vertical button list on the left side.",
     "settings.languageTitle": "Language",
     "settings.languageBody": "Choose the language used across the profile and settings pages.",
     "settings.fastRenderTitle": "Fast rendering",
@@ -1239,8 +1249,8 @@ const siteSearchIndex = [
     bodyKey: "search.settingsBody",
     url: "/settings",
     keywords: {
-      ko: "settings 설정 테마 언어 강조 컬러 우클릭 메뉴 캐시 저장용량 kid mode",
-      en: "settings theme language accent color context menu cache storage kid mode",
+      ko: "settings 설정 테마 언어 강조 컬러 우클릭 메뉴 캐시 저장용량 kid mode 사이드바 내비게이션",
+      en: "settings theme language accent color context menu cache storage kid mode sidebar navigation",
     },
   },
   {
@@ -1299,6 +1309,7 @@ const getToggleLabelKey = (key, isOn) => {
   const labels = {
     "profile-public": isOn ? "settings.profileOn" : "settings.profileOff",
     "contact-visible": isOn ? "settings.contactOn" : "settings.contactOff",
+    "sidebar-nav": isOn ? "settings.sidebarNavOn" : "settings.sidebarNavOff",
     "fast-render": isOn ? "settings.fastRenderOn" : "settings.fastRenderOff",
     "kid-mode": isOn ? "settings.kidModeOn" : "settings.kidModeOff",
     "custom-context-menu": isOn ? "settings.contextMenuOn" : "settings.contextMenuOff",
@@ -1317,6 +1328,10 @@ const updateSettingToggle = (button, isOn) => {
 
   if (button.dataset.toggleKey === "kid-mode") {
     document.documentElement.dataset.kidMode = isOn ? "true" : "false";
+  }
+
+  if (button.dataset.toggleKey === "sidebar-nav") {
+    document.documentElement.dataset.navLayout = isOn ? "sidebar" : "top";
   }
 
   const labelKey = getToggleLabelKey(button.dataset.toggleKey, isOn);
@@ -1339,6 +1354,9 @@ const setupSettingToggles = () => {
       }
       if (button.dataset.toggleKey === "kid-mode") {
         document.documentElement.dataset.kidMode = nextValue ? "true" : "false";
+      }
+      if (button.dataset.toggleKey === "sidebar-nav") {
+        document.documentElement.dataset.navLayout = nextValue ? "sidebar" : "top";
       }
       updateSettingToggle(button, nextValue);
     });
@@ -1639,6 +1657,7 @@ const clearSiteCache = () => {
     "profile-fast-render",
     "profile-setting-profile-public",
     "profile-setting-contact-visible",
+    "profile-setting-sidebar-nav",
     "profile-setting-fast-render",
     "profile-setting-kid-mode",
     "profile-setting-custom-context-menu",
@@ -1648,6 +1667,7 @@ const clearSiteCache = () => {
   document.documentElement.dataset.accent = "neutral";
   document.documentElement.dataset.fastRender = "false";
   document.documentElement.dataset.kidMode = "false";
+  document.documentElement.dataset.navLayout = "sidebar";
   setLanguage("en");
   setDensity("comfortable");
   setCurrency("usd");
@@ -2013,6 +2033,13 @@ const addRipple = (event) => {
   const target = event.currentTarget;
   const rect = target.getBoundingClientRect();
   const ripple = document.createElement("span");
+  const isSidebarNav =
+    target.matches(".nav-links a") &&
+    document.documentElement.dataset.navLayout === "sidebar" &&
+    window.matchMedia("(min-width: 1024px)").matches;
+
+  if (isSidebarNav) return;
+
   const rippleSize = Math.hypot(rect.width, rect.height) * 2.45;
 
   ripple.className = "ripple";

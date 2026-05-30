@@ -4100,11 +4100,22 @@ h3 {
     display: grid;
     place-items: center;
     min-width: 0;
+    width: 100%;
     min-height: 44px;
     padding: 0 10px;
     border-radius: 12px;
     line-height: 1.15;
     white-space: normal;
+    transform: none;
+  }
+
+  .nav-links a::before {
+    display: none;
+  }
+
+  .nav-links a:hover,
+  .nav-links a.is-active {
+    transform: none;
   }
 
   .nav-links a:last-child:nth-child(odd) {
@@ -4485,7 +4496,7 @@ h3 {
   }
 
   .nav-links a {
-    flex: 1;
+    width: 100%;
   }
 
   .button {

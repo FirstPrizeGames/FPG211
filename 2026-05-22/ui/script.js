@@ -2147,8 +2147,11 @@ const addRipple = (event) => {
     target.matches(".nav-links a") &&
     document.documentElement.dataset.navLayout === "sidebar" &&
     window.matchMedia("(min-width: 1024px)").matches;
+  const isMobileNav =
+    target.matches(".nav-links a") &&
+    window.matchMedia("(max-width: 760px), (hover: none), (pointer: coarse)").matches;
 
-  if (isSidebarNav) return;
+  if (isSidebarNav || isMobileNav) return;
 
   const rippleSize = Math.hypot(rect.width, rect.height) * 2.45;
 

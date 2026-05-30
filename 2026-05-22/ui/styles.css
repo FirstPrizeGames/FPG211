@@ -2699,7 +2699,7 @@ h3 {
   position: relative;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 20px minmax(0, 1fr) auto;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
   min-height: 50px;
@@ -2733,10 +2733,11 @@ h3 {
 }
 
 .context-menu svg {
-  width: 20px;
-  height: 20px;
+  justify-self: center;
+  width: 22px;
+  height: 22px;
   stroke: currentColor;
-  stroke-width: 2.15;
+  stroke-width: 2.2;
   stroke-linecap: round;
   stroke-linejoin: round;
   fill: none;
@@ -3014,7 +3015,7 @@ h3 {
 
 @media (max-width: 760px) {
   .context-menu button {
-    grid-template-columns: 20px minmax(0, 1fr);
+    grid-template-columns: 24px minmax(0, 1fr);
   }
 
   .context-shortcut {

@@ -2364,7 +2364,7 @@ h3 {
   grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
   gap: 0;
   margin-top: clamp(28px, 5vw, 56px);
-  overflow: clip;
+  overflow: visible;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--panel-solid);
@@ -2456,6 +2456,7 @@ h3 {
 }
 
 .setting-card {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(190px, auto);
   gap: 24px;
@@ -2619,8 +2620,13 @@ h3 {
 
 .accent-select {
   position: relative;
+  z-index: 5;
   min-width: 230px;
   justify-self: end;
+}
+
+.accent-select.is-open {
+  z-index: 80;
 }
 
 .accent-trigger {
@@ -2679,7 +2685,7 @@ h3 {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  z-index: 20;
+  z-index: 90;
   display: grid;
   gap: 4px;
   width: min(250px, 80vw);

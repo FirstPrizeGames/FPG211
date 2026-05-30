@@ -1041,6 +1041,10 @@ h3 {
   gap: 10px;
 }
 
+.hero-actions {
+  gap: 12px;
+}
+
 .button {
   appearance: none;
   -webkit-appearance: none;
@@ -1084,6 +1088,66 @@ h3 {
   border-color: #ffffff;
   background: #ffffff;
   color: #141414;
+}
+
+.hero-button {
+  min-height: 56px;
+  gap: 12px;
+  padding: 0 20px 0 12px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 900;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.hero-button:hover {
+  transform: translateY(-2px);
+}
+
+.hero-button-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+}
+
+.hero-button-icon svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hero-button-contact {
+  box-shadow: 0 18px 42px rgba(255, 255, 255, 0.2);
+}
+
+.hero-button-contact .hero-button-icon {
+  background: #141414;
+  color: #ffffff;
+}
+
+.hero-button-work {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  backdrop-filter: blur(14px);
+}
+
+.hero-button-work .hero-button-icon {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.hero-button-work:hover {
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .hero-note {

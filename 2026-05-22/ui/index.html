@@ -49,7 +49,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260530-accent-dropdown" />
+    <link rel="stylesheet" href="styles.css?v=20260530-home-cta" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -106,13 +106,24 @@
               <strong data-i18n="home.buildValue">Unity Game Dev</strong>
             </div>
           </div>
-          <div class="actions">
-            <button class="button primary" type="button" data-go-url="#home-tabs" data-home-open="contact" aria-label="연락 섹션으로 이동" data-i18n-aria-label="aria.contactSection">
-              <span aria-hidden="true">↗</span>
+          <div class="actions hero-actions">
+            <button class="button primary hero-button hero-button-contact" type="button" data-go-url="#home-tabs" data-home-open="contact" aria-label="연락 섹션으로 이동" data-i18n-aria-label="aria.contactSection">
+              <span class="hero-button-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M7 17 17 7" />
+                  <path d="M9 7h8v8" />
+                </svg>
+              </span>
               <span data-i18n="nav.contact">Contact</span>
             </button>
-            <button class="button ghost" type="button" data-go-url="#home-tabs" data-home-open="work" aria-label="작업 섹션으로 이동" data-i18n-aria-label="aria.workSection">
-              <span aria-hidden="true">⌁</span>
+            <button class="button ghost hero-button hero-button-work" type="button" data-go-url="#home-tabs" data-home-open="work" aria-label="작업 섹션으로 이동" data-i18n-aria-label="aria.workSection">
+              <span class="hero-button-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="m8 9-4 3 4 3" />
+                  <path d="m16 9 4 3-4 3" />
+                  <path d="m14 5-4 14" />
+                </svg>
+              </span>
               <span data-i18n="home.viewWork">View Work</span>
             </button>
           </div>
@@ -390,6 +401,6 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="script.js?v=20260530-accent-dropdown" defer></script>
+    <script src="script.js?v=20260530-home-cta" defer></script>
   </body>
 </html>

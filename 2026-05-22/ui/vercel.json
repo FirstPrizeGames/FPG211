@@ -25,6 +25,14 @@
     {
       "source": "/feedback",
       "destination": "/feedback/index.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy/index.html"
+    },
+    {
+      "source": "/license",
+      "destination": "/license/index.html"
     }
   ],
   "headers": [

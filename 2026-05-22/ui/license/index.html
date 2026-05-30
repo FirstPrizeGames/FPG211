@@ -1,0 +1,137 @@
+﻿<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open Source License · Emergency Responder Profile</title>
+    <meta
+      name="description"
+      content="Open source license information for the profile site and its plain HTML, CSS, and JavaScript structure."
+    />
+    <meta name="theme-color" content="#efefec" />
+    <meta property="og:title" content="Open Source License · Emergency Responder Profile" />
+    <meta
+      property="og:description"
+      content="Review the open source license information for this profile site."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/assets/profile-hero.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Open Source License · Emergency Responder Profile" />
+    <meta
+      name="twitter:description"
+      content="Review the open source license information for this profile site."
+    />
+    <meta name="twitter:image" content="/assets/profile-hero.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <script>
+      (() => {
+        const savedTheme = localStorage.getItem("profile-theme");
+        const prefersDark = matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          savedTheme || (prefersDark ? "dark" : "light");
+        document.documentElement.lang =
+          localStorage.getItem("profile-language") || "en";
+        document.documentElement.dataset.accent =
+          localStorage.getItem("profile-accent") || "neutral";
+        document.documentElement.dataset.density =
+          localStorage.getItem("profile-density") || "comfortable";
+        if (
+          localStorage.getItem("profile-fast-render") === "true" ||
+          localStorage.getItem("profile-setting-fast-render") === "true"
+        ) {
+          document.documentElement.dataset.fastRender = "true";
+        }
+        if (localStorage.getItem("profile-setting-kid-mode") === "true") {
+          document.documentElement.dataset.kidMode = "true";
+        }
+        document.documentElement.dataset.navLayout =
+          localStorage.getItem("profile-setting-sidebar-nav") === "false" ? "top" : "sidebar";
+      })();
+    </script>
+    <link rel="stylesheet" href="../styles.css?v=20260530-policy-pages" />
+  </head>
+  <body>
+    <div class="loading-bar" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
+    <div class="adblock-notice" data-adblock-notice hidden>
+      <p data-i18n="adblock.message">
+        광고 차단기가 일부 사이트 기능을 제한할 수 있습니다. 문제가 보이면 이 사이트를 허용 목록에 추가해 주세요.
+      </p>
+      <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
+    </div>
+    <main class="shell">
+      <nav class="topbar" aria-label="오픈소스 라이선스 메뉴" data-i18n-aria-label="aria.licenseMenu">
+        <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
+          <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
+          <span>FP</span>
+        </a>
+        <button class="mobile-menu-button" type="button" aria-expanded="false" data-mobile-menu-toggle>
+          <span data-i18n="nav.menu">Menu</span>
+          <svg class="mobile-menu-icon" aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </button>
+        <div class="nav-links" data-mobile-menu>
+          <a href="/"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg><span data-i18n="nav.home">Home</span></a>
+          <a href="/Creator"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z" /><path d="m3 14 9 5 9-5" /><path d="m3 11 9 5 9-5" /></svg><span data-i18n="nav.creator">Creator</span></a>
+          <a href="/Bio"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0" /><circle cx="12" cy="7" r="4" /></svg><span data-i18n="nav.bio">Bio</span></a>
+          <a href="/FAQ"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 1 1 5.8 1c-.5.9-1.4 1.3-2.1 1.9-.6.5-.8.9-.8 2.1" /><path d="M12 17h.01" /></svg><span data-i18n="nav.faq">FAQ</span></a>
+          <a href="/Pricing"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 10h18" /><path d="M7 15h4" /></svg><span data-i18n="nav.pricing">Pricing</span></a>
+          <a href="/settings"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3h.1A1.7 1.7 0 0 0 10 3.1V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1A1.7 1.7 0 0 0 20.9 10h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" /></svg><span data-i18n="nav.settings">Settings</span></a>
+          <a href="/privacy"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-5" /></svg><span data-i18n="nav.privacy">Privacy Policy</span></a>
+          <a class="is-active" href="/license"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z" /><path d="M14 3v6h5" /><path d="M9 14h6" /><path d="M9 18h4" /><path d="M5 7v14" /></svg><span data-i18n="nav.license">Open Source License</span></a>
+          <a class="nav-feedback-link" href="/feedback" data-i18n="nav.feedback">Feedback</a>
+        </div>
+        <aside class="legal-summary" aria-label="라이선스 요약" data-i18n-aria-label="aria.licenseSummary">
+          <div>
+            <span data-i18n="license.summaryCode">Code</span>
+            <strong data-i18n="license.summaryCodeValue">HTML/CSS/JS</strong>
+          </div>
+          <div>
+            <span data-i18n="license.summaryAssets">Assets</span>
+            <strong data-i18n="license.summaryAssetsValue">Owner reserved</strong>
+          </div>
+          <div>
+            <span data-i18n="license.summaryFonts">Fonts</span>
+            <strong data-i18n="license.summaryFontsValue">System license</strong>
+          </div>
+        </aside>
+      </section>
+
+      <section class="legal-grid" aria-label="라이선스 세부 정보" data-i18n-aria-label="aria.licenseDetails">
+        <article class="legal-card legal-card-wide">
+          <span>MIT</span>
+          <h2 data-i18n="license.mitTitle">코드 라이선스</h2>
+          <p data-i18n="license.mitBody">
+            이 사이트의 기본 HTML, CSS, JavaScript 구조는 MIT 스타일의 오픈소스 라이선스로 재사용할 수 있도록 정리할 수 있습니다.
+          </p>
+        </article>
+        <article class="legal-card">
+          <span>01</span>
+          <h2 data-i18n="license.assetsTitle">이미지와 로고</h2>
+          <p data-i18n="license.assetsBody">
+            로고, 프로필 이미지, 브랜드 이름, 개인 문구는 사이트 소유자의 자산으로 별도 허가 없이 재배포하지 않는 것을 기준으로 합니다.
+          </p>
+        </article>
+        <article class="legal-card">
+          <span>02</span>
+          <h2 data-i18n="license.fontsTitle">시스템 글꼴</h2>
+          <p data-i18n="license.fontsBody">
+            사이트는 외부 폰트 파일 없이 운영체제의 시스템 글꼴을 사용하며, 각 운영체제의 라이선스를 따릅니다.
+          </p>
+        </article>
+        <article class="legal-card">
+          <span>03</span>
+          <h2 data-i18n="license.noticeTitle">고지 유지</h2>
+          <p data-i18n="license.noticeBody">
+            코드를 공개하거나 재사용할 때는 원 저작권 고지와 라이선스 안내를 함께 유지하는 것을 권장합니다.
+          </p>
+        </article>
+      </section>
+    </main>
+    <script src="../script.js?v=20260530-policy-pages" defer></script>
+  </body>
+</html>

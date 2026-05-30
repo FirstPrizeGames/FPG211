@@ -66,7 +66,6 @@ let contextClipboardCheckId = 0;
 let contextTargetElement = null;
 const highlightTargets = [
   ...document.querySelectorAll(
-    ".brand-logo, .nav-links a, .mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .share-socials button, .scroll-actions button, .toggle",
     ".brand-logo, .nav-links a, .mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .share-socials button, .scroll-actions button, .context-menu button, .toggle",
   ),
 ];
@@ -88,6 +87,7 @@ const translations = {
     "nav.settings": "Settings",
     "nav.feedback": "Feedback",
     "nav.menu": "메뉴",
+    "context.close": "닫기",
     "context.copy": "페이지 링크 복사",
     "context.copySelection": "선택한 텍스트 복사",
     "context.copyTitle": "페이지 제목 복사",
@@ -557,6 +557,7 @@ const translations = {
     "nav.settings": "Settings",
     "nav.feedback": "Feedback",
     "nav.menu": "Menu",
+    "context.close": "Close",
     "context.copy": "Copy page link",
     "context.copySelection": "Copy selected text",
     "context.copyTitle": "Copy page title",
@@ -1774,6 +1775,8 @@ const pasteClipboardText = async () => {
 
 const handleContextMenuAction = async (action) => {
   closeContextMenu();
+
+  if (action === "close") return;
 
   if (action === "copy") {
     await copyPageLink();

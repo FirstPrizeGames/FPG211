@@ -43,6 +43,8 @@ const scrollProgress = document.querySelector(".scroll-progress");
 const scrollActions = document.querySelector("[data-scroll-actions]");
 const scrollActionButtons = [...document.querySelectorAll("[data-scroll-to]")];
 const actionButtons = [...document.querySelectorAll("[data-go-url]")];
+const contextMenu = document.querySelector("[data-context-menu]");
+const contextMenuActions = [...document.querySelectorAll("[data-context-action]")];
 const mobileMenuButton = document.querySelector("[data-mobile-menu-toggle]");
 const mobileMenu = document.querySelector("[data-mobile-menu]");
 const brandLogoImage = document.querySelector(".brand-logo img");
@@ -55,6 +57,7 @@ let pendingSubscribeUrl = "";
 const highlightTargets = [
   ...document.querySelectorAll(
     ".brand-logo, .nav-links a, .mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .share-socials button, .scroll-actions button, .toggle",
+    ".brand-logo, .nav-links a, .mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .share-socials button, .scroll-actions button, .context-menu button, .toggle",
   ),
 ];
 const sections = navLinks
@@ -75,6 +78,10 @@ const translations = {
     "nav.settings": "Settings",
     "nav.feedback": "Feedback",
     "nav.menu": "메뉴",
+    "context.copy": "페이지 링크 복사",
+    "context.share": "공유 열기",
+    "context.top": "맨 위로 이동",
+    "context.settings": "설정 열기",
     "aria.home": "홈",
     "aria.profileMenu": "프로필 메뉴",
     "aria.creatorMenu": "Creator 메뉴",
@@ -498,6 +505,10 @@ const translations = {
     "nav.settings": "Settings",
     "nav.feedback": "Feedback",
     "nav.menu": "Menu",
+    "context.copy": "Copy page link",
+    "context.share": "Open share",
+    "context.top": "Back to top",
+    "context.settings": "Open settings",
     "aria.home": "Home",
     "aria.profileMenu": "Profile menu",
     "aria.creatorMenu": "Creator menu",
@@ -1275,6 +1286,72 @@ const closeShareDialog = () => {
   }, 170);
 };
 
+const closeContextMenu = () => {
+  if (!contextMenu || contextMenu.hidden) return;
+  contextMenu.hidden = true;
+};
+
+const isNativeContextTarget = (target) =>
+  Boolean(
+    target.closest?.(
+      "input, textarea, select, [contenteditable='true'], .share-link-field, .share-link-field *",
+    ),
+  );
+
+const showContextMenu = (event) => {
+  if (!contextMenu || isNativeContextTarget(event.target)) return;
+
+  event.preventDefault();
+  contextMenu.hidden = false;
+
+  const menuRect = contextMenu.getBoundingClientRect();
+  const margin = 10;
+  const x = Math.min(event.clientX, window.innerWidth - menuRect.width - margin);
+  const y = Math.min(event.clientY, window.innerHeight - menuRect.height - margin);
+
+  contextMenu.style.left = `${Math.max(margin, x)}px`;
+  contextMenu.style.top = `${Math.max(margin, y)}px`;
+};
+
+const copyPageLink = async () => {
+  try {
+    await navigator.clipboard.writeText(window.location.href);
+  } catch {
+    const fallback = document.createElement("textarea");
+    fallback.value = window.location.href;
+    fallback.setAttribute("readonly", "");
+    fallback.style.position = "fixed";
+    fallback.style.opacity = "0";
+    document.body.appendChild(fallback);
+    fallback.select();
+    document.execCommand?.("copy");
+    fallback.remove();
+  }
+};
+
+const handleContextMenuAction = async (action) => {
+  closeContextMenu();
+
+  if (action === "copy") {
+    await copyPageLink();
+    return;
+  }
+
+  if (action === "share") {
+    showShareDialog();
+    return;
+  }
+
+  if (action === "top") {
+    scrollPageTo("top");
+    return;
+  }
+
+  if (action === "settings") {
+    window.location.href = "/settings";
+  }
+};
+
 const addRipple = (event) => {
   if (event.button !== 0) return;
 
@@ -1638,12 +1715,20 @@ scrollActionButtons.forEach((button) => {
 actionButtons.forEach((button) => {
   button.addEventListener("click", () => goToActionUrl(button));
 });
+contextMenuActions.forEach((button) => {
+  button.addEventListener("click", () => {
+    handleContextMenuAction(button.dataset.contextAction).catch(() => {});
+  });
+});
 adblockDismiss?.addEventListener("click", () => {
   localStorage.setItem("adblock-notice-dismissed", "true");
   if (adblockNotice) adblockNotice.hidden = true;
 });
 
+document.addEventListener("contextmenu", showContextMenu);
+
 document.addEventListener("click", (event) => {
+  if (!contextMenu?.contains(event.target)) closeContextMenu();
   if (!accentSelect?.contains(event.target)) setAccentMenuOpen(false);
 
   const link = event.target.closest?.("a[href]");
@@ -1658,6 +1743,10 @@ document.addEventListener("click", (event) => {
   ) {
     showLoadingBar();
   }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeContextMenu();
 });
 
 highlightTargets.forEach((target) => {

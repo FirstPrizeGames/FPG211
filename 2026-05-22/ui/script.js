@@ -259,6 +259,8 @@ const translations = {
     "settings.fastRenderOff": "빠른 렌더링 꺼짐",
     "settings.kidModeOn": "Kid mode 켜짐",
     "settings.kidModeOff": "Kid mode 꺼짐",
+    "settings.contextMenuOn": "커스텀 우클릭 메뉴 켜짐",
+    "settings.contextMenuOff": "커스텀 우클릭 메뉴 꺼짐",
     "settings.themeTitle": "테마 모드",
     "settings.themeBody": "프로필 화면의 밝기를 라이트, 다크, 밝기 끄기 모드로 선택합니다.",
     "settings.lightsOff": "밝기 끄기",
@@ -270,6 +272,8 @@ const translations = {
     "settings.fastRenderBody": "블러, 그림자, 애니메이션을 줄여 화면을 더 가볍게 표시합니다.",
     "settings.kidModeTitle": "Kid mode",
     "settings.kidModeBody": "더 큰 글자, 또렷한 대비, 줄어든 움직임으로 화면을 편하게 표시합니다.",
+    "settings.contextMenuTitle": "커스텀 우클릭 메뉴",
+    "settings.contextMenuBody": "빠른 작업을 담은 디자인 우클릭 메뉴를 사용합니다.",
     "settings.clearCacheTitle": "브라우저 캐시 정리",
     "settings.clearCacheBody": "이 사이트에 저장된 테마, 언어, 표시 설정을 삭제하고 기본값으로 되돌립니다.",
     "settings.clearCacheButton": "캐시 정리",
@@ -688,6 +692,8 @@ const translations = {
     "settings.fastRenderOff": "Fast rendering off",
     "settings.kidModeOn": "Kid mode on",
     "settings.kidModeOff": "Kid mode off",
+    "settings.contextMenuOn": "Custom context menu on",
+    "settings.contextMenuOff": "Custom context menu off",
     "settings.themeTitle": "Theme mode",
     "settings.themeBody": "Choose a light, dark, or lights-off appearance for the profile.",
     "settings.lightsOff": "Lights Off",
@@ -699,6 +705,8 @@ const translations = {
     "settings.fastRenderBody": "Reduces blur, shadows, and animation so the interface renders more lightly.",
     "settings.kidModeTitle": "Kid mode",
     "settings.kidModeBody": "Makes the interface easier to read with larger text, stronger contrast, and reduced motion.",
+    "settings.contextMenuTitle": "Custom context menu",
+    "settings.contextMenuBody": "Use a styled right-click menu with quick actions.",
     "settings.clearCacheTitle": "Clear browser cache",
     "settings.clearCacheBody":
       "Removes this site's saved theme, language, and display preferences and restores defaults.",
@@ -1002,6 +1010,7 @@ const getToggleLabelKey = (key, isOn) => {
     "contact-visible": isOn ? "settings.contactOn" : "settings.contactOff",
     "fast-render": isOn ? "settings.fastRenderOn" : "settings.fastRenderOff",
     "kid-mode": isOn ? "settings.kidModeOn" : "settings.kidModeOff",
+    "custom-context-menu": isOn ? "settings.contextMenuOn" : "settings.contextMenuOff",
   };
 
   return labels[key];
@@ -1139,6 +1148,7 @@ const clearSiteCache = () => {
     "profile-setting-contact-visible",
     "profile-setting-fast-render",
     "profile-setting-kid-mode",
+    "profile-setting-custom-context-menu",
   ].forEach((key) => localStorage.removeItem(key));
 
   document.documentElement.dataset.theme = "light";
@@ -1299,7 +1309,13 @@ const isNativeContextTarget = (target) =>
   );
 
 const showContextMenu = (event) => {
-  if (!contextMenu || isNativeContextTarget(event.target)) return;
+  if (
+    !contextMenu ||
+    localStorage.getItem("profile-setting-custom-context-menu") === "false" ||
+    isNativeContextTarget(event.target)
+  ) {
+    return;
+  }
 
   event.preventDefault();
   contextMenu.hidden = false;

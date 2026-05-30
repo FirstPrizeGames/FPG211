@@ -48,7 +48,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260530-context-icons" />
+    <link rel="stylesheet" href="../styles.css?v=20260530-context-toggle" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -206,6 +206,21 @@
                 밝기 끄기
               </button>
             </div>
+          </article>
+
+          <article class="setting-card" id="context-menu">
+            <div>
+              <p class="eyebrow" data-i18n="settings.displayTab">Display</p>
+              <h3 data-i18n="settings.contextMenuTitle">커스텀 우클릭 메뉴</h3>
+              <p data-i18n="settings.contextMenuBody">빠른 작업을 담은 디자인 우클릭 메뉴를 사용합니다.</p>
+            </div>
+            <button
+              class="toggle is-on"
+              type="button"
+              aria-label="커스텀 우클릭 메뉴 켜짐"
+              aria-pressed="true"
+              data-toggle-key="custom-context-menu"
+            ></button>
           </article>
 
           <article class="setting-card" id="language">
@@ -542,6 +557,6 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260530-context-icons" defer></script>
+    <script src="../script.js?v=20260530-context-toggle" defer></script>
   </body>
 </html>

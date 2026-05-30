@@ -870,12 +870,15 @@ summary {
   position: relative;
   display: grid;
   align-items: end;
-  min-height: clamp(650px, 88vh, 820px);
+  min-height: clamp(680px, 88vh, 840px);
   margin-top: 16px;
+  padding: clamp(26px, 5vw, 56px);
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: var(--soft);
+  background: #121211;
+  color: #ffffff;
+  isolation: isolate;
 }
 
 .hero-media {
@@ -885,12 +888,24 @@ summary {
     var(--hero-tint),
     url("assets/profile-hero-1280.jpg") center / cover;
   transform: scale(1.01);
+  z-index: -2;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.52)),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.5), transparent 72%);
 }
 
 @supports (content-visibility: auto) {
   .content-band,
   .split-band,
   .contact-band,
+  .home-tabs-section,
   .site-info,
   .pricing-section,
   .compare-section,
@@ -906,14 +921,27 @@ summary {
 
 .profile-panel {
   position: relative;
-  width: min(560px, calc(100% - 32px));
-  margin: 0 0 28px 28px;
-  padding: clamp(24px, 4vw, 42px);
-  border: 1px solid var(--panel-border);
-  border-radius: 8px;
-  background: var(--panel);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(18px);
+  display: grid;
+  gap: clamp(18px, 3vw, 28px);
+  width: min(980px, 100%);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.profile-panel .eyebrow {
+  margin-bottom: -4px;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.profile-panel h1 {
+  max-width: 920px;
+  color: #ffffff;
+  text-wrap: balance;
 }
 
 .eyebrow {
@@ -953,18 +981,19 @@ h3 {
 }
 
 .lead {
-  max-width: 35rem;
-  margin: 0 0 28px;
-  color: var(--muted);
-  font-size: clamp(25px, 4vw, 40px);
-  line-height: 1.18;
+  max-width: 47rem;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: clamp(20px, 3vw, 31px);
+  line-height: 1.24;
 }
 
 .meta-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin: 0 0 28px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  max-width: 760px;
+  margin: 0;
 }
 
 .meta-grid div,
@@ -974,6 +1003,12 @@ h3 {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--card-bg-strong);
+}
+
+.hero .meta-grid div {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
 }
 
 .meta-grid span,
@@ -986,11 +1021,19 @@ h3 {
   text-transform: uppercase;
 }
 
+.hero .meta-grid span {
+  color: rgba(255, 255, 255, 0.68);
+}
+
 .meta-grid strong,
 .stats strong {
   display: block;
   margin-top: 8px;
   font-size: 15px;
+}
+
+.hero .meta-grid strong {
+  color: #ffffff;
 }
 
 .actions {
@@ -1032,7 +1075,42 @@ h3 {
 }
 
 .profile-panel .button.ghost {
-  color: var(--ink);
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.profile-panel .button.primary {
+  border-color: #ffffff;
+  background: #ffffff;
+  color: #141414;
+}
+
+.hero-note {
+  position: absolute;
+  right: clamp(18px, 4vw, 42px);
+  bottom: clamp(18px, 4vw, 42px);
+  display: grid;
+  gap: 5px;
+  max-width: min(320px, calc(100% - 36px));
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.32);
+  color: #ffffff;
+  backdrop-filter: blur(14px);
+}
+
+.hero-note span {
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.hero-note strong {
+  font-size: 13px;
+  line-height: 1.35;
 }
 
 .content-band,
@@ -1050,15 +1128,15 @@ h3 {
 }
 
 .home-tabs-section {
-  padding: calc(clamp(64px, 10vw, 116px) * var(--density-section)) 0 0;
+  padding: calc(clamp(64px, 9vw, 104px) * var(--density-section)) 0 0;
 }
 
 .home-tabs-header {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 20px;
-  align-items: end;
-  margin-bottom: 28px;
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.55fr);
+  gap: clamp(18px, 4vw, 46px);
+  align-items: start;
+  margin-bottom: 30px;
 }
 
 .home-tabs-header .section-heading {
@@ -1066,11 +1144,12 @@ h3 {
 }
 
 .home-tabs {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 6px;
   padding: 6px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 8px;
   background: var(--segment-bg);
 }
 
@@ -1079,11 +1158,11 @@ h3 {
   -webkit-appearance: none;
   position: relative;
   overflow: hidden;
-  min-width: 92px;
-  min-height: 42px;
+  min-width: 0;
+  min-height: 52px;
   padding: 0 18px;
   border: 0;
-  border-radius: 999px;
+  border-radius: 6px;
   background: transparent;
   color: var(--muted);
   cursor: pointer;
@@ -1091,17 +1170,22 @@ h3 {
   font-size: 14px;
   font-weight: 850;
   line-height: 1;
+  text-align: left;
 }
 
 .home-tabs button.is-active {
-  background: var(--ink);
-  color: var(--bg);
+  background: var(--panel-solid);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line);
   animation: softTabPop 220ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .home-tab-panel {
-  border-top: 1px solid var(--line);
-  padding-top: 28px;
+  min-height: 330px;
+  padding: clamp(22px, 4vw, 34px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card-bg);
 }
 
 .home-tab-panel.is-active {
@@ -1112,6 +1196,32 @@ h3 {
   margin-top: 0;
   padding-top: 0;
   border-top: 0;
+}
+
+.home-tab-panel .about-grid {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.home-tab-panel .work-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.home-tab-panel .work-item {
+  grid-template-columns: 1fr;
+  min-height: 230px;
+}
+
+.home-tab-panel .work-item > span {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--pill-bg);
+  color: var(--accent);
 }
 
 .about-grid {
@@ -3248,7 +3358,8 @@ h3 {
   }
 
   .hero {
-    min-height: 760px;
+    min-height: auto;
+    padding: clamp(38px, 11vw, 78px) 16px 16px;
   }
 
   .hero-media {
@@ -3258,8 +3369,20 @@ h3 {
   }
 
   .profile-panel {
-    width: calc(100% - 20px);
-    margin: 0 auto 10px;
+    width: 100%;
+    margin: 0;
+  }
+
+  .profile-panel h1 {
+    font-size: clamp(40px, 12vw, 62px);
+  }
+
+  .hero-note {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    max-width: none;
+    margin-top: 18px;
   }
 
   .error-page {
@@ -3304,6 +3427,16 @@ h3 {
     min-width: 0;
     border-radius: 14px;
     padding: 0 12px;
+    text-align: center;
+  }
+
+  .home-tab-panel {
+    min-height: 0;
+    padding: 20px;
+  }
+
+  .home-tab-panel .work-list {
+    grid-template-columns: 1fr;
   }
 
   .comparison-table {

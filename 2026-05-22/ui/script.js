@@ -55,6 +55,9 @@ const feedbackConfirm = document.querySelector("[data-feedback-confirm]");
 const feedbackFormUrl = "https://forms.gle/214q7yY6gbTUwK9u7";
 let pendingSubscribeUrl = "";
 let contextMenuCloseTimeoutId = 0;
+let contextClipboardText = "";
+let contextClipboardCheckId = 0;
+let contextTargetElement = null;
 const highlightTargets = [
   ...document.querySelectorAll(
     ".brand-logo, .nav-links a, .mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .share-socials button, .scroll-actions button, .toggle",
@@ -82,6 +85,7 @@ const translations = {
     "context.copy": "페이지 링크 복사",
     "context.copySelection": "선택한 텍스트 복사",
     "context.copyTitle": "페이지 제목 복사",
+    "context.paste": "붙여넣기",
     "context.search": "사이트 검색",
     "context.share": "공유 열기",
     "context.top": "맨 위로 이동",
@@ -542,6 +546,7 @@ const translations = {
     "context.copy": "Copy page link",
     "context.copySelection": "Copy selected text",
     "context.copyTitle": "Copy page title",
+    "context.paste": "Paste",
     "context.search": "Search site",
     "context.share": "Open share",
     "context.top": "Back to top",
@@ -1588,11 +1593,47 @@ const closeContextMenu = () => {
 const isNativeContextTarget = (target) =>
   Boolean(
     target.closest?.(
-      "input, textarea, select, [contenteditable='true'], .share-link-field, .share-link-field *",
+      "select, .share-link-field, .share-link-field *",
     ),
   );
 
-const getSelectedText = () => window.getSelection?.().toString().trim() || "";
+const isEditableTextTarget = (target) =>
+  Boolean(target?.matches?.("input:not([type]), input[type='text'], input[type='search'], input[type='email'], input[type='url'], input[type='tel'], textarea, [contenteditable='true']"));
+
+const getEditableSelectionText = (target) => {
+  if (!isEditableTextTarget(target) || typeof target.selectionStart !== "number") return "";
+  return target.value.slice(target.selectionStart, target.selectionEnd).trim();
+};
+
+const getSelectedText = () =>
+  getEditableSelectionText(contextTargetElement) || window.getSelection?.().toString().trim() || "";
+
+const readClipboardText = async () => {
+  if (!navigator.clipboard?.readText) return "";
+  try {
+    return (await navigator.clipboard.readText()).trim();
+  } catch {
+    return "";
+  }
+};
+
+const setPasteButtonState = (button, text) => {
+  contextClipboardText = text;
+  button.disabled = text.length === 0;
+  button.setAttribute("aria-disabled", String(text.length === 0));
+};
+
+const updateContextPasteState = async () => {
+  const pasteButton = contextMenu?.querySelector('[data-context-action="paste"]');
+  if (!pasteButton) return;
+
+  const checkId = ++contextClipboardCheckId;
+  setPasteButtonState(pasteButton, "");
+  const text = await readClipboardText();
+  if (checkId === contextClipboardCheckId && !contextMenu?.hidden) {
+    setPasteButtonState(pasteButton, text);
+  }
+};
 
 const showContextMenu = (event) => {
   if (
@@ -1604,6 +1645,7 @@ const showContextMenu = (event) => {
   }
 
   event.preventDefault();
+  contextTargetElement = event.target;
   window.clearTimeout(contextMenuCloseTimeoutId);
   contextMenu.classList.remove("is-closing");
   contextMenu.hidden = false;
@@ -1619,6 +1661,7 @@ const showContextMenu = (event) => {
 
   contextMenu.style.left = `${Math.max(margin, x)}px`;
   contextMenu.style.top = `${Math.max(margin, y)}px`;
+  updateContextPasteState();
 };
 
 const writeClipboardText = async (text) => {
@@ -1641,6 +1684,23 @@ const copyPageLink = async () => {
   await writeClipboardText(window.location.href);
 };
 
+const pasteClipboardText = async () => {
+  const text = contextClipboardText || (await readClipboardText());
+  if (!text || !isEditableTextTarget(contextTargetElement)) return;
+
+  contextTargetElement.focus?.();
+
+  if (document.execCommand?.("insertText", false, text)) return;
+
+  const start = contextTargetElement.selectionStart ?? contextTargetElement.value.length;
+  const end = contextTargetElement.selectionEnd ?? start;
+  const currentValue = contextTargetElement.value ?? "";
+  contextTargetElement.value = `${currentValue.slice(0, start)}${text}${currentValue.slice(end)}`;
+  const cursor = start + text.length;
+  contextTargetElement.setSelectionRange?.(cursor, cursor);
+  contextTargetElement.dispatchEvent(new Event("input", { bubbles: true }));
+};
+
 const handleContextMenuAction = async (action) => {
   closeContextMenu();
 
@@ -1657,6 +1717,11 @@ const handleContextMenuAction = async (action) => {
 
   if (action === "copy-title") {
     await writeClipboardText(document.title || window.location.href);
+    return;
+  }
+
+  if (action === "paste") {
+    await pasteClipboardText();
     return;
   }
 

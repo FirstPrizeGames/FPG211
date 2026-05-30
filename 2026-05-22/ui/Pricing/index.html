@@ -48,7 +48,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260530-bluesky-share" />
+    <link rel="stylesheet" href="../styles.css?v=20260530-paste-context" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -432,6 +432,10 @@
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7V5h16v2" /><path d="M9 20h6" /><path d="M12 5v15" /></svg>
         <span data-i18n="context.copyTitle">페이지 제목 복사</span>
       </button>
+      <button type="button" data-context-action="paste" disabled aria-disabled="true">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 4h6" /><path d="M10 2h4v4h-4z" /><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2" /><path d="M9 14h6" /><path d="M12 11v6" /></svg>
+        <span data-i18n="context.paste">붙여넣기</span>
+      </button>
       <button type="button" data-context-action="search">
         <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m16.5 16.5 4 4" /></svg>
         <span data-i18n="context.search">??? ??</span>
@@ -468,6 +472,6 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260530-bluesky-share" defer></script>
+    <script src="../script.js?v=20260530-paste-context" defer></script>
   </body>
 </html>

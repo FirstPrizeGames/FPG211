@@ -2720,6 +2720,19 @@ h3 {
   color: var(--accent);
 }
 
+.context-menu button:disabled,
+.context-menu button[aria-disabled="true"] {
+  color: var(--muted);
+  cursor: not-allowed;
+  opacity: 0.52;
+}
+
+.context-menu button:disabled:hover,
+.context-menu button[aria-disabled="true"]:hover {
+  background: transparent;
+  color: var(--muted);
+}
+
 @keyframes contextMenuOut {
   from {
     opacity: 1;

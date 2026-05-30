@@ -48,7 +48,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260530-home-cta" />
+    <link rel="stylesheet" href="../styles.css?v=20260530-bio-redesign" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -84,31 +84,57 @@
       </nav>
 
       <section class="bio-hero">
-        <p class="eyebrow" data-i18n="bio.eyebrow">Bio</p>
-        <h1 data-i18n="bio.title">응급 현장에 필요한 침착함을 믿습니다.</h1>
-        <p data-i18n="bio.lead">
-          저는 환자의 가장 불안한 순간에 도착해 상황을 빠르게 읽고, 필요한 처치와 이송을 연결하는 구급대원입니다.
-        </p>
+        <div class="bio-hero-copy">
+          <p class="eyebrow" data-i18n="bio.eyebrow">Bio</p>
+          <h1 data-i18n="bio.title">응급 현장에 필요한 침착함을 믿습니다.</h1>
+          <p data-i18n="bio.lead">
+            저는 환자의 가장 불안한 순간에 도착해 상황을 빠르게 읽고, 필요한 처치와 이송을 연결하는 구급대원입니다.
+          </p>
+        </div>
+        <aside class="bio-profile-card" aria-label="자기소개 요약" data-i18n-aria-label="aria.bioSummary">
+          <div class="bio-profile-mark" aria-hidden="true">FP</div>
+          <div class="bio-profile-row">
+            <span data-i18n="bio.summaryRoleLabel">Role</span>
+            <strong data-i18n="bio.summaryRoleValue">Emergency responder</strong>
+          </div>
+          <div class="bio-profile-row">
+            <span data-i18n="bio.summaryFocusLabel">Focus</span>
+            <strong data-i18n="bio.summaryFocusValue">Calm field response</strong>
+          </div>
+          <div class="bio-profile-row">
+            <span data-i18n="bio.summaryBuildLabel">Build</span>
+            <strong data-i18n="bio.summaryBuildValue">Game UI and tools</strong>
+          </div>
+        </aside>
       </section>
 
       <section class="bio-content" aria-label="자기소개" data-i18n-aria-label="aria.bioContent">
         <article>
-          <h2 data-i18n="bio.sectionOneTitle">현장에서의 태도</h2>
-          <p data-i18n="bio.sectionOneBody">
-            응급 상황에서는 빠른 판단만큼 차분한 태도가 중요하다고 생각합니다. 환자의 상태를 확인하고, 보호자와 동료에게 필요한 정보를 명확히 전달하며, 안전한 처치가 이어질 수 있도록 현장을 정리합니다.
-          </p>
+          <span class="bio-section-index">01</span>
+          <div>
+            <h2 data-i18n="bio.sectionOneTitle">현장에서의 태도</h2>
+            <p data-i18n="bio.sectionOneBody">
+              응급 상황에서는 빠른 판단만큼 차분한 태도가 중요하다고 생각합니다. 환자의 상태를 확인하고, 보호자와 동료에게 필요한 정보를 명확히 전달하며, 안전한 처치가 이어질 수 있도록 현장을 정리합니다.
+            </p>
+          </div>
         </article>
         <article>
-          <h2 data-i18n="bio.sectionTwoTitle">중요하게 생각하는 기준</h2>
-          <p data-i18n="bio.sectionTwoBody">
-            기본에 충실한 평가, 팀과의 정확한 소통, 환자를 향한 존중을 기준으로 움직입니다. 긴박한 순간일수록 절차와 원칙을 놓치지 않는 것이 더 나은 결과로 이어진다고 믿습니다.
-          </p>
+          <span class="bio-section-index">02</span>
+          <div>
+            <h2 data-i18n="bio.sectionTwoTitle">중요하게 생각하는 기준</h2>
+            <p data-i18n="bio.sectionTwoBody">
+              기본에 충실한 평가, 팀과의 정확한 소통, 환자를 향한 존중을 기준으로 움직입니다. 긴박한 순간일수록 절차와 원칙을 놓치지 않는 것이 더 나은 결과로 이어진다고 믿습니다.
+            </p>
+          </div>
         </article>
         <article>
-          <h2 data-i18n="bio.sectionThreeTitle">앞으로의 방향</h2>
-          <p data-i18n="bio.sectionThreeBody">
-            현장 경험을 바탕으로 더 나은 응급의료 대응과 교육, 기록 문화에 기여하고 싶습니다. 누군가에게 가장 힘든 순간을 조금 더 안전하게 지나가게 하는 사람이 되는 것이 목표입니다.
-          </p>
+          <span class="bio-section-index">03</span>
+          <div>
+            <h2 data-i18n="bio.sectionThreeTitle">앞으로의 방향</h2>
+            <p data-i18n="bio.sectionThreeBody">
+              현장 경험을 바탕으로 더 나은 응급의료 대응과 교육, 기록 문화에 기여하고 싶습니다. 누군가에게 가장 힘든 순간을 조금 더 안전하게 지나가게 하는 사람이 되는 것이 목표입니다.
+            </p>
+          </div>
         </article>
       </section>
 
@@ -116,6 +142,7 @@
         <div class="section-heading">
           <p class="eyebrow" data-i18n="bio.likesEyebrow">Likes</p>
           <h2 data-i18n="bio.likesTitle">좋아하는 것들</h2>
+          <p data-i18n="bio.likesLead">이 영역은 나중에 취향이나 관심사가 바뀌면 쉽게 수정할 수 있는 템플릿입니다.</p>
         </div>
         <div class="likes-list">
           <span data-i18n="bio.likeOne">게임 UI & UX 디자인, 게임 개발</span>
@@ -208,6 +235,6 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260530-home-cta" defer></script>
+    <script src="../script.js?v=20260530-bio-redesign" defer></script>
   </body>
 </html>

@@ -3013,6 +3013,14 @@ h3 {
 }
 
 @media (max-width: 760px) {
+  .context-menu button {
+    grid-template-columns: 20px minmax(0, 1fr);
+  }
+
+  .context-shortcut {
+    display: none;
+  }
+
   .shell {
     width: min(100% - 20px, 1180px);
     padding-top: 10px;

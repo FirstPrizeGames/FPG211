@@ -25,6 +25,12 @@ let shareCopy = document.querySelector("[data-share-copy]");
 let shareUrl = document.querySelector("[data-share-url]");
 let shareStatus = document.querySelector("[data-share-status]");
 let shareTargets = [...document.querySelectorAll("[data-share-target]")];
+let qrDialog = document.querySelector("[data-qr-dialog]");
+let qrClose = document.querySelector("[data-qr-close]");
+let qrCopy = document.querySelector("[data-qr-copy]");
+let qrImage = document.querySelector("[data-qr-image]");
+let qrUrl = document.querySelector("[data-qr-url]");
+let qrStatus = document.querySelector("[data-qr-status]");
 const adblockBait = document.querySelector(".adblock-bait");
 const adblockNotice = document.querySelector("[data-adblock-notice]");
 const adblockDismiss = document.querySelector("[data-adblock-dismiss]");
@@ -88,6 +94,7 @@ const translations = {
     "context.paste": "붙여넣기",
     "context.search": "사이트 검색",
     "context.share": "공유 열기",
+    "context.qr": "QR 코드 만들기",
     "context.top": "맨 위로 이동",
     "context.refresh": "새로고침",
     "context.print": "인쇄",
@@ -449,6 +456,13 @@ const translations = {
     "share.linkLabel": "공유 링크",
     "share.close": "닫기",
     "share.native": "기기 공유",
+    "qr.eyebrow": "QR Code",
+    "qr.title": "QR 코드 만들기",
+    "qr.body": "현재 페이지 링크를 스캔 가능한 QR 코드로 표시합니다.",
+    "qr.alt": "현재 페이지 링크 QR 코드",
+    "qr.copy": "링크 복사",
+    "qr.copied": "QR 링크 복사됨",
+    "qr.close": "닫기",
     "adblock.message":
       "광고 차단기가 일부 사이트 기능을 제한할 수 있습니다. 문제가 보이면 이 사이트를 허용 목록에 추가해 주세요.",
     "adblock.dismiss": "닫기",
@@ -549,6 +563,7 @@ const translations = {
     "context.paste": "Paste",
     "context.search": "Search site",
     "context.share": "Open share",
+    "context.qr": "Create QR Code",
     "context.top": "Back to top",
     "context.refresh": "Refresh",
     "context.print": "Print page",
@@ -915,6 +930,13 @@ const translations = {
     "share.linkLabel": "Share link",
     "share.close": "Close",
     "share.native": "Device share",
+    "qr.eyebrow": "QR Code",
+    "qr.title": "Create QR Code",
+    "qr.body": "Show the current page link as a scannable QR code.",
+    "qr.alt": "QR code for the current page link",
+    "qr.copy": "Copy link",
+    "qr.copied": "QR link copied",
+    "qr.close": "Close",
     "adblock.message":
       "An ad blocker may limit some site features. If something looks broken, please allow this site.",
     "adblock.dismiss": "Dismiss",
@@ -1332,6 +1354,42 @@ const createSiteSearchDialog = () => {
   document.body.appendChild(dialog);
 };
 
+const createQrDialog = () => {
+  if (!document.querySelector("[data-qr-dialog]")) {
+    const dialog = document.createElement("div");
+    dialog.className = "cache-dialog qr-dialog";
+    dialog.dataset.qrDialog = "";
+    dialog.hidden = true;
+    dialog.innerHTML = `
+      <div class="cache-dialog-panel qr-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="qr-dialog-title">
+        <p class="eyebrow" data-i18n="qr.eyebrow">QR Code</p>
+        <h2 id="qr-dialog-title" data-i18n="qr.title">QR 코드 만들기</h2>
+        <p data-i18n="qr.body">현재 페이지 링크를 스캔 가능한 QR 코드로 표시합니다.</p>
+        <div class="qr-preview">
+          <img data-qr-image alt="현재 페이지 링크 QR 코드" data-i18n-aria-label="qr.alt" />
+        </div>
+        <label class="share-link-field">
+          <span data-i18n="share.linkLabel">공유 링크</span>
+          <input type="text" data-qr-url readonly />
+        </label>
+        <p class="share-status" data-qr-status hidden data-i18n="qr.copied">QR 링크 복사됨</p>
+        <div class="cache-warning-actions">
+          <button class="button cache-cancel-button" type="button" data-qr-close data-i18n="qr.close">닫기</button>
+          <button class="button cache-confirm-button" type="button" data-qr-copy data-i18n="qr.copy">링크 복사</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(dialog);
+  }
+
+  qrDialog = document.querySelector("[data-qr-dialog]");
+  qrClose = document.querySelector("[data-qr-close]");
+  qrCopy = document.querySelector("[data-qr-copy]");
+  qrImage = document.querySelector("[data-qr-image]");
+  qrUrl = document.querySelector("[data-qr-url]");
+  qrStatus = document.querySelector("[data-qr-status]");
+};
+
 const normalizeSearchText = (value) => value.toLowerCase().replace(/\s+/g, " ").trim();
 
 const renderSearchResults = (query = "") => {
@@ -1580,6 +1638,16 @@ const closeShareDialog = () => {
   }, 170);
 };
 
+const closeQrDialog = () => {
+  if (!qrDialog || qrDialog.hidden) return;
+
+  qrDialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    qrDialog.hidden = true;
+    qrDialog.classList.remove("is-closing");
+  }, 170);
+};
+
 const closeContextMenu = () => {
   if (!contextMenu || contextMenu.hidden) return;
   window.clearTimeout(contextMenuCloseTimeoutId);
@@ -1735,6 +1803,11 @@ const handleContextMenuAction = async (action) => {
     return;
   }
 
+  if (action === "qr") {
+    showQrDialog();
+    return;
+  }
+
   if (action === "top") {
     scrollPageTo("top");
     return;
@@ -1871,6 +1944,28 @@ const shareToExternalTarget = async (target) => {
 
   if (!shareUrls[target]) return;
   window.open(shareUrls[target], "_blank", "noopener,noreferrer,width=720,height=640");
+};
+
+const getQrImageUrl = (url) =>
+  `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=12&data=${encodeURIComponent(url)}`;
+
+const showQrDialog = () => {
+  if (!qrDialog) return;
+
+  const url = window.location.href;
+  qrDialog.classList.remove("is-closing");
+  qrDialog.hidden = false;
+  if (qrUrl) qrUrl.value = url;
+  if (qrImage) {
+    qrImage.src = getQrImageUrl(url);
+    qrImage.alt = translate("qr.alt");
+  }
+  if (qrStatus) qrStatus.hidden = true;
+};
+
+const copyQrLink = async () => {
+  await writeClipboardText(qrUrl?.value || window.location.href);
+  if (qrStatus) qrStatus.hidden = false;
 };
 
 const detectAdblock = () => {
@@ -2041,6 +2136,7 @@ window.addEventListener("pageshow", (event) => {
 
 createShareDialog();
 createSiteSearchDialog();
+createQrDialog();
 setLanguage(currentLanguage);
 setupSiteSearch();
 setTheme(getInitialTheme());
@@ -2127,6 +2223,11 @@ shareTargets.forEach((button) => {
 shareDialog?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === shareDialog) closeShareDialog();
 });
+qrClose?.addEventListener("click", closeQrDialog);
+qrCopy?.addEventListener("click", copyQrLink);
+qrDialog?.addEventListener("click", (event) => {
+  if (event.button === 0 && event.target === qrDialog) closeQrDialog();
+});
 scrollActionButtons.forEach((button) => {
   button.addEventListener("click", () => scrollPageTo(button.dataset.scrollTo));
 });
@@ -2167,6 +2268,7 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     closeContextMenu();
     closeSiteSearchDialog();
+    closeQrDialog();
   }
 });
 

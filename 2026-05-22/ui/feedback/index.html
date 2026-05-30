@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -48,7 +48,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260530-paste-context" />
+    <link rel="stylesheet" href="../styles.css?v=20260530-qr-context" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -155,6 +155,10 @@
         <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.6 10.6 6.8-4.2" /><path d="m8.6 13.4 6.8 4.2" /></svg>
         <span data-i18n="context.share">공유 열기</span>
       </button>
+      <button type="button" data-context-action="qr">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><path d="M14 14h3v3" /><path d="M21 14v7h-7" /><path d="M17 17h4" /></svg>
+        <span data-i18n="context.qr">QR 코드 만들기</span>
+      </button>
       <button type="button" data-context-action="top">
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5 5 12" /><path d="m12 5 7 7" /><path d="M12 6v13" /></svg>
         <span data-i18n="context.top">맨 위로 이동</span>
@@ -182,6 +186,6 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260530-paste-context" defer></script>
+    <script src="../script.js?v=20260530-qr-context" defer></script>
   </body>
 </html>

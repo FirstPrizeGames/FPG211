@@ -19,12 +19,12 @@ const storagePercent = document.querySelector("[data-storage-percent]");
 const storageBar = document.querySelector("[data-storage-bar]");
 const storageUsage = document.querySelector("[data-storage-usage]");
 const shareLinkButton = document.querySelector("[data-share-link]");
-const shareDialog = document.querySelector("[data-share-dialog]");
-const shareClose = document.querySelector("[data-share-close]");
-const shareCopy = document.querySelector("[data-share-copy]");
-const shareUrl = document.querySelector("[data-share-url]");
-const shareStatus = document.querySelector("[data-share-status]");
-const shareTargets = [...document.querySelectorAll("[data-share-target]")];
+let shareDialog = document.querySelector("[data-share-dialog]");
+let shareClose = document.querySelector("[data-share-close]");
+let shareCopy = document.querySelector("[data-share-copy]");
+let shareUrl = document.querySelector("[data-share-url]");
+let shareStatus = document.querySelector("[data-share-status]");
+let shareTargets = [...document.querySelectorAll("[data-share-target]")];
 const adblockBait = document.querySelector(".adblock-bait");
 const adblockNotice = document.querySelector("[data-adblock-notice]");
 const adblockDismiss = document.querySelector("[data-adblock-dismiss]");
@@ -54,6 +54,7 @@ const feedbackCancel = document.querySelector("[data-feedback-cancel]");
 const feedbackConfirm = document.querySelector("[data-feedback-confirm]");
 const feedbackFormUrl = "https://forms.gle/214q7yY6gbTUwK9u7";
 let pendingSubscribeUrl = "";
+let contextMenuCloseTimeoutId = 0;
 const highlightTargets = [
   ...document.querySelectorAll(
     ".brand-logo, .nav-links a, .mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .info-tabs button, .share-socials button, .scroll-actions button, .toggle",
@@ -79,9 +80,38 @@ const translations = {
     "nav.feedback": "Feedback",
     "nav.menu": "메뉴",
     "context.copy": "페이지 링크 복사",
+    "context.copySelection": "선택한 텍스트 복사",
+    "context.copyTitle": "페이지 제목 복사",
+    "context.search": "사이트 검색",
     "context.share": "공유 열기",
     "context.top": "맨 위로 이동",
+    "context.refresh": "새로고침",
+    "context.print": "인쇄",
+    "context.creator": "Creator 열기",
+    "context.feedback": "Feedback 열기",
     "context.settings": "설정 열기",
+    "search.eyebrow": "Search",
+    "search.title": "사이트 검색",
+    "search.label": "검색어",
+    "search.placeholder": "Unity, 요금제, FAQ처럼 입력하세요",
+    "search.empty": "검색어를 입력하면 관련 페이지가 표시됩니다.",
+    "search.noResults": "일치하는 결과가 없습니다.",
+    "search.close": "닫기",
+    "search.open": "열기",
+    "search.homeTitle": "Home",
+    "search.homeBody": "응급 대응 프로필의 소개, 주요 역량, 공유 기능을 확인합니다.",
+    "search.creatorTitle": "Creator",
+    "search.creatorBody": "Unity로 게임을 만드는 방법, 제작 흐름, Unity 요금제 정보를 봅니다.",
+    "search.bioTitle": "Bio",
+    "search.bioBody": "실명 없이 정리한 자기소개와 좋아하는 것들을 확인합니다.",
+    "search.faqTitle": "FAQ",
+    "search.faqBody": "미국 EMT 경로, 게임 개발자 FAQ, 사이트 운영 안내를 봅니다.",
+    "search.pricingTitle": "Pricing",
+    "search.pricingBody": "Free, Pro, Team, Ultra 플랜과 비교표를 확인합니다.",
+    "search.settingsTitle": "Settings",
+    "search.settingsBody": "테마, 언어, 강조 컬러, 우클릭 메뉴, 저장용량 설정을 관리합니다.",
+    "search.feedbackTitle": "Feedback",
+    "search.feedbackBody": "버그, 개선 의견, 사용성 피드백을 Google Forms로 보냅니다.",
     "aria.home": "홈",
     "aria.profileMenu": "프로필 메뉴",
     "aria.creatorMenu": "Creator 메뉴",
@@ -510,9 +540,38 @@ const translations = {
     "nav.feedback": "Feedback",
     "nav.menu": "Menu",
     "context.copy": "Copy page link",
+    "context.copySelection": "Copy selected text",
+    "context.copyTitle": "Copy page title",
+    "context.search": "Search site",
     "context.share": "Open share",
     "context.top": "Back to top",
+    "context.refresh": "Refresh",
+    "context.print": "Print page",
+    "context.creator": "Open Creator",
+    "context.feedback": "Open Feedback",
     "context.settings": "Open settings",
+    "search.eyebrow": "Search",
+    "search.title": "Search site",
+    "search.label": "Search query",
+    "search.placeholder": "Try Unity, pricing, or FAQ",
+    "search.empty": "Type a query to show related pages.",
+    "search.noResults": "No matching results.",
+    "search.close": "Close",
+    "search.open": "Open",
+    "search.homeTitle": "Home",
+    "search.homeBody": "View the emergency response profile intro, core strengths, and sharing tools.",
+    "search.creatorTitle": "Creator",
+    "search.creatorBody": "Read how to make games with Unity, production workflow, and Unity pricing notes.",
+    "search.bioTitle": "Bio",
+    "search.bioBody": "Read the bio and editable favorite-things template without a real name.",
+    "search.faqTitle": "FAQ",
+    "search.faqBody": "Browse United States EMT guidance, game developer FAQ, and site operation notes.",
+    "search.pricingTitle": "Pricing",
+    "search.pricingBody": "Compare Free, Pro, Team, and Ultra plans.",
+    "search.settingsTitle": "Settings",
+    "search.settingsBody": "Manage theme, language, accent color, context menu, and storage settings.",
+    "search.feedbackTitle": "Feedback",
+    "search.feedbackBody": "Send bugs, improvement ideas, and usability feedback through Google Forms.",
     "aria.home": "Home",
     "aria.profileMenu": "Profile menu",
     "aria.creatorMenu": "Creator menu",
@@ -967,6 +1026,72 @@ const prices = {
   },
 };
 
+const siteSearchIndex = [
+  {
+    titleKey: "search.homeTitle",
+    bodyKey: "search.homeBody",
+    url: "/",
+    keywords: {
+      ko: "home 프로필 구급대원 응급 대응 소개 주요 역량 공유 contact",
+      en: "home profile emergency responder intro strengths share contact",
+    },
+  },
+  {
+    titleKey: "search.creatorTitle",
+    bodyKey: "search.creatorBody",
+    url: "/Creator",
+    keywords: {
+      ko: "creator unity 유니티 게임 개발 c# 스크립트 씬 가격 요금제 pricing personal pro enterprise industry",
+      en: "creator unity game development c# script scene pricing personal pro enterprise industry",
+    },
+  },
+  {
+    titleKey: "search.bioTitle",
+    bodyKey: "search.bioBody",
+    url: "/Bio",
+    keywords: {
+      ko: "bio 자기소개 좋아하는 것 게임 ui ux roblox baldi bbq",
+      en: "bio about favorite things game ui ux roblox baldi bbq",
+    },
+  },
+  {
+    titleKey: "search.faqTitle",
+    bodyKey: "search.faqBody",
+    url: "/FAQ",
+    keywords: {
+      ko: "faq emt paramedic 미국 응급구조사 게임 개발자 배포 문의 개인정보",
+      en: "faq emt paramedic united states game developer deployment contact privacy",
+    },
+  },
+  {
+    titleKey: "search.pricingTitle",
+    bodyKey: "search.pricingBody",
+    url: "/Pricing",
+    keywords: {
+      ko: "pricing 가격 요금제 free pro team ultra patreon 결제 비교표",
+      en: "pricing plans free pro team ultra patreon checkout comparison",
+    },
+  },
+  {
+    titleKey: "search.settingsTitle",
+    bodyKey: "search.settingsBody",
+    url: "/settings",
+    keywords: {
+      ko: "settings 설정 테마 언어 강조 컬러 우클릭 메뉴 캐시 저장용량 kid mode",
+      en: "settings theme language accent color context menu cache storage kid mode",
+    },
+  },
+  {
+    titleKey: "search.feedbackTitle",
+    bodyKey: "search.feedbackBody",
+    url: "/feedback",
+    keywords: {
+      ko: "feedback 피드백 버그 문의 개선 google forms",
+      en: "feedback bug report contact improvement google forms",
+    },
+  },
+];
+
 const setTheme = (theme) => {
   document.documentElement.dataset.theme = theme;
   localStorage.setItem("profile-theme", theme);
@@ -987,6 +1112,10 @@ const setLanguage = (language) => {
 
   document.querySelectorAll("[data-i18n-aria-label]").forEach((element) => {
     element.setAttribute("aria-label", translate(element.dataset.i18nAriaLabel));
+  });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
+    element.setAttribute("placeholder", translate(element.dataset.i18nPlaceholder));
   });
 
   languageChoices.forEach((button) => {
@@ -1131,6 +1260,155 @@ const setupPremiumAccentLocks = () => {
       lockBadge.textContent = "Lock";
       button.appendChild(lockBadge);
     }
+  });
+};
+
+const createShareDialog = () => {
+  if (!document.querySelector("[data-share-dialog]")) {
+    const dialog = document.createElement("div");
+    dialog.className = "cache-dialog share-dialog";
+    dialog.dataset.shareDialog = "";
+    dialog.hidden = true;
+    dialog.innerHTML = `
+      <div class="cache-dialog-panel share-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="share-dialog-title">
+        <p class="eyebrow" data-i18n="share.eyebrow">Share</p>
+        <h2 id="share-dialog-title" data-i18n="share.title">페이지 공유</h2>
+        <p data-i18n="share.body">아래 링크를 복사해서 원하는 곳에 공유할 수 있습니다.</p>
+        <label class="share-link-field">
+          <span data-i18n="share.linkLabel">공유 링크</span>
+          <input type="text" data-share-url readonly />
+        </label>
+        <div class="share-socials" aria-label="외부 공유" data-i18n-aria-label="aria.externalShare">
+          <button type="button" data-share-target="native" data-i18n="share.native">기기 공유</button>
+          <button type="button" data-share-target="x">X</button>
+          <button type="button" data-share-target="facebook">Facebook</button>
+          <button type="button" data-share-target="linkedin">LinkedIn</button>
+        </div>
+        <p class="share-status" data-share-status hidden data-i18n="share.copied">페이지 링크 복사됨</p>
+        <div class="cache-warning-actions">
+          <button class="button cache-cancel-button" type="button" data-share-close data-i18n="share.close">닫기</button>
+          <button class="button cache-confirm-button share-copy-button" type="button" data-share-copy data-i18n="share.copy">페이지 링크 복사</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(dialog);
+  }
+
+  shareDialog = document.querySelector("[data-share-dialog]");
+  shareClose = document.querySelector("[data-share-close]");
+  shareCopy = document.querySelector("[data-share-copy]");
+  shareUrl = document.querySelector("[data-share-url]");
+  shareStatus = document.querySelector("[data-share-status]");
+  shareTargets = [...document.querySelectorAll("[data-share-target]")];
+};
+
+const createSiteSearchDialog = () => {
+  if (document.querySelector("[data-site-search-dialog]")) return;
+
+  const dialog = document.createElement("div");
+  dialog.className = "cache-dialog search-dialog";
+  dialog.dataset.siteSearchDialog = "";
+  dialog.hidden = true;
+  dialog.innerHTML = `
+    <div class="cache-dialog-panel search-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="search-dialog-title">
+      <p class="eyebrow" data-i18n="search.eyebrow">Search</p>
+      <h2 id="search-dialog-title" data-i18n="search.title">사이트 검색</h2>
+      <label class="search-field">
+        <span data-i18n="search.label">검색어</span>
+        <input type="search" data-site-search-input data-i18n-placeholder="search.placeholder" placeholder="Unity, 요금제, FAQ처럼 입력하세요" autocomplete="off" />
+      </label>
+      <div class="search-results" data-site-search-results></div>
+      <div class="cache-warning-actions">
+        <button class="button cache-cancel-button" type="button" data-site-search-close data-i18n="search.close">닫기</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(dialog);
+};
+
+const normalizeSearchText = (value) => value.toLowerCase().replace(/\s+/g, " ").trim();
+
+const renderSearchResults = (query = "") => {
+  const resultsContainer = document.querySelector("[data-site-search-results]");
+  if (!resultsContainer) return;
+
+  const normalizedQuery = normalizeSearchText(query);
+  if (!normalizedQuery) {
+    resultsContainer.innerHTML = `<p class="search-empty">${translate("search.empty")}</p>`;
+    return;
+  }
+
+  const results = siteSearchIndex
+    .map((item) => {
+      const searchable = normalizeSearchText(
+        [
+          translate(item.titleKey),
+          translate(item.bodyKey),
+          item.keywords.ko,
+          item.keywords.en,
+        ].join(" "),
+      );
+      const score = searchable.includes(normalizedQuery) ? normalizedQuery.length : 0;
+      return { ...item, score };
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  if (!results.length) {
+    resultsContainer.innerHTML = `<p class="search-empty">${translate("search.noResults")}</p>`;
+    return;
+  }
+
+  resultsContainer.innerHTML = results
+    .map(
+      (item) => `
+        <button type="button" class="search-result" data-search-url="${item.url}">
+          <strong>${translate(item.titleKey)}</strong>
+          <span>${translate(item.bodyKey)}</span>
+        </button>
+      `,
+    )
+    .join("");
+};
+
+const showSiteSearchDialog = () => {
+  const dialog = document.querySelector("[data-site-search-dialog]");
+  const input = document.querySelector("[data-site-search-input]");
+  if (!dialog || !input) return;
+
+  dialog.classList.remove("is-closing");
+  dialog.hidden = false;
+  input.value = "";
+  renderSearchResults();
+  window.setTimeout(() => input.focus(), 40);
+};
+
+const closeSiteSearchDialog = () => {
+  const dialog = document.querySelector("[data-site-search-dialog]");
+  if (!dialog || dialog.hidden) return;
+
+  dialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    dialog.hidden = true;
+    dialog.classList.remove("is-closing");
+  }, 170);
+};
+
+const setupSiteSearch = () => {
+  const dialog = document.querySelector("[data-site-search-dialog]");
+  const input = document.querySelector("[data-site-search-input]");
+  const closeButton = document.querySelector("[data-site-search-close]");
+  const resultsContainer = document.querySelector("[data-site-search-results]");
+
+  input?.addEventListener("input", () => renderSearchResults(input.value));
+  closeButton?.addEventListener("click", closeSiteSearchDialog);
+  dialog?.addEventListener("click", (event) => {
+    if (event.button === 0 && event.target === dialog) closeSiteSearchDialog();
+  });
+  resultsContainer?.addEventListener("click", (event) => {
+    const result = event.target.closest?.("[data-search-url]");
+    if (!result) return;
+    window.location.href = result.dataset.searchUrl;
   });
 };
 
@@ -1298,7 +1576,12 @@ const closeShareDialog = () => {
 
 const closeContextMenu = () => {
   if (!contextMenu || contextMenu.hidden) return;
-  contextMenu.hidden = true;
+  window.clearTimeout(contextMenuCloseTimeoutId);
+  contextMenu.classList.add("is-closing");
+  contextMenuCloseTimeoutId = window.setTimeout(() => {
+    contextMenu.hidden = true;
+    contextMenu.classList.remove("is-closing");
+  }, 130);
 };
 
 const isNativeContextTarget = (target) =>
@@ -1307,6 +1590,8 @@ const isNativeContextTarget = (target) =>
       "input, textarea, select, [contenteditable='true'], .share-link-field, .share-link-field *",
     ),
   );
+
+const getSelectedText = () => window.getSelection?.().toString().trim() || "";
 
 const showContextMenu = (event) => {
   if (
@@ -1318,7 +1603,13 @@ const showContextMenu = (event) => {
   }
 
   event.preventDefault();
+  window.clearTimeout(contextMenuCloseTimeoutId);
+  contextMenu.classList.remove("is-closing");
   contextMenu.hidden = false;
+
+  const selectedText = getSelectedText();
+  const copySelectionButton = contextMenu.querySelector('[data-context-action="copy-selection"]');
+  if (copySelectionButton) copySelectionButton.hidden = selectedText.length === 0;
 
   const menuRect = contextMenu.getBoundingClientRect();
   const margin = 10;
@@ -1329,12 +1620,12 @@ const showContextMenu = (event) => {
   contextMenu.style.top = `${Math.max(margin, y)}px`;
 };
 
-const copyPageLink = async () => {
+const writeClipboardText = async (text) => {
   try {
-    await navigator.clipboard.writeText(window.location.href);
+    await navigator.clipboard.writeText(text);
   } catch {
     const fallback = document.createElement("textarea");
-    fallback.value = window.location.href;
+    fallback.value = text;
     fallback.setAttribute("readonly", "");
     fallback.style.position = "fixed";
     fallback.style.opacity = "0";
@@ -1345,11 +1636,31 @@ const copyPageLink = async () => {
   }
 };
 
+const copyPageLink = async () => {
+  await writeClipboardText(window.location.href);
+};
+
 const handleContextMenuAction = async (action) => {
   closeContextMenu();
 
   if (action === "copy") {
     await copyPageLink();
+    return;
+  }
+
+  if (action === "copy-selection") {
+    const selectedText = getSelectedText();
+    if (selectedText) await writeClipboardText(selectedText);
+    return;
+  }
+
+  if (action === "copy-title") {
+    await writeClipboardText(document.title || window.location.href);
+    return;
+  }
+
+  if (action === "search") {
+    showSiteSearchDialog();
     return;
   }
 
@@ -1360,6 +1671,26 @@ const handleContextMenuAction = async (action) => {
 
   if (action === "top") {
     scrollPageTo("top");
+    return;
+  }
+
+  if (action === "refresh") {
+    window.location.reload();
+    return;
+  }
+
+  if (action === "print") {
+    window.print();
+    return;
+  }
+
+  if (action === "creator") {
+    window.location.href = "/Creator";
+    return;
+  }
+
+  if (action === "feedback") {
+    window.location.href = "/feedback";
     return;
   }
 
@@ -1640,7 +1971,10 @@ window.addEventListener("pageshow", (event) => {
   if (event.persisted) finishLoadingBar();
 });
 
+createShareDialog();
+createSiteSearchDialog();
 setLanguage(currentLanguage);
+setupSiteSearch();
 setTheme(getInitialTheme());
 setupSettingToggles();
 setupToggleRightTrack();
@@ -1762,7 +2096,10 @@ document.addEventListener("click", (event) => {
 });
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") closeContextMenu();
+  if (event.key === "Escape") {
+    closeContextMenu();
+    closeSiteSearchDialog();
+  }
 });
 
 highlightTargets.forEach((target) => {

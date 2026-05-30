@@ -1668,6 +1668,9 @@ const isNativeContextTarget = (target) =>
 const isEditableTextTarget = (target) =>
   Boolean(target?.matches?.("input:not([type]), input[type='text'], input[type='search'], input[type='email'], input[type='url'], input[type='tel'], textarea, [contenteditable='true']"));
 
+const isKeyboardInputTarget = (target) =>
+  Boolean(target?.closest?.("input, textarea, select, [contenteditable='true']"));
+
 const getEditableSelectionText = (target) => {
   if (!isEditableTextTarget(target) || typeof target.selectionStart !== "number") return "";
   return target.value.slice(target.selectionStart, target.selectionEnd).trim();
@@ -2265,10 +2268,69 @@ document.addEventListener("click", (event) => {
 });
 
 document.addEventListener("keydown", (event) => {
+  const key = event.key.toLowerCase();
+  const hasCtrlOrMeta = event.ctrlKey || event.metaKey;
+  const isTyping = isKeyboardInputTarget(event.target);
+
   if (event.key === "Escape") {
     closeContextMenu();
     closeSiteSearchDialog();
+    closeShareDialog();
     closeQrDialog();
+    closeClearCacheWarning();
+    closeFeedbackWarning();
+    closeSubscribeWarning();
+    return;
+  }
+
+  if (isTyping) return;
+
+  if (key === "/" && !event.ctrlKey && !event.metaKey && !event.altKey) {
+    event.preventDefault();
+    closeContextMenu();
+    showSiteSearchDialog();
+    return;
+  }
+
+  if (hasCtrlOrMeta && key === "k" && !event.shiftKey && !event.altKey) {
+    event.preventDefault();
+    closeContextMenu();
+    showSiteSearchDialog();
+    return;
+  }
+
+  if (hasCtrlOrMeta && event.shiftKey && key === "c" && !event.altKey) {
+    event.preventDefault();
+    closeContextMenu();
+    copyPageLink().catch(() => {});
+    return;
+  }
+
+  if (hasCtrlOrMeta && event.shiftKey && key === "s" && !event.altKey) {
+    event.preventDefault();
+    closeContextMenu();
+    showShareDialog();
+    return;
+  }
+
+  if (hasCtrlOrMeta && event.shiftKey && key === "q" && !event.altKey) {
+    event.preventDefault();
+    closeContextMenu();
+    showQrDialog();
+    return;
+  }
+
+  if (event.key === "Home" && !event.ctrlKey && !event.metaKey && !event.altKey && !event.shiftKey) {
+    event.preventDefault();
+    closeContextMenu();
+    scrollPageTo("top");
+    return;
+  }
+
+  if (event.key === "End" && !event.ctrlKey && !event.metaKey && !event.altKey && !event.shiftKey) {
+    event.preventDefault();
+    closeContextMenu();
+    scrollPageTo("bottom");
   }
 });
 

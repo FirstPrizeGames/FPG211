@@ -1283,6 +1283,7 @@ const createShareDialog = () => {
           <button type="button" data-share-target="x">X</button>
           <button type="button" data-share-target="facebook">Facebook</button>
           <button type="button" data-share-target="linkedin">LinkedIn</button>
+          <button type="button" data-share-target="bluesky">Bluesky</button>
         </div>
         <p class="share-status" data-share-status hidden data-i18n="share.copied">페이지 링크 복사됨</p>
         <div class="cache-warning-actions">
@@ -1795,10 +1796,12 @@ const shareToExternalTarget = async (target) => {
 
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
+  const encodedBlueskyText = encodeURIComponent(`${title}\n${url}`);
   const shareUrls = {
     x: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
     linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+    bluesky: `https://bsky.app/intent/compose?text=${encodedBlueskyText}`,
   };
 
   if (!shareUrls[target]) return;

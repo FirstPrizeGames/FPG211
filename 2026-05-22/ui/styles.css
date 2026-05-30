@@ -784,6 +784,20 @@ summary {
   [data-nav-layout="sidebar"] .nav-links a.is-active {
     transform: none;
   }
+
+  [data-nav-layout="sidebar"] .bio-hero,
+  [data-nav-layout="sidebar"] .faq-hero,
+  [data-nav-layout="sidebar"] .settings-hero {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    min-height: auto;
+  }
+
+  [data-nav-layout="sidebar"] .bio-profile-card,
+  [data-nav-layout="sidebar"] .faq-hero-panel,
+  [data-nav-layout="sidebar"] .settings-overview {
+    width: min(100%, 620px);
+  }
 }
 
 .brand-logo::before,
@@ -1773,6 +1787,27 @@ h3 {
   padding-bottom: clamp(36px, 6vw, 68px);
 }
 
+.bio-hero-copy,
+.faq-hero-copy,
+.settings-copy,
+.pricing-hero > div,
+.creator-hero {
+  min-width: 0;
+}
+
+.bio-hero h1,
+.creator-hero h1,
+.faq-hero h1,
+.pricing-hero h1,
+.settings-hero h1 {
+  max-width: min(100%, 860px);
+  font-size: clamp(34px, 4.8vw, 60px);
+  line-height: 1.12;
+  overflow-wrap: break-word;
+  word-break: normal;
+  text-wrap: balance;
+}
+
 .pricing-hero {
   position: relative;
   display: grid;
@@ -2193,6 +2228,15 @@ h3 {
   color: var(--muted);
   font-size: clamp(18px, 2.4vw, 23px);
   line-height: 1.48;
+}
+
+.creator-hero {
+  grid-template-columns: minmax(0, 1fr);
+  align-content: end;
+}
+
+.creator-hero > p {
+  max-width: 820px;
 }
 
 .bio-profile-card {
@@ -3801,7 +3845,30 @@ h3 {
   --swatch-color: #0b7285;
 }
 
+@media (max-width: 1180px) {
+  .bio-hero,
+  .faq-hero,
+  .settings-hero {
+    grid-template-columns: 1fr;
+    align-items: start;
+    min-height: auto;
+  }
+
+  .bio-profile-card,
+  .faq-hero-panel,
+  .settings-overview {
+    width: min(100%, 620px);
+  }
+}
+
 @media (max-width: 900px) {
+  .bio-hero,
+  .faq-hero,
+  .settings-hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
   .bio-hero {
     grid-template-columns: 1fr;
     min-height: auto;
@@ -4213,6 +4280,15 @@ h3 {
 }
 
 @media (max-width: 480px) {
+  .bio-hero h1,
+  .creator-hero h1,
+  .faq-hero h1,
+  .pricing-hero h1,
+  .settings-hero h1 {
+    font-size: clamp(34px, 11vw, 48px);
+    line-height: 1.12;
+  }
+
   .bio-hero {
     padding: 24px;
   }

@@ -153,6 +153,7 @@ const translations = {
     "aria.feedbackTopics": "피드백 주제",
     "aria.feedbackPrivacy": "개인정보 안내",
     "aria.errorMenu": "오류 페이지 메뉴",
+    "aria.offlineMenu": "오프라인 페이지 메뉴",
     "aria.profileSummary": "프로필 요약",
     "aria.creatorGuide": "Unity 제작 가이드",
     "aria.creatorPricing": "Unity 요금제 요약",
@@ -192,6 +193,8 @@ const translations = {
     "aria.privacyDetails": "개인정보 세부 정보",
     "aria.licenseSummary": "라이선스 요약",
     "aria.licenseDetails": "라이선스 세부 정보",
+    "aria.offlineStatus": "연결 상태",
+    "aria.offlineTips": "오프라인 도움말",
     "aria.themeMode": "테마 모드 선택",
     "aria.language": "언어 선택",
     "aria.accent": "강조 컬러 선택",
@@ -556,6 +559,21 @@ const translations = {
     "error.faq": "FAQ 보기",
     "error.feedback": "Feedback 보내기",
     "error.settings": "설정 열기",
+    "offline.eyebrow": "Offline",
+    "offline.code": "NETWORK_OFFLINE",
+    "offline.title": "네트워크 또는 Wi-Fi 연결이 없습니다.",
+    "offline.body": "기기가 오프라인 상태라 페이지를 불러올 수 없습니다. 연결을 확인한 뒤 다시 시도해 주세요.",
+    "offline.retry": "다시 시도",
+    "offline.home": "캐시된 홈 열기",
+    "offline.panelLabel": "Connection status",
+    "offline.panelValue": "네트워크 대기 중",
+    "offline.panelHint": "이 페이지는 사이트를 한 번 방문한 뒤부터 오프라인 상태에서 표시될 수 있습니다.",
+    "offline.tipOneTitle": "Wi-Fi 또는 모바일 데이터를 확인하세요",
+    "offline.tipOneBody": "Wi-Fi에 다시 연결하거나 모바일 데이터를 켜고, 비행기 모드가 꺼져 있는지 확인해 주세요.",
+    "offline.tipTwoTitle": "연결 후 다시 불러오세요",
+    "offline.tipTwoBody": "네트워크가 복구되면 다시 시도 버튼을 눌러 주세요. 캐시된 페이지는 오프라인에서도 열릴 수 있습니다.",
+    "offline.tipThreeTitle": "일부 기능은 인터넷이 필요합니다",
+    "offline.tipThreeBody": "외부 공유, Forms, Patreon 링크, QR 이미지 열기 기능은 네트워크 연결이 필요할 수 있습니다.",
     "errorFaq.eyebrow": "FAQ",
     "errorFaq.title": "자주 묻는 질문",
     "errorFaq.oneQuestion": "왜 404 페이지가 보이나요?",
@@ -785,6 +803,7 @@ const translations = {
     "aria.feedbackTopics": "Feedback topics",
     "aria.feedbackPrivacy": "Privacy note",
     "aria.errorMenu": "Error page menu",
+    "aria.offlineMenu": "Offline page menu",
     "aria.profileSummary": "Profile summary",
     "aria.creatorGuide": "Unity creation guide",
     "aria.creatorPricing": "Unity pricing summary",
@@ -824,6 +843,8 @@ const translations = {
     "aria.privacyDetails": "Privacy details",
     "aria.licenseSummary": "License summary",
     "aria.licenseDetails": "License details",
+    "aria.offlineStatus": "Connection status",
+    "aria.offlineTips": "Offline tips",
     "aria.themeMode": "Theme mode selection",
     "aria.language": "Language selection",
     "aria.accent": "Accent color selection",
@@ -1193,6 +1214,21 @@ const translations = {
     "error.faq": "Open FAQ",
     "error.feedback": "Send feedback",
     "error.settings": "Open settings",
+    "offline.eyebrow": "Offline",
+    "offline.code": "NETWORK_OFFLINE",
+    "offline.title": "No network or Wi-Fi connection.",
+    "offline.body": "The page could not be loaded because the device appears to be offline. Check your connection, then try again.",
+    "offline.retry": "Try again",
+    "offline.home": "Open cached home",
+    "offline.panelLabel": "Connection status",
+    "offline.panelValue": "Waiting for network",
+    "offline.panelHint": "This page can appear after the site has been visited once.",
+    "offline.tipOneTitle": "Check Wi-Fi or mobile data",
+    "offline.tipOneBody": "Reconnect to Wi-Fi, enable mobile data, or turn off airplane mode before trying again.",
+    "offline.tipTwoTitle": "Reload after reconnecting",
+    "offline.tipTwoBody": "Use the retry button once the connection is restored. Cached pages may still open while offline.",
+    "offline.tipThreeTitle": "Some features need the internet",
+    "offline.tipThreeBody": "External sharing, forms, Patreon links, and QR image generation may need a live network connection.",
     "errorFaq.eyebrow": "FAQ",
     "errorFaq.title": "Frequently asked questions",
     "errorFaq.oneQuestion": "Why am I seeing a 404 page?",
@@ -2543,7 +2579,29 @@ const isInternalPageLink = (link) => {
   );
 };
 
+const registerOfflineWorker = () => {
+  if (!("serviceWorker" in navigator) || window.location.protocol === "file:") return;
+
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  });
+};
+
+const setupOfflineRetry = () => {
+  document.querySelectorAll("[data-offline-retry]").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (navigator.onLine) {
+        window.location.href = "/";
+        return;
+      }
+
+      window.location.reload();
+    });
+  });
+};
+
 setActiveLink();
+registerOfflineWorker();
 window.addEventListener("scroll", setActiveLink, { passive: true });
 updateScrollProgress();
 window.addEventListener("scroll", updateScrollProgress, { passive: true });
@@ -2569,6 +2627,7 @@ if (homeTabs.length) {
   selectHomeTab(activeHomeTab);
 }
 setupSiteSearch();
+setupOfflineRetry();
 setTheme(getInitialTheme());
 setupSettingToggles();
 setupToggleRightTrack();

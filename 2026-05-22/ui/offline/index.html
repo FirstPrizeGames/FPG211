@@ -1,29 +1,30 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bio · Emergency Responder Profile</title>
+    <title>Offline · Emergency Responder Profile</title>
     <meta
       name="description"
-      content="A personal bio about calm field response, emergency care values, future direction, and interests."
+      content="You appear to be offline. This page helps you reconnect or return to cached profile content."
     />
+    <meta name="robots" content="noindex" />
     <meta name="theme-color" content="#efefec" />
-    <link rel="canonical" href="https://firstprizegames211.app/Bio" />
-    <meta property="og:title" content="Bio · Emergency Responder Profile" />
+    <link rel="canonical" href="https://firstprizegames211.app/offline" />
+    <meta property="og:title" content="Offline · Emergency Responder Profile" />
     <meta
       property="og:description"
-      content="Read a concise personal bio focused on emergency response, values, and interests."
+      content="You appear to be offline. Check your network or Wi-Fi connection and try again."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Emergency Responder Profile" />
-    <meta property="og:url" content="https://firstprizegames211.app/Bio" />
+    <meta property="og:url" content="https://firstprizegames211.app/offline" />
     <meta property="og:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Bio · Emergency Responder Profile" />
+    <meta name="twitter:title" content="Offline · Emergency Responder Profile" />
     <meta
       name="twitter:description"
-      content="Read a concise personal bio focused on emergency response, values, and interests."
+      content="You appear to be offline. Check your network or Wi-Fi connection and try again."
     />
     <meta name="twitter:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -72,7 +73,7 @@
     </div>
     <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
     <main class="shell" id="main-content" tabindex="-1">
-      <nav class="topbar" aria-label="자기소개 메뉴" data-i18n-aria-label="aria.bioMenu">
+      <nav class="topbar" aria-label="오프라인 페이지 메뉴" data-i18n-aria-label="aria.offlineMenu">
         <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
           <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
           <span>FP</span>
@@ -86,7 +87,7 @@
         <div class="nav-links" data-mobile-menu>
           <a href="/"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg><span data-i18n="nav.home">Home</span></a>
           <a href="/Creator"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z" /><path d="m3 14 9 5 9-5" /><path d="m3 11 9 5 9-5" /></svg><span data-i18n="nav.creator">Creator</span></a>
-          <a class="is-active" href="/Bio"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0" /><circle cx="12" cy="7" r="4" /></svg><span data-i18n="nav.bio">Bio</span></a>
+          <a href="/Bio"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0" /><circle cx="12" cy="7" r="4" /></svg><span data-i18n="nav.bio">Bio</span></a>
           <a href="/about"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg><span data-i18n="nav.aboutUs">About us</span></a>
           <a href="/FAQ"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 1 1 5.8 1c-.5.9-1.4 1.3-2.1 1.9-.6.5-.8.9-.8 2.1" /><path d="M12 17h.01" /></svg><span data-i18n="nav.faq">FAQ</span></a>
           <a href="/Pricing"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 10h18" /><path d="M7 15h4" /></svg><span data-i18n="nav.pricing">Pricing</span></a>
@@ -97,74 +98,47 @@
         </div>
       </nav>
 
-      <section class="bio-hero">
-        <div class="bio-hero-copy">
-          <p class="eyebrow" data-i18n="bio.eyebrow">Bio</p>
-          <h1 data-i18n="bio.title">응급 현장에 필요한 침착함을 믿습니다.</h1>
-          <p data-i18n="bio.lead">
-            저는 환자의 가장 불안한 순간에 도착해 상황을 빠르게 읽고, 필요한 처치와 이송을 연결하는 구급대원입니다.
+      <section class="offline-page" aria-labelledby="offline-title">
+        <div class="offline-copy">
+          <p class="eyebrow" data-i18n="offline.eyebrow">Offline</p>
+          <p class="error-code" data-i18n="offline.code">NETWORK_OFFLINE</p>
+          <h1 id="offline-title" data-i18n="offline.title">No network or Wi-Fi connection.</h1>
+          <p data-i18n="offline.body">
+            The page could not be loaded because the device appears to be offline. Check your connection, then try again.
           </p>
+          <div class="actions">
+            <button class="button primary" type="button" data-offline-retry data-i18n="offline.retry">Try again</button>
+            <button class="button ghost" type="button" data-go-url="/" data-i18n="offline.home">Open cached home</button>
+          </div>
         </div>
-        <aside class="bio-profile-card" aria-label="자기소개 요약" data-i18n-aria-label="aria.bioSummary">
-          <div class="bio-profile-mark" aria-hidden="true">FP</div>
-          <div class="bio-profile-row">
-            <span data-i18n="bio.summaryRoleLabel">Role</span>
-            <strong data-i18n="bio.summaryRoleValue">Emergency responder</strong>
+        <aside class="offline-panel" aria-label="Connection status" data-i18n-aria-label="aria.offlineStatus">
+          <div class="offline-signal" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
           </div>
-          <div class="bio-profile-row">
-            <span data-i18n="bio.summaryFocusLabel">Focus</span>
-            <strong data-i18n="bio.summaryFocusValue">Calm field response</strong>
-          </div>
-          <div class="bio-profile-row">
-            <span data-i18n="bio.summaryBuildLabel">Build</span>
-            <strong data-i18n="bio.summaryBuildValue">Game UI and tools</strong>
-          </div>
+          <p data-i18n="offline.panelLabel">Connection status</p>
+          <strong data-i18n="offline.panelValue">Waiting for network</strong>
+          <small data-i18n="offline.panelHint">This page can appear after the site has been visited once.</small>
         </aside>
       </section>
 
-      <section class="bio-content" aria-label="자기소개" data-i18n-aria-label="aria.bioContent">
+      <section class="offline-tips" aria-label="Offline tips" data-i18n-aria-label="aria.offlineTips">
         <article>
-          <span class="bio-section-index">01</span>
-          <div>
-            <h2 data-i18n="bio.sectionOneTitle">현장에서의 태도</h2>
-            <p data-i18n="bio.sectionOneBody">
-              응급 상황에서는 빠른 판단만큼 차분한 태도가 중요하다고 생각합니다. 환자의 상태를 확인하고, 보호자와 동료에게 필요한 정보를 명확히 전달하며, 안전한 처치가 이어질 수 있도록 현장을 정리합니다.
-            </p>
-          </div>
+          <span>01</span>
+          <h2 data-i18n="offline.tipOneTitle">Check Wi-Fi or mobile data</h2>
+          <p data-i18n="offline.tipOneBody">Reconnect to Wi-Fi, enable mobile data, or turn off airplane mode before trying again.</p>
         </article>
         <article>
-          <span class="bio-section-index">02</span>
-          <div>
-            <h2 data-i18n="bio.sectionTwoTitle">중요하게 생각하는 기준</h2>
-            <p data-i18n="bio.sectionTwoBody">
-              기본에 충실한 평가, 팀과의 정확한 소통, 환자를 향한 존중을 기준으로 움직입니다. 긴박한 순간일수록 절차와 원칙을 놓치지 않는 것이 더 나은 결과로 이어진다고 믿습니다.
-            </p>
-          </div>
+          <span>02</span>
+          <h2 data-i18n="offline.tipTwoTitle">Reload after reconnecting</h2>
+          <p data-i18n="offline.tipTwoBody">Use the retry button once the connection is restored. Cached pages may still open while offline.</p>
         </article>
         <article>
-          <span class="bio-section-index">03</span>
-          <div>
-            <h2 data-i18n="bio.sectionThreeTitle">앞으로의 방향</h2>
-            <p data-i18n="bio.sectionThreeBody">
-              현장 경험을 바탕으로 더 나은 응급의료 대응과 교육, 기록 문화에 기여하고 싶습니다. 누군가에게 가장 힘든 순간을 조금 더 안전하게 지나가게 하는 사람이 되는 것이 목표입니다.
-            </p>
-          </div>
+          <span>03</span>
+          <h2 data-i18n="offline.tipThreeTitle">Some features need the internet</h2>
+          <p data-i18n="offline.tipThreeBody">External sharing, forms, Patreon links, and QR image generation may need a live network connection.</p>
         </article>
-      </section>
-
-      <section class="likes-section" aria-label="좋아하는 것들" data-i18n-aria-label="aria.likes">
-        <div class="section-heading">
-          <p class="eyebrow" data-i18n="bio.likesEyebrow">Likes</p>
-          <h2 data-i18n="bio.likesTitle">좋아하는 것들</h2>
-          <p data-i18n="bio.likesLead">이 영역은 나중에 취향이나 관심사가 바뀌면 쉽게 수정할 수 있는 템플릿입니다.</p>
-        </div>
-        <div class="likes-list">
-          <span data-i18n="bio.likeOne">게임 UI & UX 디자인, 게임 개발</span>
-          <span data-i18n="bio.likeTwo">Roblox, Baldi's Basics 게임</span>
-          <span data-i18n="bio.likeThree">현장에서 사람을 돕는 일</span>
-          <span data-i18n="bio.likeFour">BBQ 파티</span>
-          <span data-i18n="bio.likeFive">새로운 도구 배우기</span>
-        </div>
       </section>
     </main>
     <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">

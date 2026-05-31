@@ -743,7 +743,7 @@ summary {
 
 @media (min-width: 1024px) {
   [data-nav-layout="sidebar"] .shell {
-    width: min(1240px, calc(100% - 32px));
+    width: min(1500px, calc(100% - 32px));
     padding-left: 248px;
   }
 
@@ -812,6 +812,7 @@ summary {
     transform: none;
   }
 
+  [data-nav-layout="sidebar"] .about-hero,
   [data-nav-layout="sidebar"] .bio-hero,
   [data-nav-layout="sidebar"] .faq-hero,
   [data-nav-layout="sidebar"] .settings-hero {
@@ -820,10 +821,11 @@ summary {
     min-height: auto;
   }
 
+  [data-nav-layout="sidebar"] .about-snapshot,
   [data-nav-layout="sidebar"] .bio-profile-card,
   [data-nav-layout="sidebar"] .faq-hero-panel,
   [data-nav-layout="sidebar"] .settings-overview {
-    width: min(100%, 620px);
+    width: min(100%, 720px);
   }
 }
 
@@ -1721,7 +1723,7 @@ h3 {
 
 .about-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+  grid-template-columns: minmax(520px, 1fr) minmax(280px, 380px);
   gap: clamp(24px, 5vw, 66px);
   align-items: end;
   min-height: clamp(560px, 72vh, 760px);
@@ -1743,8 +1745,8 @@ h3 {
 
 .about-hero h1 {
   max-width: min(100%, 920px);
-  font-size: clamp(42px, 7vw, 92px);
-  line-height: 0.98;
+  font-size: clamp(40px, 5.8vw, 76px);
+  line-height: 1.02;
   overflow-wrap: break-word;
   text-wrap: balance;
 }

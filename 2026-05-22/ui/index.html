@@ -9,20 +9,23 @@
       content="A modern personal profile for an emergency responder, with bio, FAQ, pricing, feedback, and accessible display settings."
     />
     <meta name="theme-color" content="#efefec" />
+    <link rel="canonical" href="https://firstprizegames211.app/" />
     <meta property="og:title" content="Emergency Responder Profile" />
     <meta
       property="og:description"
       content="A calm, modern profile site for emergency response work, bio details, FAQ, and feedback."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/assets/profile-hero.png" />
+    <meta property="og:site_name" content="Emergency Responder Profile" />
+    <meta property="og:url" content="https://firstprizegames211.app/" />
+    <meta property="og:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Emergency Responder Profile" />
     <meta
       name="twitter:description"
       content="A calm, modern profile site for emergency response work, bio details, FAQ, and feedback."
     />
-    <meta name="twitter:image" content="/assets/profile-hero.png" />
+    <meta name="twitter:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="preload" href="assets/profile-hero-1280.jpg" as="image" fetchpriority="high" />
@@ -51,7 +54,7 @@
           localStorage.getItem("profile-setting-sidebar-nav") === "false" ? "top" : "sidebar";
       })();
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260531-button-highlight-clean" />
+    <link rel="stylesheet" href="styles.css?v=20260531-public-basics" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -63,7 +66,8 @@
       </p>
       <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
     </div>
-    <main class="shell">
+    <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
+    <main class="shell" id="main-content" tabindex="-1">
       <nav class="topbar" aria-label="프로필 메뉴" data-i18n-aria-label="aria.profileMenu">
         <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
           <img src="/assets/logo.png" alt="" width="537" height="532" decoding="async" draggable="false" />
@@ -330,6 +334,6 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="script.js?v=20260531-button-highlight-clean" defer></script>
+    <script src="script.js?v=20260531-public-basics" defer></script>
   </body>
 </html>

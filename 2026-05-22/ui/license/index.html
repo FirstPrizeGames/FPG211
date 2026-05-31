@@ -9,20 +9,23 @@
       content="Open source license information for the profile site and its plain HTML, CSS, and JavaScript structure."
     />
     <meta name="theme-color" content="#efefec" />
+    <link rel="canonical" href="https://firstprizegames211.app/license" />
     <meta property="og:title" content="Open Source License · Emergency Responder Profile" />
     <meta
       property="og:description"
       content="Review the open source license information for this profile site."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/assets/profile-hero.png" />
+    <meta property="og:site_name" content="Emergency Responder Profile" />
+    <meta property="og:url" content="https://firstprizegames211.app/license" />
+    <meta property="og:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Open Source License · Emergency Responder Profile" />
     <meta
       name="twitter:description"
       content="Review the open source license information for this profile site."
     />
-    <meta name="twitter:image" content="/assets/profile-hero.png" />
+    <meta name="twitter:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <script>
@@ -50,7 +53,7 @@
           localStorage.getItem("profile-setting-sidebar-nav") === "false" ? "top" : "sidebar";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260531-button-highlight-clean" />
+    <link rel="stylesheet" href="../styles.css?v=20260531-public-basics" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -62,7 +65,8 @@
       </p>
       <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
     </div>
-    <main class="shell">
+    <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
+    <main class="shell" id="main-content" tabindex="-1">
       <nav class="topbar" aria-label="오픈소스 라이선스 메뉴" data-i18n-aria-label="aria.licenseMenu">
         <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
           <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
@@ -91,9 +95,10 @@
         <div>
           <p class="eyebrow" data-i18n="license.eyebrow">Open Source License</p>
           <h1 data-i18n="license.title">사이트 코드와 사용 범위를 명확하게 정리합니다.</h1>
-          <p data-i18n="license.lead">
+          <p class="legal-lead" data-i18n="license.lead">
             이 페이지는 사이트 템플릿, 코드, 이미지와 브랜드 자산을 어떻게 다룰 수 있는지 안내합니다.
           </p>
+          <p class="legal-updated" data-i18n="license.updated">Last updated: May 31, 2026</p>
         </div>
         <aside class="legal-summary" aria-label="라이선스 요약" data-i18n-aria-label="aria.licenseSummary">
           <div>
@@ -142,6 +147,6 @@
         </article>
       </section>
     </main>
-    <script src="../script.js?v=20260531-button-highlight-clean" defer></script>
+    <script src="../script.js?v=20260531-public-basics" defer></script>
   </body>
 </html>

@@ -19,6 +19,10 @@
       "destination": "/Bio/index.html"
     },
     {
+      "source": "/about",
+      "destination": "/About/index.html"
+    },
+    {
       "source": "/FAQ",
       "destination": "/FAQ/index.html"
     },

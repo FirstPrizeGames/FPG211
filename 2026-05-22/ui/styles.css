@@ -701,8 +701,7 @@ summary {
 .nav-links a.nav-feedback-link {
   min-width: 102px;
   border: 1px solid #ff5416;
-  background:
-    linear-gradient(135deg, #ff5416 0%, #ff7a1a 100%);
+  background: #ff5416;
   color: #ffffff;
   font-weight: 950;
   box-shadow: 0 10px 24px color-mix(in srgb, #ff5416 22%, transparent);
@@ -710,8 +709,7 @@ summary {
 
 .nav-links a.nav-feedback-link:hover,
 .nav-links a.nav-feedback-link.is-active {
-  background:
-    linear-gradient(135deg, #ff5416 0%, #ff8a2a 100%);
+  background: color-mix(in srgb, #ff5416 88%, #ffffff);
   color: #ffffff;
 }
 
@@ -817,21 +815,7 @@ summary {
 .accent-trigger::before,
 .accent-menu button::before,
 .info-tabs button::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      color-mix(in srgb, currentColor 18%, transparent),
-      transparent
-    );
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(-42%);
-  transition: opacity 220ms ease, transform 420ms cubic-bezier(0.2, 0, 0, 1);
+  content: none;
 }
 
 .brand-logo:hover::before,
@@ -850,8 +834,8 @@ summary {
 .accent-trigger:hover::before,
 .accent-menu button:hover::before,
 .info-tabs button:hover::before {
-  opacity: 1;
-  transform: translateX(42%);
+  opacity: 0;
+  transform: none;
 }
 
 .brand-logo:focus-visible,
@@ -881,13 +865,7 @@ summary {
   width: var(--ripple-size, 14px);
   height: var(--ripple-size, 14px);
   border-radius: 50%;
-  background:
-    radial-gradient(
-      circle,
-      color-mix(in srgb, var(--accent) 34%, transparent) 0%,
-      color-mix(in srgb, currentColor 18%, transparent) 42%,
-      transparent 72%
-    );
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -50%) scale(0.08);
@@ -1009,8 +987,7 @@ summary {
 
 .nav-links a.nav-feedback-link:hover,
 .nav-links a.nav-feedback-link.is-active {
-  background:
-    linear-gradient(135deg, #ff5416 0%, #ff8a2a 100%);
+  background: color-mix(in srgb, #ff5416 88%, #ffffff);
   color: #ffffff;
   box-shadow: 0 12px 28px color-mix(in srgb, #ff5416 26%, transparent);
 }
@@ -1835,8 +1812,7 @@ h3 {
   padding: 0 28px;
   border: 1px solid #ff5416;
   border-radius: 999px;
-  background:
-    linear-gradient(135deg, #ff5416 0%, #ff7a1a 58%, #ff9f43 100%);
+  background: #ff5416;
   color: #ffffff;
   box-shadow: 0 18px 40px color-mix(in srgb, #ff5416 28%, transparent);
   cursor: pointer;
@@ -1845,25 +1821,18 @@ h3 {
   font-weight: 900;
 }
 
+.feedback-cta:hover {
+  background: color-mix(in srgb, #ff5416 88%, #ffffff);
+  color: #ffffff;
+}
+
 .feedback-cta::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.34),
-      transparent
-    );
-  opacity: 0;
-  transform: translateX(-44%);
-  transition: opacity 220ms ease, transform 480ms cubic-bezier(0.2, 0, 0, 1);
+  content: none;
 }
 
 .feedback-cta:hover::before {
-  opacity: 1;
-  transform: translateX(44%);
+  opacity: 0;
+  transform: none;
 }
 
 .feedback-cta > span:not(.ripple) {
@@ -4162,8 +4131,7 @@ h3 {
 
   .nav-links a.nav-feedback-link:hover,
   .nav-links a.nav-feedback-link.is-active {
-    background:
-      linear-gradient(135deg, #ff5416 0%, #ff8a2a 100%);
+    background: color-mix(in srgb, #ff5416 88%, #ffffff);
     color: #ffffff;
     box-shadow: 0 10px 24px color-mix(in srgb, #ff5416 22%, transparent);
   }

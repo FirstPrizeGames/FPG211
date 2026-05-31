@@ -20,7 +20,11 @@
     },
     {
       "source": "/about",
-      "destination": "/About/index.html"
+      "destination": "/about/index.html"
+    },
+    {
+      "source": "/About",
+      "destination": "/about/index.html"
     },
     {
       "source": "/FAQ",

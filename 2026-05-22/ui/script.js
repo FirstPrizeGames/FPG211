@@ -27,7 +27,6 @@ let shareStatus = document.querySelector("[data-share-status]");
 let shareTargets = [...document.querySelectorAll("[data-share-target]")];
 let qrDialog = document.querySelector("[data-qr-dialog]");
 let qrClose = document.querySelector("[data-qr-close]");
-let qrCreate = document.querySelector("[data-qr-create]");
 let qrOpenImage = document.querySelector("[data-qr-open-image]");
 let qrCopy = document.querySelector("[data-qr-copy]");
 let qrImage = document.querySelector("[data-qr-image]");
@@ -583,7 +582,6 @@ const translations = {
     "qr.title": "QR 코드 만들기",
     "qr.body": "현재 페이지 링크를 스캔 가능한 QR 코드로 표시합니다.",
     "qr.alt": "현재 페이지 링크 QR 코드",
-    "qr.create": "Create QR",
     "qr.openImage": "Open new tab image",
     "qr.copy": "링크 복사",
     "qr.copied": "QR 링크 복사됨",
@@ -1221,7 +1219,6 @@ const translations = {
     "qr.title": "Create QR Code",
     "qr.body": "Show the current page link as a scannable QR code.",
     "qr.alt": "QR code for the current page link",
-    "qr.create": "Create QR",
     "qr.openImage": "Open new tab image",
     "qr.copy": "Copy link",
     "qr.copied": "QR link copied",
@@ -1741,7 +1738,6 @@ const createQrDialog = () => {
         <p class="share-status" data-qr-status hidden data-i18n="qr.copied">QR 링크 복사됨</p>
         <div class="cache-warning-actions">
           <button class="button cache-cancel-button" type="button" data-qr-close data-i18n="qr.close">닫기</button>
-          <button class="button cache-confirm-button" type="button" data-qr-create data-i18n="qr.create">Create QR</button>
           <button class="button cache-confirm-button" type="button" data-qr-open-image data-i18n="qr.openImage">Open new tab image</button>
           <button class="button cache-confirm-button" type="button" data-qr-copy data-i18n="qr.copy">링크 복사</button>
         </div>
@@ -1752,7 +1748,6 @@ const createQrDialog = () => {
 
   qrDialog = document.querySelector("[data-qr-dialog]");
   qrClose = document.querySelector("[data-qr-close]");
-  qrCreate = document.querySelector("[data-qr-create]");
   qrOpenImage = document.querySelector("[data-qr-open-image]");
   qrCopy = document.querySelector("[data-qr-copy]");
   qrImage = document.querySelector("[data-qr-image]");
@@ -2663,7 +2658,6 @@ shareDialog?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === shareDialog) closeShareDialog();
 });
 qrClose?.addEventListener("click", closeQrDialog);
-qrCreate?.addEventListener("click", createQrCode);
 qrOpenImage?.addEventListener("click", openQrImageInNewTab);
 qrCopy?.addEventListener("click", copyQrLink);
 qrDialog?.addEventListener("click", (event) => {

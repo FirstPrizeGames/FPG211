@@ -3959,6 +3959,10 @@ h3 {
   width: min(720px, 100%);
 }
 
+.source-dialog-panel {
+  width: min(980px, 100%);
+}
+
 .subscribe-dialog-panel {
   width: min(660px, 100%);
 }
@@ -4130,6 +4134,47 @@ h3 {
   border-color: #ff5416;
   background: #ff5416;
   color: #ffffff;
+}
+
+.source-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 32px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.source-code {
+  max-height: min(54vh, 560px);
+  min-height: 320px;
+  margin: 0;
+  overflow: auto;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--ink) 4%, var(--panel-solid));
+  color: var(--ink);
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Liberation Mono",
+    "Courier New",
+    monospace;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.65;
+  white-space: pre;
+}
+
+.source-code code {
+  display: block;
+  min-width: max-content;
 }
 
 .cache-confirm-button:hover {
@@ -5261,7 +5306,8 @@ h3 {
   }
 
   .nav-layout-dialog-panel,
-  .context-mode-dialog-panel {
+  .context-mode-dialog-panel,
+  .source-dialog-panel {
     width: min(100%, 420px);
   }
 
@@ -5336,6 +5382,19 @@ h3 {
 
   .cache-warning-actions {
     grid-template-columns: 1fr;
+  }
+
+  .source-toolbar {
+    display: grid;
+    gap: 6px;
+  }
+
+  .source-code {
+    max-height: 46vh;
+    min-height: 240px;
+    padding: 12px;
+    font-size: 11px;
+    line-height: 1.55;
   }
 
   .scroll-actions {

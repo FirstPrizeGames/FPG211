@@ -49,6 +49,12 @@ let qrCopy = document.querySelector("[data-qr-copy]");
 let qrImage = document.querySelector("[data-qr-image]");
 let qrUrl = document.querySelector("[data-qr-url]");
 let qrStatus = document.querySelector("[data-qr-status]");
+let sourceDialog = document.querySelector("[data-source-dialog]");
+let sourceClose = document.querySelector("[data-source-close]");
+let sourceCopy = document.querySelector("[data-source-copy]");
+let sourceCode = document.querySelector("[data-source-code]");
+let sourceMeta = document.querySelector("[data-source-meta]");
+let sourceStatus = document.querySelector("[data-source-status]");
 const adblockBait = document.querySelector(".adblock-bait");
 const adblockNotice = document.querySelector("[data-adblock-notice]");
 const adblockDismiss = document.querySelector("[data-adblock-dismiss]");
@@ -663,6 +669,15 @@ const translations = {
     "qr.copy": "링크 복사",
     "qr.copied": "QR 링크 복사됨",
     "qr.close": "닫기",
+    "source.eyebrow": "Source",
+    "source.title": "페이지 소스",
+    "source.body": "현재 페이지의 HTML 소스를 사이트 안에서 확인합니다.",
+    "source.meta": "Current page",
+    "source.loading": "소스를 불러오는 중입니다.",
+    "source.copy": "소스 복사",
+    "source.copied": "소스가 복사되었습니다.",
+    "source.close": "닫기",
+    "source.unavailable": "소스를 불러올 수 없어 현재 DOM 스냅샷을 표시합니다.",
     "adblock.message":
       "광고 차단기가 일부 사이트 기능을 제한할 수 있습니다. 문제가 보이면 이 사이트를 허용 목록에 추가해 주세요.",
     "adblock.dismiss": "닫기",
@@ -1349,6 +1364,15 @@ const translations = {
     "qr.copy": "Copy link",
     "qr.copied": "QR link copied",
     "qr.close": "Close",
+    "source.eyebrow": "Source",
+    "source.title": "Page source",
+    "source.body": "View the current page HTML source inside this site.",
+    "source.meta": "Current page",
+    "source.loading": "Loading source.",
+    "source.copy": "Copy source",
+    "source.copied": "Source copied.",
+    "source.close": "Close",
+    "source.unavailable": "Source could not be loaded, so the current DOM snapshot is shown.",
     "adblock.message":
       "An ad blocker may limit some site features. If something looks broken, please allow this site.",
     "adblock.dismiss": "Dismiss",
@@ -2111,6 +2135,42 @@ const createQrDialog = () => {
   qrStatus = document.querySelector("[data-qr-status]");
 };
 
+const createSourceDialog = () => {
+  if (!document.querySelector("[data-source-dialog]")) {
+    const dialog = document.createElement("div");
+    dialog.className = "cache-dialog source-dialog";
+    dialog.dataset.sourceDialog = "";
+    dialog.hidden = true;
+    dialog.innerHTML = `
+      <div class="cache-dialog-panel source-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="source-dialog-title">
+        <button class="dialog-close-button" type="button" data-source-close aria-label="닫기" data-i18n-aria-label="source.close">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+        </button>
+        <p class="eyebrow" data-i18n="source.eyebrow">Source</p>
+        <h2 id="source-dialog-title" data-i18n="source.title">페이지 소스</h2>
+        <p data-i18n="source.body">현재 페이지의 HTML 소스를 사이트 안에서 확인합니다.</p>
+        <div class="source-toolbar">
+          <span data-source-meta data-i18n="source.meta">Current page</span>
+          <p class="share-status" data-source-status hidden data-i18n="source.copied">소스가 복사되었습니다.</p>
+        </div>
+        <pre class="source-code" tabindex="0"><code data-source-code data-i18n="source.loading">소스를 불러오는 중입니다.</code></pre>
+        <div class="cache-warning-actions">
+          <button class="button cache-cancel-button" type="button" data-source-close data-i18n="source.close">닫기</button>
+          <button class="button cache-confirm-button" type="button" data-source-copy data-i18n="source.copy">소스 복사</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(dialog);
+  }
+
+  sourceDialog = document.querySelector("[data-source-dialog]");
+  sourceClose = document.querySelectorAll("[data-source-close]");
+  sourceCopy = document.querySelector("[data-source-copy]");
+  sourceCode = document.querySelector("[data-source-code]");
+  sourceMeta = document.querySelector("[data-source-meta]");
+  sourceStatus = document.querySelector("[data-source-status]");
+};
+
 const selectHomeTab = (selectedTab) => {
   if (!selectedTab) return;
 
@@ -2401,6 +2461,16 @@ const closeQrDialog = () => {
   }, 170);
 };
 
+const closeSourceDialog = () => {
+  if (!sourceDialog || sourceDialog.hidden) return;
+
+  sourceDialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    sourceDialog.hidden = true;
+    sourceDialog.classList.remove("is-closing");
+  }, 170);
+};
+
 const closeContextMenu = () => {
   if (!contextMenu || contextMenu.hidden) return;
   window.clearTimeout(contextMenuCloseTimeoutId);
@@ -2655,7 +2725,7 @@ const handleContextMenuAction = async (action) => {
   }
 
   if (action === "source") {
-    window.open(`view-source:${window.location.href}`, "_blank", "noopener,noreferrer");
+    await showSourceDialog();
     return;
   }
 
@@ -2824,6 +2894,45 @@ const openQrImageInNewTab = () => {
 const copyQrLink = async () => {
   await writeClipboardText(qrUrl?.value || window.location.href);
   if (qrStatus) qrStatus.hidden = false;
+};
+
+const getCurrentPageSource = async () => {
+  try {
+    if (window.location.protocol !== "file:") {
+      const response = await fetch(window.location.href, { cache: "no-store" });
+      if (response.ok) return await response.text();
+    }
+  } catch {
+    // Fall back to the currently rendered DOM below.
+  }
+
+  return `<!doctype html>\n${document.documentElement.outerHTML}`;
+};
+
+const showSourceDialog = async () => {
+  if (!sourceDialog || !sourceCode) return;
+
+  sourceDialog.classList.remove("is-closing");
+  sourceDialog.hidden = false;
+  if (sourceStatus) sourceStatus.hidden = true;
+  if (sourceMeta) sourceMeta.textContent = `${translate("source.meta")} · ${window.location.pathname || "/"}`;
+  sourceCode.textContent = translate("source.loading");
+
+  const source = await getCurrentPageSource();
+  sourceCode.textContent = source;
+  sourceCode.dataset.rawSource = source;
+};
+
+const copySourceCode = async () => {
+  const source = sourceCode?.dataset.rawSource || sourceCode?.textContent || "";
+  if (!source) return;
+
+  await writeClipboardText(source);
+  if (!sourceStatus) return;
+  sourceStatus.hidden = false;
+  window.setTimeout(() => {
+    sourceStatus.hidden = true;
+  }, 1800);
 };
 
 const detectAdblock = () => {
@@ -3018,6 +3127,7 @@ window.addEventListener("pageshow", (event) => {
 createShareDialog();
 createSiteSearchDialog();
 createQrDialog();
+createSourceDialog();
 setLanguage(currentLanguage);
 if (homeTabs.length) {
   const activeHomeTab =
@@ -3192,6 +3302,15 @@ qrCopy?.addEventListener("click", copyQrLink);
 qrDialog?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === qrDialog) closeQrDialog();
 });
+sourceClose?.forEach?.((button) => {
+  button.addEventListener("click", closeSourceDialog);
+});
+sourceCopy?.addEventListener("click", () => {
+  copySourceCode().catch(() => {});
+});
+sourceDialog?.addEventListener("click", (event) => {
+  if (event.button === 0 && event.target === sourceDialog) closeSourceDialog();
+});
 scrollActionButtons.forEach((button) => {
   button.addEventListener("click", () => scrollPageTo(button.dataset.scrollTo));
 });
@@ -3250,6 +3369,7 @@ document.addEventListener("keydown", (event) => {
     closeSiteSearchDialog();
     closeShareDialog();
     closeQrDialog();
+    closeSourceDialog();
     closeNavLayoutDialog();
     closeContextMenuModeDialog();
     closeClearCacheWarning();

@@ -2041,6 +2041,9 @@ const createShareDialog = () => {
     dialog.hidden = true;
     dialog.innerHTML = `
       <div class="cache-dialog-panel share-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="share-dialog-title">
+        <button class="dialog-close-button" type="button" data-share-close aria-label="닫기" data-i18n-aria-label="share.close">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+        </button>
         <p class="eyebrow" data-i18n="share.eyebrow">Share</p>
         <h2 id="share-dialog-title" data-i18n="share.title">페이지 공유</h2>
         <p data-i18n="share.body">아래 링크를 복사해서 원하는 곳에 공유할 수 있습니다.</p>
@@ -2057,7 +2060,6 @@ const createShareDialog = () => {
         </div>
         <p class="share-status" data-share-status hidden data-i18n="share.copied">페이지 링크 복사됨</p>
         <div class="cache-warning-actions">
-          <button class="button cache-cancel-button" type="button" data-share-close data-i18n="share.close">닫기</button>
           <button class="button cache-confirm-button share-copy-button" type="button" data-share-copy data-i18n="share.copy">페이지 링크 복사</button>
         </div>
       </div>
@@ -2082,6 +2084,9 @@ const createSiteSearchDialog = () => {
   dialog.hidden = true;
   dialog.innerHTML = `
     <div class="cache-dialog-panel search-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="search-dialog-title">
+      <button class="dialog-close-button" type="button" data-site-search-close aria-label="닫기" data-i18n-aria-label="search.close">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+      </button>
       <p class="eyebrow" data-i18n="search.eyebrow">Search</p>
       <h2 id="search-dialog-title" data-i18n="search.title">사이트 검색</h2>
       <label class="search-field">
@@ -2089,9 +2094,6 @@ const createSiteSearchDialog = () => {
         <input type="search" data-site-search-input data-i18n-placeholder="search.placeholder" placeholder="Unity, 요금제, FAQ처럼 입력하세요" autocomplete="off" />
       </label>
       <div class="search-results" data-site-search-results></div>
-      <div class="cache-warning-actions">
-        <button class="button cache-cancel-button" type="button" data-site-search-close data-i18n="search.close">닫기</button>
-      </div>
     </div>
   `;
   document.body.appendChild(dialog);
@@ -2105,6 +2107,9 @@ const createQrDialog = () => {
     dialog.hidden = true;
     dialog.innerHTML = `
       <div class="cache-dialog-panel qr-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="qr-dialog-title">
+        <button class="dialog-close-button" type="button" data-qr-close aria-label="닫기" data-i18n-aria-label="qr.close">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+        </button>
         <p class="eyebrow" data-i18n="qr.eyebrow">QR Code</p>
         <h2 id="qr-dialog-title" data-i18n="qr.title">QR 코드 만들기</h2>
         <p data-i18n="qr.body">현재 페이지 링크를 스캔 가능한 QR 코드로 표시합니다.</p>
@@ -2117,7 +2122,6 @@ const createQrDialog = () => {
         </label>
         <p class="share-status" data-qr-status hidden data-i18n="qr.copied">QR 링크 복사됨</p>
         <div class="cache-warning-actions">
-          <button class="button cache-cancel-button" type="button" data-qr-close data-i18n="qr.close">닫기</button>
           <button class="button cache-confirm-button" type="button" data-qr-open-image data-i18n="qr.openImage">Open new tab image</button>
           <button class="button cache-confirm-button" type="button" data-qr-copy data-i18n="qr.copy">링크 복사</button>
         </div>
@@ -2155,7 +2159,6 @@ const createSourceDialog = () => {
         </div>
         <pre class="source-code" tabindex="0"><code data-source-code data-i18n="source.loading">소스를 불러오는 중입니다.</code></pre>
         <div class="cache-warning-actions">
-          <button class="button cache-cancel-button" type="button" data-source-close data-i18n="source.close">닫기</button>
           <button class="button cache-confirm-button" type="button" data-source-copy data-i18n="source.copy">소스 복사</button>
         </div>
       </div>

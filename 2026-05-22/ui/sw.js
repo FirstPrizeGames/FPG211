@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260601-source-dialog";
+const CACHE_NAME = "profile-offline-20260601-dialog-close-cleanup";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

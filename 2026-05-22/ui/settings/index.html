@@ -62,7 +62,7 @@
           localStorage.getItem("profile-setting-sidebar-nav") === "false" ? "top" : "sidebar";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260601-source-dialog" />
+    <link rel="stylesheet" href="../styles.css?v=20260601-dialog-close-cleanup" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -635,11 +635,6 @@
               </span>
             </button>
           </div>
-          <div class="cache-warning-actions">
-            <button class="button cache-confirm-button" type="button" data-nav-layout-close data-i18n="share.close">
-              닫기
-            </button>
-          </div>
         </div>
       </div>
       <div class="cache-dialog context-mode-dialog" data-context-mode-dialog hidden>
@@ -674,11 +669,6 @@
                 <strong data-i18n="settings.contextMenuNativeTitle">Browser default</strong>
                 <small data-i18n="settings.contextMenuNativeBody">브라우저가 제공하는 기본 우클릭 메뉴를 그대로 사용합니다.</small>
               </span>
-            </button>
-          </div>
-          <div class="cache-warning-actions">
-            <button class="button cache-confirm-button" type="button" data-context-mode-close data-i18n="share.close">
-              닫기
             </button>
           </div>
         </div>
@@ -786,6 +776,6 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260601-source-dialog" defer></script>
+    <script src="../script.js?v=20260601-dialog-close-cleanup" defer></script>
   </body>
 </html>

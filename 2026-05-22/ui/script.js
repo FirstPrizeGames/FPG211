@@ -3,6 +3,23 @@ const themeChoices = [...document.querySelectorAll("[data-theme-choice]")];
 const languageChoices = [...document.querySelectorAll("[data-language-choice]")];
 const densityChoices = [...document.querySelectorAll("[data-density-choice]")];
 const accentChoices = [...document.querySelectorAll("[data-accent-choice]")];
+const themeSelect = document.querySelector("[data-theme-select]");
+const themeTrigger = document.querySelector("[data-theme-trigger]");
+const themeMenu = document.querySelector("[data-theme-menu]");
+const themeLabel = document.querySelector("[data-theme-label]");
+const languageSelect = document.querySelector("[data-language-select]");
+const languageTrigger = document.querySelector("[data-language-trigger]");
+const languageMenu = document.querySelector("[data-language-menu]");
+const languageLabel = document.querySelector("[data-language-label]");
+const densitySelect = document.querySelector("[data-density-select]");
+const densityTrigger = document.querySelector("[data-density-trigger]");
+const densityMenu = document.querySelector("[data-density-menu]");
+const densityLabel = document.querySelector("[data-density-label]");
+const kidModeChoices = [...document.querySelectorAll("[data-kid-mode-choice]")];
+const kidModeSelect = document.querySelector("[data-kid-mode-select]");
+const kidModeTrigger = document.querySelector("[data-kid-mode-trigger]");
+const kidModeMenu = document.querySelector("[data-kid-mode-menu]");
+const kidModeLabel = document.querySelector("[data-kid-mode-label]");
 const accentSelect = document.querySelector("[data-accent-select]");
 const accentTrigger = document.querySelector("[data-accent-trigger]");
 const accentMenu = document.querySelector("[data-accent-menu]");
@@ -43,6 +60,15 @@ const subscribeWarning = document.querySelector("[data-subscribe-warning]");
 const subscribeCancel = document.querySelector("[data-subscribe-cancel]");
 const subscribeConfirm = document.querySelector("[data-subscribe-confirm]");
 const settingToggles = [...document.querySelectorAll("[data-toggle-key]")];
+const navLayoutOpen = document.querySelector("[data-nav-layout-open]");
+const navLayoutDialog = document.querySelector("[data-nav-layout-dialog]");
+const navLayoutClose = document.querySelector("[data-nav-layout-close]");
+const navLayoutChoices = [...document.querySelectorAll("[data-nav-layout-choice]")];
+const contextModeOpen = document.querySelector("[data-context-menu-open]");
+const contextModeDialog = document.querySelector("[data-context-mode-dialog]");
+const contextModeClose = document.querySelector("[data-context-mode-close]");
+const contextModeChoices = [...document.querySelectorAll("[data-context-menu-choice]")];
+const fastRenderSwipe = document.querySelector("[data-fast-render-swipe]");
 const homeTabs = [...document.querySelectorAll("[data-home-tab]")];
 const homePanels = [...document.querySelectorAll("[data-home-panel]")];
 const infoTabs = [...document.querySelectorAll("[data-info-tab]")];
@@ -67,9 +93,11 @@ let contextMenuCloseTimeoutId = 0;
 let contextClipboardText = "";
 let contextClipboardCheckId = 0;
 let contextTargetElement = null;
+let contextTargetLink = null;
+let contextTargetImage = null;
 const highlightTargets = [
   ...document.querySelectorAll(
-    ".brand-logo, .nav-links a, .mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .theme-segment button, .language-segment button, .density-segment button, .accent-trigger, .accent-menu button, .home-tabs button, .info-tabs button, .share-socials button, .scroll-actions button, .context-menu button, .toggle",
+    ".mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .setting-select-trigger, .setting-select-menu button, .accent-trigger, .accent-menu button, .home-tabs button, .info-tabs button, .share-socials button, .scroll-actions button, .context-menu button",
   ),
 ];
 const sections = navLinks
@@ -97,6 +125,9 @@ const translations = {
     "context.close": "닫기",
     "context.copy": "페이지 링크 복사",
     "context.copySelection": "선택한 텍스트 복사",
+    "context.openLink": "새 탭에서 링크 열기",
+    "context.copyLink": "링크 주소 복사",
+    "context.saveImage": "이미지 저장",
     "context.copyTitle": "페이지 제목 복사",
     "context.paste": "붙여넣기",
     "context.search": "사이트 검색",
@@ -104,8 +135,10 @@ const translations = {
     "context.qr": "QR 코드 만들기",
     "context.top": "맨 위로 이동",
     "context.refresh": "새로고침",
+    "context.back": "뒤로 가기",
     "context.forward": "앞으로 가기",
     "context.print": "인쇄",
+    "context.source": "페이지 소스 보기",
     "context.creator": "Creator 열기",
     "context.feedback": "Feedback 열기",
     "context.settings": "설정 열기",
@@ -189,6 +222,8 @@ const translations = {
     "aria.settingsPanel": "프로필 설정",
     "aria.settingsCategories": "설정 분류",
     "aria.settingsOverview": "설정 상태 요약",
+    "aria.navLayout": "내비게이션 레이아웃 선택",
+    "aria.contextMenuMode": "우클릭 메뉴 방식 선택",
     "aria.privacySummary": "개인정보 요약",
     "aria.privacyDetails": "개인정보 세부 정보",
     "aria.licenseSummary": "라이선스 요약",
@@ -197,6 +232,7 @@ const translations = {
     "aria.offlineTips": "오프라인 도움말",
     "aria.themeMode": "테마 모드 선택",
     "aria.language": "언어 선택",
+    "aria.kidMode": "Kid mode 선택",
     "aria.accent": "강조 컬러 선택",
     "aria.density": "화면 밀도 선택",
     "faqTopics.emt": "EMT",
@@ -417,12 +453,24 @@ const translations = {
     "settings.contactOff": "연락처 표시 꺼짐",
     "settings.sidebarNavOn": "사이드바 내비게이션 켜짐",
     "settings.sidebarNavOff": "사이드바 내비게이션 꺼짐",
+    "settings.navigationEnabled": "Sidebar",
+    "settings.navigationDisabled": "Top bar",
+    "settings.navigationConfigure": "설정",
+    "settings.navigationDialogTitle": "내비게이션 레이아웃 선택",
+    "settings.navigationDialogBody": "데스크톱 화면에서 메뉴를 왼쪽에 고정할지, 상단에 간단하게 둘지 선택합니다.",
+    "settings.navigationSidebarTitle": "Sidebar",
+    "settings.navigationSidebarBody": "메뉴가 왼쪽에 세로로 고정되어 페이지 이동이 빠릅니다.",
+    "settings.navigationTopbarTitle": "Top bar",
+    "settings.navigationTopbarBody": "메뉴가 위쪽에 모여 화면을 더 넓게 사용할 수 있습니다.",
     "settings.fastRenderOn": "빠른 렌더링 켜짐",
     "settings.fastRenderOff": "빠른 렌더링 꺼짐",
+    "settings.fastRenderStandard": "Standard",
+    "settings.fastRenderFast": "Fast",
     "settings.kidModeOn": "Kid mode 켜짐",
     "settings.kidModeOff": "Kid mode 꺼짐",
     "settings.contextMenuOn": "커스텀 우클릭 메뉴 켜짐",
     "settings.contextMenuOff": "커스텀 우클릭 메뉴 꺼짐",
+    "settings.contextMenuConfigure": "설정",
     "settings.themeTitle": "테마 모드",
     "settings.themeBody": "프로필 화면의 밝기를 라이트, 다크, 밝기 끄기 모드로 선택합니다.",
     "settings.lightsOff": "밝기 끄기",
@@ -432,12 +480,23 @@ const translations = {
     "settings.navigationBody": "데스크톱 화면에서 상단 메뉴를 왼쪽 세로 버튼 리스트로 표시합니다.",
     "settings.languageTitle": "언어",
     "settings.languageBody": "프로필과 설정 화면에 표시되는 언어를 선택합니다.",
+    "settings.languageKorean": "한국어",
+    "settings.languageEnglish": "English",
     "settings.fastRenderTitle": "빠른 렌더링",
     "settings.fastRenderBody": "블러, 그림자, 애니메이션을 줄여 화면을 더 가볍게 표시합니다.",
     "settings.kidModeTitle": "Kid mode",
-    "settings.kidModeBody": "더 큰 글자, 또렷한 대비, 줄어든 움직임으로 화면을 편하게 표시합니다.",
+    "settings.kidModeBody": "읽기 편한 화면을 위해 글자 크기와 움직임 감소 정도를 단계별로 선택합니다.",
+    "settings.kidModeOffLevel": "Off",
+    "settings.kidModeSoftLevel": "Soft",
+    "settings.kidModeStrongLevel": "Strong",
     "settings.contextMenuTitle": "커스텀 우클릭 메뉴",
     "settings.contextMenuBody": "빠른 작업을 담은 디자인 우클릭 메뉴를 사용합니다.",
+    "settings.contextMenuDialogTitle": "우클릭 메뉴 방식 선택",
+    "settings.contextMenuDialogBody": "빠른 작업이 필요한 경우 커스텀 메뉴를 사용하고, 브라우저 기본 동작을 우선하려면 기본 메뉴를 선택합니다.",
+    "settings.contextMenuCustomTitle": "Custom menu",
+    "settings.contextMenuCustomBody": "Copy, share, QR code, search, print 같은 사이트 작업을 한 메뉴에서 엽니다.",
+    "settings.contextMenuNativeTitle": "Browser default",
+    "settings.contextMenuNativeBody": "브라우저가 제공하는 기본 우클릭 메뉴를 그대로 사용합니다.",
     "settings.clearCacheTitle": "브라우저 캐시 정리",
     "settings.clearCacheBody": "이 사이트에 저장된 테마, 언어, 표시 설정을 삭제하고 기본값으로 되돌립니다.",
     "settings.clearCacheButton": "캐시 정리",
@@ -747,6 +806,9 @@ const translations = {
     "context.close": "Close",
     "context.copy": "Copy page link",
     "context.copySelection": "Copy selected text",
+    "context.openLink": "Open link in new tab",
+    "context.copyLink": "Copy link address",
+    "context.saveImage": "Save image as",
     "context.copyTitle": "Copy page title",
     "context.paste": "Paste",
     "context.search": "Search site",
@@ -754,8 +816,10 @@ const translations = {
     "context.qr": "Create QR Code",
     "context.top": "Back to top",
     "context.refresh": "Refresh",
+    "context.back": "Back",
     "context.forward": "Forward",
     "context.print": "Print page",
+    "context.source": "View page source",
     "context.creator": "Open Creator",
     "context.feedback": "Open Feedback",
     "context.settings": "Open settings",
@@ -839,6 +903,8 @@ const translations = {
     "aria.settingsPanel": "Profile settings",
     "aria.settingsCategories": "Settings categories",
     "aria.settingsOverview": "Settings status summary",
+    "aria.navLayout": "Navigation layout selection",
+    "aria.contextMenuMode": "Context menu mode selection",
     "aria.privacySummary": "Privacy summary",
     "aria.privacyDetails": "Privacy details",
     "aria.licenseSummary": "License summary",
@@ -847,6 +913,7 @@ const translations = {
     "aria.offlineTips": "Offline tips",
     "aria.themeMode": "Theme mode selection",
     "aria.language": "Language selection",
+    "aria.kidMode": "Kid mode selection",
     "aria.accent": "Accent color selection",
     "aria.density": "Display density selection",
     "faqTopics.emt": "EMT",
@@ -1069,12 +1136,24 @@ const translations = {
     "settings.contactOff": "Contact visibility off",
     "settings.sidebarNavOn": "Sidebar navigation on",
     "settings.sidebarNavOff": "Sidebar navigation off",
+    "settings.navigationEnabled": "Sidebar",
+    "settings.navigationDisabled": "Top bar",
+    "settings.navigationConfigure": "Configure",
+    "settings.navigationDialogTitle": "Choose navigation layout",
+    "settings.navigationDialogBody": "Choose whether the desktop menu stays fixed on the left or remains compact at the top.",
+    "settings.navigationSidebarTitle": "Sidebar",
+    "settings.navigationSidebarBody": "Keeps navigation fixed on the left for faster page switching.",
+    "settings.navigationTopbarTitle": "Top bar",
+    "settings.navigationTopbarBody": "Keeps navigation grouped at the top so the page content has more width.",
     "settings.fastRenderOn": "Fast rendering on",
     "settings.fastRenderOff": "Fast rendering off",
+    "settings.fastRenderStandard": "Standard",
+    "settings.fastRenderFast": "Fast",
     "settings.kidModeOn": "Kid mode on",
     "settings.kidModeOff": "Kid mode off",
     "settings.contextMenuOn": "Custom context menu on",
     "settings.contextMenuOff": "Custom context menu off",
+    "settings.contextMenuConfigure": "Configure",
     "settings.themeTitle": "Theme mode",
     "settings.themeBody": "Choose a light, dark, or lights-off appearance for the profile.",
     "settings.lightsOff": "Lights Off",
@@ -1084,12 +1163,23 @@ const translations = {
     "settings.navigationBody": "Show the desktop menu as a vertical button list on the left side.",
     "settings.languageTitle": "Language",
     "settings.languageBody": "Choose the language used across the profile and settings pages.",
+    "settings.languageKorean": "Korean",
+    "settings.languageEnglish": "English",
     "settings.fastRenderTitle": "Fast rendering",
     "settings.fastRenderBody": "Reduces blur, shadows, and animation so the interface renders more lightly.",
     "settings.kidModeTitle": "Kid mode",
-    "settings.kidModeBody": "Makes the interface easier to read with larger text, stronger contrast, and reduced motion.",
+    "settings.kidModeBody": "Choose how much the interface should increase readability and reduce motion.",
+    "settings.kidModeOffLevel": "Off",
+    "settings.kidModeSoftLevel": "Soft",
+    "settings.kidModeStrongLevel": "Strong",
     "settings.contextMenuTitle": "Custom context menu",
     "settings.contextMenuBody": "Use a styled right-click menu with quick actions.",
+    "settings.contextMenuDialogTitle": "Choose right-click menu mode",
+    "settings.contextMenuDialogBody": "Use the custom menu for quick site actions, or choose the browser default if you prefer native behavior.",
+    "settings.contextMenuCustomTitle": "Custom menu",
+    "settings.contextMenuCustomBody": "Open site actions like copy, share, QR code, search, and print from one menu.",
+    "settings.contextMenuNativeTitle": "Browser default",
+    "settings.contextMenuNativeBody": "Use the browser's native right-click menu without replacing it.",
     "settings.clearCacheTitle": "Clear browser cache",
     "settings.clearCacheBody":
       "Removes this site's saved theme, language, and display preferences and restores defaults.",
@@ -1511,15 +1601,30 @@ const siteSearchIndex = [
 ];
 
 const setTheme = (theme) => {
+  const themeLabelKeys = {
+    light: "settings.themeLight",
+    dark: "settings.themeDark",
+    "lights-off": "settings.lightsOff",
+  };
+
   document.documentElement.dataset.theme = theme;
   localStorage.setItem("profile-theme", theme);
 
   themeChoices.forEach((button) => {
-    button.classList.toggle("is-active", button.dataset.themeChoice === theme);
+    const isActive = button.dataset.themeChoice === theme;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-selected", String(isActive));
   });
+
+  if (themeLabel) themeLabel.textContent = translate(themeLabelKeys[theme] || "settings.themeLight");
 };
 
 const setLanguage = (language) => {
+  const languageLabelKeys = {
+    ko: "settings.languageKorean",
+    en: "settings.languageEnglish",
+  };
+
   currentLanguage = language;
   document.documentElement.lang = language;
   localStorage.setItem("profile-language", language);
@@ -1537,17 +1642,26 @@ const setLanguage = (language) => {
   });
 
   languageChoices.forEach((button) => {
-    button.classList.toggle("is-active", button.dataset.languageChoice === language);
+    const isActive = button.dataset.languageChoice === language;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-selected", String(isActive));
   });
+
+  if (languageLabel) {
+    languageLabel.textContent = translate(languageLabelKeys[language] || "settings.languageEnglish");
+  }
 
   shareLinkButton?.setAttribute("aria-label", translate("share.copy"));
 
   setTheme(document.documentElement.dataset.theme || getInitialTheme());
   setAccent(document.documentElement.dataset.accent || "neutral");
   setCurrency(localStorage.getItem("profile-currency") || (language === "ko" ? "krw" : "usd"));
+  setFastRender(document.documentElement.dataset.fastRender === "true");
+  setKidMode(document.documentElement.dataset.kidMode || "off");
   settingToggles.forEach((button) => {
     updateSettingToggle(button, button.classList.contains("is-on"));
   });
+  updateNavLayoutControls(document.documentElement.dataset.navLayout || "sidebar");
   updateStorageEstimate();
 };
 
@@ -1573,7 +1687,7 @@ const updateSettingToggle = (button, isOn) => {
   }
 
   if (button.dataset.toggleKey === "kid-mode") {
-    document.documentElement.dataset.kidMode = isOn ? "true" : "false";
+    setKidMode(isOn ? "strong" : "off");
   }
 
   if (button.dataset.toggleKey === "sidebar-nav") {
@@ -1582,6 +1696,7 @@ const updateSettingToggle = (button, isOn) => {
 
   const labelKey = getToggleLabelKey(button.dataset.toggleKey, isOn);
   if (labelKey) button.setAttribute("aria-label", translate(labelKey));
+
 };
 
 const setupSettingToggles = () => {
@@ -1599,7 +1714,7 @@ const setupSettingToggles = () => {
         document.documentElement.dataset.fastRender = nextValue ? "true" : "false";
       }
       if (button.dataset.toggleKey === "kid-mode") {
-        document.documentElement.dataset.kidMode = nextValue ? "true" : "false";
+        setKidMode(nextValue ? "strong" : "off");
       }
       if (button.dataset.toggleKey === "sidebar-nav") {
         document.documentElement.dataset.navLayout = nextValue ? "sidebar" : "top";
@@ -1609,13 +1724,214 @@ const setupSettingToggles = () => {
   });
 };
 
+const updateNavLayoutControls = (layout) => {
+  const resolvedLayout = layout === "top" ? "top" : "sidebar";
+
+  document.documentElement.dataset.navLayout = resolvedLayout;
+
+  navLayoutChoices.forEach((button) => {
+    const isActive = button.dataset.navLayoutChoice === resolvedLayout;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-selected", String(isActive));
+  });
+};
+
+const setNavLayout = (layout) => {
+  const resolvedLayout = layout === "top" ? "top" : "sidebar";
+  localStorage.setItem("profile-setting-sidebar-nav", String(resolvedLayout === "sidebar"));
+  updateNavLayoutControls(resolvedLayout);
+};
+
+const showNavLayoutDialog = () => {
+  if (!navLayoutDialog) return;
+
+  updateNavLayoutControls(document.documentElement.dataset.navLayout || "sidebar");
+  navLayoutDialog.classList.remove("is-closing");
+  navLayoutDialog.hidden = false;
+};
+
+const closeNavLayoutDialog = () => {
+  if (!navLayoutDialog || navLayoutDialog.hidden) return;
+
+  navLayoutDialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    navLayoutDialog.hidden = true;
+    navLayoutDialog.classList.remove("is-closing");
+  }, 170);
+};
+
+const setupNavLayoutDialog = () => {
+  const savedValue = localStorage.getItem("profile-setting-sidebar-nav");
+  const initialLayout = savedValue === "false" ? "top" : "sidebar";
+  updateNavLayoutControls(initialLayout);
+
+  navLayoutOpen?.addEventListener("click", showNavLayoutDialog);
+  navLayoutClose?.addEventListener("click", closeNavLayoutDialog);
+  navLayoutDialog?.addEventListener("click", (event) => {
+    if (event.button === 0 && event.target === navLayoutDialog) closeNavLayoutDialog();
+  });
+  navLayoutChoices.forEach((button) => {
+    button.addEventListener("click", () => {
+      setNavLayout(button.dataset.navLayoutChoice);
+    });
+  });
+};
+
+const updateContextMenuModeControls = (mode) => {
+  const resolvedMode = mode === "native" ? "native" : "custom";
+
+  contextModeChoices.forEach((button) => {
+    const isActive = button.dataset.contextMenuChoice === resolvedMode;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-selected", String(isActive));
+  });
+};
+
+const setContextMenuMode = (mode) => {
+  const resolvedMode = mode === "native" ? "native" : "custom";
+  localStorage.setItem("profile-setting-custom-context-menu", String(resolvedMode === "custom"));
+  updateContextMenuModeControls(resolvedMode);
+};
+
+const showContextMenuModeDialog = () => {
+  if (!contextModeDialog) return;
+
+  const currentMode =
+    localStorage.getItem("profile-setting-custom-context-menu") === "false" ? "native" : "custom";
+  updateContextMenuModeControls(currentMode);
+  contextModeDialog.classList.remove("is-closing");
+  contextModeDialog.hidden = false;
+};
+
+const closeContextMenuModeDialog = () => {
+  if (!contextModeDialog || contextModeDialog.hidden) return;
+
+  contextModeDialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    contextModeDialog.hidden = true;
+    contextModeDialog.classList.remove("is-closing");
+  }, 170);
+};
+
+const setupContextMenuModeDialog = () => {
+  const initialMode =
+    localStorage.getItem("profile-setting-custom-context-menu") === "false" ? "native" : "custom";
+  updateContextMenuModeControls(initialMode);
+
+  contextModeOpen?.addEventListener("click", showContextMenuModeDialog);
+  contextModeClose?.addEventListener("click", closeContextMenuModeDialog);
+  contextModeDialog?.addEventListener("click", (event) => {
+    if (event.button === 0 && event.target === contextModeDialog) closeContextMenuModeDialog();
+  });
+  contextModeChoices.forEach((button) => {
+    button.addEventListener("click", () => {
+      setContextMenuMode(button.dataset.contextMenuChoice);
+    });
+  });
+};
+
+const setFastRender = (isOn) => {
+  const nextValue = Boolean(isOn);
+  document.documentElement.dataset.fastRender = nextValue ? "true" : "false";
+  localStorage.setItem("profile-setting-fast-render", String(nextValue));
+  localStorage.setItem("profile-fast-render", String(nextValue));
+  fastRenderSwipe?.classList.toggle("is-on", nextValue);
+  fastRenderSwipe?.setAttribute("aria-pressed", String(nextValue));
+  fastRenderSwipe?.setAttribute(
+    "aria-label",
+    translate(nextValue ? "settings.fastRenderOn" : "settings.fastRenderOff"),
+  );
+};
+
+const setupFastRenderSwipe = () => {
+  if (!fastRenderSwipe) return;
+
+  const savedValue =
+    localStorage.getItem("profile-setting-fast-render") ||
+    localStorage.getItem("profile-fast-render");
+  setFastRender(savedValue === "true");
+
+  const updateFromPointer = (event) => {
+    const rect = fastRenderSwipe.getBoundingClientRect();
+    const ratio = (event.clientX - rect.left) / rect.width;
+    setFastRender(ratio >= 0.5);
+  };
+
+  fastRenderSwipe.addEventListener("click", () => {
+    setFastRender(!fastRenderSwipe.classList.contains("is-on"));
+  });
+
+  fastRenderSwipe.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
+    fastRenderSwipe.setPointerCapture?.(event.pointerId);
+  });
+
+  fastRenderSwipe.addEventListener("pointermove", (event) => {
+    if (event.buttons !== 1) return;
+    updateFromPointer(event);
+  });
+
+  fastRenderSwipe.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      setFastRender(true);
+      return;
+    }
+
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      setFastRender(false);
+    }
+  });
+};
+
+const normalizeKidMode = (mode) => {
+  if (mode === "true") return "strong";
+  if (mode === "soft" || mode === "strong") return mode;
+  return "off";
+};
+
+const setKidMode = (mode) => {
+  const kidModeLabelKeys = {
+    off: "settings.kidModeOffLevel",
+    soft: "settings.kidModeSoftLevel",
+    strong: "settings.kidModeStrongLevel",
+  };
+  const resolvedMode = normalizeKidMode(mode);
+
+  document.documentElement.dataset.kidMode = resolvedMode;
+  localStorage.setItem("profile-setting-kid-mode", resolvedMode);
+
+  kidModeChoices.forEach((button) => {
+    const isActive = button.dataset.kidModeChoice === resolvedMode;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-selected", String(isActive));
+  });
+
+  if (kidModeLabel) {
+    kidModeLabel.textContent = translate(kidModeLabelKeys[resolvedMode] || "settings.kidModeOffLevel");
+  }
+};
+
 const setDensity = (density) => {
+  const densityLabelKeys = {
+    compact: "settings.densityCompact",
+    comfortable: "settings.densityComfortable",
+    spacious: "settings.densitySpacious",
+  };
+
   document.documentElement.dataset.density = density;
   localStorage.setItem("profile-density", density);
 
   densityChoices.forEach((button) => {
-    button.classList.toggle("is-active", button.dataset.densityChoice === density);
+    const isActive = button.dataset.densityChoice === density;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-selected", String(isActive));
   });
+
+  if (densityLabel) {
+    densityLabel.textContent = translate(densityLabelKeys[density] || "settings.densityComfortable");
+  }
 };
 
 const setCurrency = (currency) => {
@@ -1914,15 +2230,19 @@ const clearSiteCache = () => {
   document.documentElement.dataset.theme = "light";
   document.documentElement.dataset.accent = "neutral";
   document.documentElement.dataset.fastRender = "false";
-  document.documentElement.dataset.kidMode = "false";
+  document.documentElement.dataset.kidMode = "off";
   document.documentElement.dataset.navLayout = "sidebar";
   setLanguage("en");
   setDensity("comfortable");
   setCurrency("usd");
   setAccent("neutral");
+  setNavLayout("sidebar");
+  setContextMenuMode("custom");
+  setFastRender(false);
+  setKidMode("off");
 
   settingToggles.forEach((button) => {
-    const defaultOn = !["fast-render", "kid-mode"].includes(button.dataset.toggleKey);
+    const defaultOn = button.dataset.toggleKey !== "fast-render";
     updateSettingToggle(button, defaultOn);
   });
 
@@ -2021,6 +2341,12 @@ const setAccentMenuOpen = (isOpen) => {
   if (accentMenu) accentMenu.hidden = !isOpen;
 };
 
+const setSettingSelectOpen = (select, trigger, menu, isOpen) => {
+  select?.classList.toggle("is-open", isOpen);
+  trigger?.setAttribute("aria-expanded", String(isOpen));
+  if (menu) menu.hidden = !isOpen;
+};
+
 const closeClearCacheWarning = () => {
   if (!clearCacheWarning || clearCacheWarning.hidden) return;
 
@@ -2078,6 +2404,8 @@ const closeContextMenu = () => {
   contextMenuCloseTimeoutId = window.setTimeout(() => {
     contextMenu.hidden = true;
     contextMenu.classList.remove("is-closing");
+    contextTargetLink = null;
+    contextTargetImage = null;
   }, 130);
 };
 
@@ -2104,6 +2432,37 @@ const getEditableSelectionText = (target) => {
 
 const getSelectedText = () =>
   getEditableSelectionText(contextTargetElement) || window.getSelection?.().toString().trim() || "";
+
+const getContextImageTarget = (target) => {
+  const image = target.closest?.("img");
+  if (!image || image.closest(".brand-logo")) return null;
+  return image;
+};
+
+const getImageDownloadName = (image) => {
+  try {
+    const url = new URL(image.currentSrc || image.src, window.location.href);
+    const fileName = decodeURIComponent(url.pathname.split("/").filter(Boolean).pop() || "");
+    return fileName || "image";
+  } catch {
+    return "image";
+  }
+};
+
+const saveContextImage = () => {
+  if (!contextTargetImage) return;
+
+  const imageUrl = contextTargetImage.currentSrc || contextTargetImage.src;
+  if (!imageUrl) return;
+
+  const link = document.createElement("a");
+  link.href = imageUrl;
+  link.download = getImageDownloadName(contextTargetImage);
+  link.rel = "noopener";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+};
 
 const readClipboardText = async () => {
   if (!navigator.clipboard?.readText) return "";
@@ -2144,6 +2503,8 @@ const showContextMenu = (event) => {
 
   event.preventDefault();
   contextTargetElement = event.target;
+  contextTargetLink = event.target.closest?.("a[href]") || null;
+  contextTargetImage = getContextImageTarget(event.target);
   window.clearTimeout(contextMenuCloseTimeoutId);
   contextMenu.classList.remove("is-closing");
   contextMenu.hidden = false;
@@ -2151,6 +2512,15 @@ const showContextMenu = (event) => {
   const selectedText = getSelectedText();
   const copySelectionButton = contextMenu.querySelector('[data-context-action="copy-selection"]');
   if (copySelectionButton) copySelectionButton.hidden = selectedText.length === 0;
+  const openLinkButton = contextMenu.querySelector('[data-context-action="open-link"]');
+  const copyLinkButton = contextMenu.querySelector('[data-context-action="copy-link"]');
+  const saveImageButton = contextMenu.querySelector('[data-context-action="save-image"]');
+  if (openLinkButton) openLinkButton.hidden = !contextTargetLink;
+  if (copyLinkButton) copyLinkButton.hidden = !contextTargetLink;
+  if (saveImageButton) {
+    saveImageButton.disabled = !contextTargetImage;
+    saveImageButton.setAttribute("aria-disabled", String(!contextTargetImage));
+  }
 
   const menuRect = contextMenu.getBoundingClientRect();
   const margin = 10;
@@ -2215,6 +2585,21 @@ const handleContextMenuAction = async (action) => {
     return;
   }
 
+  if (action === "open-link") {
+    if (contextTargetLink) window.open(contextTargetLink.href, "_blank", "noopener,noreferrer");
+    return;
+  }
+
+  if (action === "copy-link") {
+    if (contextTargetLink) await writeClipboardText(contextTargetLink.href);
+    return;
+  }
+
+  if (action === "save-image") {
+    saveContextImage();
+    return;
+  }
+
   if (action === "copy-title") {
     await writeClipboardText(document.title || window.location.href);
     return;
@@ -2250,6 +2635,11 @@ const handleContextMenuAction = async (action) => {
     return;
   }
 
+  if (action === "back") {
+    window.history.back();
+    return;
+  }
+
   if (action === "forward") {
     window.history.forward();
     return;
@@ -2257,6 +2647,11 @@ const handleContextMenuAction = async (action) => {
 
   if (action === "print") {
     window.print();
+    return;
+  }
+
+  if (action === "source") {
+    window.open(`view-source:${window.location.href}`, "_blank", "noopener,noreferrer");
     return;
   }
 
@@ -2630,24 +3025,91 @@ setupSiteSearch();
 setupOfflineRetry();
 setTheme(getInitialTheme());
 setupSettingToggles();
+setupNavLayoutDialog();
+setupContextMenuModeDialog();
+setupFastRenderSwipe();
 setupToggleRightTrack();
 setupBrandLogo();
 setDensity(localStorage.getItem("profile-density") || "comfortable");
+setKidMode(localStorage.getItem("profile-setting-kid-mode") || "off");
 setupPremiumAccentLocks();
 setAccent(localStorage.getItem("profile-accent") || "neutral");
 setCurrency(localStorage.getItem("profile-currency") || (currentLanguage === "ko" ? "krw" : "usd"));
 updateStorageEstimate();
 
 themeChoices.forEach((button) => {
-  button.addEventListener("click", () => setTheme(button.dataset.themeChoice));
+  button.addEventListener("click", () => {
+    setTheme(button.dataset.themeChoice);
+    setSettingSelectOpen(themeSelect, themeTrigger, themeMenu, false);
+  });
 });
 
 languageChoices.forEach((button) => {
-  button.addEventListener("click", () => setLanguage(button.dataset.languageChoice));
+  button.addEventListener("click", () => {
+    setLanguage(button.dataset.languageChoice);
+    setSettingSelectOpen(languageSelect, languageTrigger, languageMenu, false);
+  });
+});
+
+themeTrigger?.addEventListener("click", () => {
+  setSettingSelectOpen(languageSelect, languageTrigger, languageMenu, false);
+  setSettingSelectOpen(densitySelect, densityTrigger, densityMenu, false);
+  setSettingSelectOpen(kidModeSelect, kidModeTrigger, kidModeMenu, false);
+  setAccentMenuOpen(false);
+  setSettingSelectOpen(themeSelect, themeTrigger, themeMenu, !themeSelect?.classList.contains("is-open"));
+});
+
+languageTrigger?.addEventListener("click", () => {
+  setSettingSelectOpen(themeSelect, themeTrigger, themeMenu, false);
+  setSettingSelectOpen(densitySelect, densityTrigger, densityMenu, false);
+  setSettingSelectOpen(kidModeSelect, kidModeTrigger, kidModeMenu, false);
+  setAccentMenuOpen(false);
+  setSettingSelectOpen(
+    languageSelect,
+    languageTrigger,
+    languageMenu,
+    !languageSelect?.classList.contains("is-open"),
+  );
 });
 
 densityChoices.forEach((button) => {
-  button.addEventListener("click", () => setDensity(button.dataset.densityChoice));
+  button.addEventListener("click", () => {
+    setDensity(button.dataset.densityChoice);
+    setSettingSelectOpen(densitySelect, densityTrigger, densityMenu, false);
+  });
+});
+
+densityTrigger?.addEventListener("click", () => {
+  setSettingSelectOpen(themeSelect, themeTrigger, themeMenu, false);
+  setSettingSelectOpen(languageSelect, languageTrigger, languageMenu, false);
+  setSettingSelectOpen(kidModeSelect, kidModeTrigger, kidModeMenu, false);
+  setAccentMenuOpen(false);
+  setSettingSelectOpen(
+    densitySelect,
+    densityTrigger,
+    densityMenu,
+    !densitySelect?.classList.contains("is-open"),
+  );
+});
+
+kidModeChoices.forEach((button) => {
+  button.addEventListener("click", () => {
+    setKidMode(button.dataset.kidModeChoice);
+    setSettingSelectOpen(kidModeSelect, kidModeTrigger, kidModeMenu, false);
+  });
+});
+
+kidModeTrigger?.addEventListener("click", () => {
+  setSettingSelectOpen(themeSelect, themeTrigger, themeMenu, false);
+  setSettingSelectOpen(languageSelect, languageTrigger, languageMenu, false);
+  setSettingSelectOpen(densitySelect, densityTrigger, densityMenu, false);
+  setAccentMenuOpen(false);
+  setSettingSelectOpen(
+    kidModeSelect,
+    kidModeTrigger,
+    kidModeMenu,
+    !kidModeSelect?.classList.contains("is-open"),
+  );
 });
 
 currencyChoices.forEach((button) => {
@@ -2671,6 +3133,10 @@ accentChoices.forEach((button) => {
 });
 
 accentTrigger?.addEventListener("click", () => {
+  setSettingSelectOpen(themeSelect, themeTrigger, themeMenu, false);
+  setSettingSelectOpen(languageSelect, languageTrigger, languageMenu, false);
+  setSettingSelectOpen(densitySelect, densityTrigger, densityMenu, false);
+  setSettingSelectOpen(kidModeSelect, kidModeTrigger, kidModeMenu, false);
   setAccentMenuOpen(!accentSelect?.classList.contains("is-open"));
 });
 
@@ -2743,6 +3209,18 @@ document.addEventListener("contextmenu", showContextMenu);
 document.addEventListener("click", (event) => {
   if (!contextMenu?.contains(event.target)) closeContextMenu();
   if (!accentSelect?.contains(event.target)) setAccentMenuOpen(false);
+  if (!themeSelect?.contains(event.target)) {
+    setSettingSelectOpen(themeSelect, themeTrigger, themeMenu, false);
+  }
+  if (!languageSelect?.contains(event.target)) {
+    setSettingSelectOpen(languageSelect, languageTrigger, languageMenu, false);
+  }
+  if (!densitySelect?.contains(event.target)) {
+    setSettingSelectOpen(densitySelect, densityTrigger, densityMenu, false);
+  }
+  if (!kidModeSelect?.contains(event.target)) {
+    setSettingSelectOpen(kidModeSelect, kidModeTrigger, kidModeMenu, false);
+  }
 
   const link = event.target.closest?.("a[href]");
   if (
@@ -2768,6 +3246,8 @@ document.addEventListener("keydown", (event) => {
     closeSiteSearchDialog();
     closeShareDialog();
     closeQrDialog();
+    closeNavLayoutDialog();
+    closeContextMenuModeDialog();
     closeClearCacheWarning();
     closeFeedbackWarning();
     closeSubscribeWarning();

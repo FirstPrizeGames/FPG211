@@ -51,9 +51,13 @@
         ) {
           document.documentElement.dataset.fastRender = "true";
         }
-        if (localStorage.getItem("profile-setting-kid-mode") === "true") {
-          document.documentElement.dataset.kidMode = "true";
-        }
+        const savedKidMode = localStorage.getItem("profile-setting-kid-mode");
+        document.documentElement.dataset.kidMode =
+          savedKidMode === "true"
+            ? "strong"
+            : ["soft", "strong"].includes(savedKidMode)
+              ? savedKidMode
+              : "off";
         document.documentElement.dataset.navLayout =
           localStorage.getItem("profile-setting-sidebar-nav") === "false" ? "top" : "sidebar";
       })();
@@ -250,28 +254,45 @@
               <h3 data-i18n="settings.themeTitle">테마 모드</h3>
               <p data-i18n="settings.themeBody">프로필 화면의 밝기를 라이트, 다크, 밝기 끄기 모드로 선택합니다.</p>
             </div>
-            <div class="theme-segment" aria-label="테마 모드 선택" data-i18n-aria-label="aria.themeMode">
-              <button class="is-active" type="button" data-theme-choice="light" data-i18n="settings.themeLight">라이트</button>
-              <button type="button" data-theme-choice="dark" data-i18n="settings.themeDark">다크</button>
-              <button type="button" data-theme-choice="lights-off" data-i18n="settings.lightsOff">
-                밝기 끄기
+            <div class="setting-select" data-theme-select>
+              <button
+                class="setting-select-trigger"
+                type="button"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+                data-theme-trigger
+              >
+                <span data-theme-label data-i18n="settings.themeLight">라이트</span>
+                <span class="setting-select-chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </span>
               </button>
+              <div class="setting-select-menu" role="listbox" aria-label="테마 모드 선택" data-theme-menu hidden data-i18n-aria-label="aria.themeMode">
+                <button class="is-active" type="button" role="option" aria-selected="true" data-theme-choice="light" data-i18n="settings.themeLight">라이트</button>
+                <button type="button" role="option" aria-selected="false" data-theme-choice="dark" data-i18n="settings.themeDark">다크</button>
+                <button type="button" role="option" aria-selected="false" data-theme-choice="lights-off" data-i18n="settings.lightsOff">
+                  밝기 끄기
+                </button>
+              </div>
             </div>
           </article>
 
-          <article class="setting-card" id="navigation">
+          <article class="setting-card setting-card-navigation" id="navigation">
             <div>
               <p class="eyebrow" data-i18n="settings.navigationTab">Navigation</p>
               <h3 data-i18n="settings.navigationTitle">사이드바 내비게이션</h3>
               <p data-i18n="settings.navigationBody">데스크톱 화면에서 상단 메뉴를 왼쪽 세로 버튼 리스트로 표시합니다.</p>
             </div>
             <button
-              class="toggle is-on"
+              class="button setting-popup-button"
               type="button"
-              aria-label="사이드바 내비게이션 켜짐"
-              aria-pressed="true"
-              data-toggle-key="sidebar-nav"
-            ></button>
+              data-nav-layout-open
+              data-i18n="settings.navigationConfigure"
+            >
+              설정
+            </button>
           </article>
 
           <article class="setting-card" id="context-menu">
@@ -281,12 +302,13 @@
               <p data-i18n="settings.contextMenuBody">빠른 작업을 담은 디자인 우클릭 메뉴를 사용합니다.</p>
             </div>
             <button
-              class="toggle is-on"
+              class="button setting-popup-button"
               type="button"
-              aria-label="커스텀 우클릭 메뉴 켜짐"
-              aria-pressed="true"
-              data-toggle-key="custom-context-menu"
-            ></button>
+              data-context-menu-open
+              data-i18n="settings.contextMenuConfigure"
+            >
+              설정
+            </button>
           </article>
 
           <article class="setting-card" id="language">
@@ -295,9 +317,25 @@
               <h3 data-i18n="settings.languageTitle">언어</h3>
               <p data-i18n="settings.languageBody">프로필과 설정 화면에 표시되는 언어를 선택합니다.</p>
             </div>
-            <div class="language-segment" aria-label="언어 선택" data-i18n-aria-label="aria.language">
-              <button class="is-active" type="button" data-language-choice="ko">한국어</button>
-              <button type="button" data-language-choice="en">English</button>
+            <div class="setting-select" data-language-select>
+              <button
+                class="setting-select-trigger"
+                type="button"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+                data-language-trigger
+              >
+                <span data-language-label data-i18n="settings.languageKorean">한국어</span>
+                <span class="setting-select-chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </span>
+              </button>
+              <div class="setting-select-menu" role="listbox" aria-label="언어 선택" data-language-menu hidden data-i18n-aria-label="aria.language">
+                <button class="is-active" type="button" role="option" aria-selected="true" data-language-choice="ko" data-i18n="settings.languageKorean">한국어</button>
+                <button type="button" role="option" aria-selected="false" data-language-choice="en" data-i18n="settings.languageEnglish">English</button>
+              </div>
             </div>
           </article>
 
@@ -305,15 +343,35 @@
             <div>
               <p class="eyebrow" data-i18n="settings.displayTab">Display</p>
               <h3 data-i18n="settings.kidModeTitle">Kid mode</h3>
-              <p data-i18n="settings.kidModeBody">더 큰 글자, 또렷한 대비, 줄어든 움직임으로 화면을 편하게 표시합니다.</p>
+              <p data-i18n="settings.kidModeBody">읽기 편한 화면을 위해 글자 크기와 움직임 감소 정도를 단계별로 선택합니다.</p>
             </div>
-            <button
-              class="toggle"
-              type="button"
-              aria-label="Kid mode 꺼짐"
-              aria-pressed="false"
-              data-toggle-key="kid-mode"
-            ></button>
+            <div class="setting-select" data-kid-mode-select>
+              <button
+                class="setting-select-trigger"
+                type="button"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+                data-kid-mode-trigger
+              >
+                <span data-kid-mode-label data-i18n="settings.kidModeOffLevel">Off</span>
+                <span class="setting-select-chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </span>
+              </button>
+              <div class="setting-select-menu" role="listbox" aria-label="Kid mode 선택" data-kid-mode-menu hidden data-i18n-aria-label="aria.kidMode">
+                <button class="is-active" type="button" role="option" aria-selected="true" data-kid-mode-choice="off" data-i18n="settings.kidModeOffLevel">
+                  Off
+                </button>
+                <button type="button" role="option" aria-selected="false" data-kid-mode-choice="soft" data-i18n="settings.kidModeSoftLevel">
+                  Soft
+                </button>
+                <button type="button" role="option" aria-selected="false" data-kid-mode-choice="strong" data-i18n="settings.kidModeStrongLevel">
+                  Strong
+                </button>
+              </div>
+            </div>
           </article>
 
           <div class="settings-group-label">
@@ -327,12 +385,16 @@
               <p data-i18n="settings.fastRenderBody">블러, 그림자, 애니메이션을 줄여 화면을 더 가볍게 표시합니다.</p>
             </div>
             <button
-              class="toggle"
+              class="swipe-control"
               type="button"
               aria-label="빠른 렌더링 꺼짐"
               aria-pressed="false"
-              data-toggle-key="fast-render"
-            ></button>
+              data-fast-render-swipe
+            >
+              <span data-i18n="settings.fastRenderStandard">Standard</span>
+              <span data-i18n="settings.fastRenderFast">Fast</span>
+              <span class="swipe-thumb" aria-hidden="true"></span>
+            </button>
           </article>
 
           <article class="setting-card" id="storage">
@@ -474,21 +536,39 @@
               <h3 data-i18n="settings.densityTitle">화면 밀도</h3>
               <p data-i18n="settings.densityBody">프로필 정보와 작업 목록의 간격을 선택합니다.</p>
             </div>
-            <div class="density-segment" aria-label="화면 밀도 선택" data-i18n-aria-label="aria.density">
-              <button type="button" data-density-choice="compact" data-i18n="settings.densityCompact">
-                Compact
-              </button>
+            <div class="setting-select" data-density-select>
               <button
-                class="is-active"
+                class="setting-select-trigger"
                 type="button"
-                data-density-choice="comfortable"
-                data-i18n="settings.densityComfortable"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+                data-density-trigger
               >
-                Comfortable
+                <span data-density-label data-i18n="settings.densityComfortable">Comfortable</span>
+                <span class="setting-select-chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </span>
               </button>
-              <button type="button" data-density-choice="spacious" data-i18n="settings.densitySpacious">
-                Spacious
-              </button>
+              <div class="setting-select-menu" role="listbox" aria-label="화면 밀도 선택" data-density-menu hidden data-i18n-aria-label="aria.density">
+                <button type="button" role="option" aria-selected="false" data-density-choice="compact" data-i18n="settings.densityCompact">
+                  Compact
+                </button>
+                <button
+                  class="is-active"
+                  type="button"
+                  role="option"
+                  aria-selected="true"
+                  data-density-choice="comfortable"
+                  data-i18n="settings.densityComfortable"
+                >
+                  Comfortable
+                </button>
+                <button type="button" role="option" aria-selected="false" data-density-choice="spacious" data-i18n="settings.densitySpacious">
+                  Spacious
+                </button>
+              </div>
             </div>
           </article>
         </div>
@@ -521,6 +601,82 @@
           </div>
         </div>
       </div>
+      <div class="cache-dialog nav-layout-dialog" data-nav-layout-dialog hidden>
+        <div class="cache-dialog-panel nav-layout-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="nav-layout-dialog-title">
+          <p class="eyebrow" data-i18n="settings.navigationTab">Navigation</p>
+          <h2 id="nav-layout-dialog-title" data-i18n="settings.navigationDialogTitle">내비게이션 레이아웃 선택</h2>
+          <p data-i18n="settings.navigationDialogBody">
+            데스크톱 화면에서 메뉴를 왼쪽에 고정할지, 상단에 간단하게 둘지 선택합니다.
+          </p>
+          <div class="nav-layout-options" role="listbox" aria-label="내비게이션 레이아웃 선택" data-i18n-aria-label="aria.navLayout">
+            <button class="nav-layout-choice is-active" type="button" role="option" aria-selected="true" data-nav-layout-choice="sidebar">
+              <span class="nav-layout-preview is-sidebar-preview" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+              <span class="nav-layout-copy">
+                <strong data-i18n="settings.navigationSidebarTitle">Sidebar</strong>
+                <small data-i18n="settings.navigationSidebarBody">메뉴가 왼쪽에 세로로 고정되어 페이지 이동이 빠릅니다.</small>
+              </span>
+            </button>
+            <button class="nav-layout-choice" type="button" role="option" aria-selected="false" data-nav-layout-choice="top">
+              <span class="nav-layout-preview is-topbar-preview" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+              <span class="nav-layout-copy">
+                <strong data-i18n="settings.navigationTopbarTitle">Top bar</strong>
+                <small data-i18n="settings.navigationTopbarBody">메뉴가 위쪽에 모여 화면을 더 넓게 사용할 수 있습니다.</small>
+              </span>
+            </button>
+          </div>
+          <div class="cache-warning-actions">
+            <button class="button cache-confirm-button" type="button" data-nav-layout-close data-i18n="share.close">
+              닫기
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="cache-dialog context-mode-dialog" data-context-mode-dialog hidden>
+        <div class="cache-dialog-panel context-mode-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="context-mode-dialog-title">
+          <p class="eyebrow" data-i18n="settings.displayTab">Display</p>
+          <h2 id="context-mode-dialog-title" data-i18n="settings.contextMenuDialogTitle">우클릭 메뉴 방식 선택</h2>
+          <p data-i18n="settings.contextMenuDialogBody">
+            빠른 작업이 필요한 경우 커스텀 메뉴를 사용하고, 브라우저 기본 동작을 우선하려면 기본 메뉴를 선택합니다.
+          </p>
+          <div class="nav-layout-options" role="listbox" aria-label="우클릭 메뉴 방식 선택" data-i18n-aria-label="aria.contextMenuMode">
+            <button class="nav-layout-choice context-mode-choice is-active" type="button" role="option" aria-selected="true" data-context-menu-choice="custom">
+              <span class="context-mode-preview is-custom-preview" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+              <span class="nav-layout-copy">
+                <strong data-i18n="settings.contextMenuCustomTitle">Custom menu</strong>
+                <small data-i18n="settings.contextMenuCustomBody">Copy, share, QR code, search, print 같은 사이트 작업을 한 메뉴에서 엽니다.</small>
+              </span>
+            </button>
+            <button class="nav-layout-choice context-mode-choice" type="button" role="option" aria-selected="false" data-context-menu-choice="native">
+              <span class="context-mode-preview is-native-preview" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+              <span class="nav-layout-copy">
+                <strong data-i18n="settings.contextMenuNativeTitle">Browser default</strong>
+                <small data-i18n="settings.contextMenuNativeBody">브라우저가 제공하는 기본 우클릭 메뉴를 그대로 사용합니다.</small>
+              </span>
+            </button>
+          </div>
+          <div class="cache-warning-actions">
+            <button class="button cache-confirm-button" type="button" data-context-mode-close data-i18n="share.close">
+              닫기
+            </button>
+          </div>
+        </div>
+      </div>
     </main>
     <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
       <button type="button" data-scroll-to="top" aria-label="맨 위로 이동" data-i18n-aria-label="aria.scrollTop">
@@ -547,6 +703,18 @@
       <button type="button" data-context-action="copy-selection" hidden>
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 7h8" /><path d="M8 12h8" /><path d="M8 17h5" /><rect x="4" y="3" width="16" height="18" rx="2" /></svg>
         <span data-i18n="context.copySelection">선택한 텍스트 복사</span><kbd class="context-shortcut">Ctrl+C</kbd>
+      </button>
+      <button type="button" data-context-action="open-link" hidden>
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7" /><path d="M8 7h9v9" /><path d="M5 5h6" /><path d="M5 5v14h14v-6" /></svg>
+        <span data-i18n="context.openLink">새 탭에서 링크 열기</span>
+      </button>
+      <button type="button" data-context-action="copy-link" hidden>
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1" /><path d="M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1.1" /></svg>
+        <span data-i18n="context.copyLink">링크 주소 복사</span>
+      </button>
+      <button type="button" data-context-action="save-image" disabled aria-disabled="true">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M5 21h14" /></svg>
+        <span data-i18n="context.saveImage">이미지 저장</span>
       </button>
       <button type="button" data-context-action="copy">
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1" /><path d="M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1.1" /></svg>
@@ -582,6 +750,10 @@
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-15.3 6.4" /><path d="M3 12A9 9 0 0 1 18.3 5.6" /><path d="M18 2v4h4" /><path d="M6 22v-4H2" /></svg>
         <span data-i18n="context.refresh">새로고침</span><kbd class="context-shortcut">Ctrl+R</kbd>
       </button>
+      <button type="button" data-context-action="back">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5" /><path d="m11 6-6 6 6 6" /></svg>
+        <span data-i18n="context.back">뒤로 가기</span><kbd class="context-shortcut">Alt+Left</kbd>
+      </button>
       <button type="button" data-context-action="forward">
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
         <span data-i18n="context.forward">앞으로 가기</span><kbd class="context-shortcut">Alt+Right</kbd>
@@ -589,6 +761,10 @@
       <button type="button" data-context-action="print">
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 9V3h12v6" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><path d="M6 14h12v7H6z" /><path d="M18 12h.01" /></svg>
         <span data-i18n="context.print">인쇄</span><kbd class="context-shortcut">Ctrl+P</kbd>
+      </button>
+      <button type="button" data-context-action="source">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m8 9-4 3 4 3" /><path d="m16 9 4 3-4 3" /><path d="m14 5-4 14" /></svg>
+        <span data-i18n="context.source">페이지 소스 보기</span><kbd class="context-shortcut">Ctrl+U</kbd>
       </button>
       <div class="context-menu-separator" role="separator" aria-hidden="true"></div>
       <button type="button" data-context-action="creator">

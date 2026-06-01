@@ -51,9 +51,13 @@
         ) {
           document.documentElement.dataset.fastRender = "true";
         }
-        if (localStorage.getItem("profile-setting-kid-mode") === "true") {
-          document.documentElement.dataset.kidMode = "true";
-        }
+        const savedKidMode = localStorage.getItem("profile-setting-kid-mode");
+        document.documentElement.dataset.kidMode =
+          savedKidMode === "true"
+            ? "strong"
+            : ["soft", "strong"].includes(savedKidMode)
+              ? savedKidMode
+              : "off";
         document.documentElement.dataset.navLayout =
           localStorage.getItem("profile-setting-sidebar-nav") === "false" ? "top" : "sidebar";
       })();

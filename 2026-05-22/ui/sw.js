@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260531";
+const CACHE_NAME = "profile-offline-20260601-i18n-cache-fix";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
@@ -51,6 +51,19 @@ self.addEventListener("fetch", (event) => {
         const cachedOfflinePage = await caches.match(OFFLINE_URL, { ignoreSearch: true });
         return cachedOfflinePage || caches.match("/", { ignoreSearch: true });
       }),
+    );
+    return;
+  }
+
+  if (requestUrl.pathname.endsWith(".css") || requestUrl.pathname.endsWith(".js")) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const responseCopy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseCopy));
+          return response;
+        })
+        .catch(() => caches.match(event.request, { ignoreSearch: true })),
     );
     return;
   }

@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260601-print-dialog";
+const CACHE_NAME = "profile-offline-20260601-context-order";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

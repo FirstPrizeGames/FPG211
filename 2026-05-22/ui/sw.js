@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260601-i18n-cache-fix";
+const CACHE_NAME = "profile-offline-20260601-mobile-dialog-fix";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

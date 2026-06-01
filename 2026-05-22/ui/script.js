@@ -62,11 +62,11 @@ const subscribeConfirm = document.querySelector("[data-subscribe-confirm]");
 const settingToggles = [...document.querySelectorAll("[data-toggle-key]")];
 const navLayoutOpen = document.querySelector("[data-nav-layout-open]");
 const navLayoutDialog = document.querySelector("[data-nav-layout-dialog]");
-const navLayoutClose = document.querySelector("[data-nav-layout-close]");
+const navLayoutCloseButtons = [...document.querySelectorAll("[data-nav-layout-close]")];
 const navLayoutChoices = [...document.querySelectorAll("[data-nav-layout-choice]")];
 const contextModeOpen = document.querySelector("[data-context-menu-open]");
 const contextModeDialog = document.querySelector("[data-context-mode-dialog]");
-const contextModeClose = document.querySelector("[data-context-mode-close]");
+const contextModeCloseButtons = [...document.querySelectorAll("[data-context-mode-close]")];
 const contextModeChoices = [...document.querySelectorAll("[data-context-menu-choice]")];
 const fastRenderSwipe = document.querySelector("[data-fast-render-swipe]");
 const homeTabs = [...document.querySelectorAll("[data-home-tab]")];
@@ -1766,7 +1766,9 @@ const setupNavLayoutDialog = () => {
   updateNavLayoutControls(initialLayout);
 
   navLayoutOpen?.addEventListener("click", showNavLayoutDialog);
-  navLayoutClose?.addEventListener("click", closeNavLayoutDialog);
+  navLayoutCloseButtons.forEach((button) => {
+    button.addEventListener("click", closeNavLayoutDialog);
+  });
   navLayoutDialog?.addEventListener("click", (event) => {
     if (event.button === 0 && event.target === navLayoutDialog) closeNavLayoutDialog();
   });
@@ -1819,7 +1821,9 @@ const setupContextMenuModeDialog = () => {
   updateContextMenuModeControls(initialMode);
 
   contextModeOpen?.addEventListener("click", showContextMenuModeDialog);
-  contextModeClose?.addEventListener("click", closeContextMenuModeDialog);
+  contextModeCloseButtons.forEach((button) => {
+    button.addEventListener("click", closeContextMenuModeDialog);
+  });
   contextModeDialog?.addEventListener("click", (event) => {
     if (event.button === 0 && event.target === contextModeDialog) closeContextMenuModeDialog();
   });

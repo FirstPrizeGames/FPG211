@@ -55,6 +55,9 @@ let sourceCopy = document.querySelector("[data-source-copy]");
 let sourceCode = document.querySelector("[data-source-code]");
 let sourceMeta = document.querySelector("[data-source-meta]");
 let sourceStatus = document.querySelector("[data-source-status]");
+let printDialog = document.querySelector("[data-print-dialog]");
+let printClose = document.querySelector("[data-print-close]");
+let printConfirm = document.querySelector("[data-print-confirm]");
 const adblockBait = document.querySelector(".adblock-bait");
 const adblockNotice = document.querySelector("[data-adblock-notice]");
 const adblockDismiss = document.querySelector("[data-adblock-dismiss]");
@@ -678,6 +681,16 @@ const translations = {
     "source.copied": "소스가 복사되었습니다.",
     "source.close": "닫기",
     "source.unavailable": "소스를 불러올 수 없어 현재 DOM 스냅샷을 표시합니다.",
+    "print.eyebrow": "Print",
+    "print.title": "인쇄 설정",
+    "print.body": "인쇄 전용 레이아웃으로 버튼, 메뉴, 팝업을 숨기고 본문을 정리합니다.",
+    "print.optionCleanTitle": "Clean layout",
+    "print.optionCleanBody": "내비게이션과 인터랙션 UI를 숨깁니다.",
+    "print.optionReadableTitle": "Readable text",
+    "print.optionReadableBody": "밝은 배경과 선명한 글자색으로 인쇄합니다.",
+    "print.optionLinksTitle": "Link friendly",
+    "print.optionLinksBody": "브라우저 인쇄 설정에서 PDF 저장도 가능합니다.",
+    "print.confirm": "Print",
     "adblock.message":
       "광고 차단기가 일부 사이트 기능을 제한할 수 있습니다. 문제가 보이면 이 사이트를 허용 목록에 추가해 주세요.",
     "adblock.dismiss": "닫기",
@@ -1373,6 +1386,16 @@ const translations = {
     "source.copied": "Source copied.",
     "source.close": "Close",
     "source.unavailable": "Source could not be loaded, so the current DOM snapshot is shown.",
+    "print.eyebrow": "Print",
+    "print.title": "Print settings",
+    "print.body": "Use a print-friendly layout that hides buttons, menus, popups, and tidies the page content.",
+    "print.optionCleanTitle": "Clean layout",
+    "print.optionCleanBody": "Navigation and interactive UI are hidden.",
+    "print.optionReadableTitle": "Readable text",
+    "print.optionReadableBody": "The page prints with a light background and clear text.",
+    "print.optionLinksTitle": "Link friendly",
+    "print.optionLinksBody": "You can also save as PDF from the browser print dialog.",
+    "print.confirm": "Print",
     "adblock.message":
       "An ad blocker may limit some site features. If something looks broken, please allow this site.",
     "adblock.dismiss": "Dismiss",
@@ -2174,6 +2197,47 @@ const createSourceDialog = () => {
   sourceStatus = document.querySelector("[data-source-status]");
 };
 
+const createPrintDialog = () => {
+  if (!document.querySelector("[data-print-dialog]")) {
+    const dialog = document.createElement("div");
+    dialog.className = "cache-dialog print-dialog";
+    dialog.dataset.printDialog = "";
+    dialog.hidden = true;
+    dialog.innerHTML = `
+      <div class="cache-dialog-panel print-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="print-dialog-title">
+        <button class="dialog-close-button" type="button" data-print-close aria-label="닫기" data-i18n-aria-label="source.close">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+        </button>
+        <p class="eyebrow" data-i18n="print.eyebrow">Print</p>
+        <h2 id="print-dialog-title" data-i18n="print.title">인쇄 설정</h2>
+        <p data-i18n="print.body">인쇄 전용 레이아웃으로 버튼, 메뉴, 팝업을 숨기고 본문을 정리합니다.</p>
+        <div class="print-options">
+          <article>
+            <strong data-i18n="print.optionCleanTitle">Clean layout</strong>
+            <span data-i18n="print.optionCleanBody">내비게이션과 인터랙션 UI를 숨깁니다.</span>
+          </article>
+          <article>
+            <strong data-i18n="print.optionReadableTitle">Readable text</strong>
+            <span data-i18n="print.optionReadableBody">밝은 배경과 선명한 글자색으로 인쇄합니다.</span>
+          </article>
+          <article>
+            <strong data-i18n="print.optionLinksTitle">Link friendly</strong>
+            <span data-i18n="print.optionLinksBody">브라우저 인쇄 설정에서 PDF 저장도 가능합니다.</span>
+          </article>
+        </div>
+        <div class="cache-warning-actions">
+          <button class="button cache-confirm-button" type="button" data-print-confirm data-i18n="print.confirm">Print</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(dialog);
+  }
+
+  printDialog = document.querySelector("[data-print-dialog]");
+  printClose = document.querySelector("[data-print-close]");
+  printConfirm = document.querySelector("[data-print-confirm]");
+};
+
 const selectHomeTab = (selectedTab) => {
   if (!selectedTab) return;
 
@@ -2474,6 +2538,16 @@ const closeSourceDialog = () => {
   }, 170);
 };
 
+const closePrintDialog = () => {
+  if (!printDialog || printDialog.hidden) return;
+
+  printDialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    printDialog.hidden = true;
+    printDialog.classList.remove("is-closing");
+  }, 170);
+};
+
 const closeContextMenu = () => {
   if (!contextMenu || contextMenu.hidden) return;
   window.clearTimeout(contextMenuCloseTimeoutId);
@@ -2723,7 +2797,7 @@ const handleContextMenuAction = async (action) => {
   }
 
   if (action === "print") {
-    window.print();
+    showPrintDialog();
     return;
   }
 
@@ -2938,6 +3012,23 @@ const copySourceCode = async () => {
   }, 1800);
 };
 
+const showPrintDialog = () => {
+  if (!printDialog) {
+    window.print();
+    return;
+  }
+
+  printDialog.classList.remove("is-closing");
+  printDialog.hidden = false;
+};
+
+const runPrintFlow = () => {
+  closePrintDialog();
+  window.setTimeout(() => {
+    window.print();
+  }, 190);
+};
+
 const detectAdblock = () => {
   if (!adblockBait || !adblockNotice || localStorage.getItem("adblock-notice-dismissed") === "true") {
     return;
@@ -3131,6 +3222,7 @@ createShareDialog();
 createSiteSearchDialog();
 createQrDialog();
 createSourceDialog();
+createPrintDialog();
 setLanguage(currentLanguage);
 if (homeTabs.length) {
   const activeHomeTab =
@@ -3314,6 +3406,11 @@ sourceCopy?.addEventListener("click", () => {
 sourceDialog?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === sourceDialog) closeSourceDialog();
 });
+printClose?.addEventListener("click", closePrintDialog);
+printConfirm?.addEventListener("click", runPrintFlow);
+printDialog?.addEventListener("click", (event) => {
+  if (event.button === 0 && event.target === printDialog) closePrintDialog();
+});
 scrollActionButtons.forEach((button) => {
   button.addEventListener("click", () => scrollPageTo(button.dataset.scrollTo));
 });
@@ -3373,6 +3470,7 @@ document.addEventListener("keydown", (event) => {
     closeShareDialog();
     closeQrDialog();
     closeSourceDialog();
+    closePrintDialog();
     closeNavLayoutDialog();
     closeContextMenuModeDialog();
     closeClearCacheWarning();

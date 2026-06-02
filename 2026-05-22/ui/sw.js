@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260601-context-order";
+const CACHE_NAME = "profile-offline-20260602-legal-context-menu";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

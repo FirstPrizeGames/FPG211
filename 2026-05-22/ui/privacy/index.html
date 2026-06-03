@@ -8,7 +8,7 @@
       name="description"
       content="Privacy policy for the profile site, including local preferences, feedback links, Stripe checkout, and external services."
     />
-    <meta name="theme-color" content="#efefec" />
+    <meta name="theme-color" content="#02070b" />
     <link rel="canonical" href="https://firstprizegames211.app/privacy" />
     <meta property="og:title" content="Privacy Policy · Emergency Responder Profile" />
     <meta
@@ -18,21 +18,21 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Emergency Responder Profile" />
     <meta property="og:url" content="https://firstprizegames211.app/privacy" />
-    <meta property="og:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
+    <meta property="og:image" content="https://firstprizegames211.app/assets/privacy-vault-hero.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Privacy Policy · Emergency Responder Profile" />
     <meta
       name="twitter:description"
       content="Review how this profile site handles local preferences, feedback links, Stripe checkout, and external services."
     />
-    <meta name="twitter:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
+    <meta name="twitter:image" content="https://firstprizegames211.app/assets/privacy-vault-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="application-name" content="Emergency Responder Profile" />
-    <meta name="msapplication-TileColor" content="#efefec" />
+    <meta name="msapplication-TileColor" content="#02070b" />
     <script>
       (() => {
         const savedTheme = localStorage.getItem("profile-theme");
@@ -62,9 +62,9 @@
           localStorage.getItem("profile-setting-sidebar-nav") === "false" ? "top" : "sidebar";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260602-legal-context-menu" />
+    <link rel="stylesheet" href="../styles.css?v=20260603-legal-independent" />
   </head>
-  <body>
+  <body class="privacy-body legal-document-body">
     <div class="loading-bar" aria-hidden="true"></div>
     <div class="scroll-progress" aria-hidden="true"></div>
     <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
@@ -75,7 +75,7 @@
       <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
     </div>
     <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
-    <main class="shell" id="main-content" tabindex="-1">
+    <main class="shell legal-document-page privacy-page" id="main-content" tabindex="-1">
       <nav class="topbar" aria-label="개인정보처리방침 메뉴" data-i18n-aria-label="aria.privacyMenu">
         <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
           <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
@@ -101,70 +101,81 @@
         </div>
       </nav>
 
-      <section class="legal-hero">
-        <div>
-          <p class="eyebrow" data-i18n="privacy.eyebrow">Privacy Policy</p>
-          <h1 data-i18n="privacy.title">개인정보와 사이트 설정을 투명하게 다룹니다.</h1>
-          <p class="legal-lead" data-i18n="privacy.lead">
-            이 페이지는 사이트가 어떤 정보를 사용하고, 어떤 정보는 저장하지 않는지 간단히 설명합니다.
+      <section class="policy-hero">
+        <div class="policy-hero-copy">
+          <h1 data-i18n="privacy.title">개인정보를 읽기 쉽게 정리했습니다.</h1>
+          <p class="policy-lead" data-i18n="privacy.lead">
+            이 사이트는 계정을 만들지 않고, 결제 정보도 직접 보관하지 않습니다. 브라우저 설정은 기기 안에 저장되고, 외부 서비스는 각 서비스의 정책을 따릅니다.
           </p>
-          <p class="legal-updated" data-i18n="privacy.updated">Last updated: June 3, 2026</p>
+          <p class="policy-updated" data-i18n="privacy.updated">마지막 업데이트: 2026년 6월 3일</p>
         </div>
-        <aside class="legal-summary" aria-label="개인정보 요약" data-i18n-aria-label="aria.privacySummary">
-          <div>
-            <span data-i18n="privacy.summaryStorage">Storage</span>
-            <strong data-i18n="privacy.summaryStorageValue">Local only</strong>
-          </div>
-          <div>
-            <span data-i18n="privacy.summaryAccount">Accounts</span>
-            <strong data-i18n="privacy.summaryAccountValue">Not required</strong>
-          </div>
-          <div>
-            <span data-i18n="privacy.summaryPayments">Payments</span>
-            <strong data-i18n="privacy.summaryPaymentsValue">Stripe checkout</strong>
-          </div>
-        </aside>
+        <figure class="policy-hero-media">
+          <img src="../assets/privacy-vault-hero.jpg" alt="" width="1800" height="1000" loading="eager" decoding="async" />
+          <figcaption>
+            <span data-i18n="privacy.mediaLabel">Privacy model</span>
+            <strong data-i18n="privacy.mediaValue">Local settings, external checkout</strong>
+          </figcaption>
+        </figure>
       </section>
 
-      <section class="legal-grid" aria-label="개인정보 세부 정보" data-i18n-aria-label="aria.privacyDetails">
-        <article class="legal-card">
+      <section class="policy-ledger" aria-label="개인정보 요약" data-i18n-aria-label="aria.privacySummary">
+        <div>
+          <span data-i18n="privacy.summaryStorage">Storage</span>
+          <strong data-i18n="privacy.summaryStorageValue">Local only</strong>
+        </div>
+        <div>
+          <span data-i18n="privacy.summaryAccount">Accounts</span>
+          <strong data-i18n="privacy.summaryAccountValue">Not required</strong>
+        </div>
+        <div>
+          <span data-i18n="privacy.summaryPayments">Payments</span>
+          <strong data-i18n="privacy.summaryPaymentsValue">Stripe checkout</strong>
+        </div>
+        <div>
+          <span data-i18n="privacy.summaryControl">Control</span>
+          <strong data-i18n="privacy.summaryControlValue">Clear anytime</strong>
+        </div>
+      </section>
+
+      <section class="policy-dossier" aria-label="개인정보 세부 정보" data-i18n-aria-label="aria.privacyDetails">
+        <article>
           <span>01</span>
-          <h2 data-i18n="privacy.localTitle">브라우저에 저장되는 설정</h2>
+          <h2 data-i18n="privacy.localTitle">기기 안에 남는 설정</h2>
           <p data-i18n="privacy.localBody">
-            테마, 언어, 강조 컬러, 화면 밀도, 사이드바 여부 같은 사용자 설정은 브라우저의 localStorage에 저장됩니다.
+            테마, 언어, 강조 색상, 화면 밀도, 사이드바 사용 여부처럼 화면을 편하게 보기 위한 설정은 브라우저 localStorage에 저장됩니다. 이 값은 사이트 서버로 전송하지 않으며 같은 브라우저에서만 유지됩니다.
           </p>
         </article>
-        <article class="legal-card">
+        <article>
           <span>02</span>
-          <h2 data-i18n="privacy.noAccountTitle">계정 없이 볼 수 있는 사이트</h2>
+          <h2 data-i18n="privacy.noAccountTitle">계정 없이 읽는 사이트</h2>
           <p data-i18n="privacy.noAccountBody">
-            현재 사이트는 자체 로그인, 회원가입, 서버 데이터베이스를 사용하지 않습니다.
+            현재 이 사이트는 자체 로그인, 회원가입, 사용자 프로필 데이터베이스를 운영하지 않습니다. 이름, 비밀번호, 계정 식별자를 만들거나 보관하지 않습니다.
           </p>
         </article>
-        <article class="legal-card">
+        <article>
           <span>03</span>
-          <h2 data-i18n="privacy.externalTitle">외부 서비스로 이동하는 기능</h2>
+          <h2 data-i18n="privacy.externalTitle">외부 서비스로 넘어가는 순간</h2>
           <p data-i18n="privacy.externalBody">
-            Feedback, 외부 결제 링크, 외부 공유 기능은 해당 외부 서비스의 개인정보 처리 기준을 따릅니다.
+            Feedback 양식, Stripe 결제, 외부 공유 링크를 누르면 해당 서비스의 화면으로 이동할 수 있습니다. 그곳에서 입력하거나 처리되는 정보는 해당 서비스의 정책과 보안 기준이 적용됩니다.
           </p>
         </article>
-        <article class="legal-card">
+        <article>
           <span>04</span>
-          <h2 data-i18n="privacy.stripeTitle">Stripe 결제 처리</h2>
+          <h2 data-i18n="privacy.stripeTitle">결제 정보는 Stripe에서 처리합니다.</h2>
           <p>
             <span data-i18n="privacy.stripeBody">
-              Pro, Team, Ultra 플랜 결제는 Stripe checkout에서 처리됩니다. 이 사이트는 카드 번호나 결제 보안 정보를 직접 저장하지 않으며, 결제 과정에서 입력한 정보는 Stripe의 개인정보 처리 기준을 따릅니다.
+              Pro, Teams, Ultra 플랜 결제는 Stripe Checkout을 통해 처리됩니다. 이 사이트는 카드 번호, 보안 코드, 결제 인증 정보를 직접 저장하지 않습니다.
             </span>
             <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer" data-i18n="privacy.stripeLink">
               Stripe Privacy Policy
             </a>
           </p>
         </article>
-        <article class="legal-card">
+        <article>
           <span>05</span>
-          <h2 data-i18n="privacy.clearTitle">설정 삭제</h2>
+          <h2 data-i18n="privacy.clearTitle">언제든지 지울 수 있습니다.</h2>
           <p data-i18n="privacy.clearBody">
-            설정 페이지의 브라우저 캐시 정리 기능이나 브라우저 설정을 통해 저장된 사이트 데이터를 삭제할 수 있습니다.
+            저장된 사이트 설정은 Settings 페이지의 정리 기능이나 브라우저의 사이트 데이터 삭제 메뉴에서 지울 수 있습니다. 삭제하면 테마와 표시 설정이 기본값으로 돌아갑니다.
           </p>
         </article>
       </section>
@@ -256,6 +267,6 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260602-legal-context-menu" defer></script>
+    <script src="../script.js?v=20260603-legal-independent" defer></script>
   </body>
 </html>

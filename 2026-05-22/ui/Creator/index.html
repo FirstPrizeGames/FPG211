@@ -8,7 +8,7 @@
       name="description"
       content="A long practical guide for creating games with Unity, covering planning, scenes, GameObjects, C# scripts, UI, testing, and builds."
     />
-    <meta name="theme-color" content="#efefec" />
+    <meta name="theme-color" content="#030b0f" />
     <link rel="canonical" href="https://firstprizegames211.app/Creator" />
     <meta property="og:title" content="Creator · Emergency Responder Profile" />
     <meta
@@ -18,21 +18,21 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Emergency Responder Profile" />
     <meta property="og:url" content="https://firstprizegames211.app/Creator" />
-    <meta property="og:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
+    <meta property="og:image" content="https://firstprizegames211.app/assets/creator-studio-hero.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Creator · Emergency Responder Profile" />
     <meta
       name="twitter:description"
       content="Learn a practical workflow for creating games with Unity from idea to playable build."
     />
-    <meta name="twitter:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
+    <meta name="twitter:image" content="https://firstprizegames211.app/assets/creator-studio-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="application-name" content="Emergency Responder Profile" />
-    <meta name="msapplication-TileColor" content="#efefec" />
+    <meta name="msapplication-TileColor" content="#030b0f" />
     <script>
       (() => {
         const savedTheme = localStorage.getItem("profile-theme");
@@ -62,9 +62,9 @@
           localStorage.getItem("profile-setting-sidebar-nav") === "false" ? "top" : "sidebar";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260602-legal-context-menu" />
+    <link rel="stylesheet" href="../styles.css?v=20260603-creator-studio" />
   </head>
-  <body>
+  <body class="creator-body">
     <div class="loading-bar" aria-hidden="true"></div>
     <div class="scroll-progress" aria-hidden="true"></div>
     <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
@@ -75,7 +75,7 @@
       <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
     </div>
     <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
-    <main class="shell" id="main-content" tabindex="-1">
+    <main class="shell creator-page" id="main-content" tabindex="-1">
       <nav class="topbar" aria-label="Creator 메뉴" data-i18n-aria-label="aria.creatorMenu">
         <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
           <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
@@ -101,15 +101,70 @@
         </div>
       </nav>
 
-      <section class="bio-hero creator-hero">
-        <p class="eyebrow" data-i18n="creator.eyebrow">Creator</p>
-        <h1 data-i18n="creator.title">Unity로 게임을 만드는 기본 흐름</h1>
-        <p data-i18n="creator.lead">
-          Unity는 2D와 3D 게임을 모두 만들 수 있는 엔진입니다. 처음에는 큰 게임보다 작은 플레이 가능한 장면을 완성하는 것을 목표로 잡고, 아이디어, 씬 구성, 오브젝트, C# 스크립트, UI, 테스트, 빌드 순서로 차근차근 진행하는 편이 좋습니다.
-        </p>
+      <section class="creator-studio-hero">
+        <div class="creator-studio-copy">
+          <h1 data-i18n="creator.title">첫 플레이 가능한 장면을 완성하는 제작실.</h1>
+          <p class="creator-studio-lead" data-i18n="creator.lead">
+            Unity 제작을 아이디어, 씬, 오브젝트, C# 규칙, 감각 조정, 빌드까지 연결한 실전 워크플로로 정리했습니다.
+          </p>
+          <div class="creator-studio-actions">
+            <a class="button primary" href="#workflow" data-i18n="creator.heroCtaWorkflow">워크플로 시작</a>
+            <a class="button ghost" href="#resources" data-i18n="creator.heroCtaResources">리소스 보기</a>
+          </div>
+        </div>
+        <figure class="creator-studio-media">
+          <img src="../assets/creator-studio-hero.jpg" alt="" width="1800" height="1000" loading="eager" decoding="async" />
+          <figcaption>
+            <span data-i18n="creator.mediaLabel">Studio asset</span>
+            <strong data-i18n="creator.mediaValue">Prototype, code, build</strong>
+          </figcaption>
+        </figure>
       </section>
 
-      <section class="creator-guide" aria-label="Unity 제작 가이드" data-i18n-aria-label="aria.creatorGuide">
+      <section class="creator-ledger" aria-label="Creator 요약" data-i18n-aria-label="aria.creatorSummary">
+        <div>
+          <span data-i18n="creator.ledgerFocusLabel">Focus</span>
+          <strong data-i18n="creator.ledgerFocusValue">작은 플레이어블</strong>
+        </div>
+        <div>
+          <span data-i18n="creator.ledgerStepsLabel">Steps</span>
+          <strong data-i18n="creator.ledgerStepsValue">7단계 + 가격</strong>
+        </div>
+        <div>
+          <span data-i18n="creator.ledgerEngineLabel">Engine</span>
+          <strong>Unity</strong>
+        </div>
+        <div>
+          <span data-i18n="creator.ledgerOutputLabel">Output</span>
+          <strong data-i18n="creator.ledgerOutputValue">Playable build</strong>
+        </div>
+      </section>
+
+      <nav class="creator-stage-rail" aria-label="Creator 단계 이동" data-i18n-aria-label="aria.creatorStages">
+        <p data-i18n="creator.stageRailKicker">Browse by stage</p>
+        <a href="#workflow">
+          <span>01</span>
+          <strong data-i18n="creator.stagePlanTitle">Plan</strong>
+          <small data-i18n="creator.stagePlanBody">핵심 루프와 목표</small>
+        </a>
+        <a href="#workflow">
+          <span>02</span>
+          <strong data-i18n="creator.stageBuildTitle">Build</strong>
+          <small data-i18n="creator.stageBuildBody">씬, 오브젝트, C#</small>
+        </a>
+        <a href="#workflow">
+          <span>03</span>
+          <strong data-i18n="creator.stageTuneTitle">Tune</strong>
+          <small data-i18n="creator.stageTuneBody">감각과 피드백</small>
+        </a>
+        <a href="#pricing">
+          <span>04</span>
+          <strong data-i18n="creator.stageShipTitle">Ship</strong>
+          <small data-i18n="creator.stageShipBody">테스트, 빌드, 가격</small>
+        </a>
+      </nav>
+
+      <section class="creator-guide" id="workflow" aria-label="Unity 제작 가이드" data-i18n-aria-label="aria.creatorGuide">
         <article>
           <p class="eyebrow" data-i18n="creator.stepOneEyebrow">Step 01</p>
           <h2 data-i18n="creator.stepOneTitle">작게 시작할 아이디어를 정합니다.</h2>
@@ -123,7 +178,7 @@
           </ul>
         </article>
 
-        <article>
+        <article class="creator-pricing-panel" id="pricing">
           <p class="eyebrow" data-i18n="creator.stepTwoEyebrow">Step 02</p>
           <h2 data-i18n="creator.stepTwoTitle">Unity 프로젝트와 씬 구조를 만듭니다.</h2>
           <p data-i18n="creator.stepTwoBody">
@@ -136,7 +191,7 @@
           </ul>
         </article>
 
-        <article>
+        <article class="creator-resources-panel" id="resources">
           <p class="eyebrow" data-i18n="creator.stepThreeEyebrow">Step 03</p>
           <h2 data-i18n="creator.stepThreeTitle">GameObject와 Component 개념을 이해합니다.</h2>
           <p data-i18n="creator.stepThreeBody">
@@ -353,6 +408,6 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260602-legal-context-menu" defer></script>
+    <script src="../script.js?v=20260603-creator-studio" defer></script>
   </body>
 </html>

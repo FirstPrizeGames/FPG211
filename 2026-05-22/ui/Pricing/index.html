@@ -6,14 +6,14 @@
     <title>Pricing · Emergency Responder Profile</title>
     <meta
       name="description"
-      content="Compare profile plans for personal, professional, and team-focused profile pages."
+      content="Compare Free, Pro, Team, and Ultra profile options with Stripe checkout links."
     />
     <meta name="theme-color" content="#efefec" />
     <link rel="canonical" href="https://firstprizegames211.app/Pricing" />
     <meta property="og:title" content="Pricing · Emergency Responder Profile" />
     <meta
       property="og:description"
-      content="Compare Free, Pro, and Team profile options with USD and KRW display."
+      content="Compare Free, Pro, Team, and Ultra profile options with final pricing confirmed in Stripe checkout."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Emergency Responder Profile" />
@@ -23,7 +23,7 @@
     <meta name="twitter:title" content="Pricing · Emergency Responder Profile" />
     <meta
       name="twitter:description"
-      content="Compare Free, Pro, and Team profile options with USD and KRW display."
+      content="Compare Free, Pro, Team, and Ultra profile options with final pricing confirmed in Stripe checkout."
     />
     <meta name="twitter:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -109,22 +109,28 @@
             구급대원 경력 소개, 교육 이력 정리, 포트폴리오 확장까지 필요한 범위에 맞춰 구성했습니다.
           </p>
         </div>
+        <aside class="pricing-hero-panel" aria-label="Stripe 결제 요약" data-i18n-aria-label="aria.pricingStripeSummary">
+          <div>
+            <span data-i18n="pricing.summaryCheckout">Checkout</span>
+            <strong data-i18n="pricing.summaryCheckoutValue">Stripe 테스트 링크</strong>
+          </div>
+          <div>
+            <span data-i18n="pricing.summaryCurrency">Currency</span>
+            <strong data-i18n="pricing.summaryCurrencyValue">결제창에서 최종 확인</strong>
+          </div>
+          <div>
+            <span data-i18n="pricing.summaryAccess">Access</span>
+            <strong data-i18n="pricing.summaryAccessValue">현재는 수동 확인</strong>
+          </div>
+        </aside>
       </section>
 
-      <div class="pricing-controls" aria-label="요금제 표시 설정" data-i18n-aria-label="aria.pricingControls">
-        <div class="currency-switch" role="tablist" aria-label="통화 선택" data-currency-switch data-i18n-aria-label="aria.currency">
-          <span class="currency-thumb" aria-hidden="true"></span>
-          <button class="is-active" type="button" role="tab" aria-selected="true" data-currency-choice="krw">
-            KRW
-          </button>
-          <button type="button" role="tab" aria-selected="false" data-currency-choice="usd">
-            USD
-          </button>
-        </div>
-      </div>
+      <p class="pricing-note" data-i18n="pricing.adaptiveNote">
+        유료 플랜의 최종 금액과 통화는 Stripe checkout에서 확인됩니다.
+      </p>
 
       <section class="pricing-grid" aria-label="요금제 정보" data-i18n-aria-label="aria.pricingInfo">
-        <article class="pricing-card">
+        <article class="pricing-card plan-free">
           <p class="eyebrow" data-i18n="plans.free">Free</p>
           <div class="plan-price-line">
             <h2 data-i18n="plans.freePrice" data-price-plan="free">₩0</h2>
@@ -140,13 +146,13 @@
           <button class="button ghost" type="button" data-go-url="/settings" data-i18n="pricing.chooseFree">Free로 시작</button>
         </article>
 
-        <article class="pricing-card is-featured">
+        <article class="pricing-card is-featured plan-pro">
           <div class="plan-card-top">
             <p class="eyebrow" data-i18n="plans.pro">Pro</p>
             <span class="plan-badge" data-i18n="plans.recommended">추천</span>
           </div>
           <div class="plan-price-line">
-            <h2 data-i18n="plans.proPrice" data-price-plan="pro">₩29,000</h2>
+            <h2 data-i18n="plans.proPrice" data-price-plan="pro">Stripe에서 확인</h2>
             <span class="billing-pill" data-i18n="plans.monthly">월간</span>
           </div>
           <p data-i18n="pricing.proBody">현장 경험, 교육 이수, 자격 사항을 더 자세히 보여주기 위한 구성입니다.</p>
@@ -159,17 +165,17 @@
           <button
             class="button primary"
             type="button"
-            data-subscribe-url="https://www.patreon.com/checkout/FirstPrizeGames?rid=27763619&vanity=15446106"
+            data-subscribe-url="https://buy.stripe.com/test_aFa5kD8XlbUc0nUg07bwk00"
             data-i18n="pricing.choosePro"
           >
             Pro 선택
           </button>
         </article>
 
-        <article class="pricing-card">
+        <article class="pricing-card plan-team">
           <p class="eyebrow" data-i18n="plans.team">Team</p>
           <div class="plan-price-line">
-            <h2 data-i18n="plans.teamPrice" data-price-plan="team">₩169,000</h2>
+            <h2 data-i18n="plans.teamPrice" data-price-plan="team">Stripe에서 확인</h2>
             <span class="billing-pill" data-i18n="plans.monthly">월간</span>
           </div>
           <p data-i18n="pricing.teamBody">팀 단위 프로필, 공동 소개, 활동 정리를 위한 확장 플랜입니다.</p>
@@ -182,22 +188,19 @@
           <button
             class="button ghost"
             type="button"
-            data-subscribe-url="https://www.patreon.com/checkout/FirstPrizeGames?rid=27763742&vanity=15446106"
+            data-subscribe-url="https://buy.stripe.com/test_aFaaEXddB1fy0nUdRZbwk01"
             data-i18n="pricing.chooseTeam"
           >
             Team 선택
           </button>
         </article>
-      </section>
-
-      <section class="ultra-plan-section" aria-label="Ultra 요금제" data-i18n-aria-label="aria.ultraPlan">
-        <article class="pricing-card ultra-card">
+        <article class="pricing-card ultra-card plan-ultra">
           <div class="plan-card-top">
             <p class="eyebrow" data-i18n="plans.ultra">Ultra</p>
             <span class="plan-badge ultra-badge" data-i18n="plans.topTier">최상위</span>
           </div>
           <div class="plan-price-line">
-            <h2 data-i18n="plans.ultraPrice" data-price-plan="ultra">₩299,000</h2>
+            <h2 data-i18n="plans.ultraPrice" data-price-plan="ultra">Stripe에서 확인</h2>
             <span class="billing-pill" data-i18n="plans.monthly">월간</span>
           </div>
           <p data-i18n="pricing.ultraBody">가장 빠른 대응과 공동 기획 참여를 원하는 사용자를 위한 최상위 플랜입니다.</p>
@@ -210,7 +213,7 @@
           <button
             class="button primary ultra-button"
             type="button"
-            data-subscribe-url="https://www.patreon.com/checkout/FirstPrizeGames?rid=28684752&vanity=15446106"
+            data-subscribe-url="https://buy.stripe.com/test_bJeeVd5L9aQ87Qm7tBbwk02"
             data-i18n="pricing.chooseUltra"
           >
             Ultra 선택
@@ -228,7 +231,7 @@
           <p class="eyebrow" data-i18n="pricing.subscribeEyebrow">Subscription</p>
           <h2 id="subscribe-dialog-title" data-i18n="pricing.subscribeWarningTitle">외부 결제 페이지로 이동합니다.</h2>
           <p data-i18n="pricing.subscribeWarningBody">
-            Patreon checkout이 새 페이지에서 열립니다. 결제 전 플랜 이름과 금액을 다시 확인해 주세요.
+            선택한 결제 페이지가 새 페이지에서 열립니다. 결제 전 플랜 이름과 금액을 다시 확인해 주세요.
           </p>
           <div class="cache-warning-actions">
             <button class="button cache-cancel-button" type="button" data-subscribe-cancel data-i18n="pricing.subscribeCancel">
@@ -322,19 +325,19 @@
           <details>
             <summary data-i18n="pricing.faqOneQuestion">결제는 어디에서 진행되나요?</summary>
             <p data-i18n="pricing.faqOneAnswer">
-              Pro, Team, Ultra 플랜은 Patreon checkout 링크를 통해 진행됩니다.
+              Pro, Team, Ultra 플랜은 Stripe checkout 링크를 통해 진행됩니다.
             </p>
           </details>
           <details>
             <summary data-i18n="pricing.faqTwoQuestion">결제하면 프리미엄 컬러가 자동으로 풀리나요?</summary>
             <p data-i18n="pricing.faqTwoAnswer">
-              현재는 링크 연결 방식이라 자동 잠금 해제는 아직 지원하지 않습니다. 나중에 Patreon 연동을 추가하면 자동으로 연결할 수 있습니다.
+              현재는 링크 연결 방식이라 자동 잠금 해제는 아직 지원하지 않습니다. 나중에 결제 연동을 추가하면 자동으로 연결할 수 있습니다.
             </p>
           </details>
           <details>
-            <summary data-i18n="pricing.faqThreeQuestion">달러와 한화 표시는 실제 환율인가요?</summary>
+            <summary data-i18n="pricing.faqThreeQuestion">가격은 실시간 환율로 바뀌나요?</summary>
             <p data-i18n="pricing.faqThreeAnswer">
-              현재는 안내용 고정 가격입니다. 실제 결제 금액은 Patreon checkout 화면을 기준으로 확인해야 합니다.
+              사이트의 가격 카드는 참고 안내이며, 최종 통화와 결제 금액은 Stripe checkout에서 확인해야 합니다.
             </p>
           </details>
           <details>

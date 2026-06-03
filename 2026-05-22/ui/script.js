@@ -224,6 +224,7 @@ const translations = {
     "aria.pricingControls": "요금제 표시 설정",
     "aria.currency": "통화 선택",
     "aria.pricingInfo": "요금제 정보",
+    "aria.pricingStripeSummary": "Stripe 결제 요약",
     "aria.ultraPlan": "Ultra 요금제",
     "aria.planComparison": "요금제 비교",
     "aria.planComparisonTable": "요금제 기능 비교",
@@ -393,16 +394,20 @@ const translations = {
     "privacy.summaryAccount": "Accounts",
     "privacy.summaryAccountValue": "Not required",
     "privacy.summaryPayments": "Payments",
-    "privacy.summaryPaymentsValue": "External links",
+    "privacy.summaryPaymentsValue": "Stripe checkout",
     "privacy.localTitle": "브라우저에 저장되는 설정",
     "privacy.localBody": "테마, 언어, 강조 컬러, 화면 밀도, 사이드바 여부 같은 사용자 설정은 브라우저의 localStorage에 저장됩니다.",
     "privacy.noAccountTitle": "계정 없이 볼 수 있는 사이트",
     "privacy.noAccountBody": "현재 사이트는 자체 로그인, 회원가입, 서버 데이터베이스를 사용하지 않습니다.",
     "privacy.externalTitle": "외부 서비스로 이동하는 기능",
-    "privacy.externalBody": "Feedback, Patreon 결제, 외부 공유 기능은 해당 외부 서비스의 개인정보 처리 기준을 따릅니다.",
+    "privacy.externalBody": "Feedback, Stripe checkout, 외부 공유 기능은 해당 외부 서비스의 개인정보 처리 기준을 따릅니다.",
+    "privacy.stripeTitle": "Stripe 결제 처리",
+    "privacy.stripeBody":
+      "Pro, Team, Ultra 플랜 결제는 Stripe checkout에서 처리됩니다. 이 사이트는 카드 번호나 결제 보안 정보를 직접 저장하지 않으며, 결제 과정에서 입력한 정보는 Stripe의 개인정보 처리 기준을 따릅니다.",
+    "privacy.stripeLink": "Stripe Privacy Policy",
     "privacy.clearTitle": "설정 삭제",
     "privacy.clearBody": "설정 페이지의 브라우저 캐시 정리 기능이나 브라우저 설정을 통해 저장된 사이트 데이터를 삭제할 수 있습니다.",
-    "privacy.updated": "마지막 업데이트: 2026년 5월 31일",
+    "privacy.updated": "마지막 업데이트: 2026년 6월 3일",
     "license.eyebrow": "Open Source License",
     "license.title": "사이트 코드와 사용 범위를 명확하게 정리합니다.",
     "license.lead": "이 페이지는 사이트 템플릿, 코드, 이미지와 브랜드 자산을 어떻게 다룰 수 있는지 안내합니다.",
@@ -526,7 +531,7 @@ const translations = {
     "settings.accentPurple": "Purple",
     "settings.accentProGold": "Pro Gold",
     "settings.accentTeamCyan": "Team Cyan",
-    "settings.premiumLocked": "이 강조 컬러는 Patreon 후원 후 사용할 수 있습니다.",
+    "settings.premiumLocked": "이 강조 컬러는 후원 후 사용할 수 있습니다.",
     "settings.densityTitle": "화면 밀도",
     "settings.densityBody": "프로필 정보와 작업 목록의 간격을 선택합니다.",
     "settings.densityCompact": "Compact",
@@ -544,11 +549,11 @@ const translations = {
     "plans.free": "Free",
     "plans.freePrice": "₩0",
     "plans.pro": "Pro",
-    "plans.proPrice": "₩29,000",
+    "plans.proPrice": "Stripe에서 확인",
     "plans.team": "Team",
-    "plans.teamPrice": "₩169,000",
+    "plans.teamPrice": "Stripe에서 확인",
     "plans.ultra": "Ultra",
-    "plans.ultraPrice": "₩299,000",
+    "plans.ultraPrice": "Stripe에서 확인",
     "plans.monthly": "월간",
     "plans.recommended": "추천",
     "plans.topTier": "최상위",
@@ -556,6 +561,13 @@ const translations = {
     "pricing.title": "프로필 활용 방식에 맞게 선택하세요.",
     "pricing.lead":
       "구급대원 경력 소개, 교육 이력 정리, 포트폴리오 확장까지 필요한 범위에 맞춰 구성했습니다.",
+    "pricing.adaptiveNote": "유료 플랜의 최종 금액과 통화는 Stripe checkout에서 확인됩니다.",
+    "pricing.summaryCheckout": "Checkout",
+    "pricing.summaryCheckoutValue": "Stripe 테스트 링크",
+    "pricing.summaryCurrency": "Currency",
+    "pricing.summaryCurrencyValue": "결제창에서 최종 확인",
+    "pricing.summaryAccess": "Access",
+    "pricing.summaryAccessValue": "현재는 수동 확인",
     "pricing.freeBody": "구급대원으로서의 기본 소개와 공유 흐름을 담기 좋은 구성입니다.",
     "pricing.freeOne": "핵심 소개와 직무 요약",
     "pricing.freeTwo": "주요 역량 3개 표시",
@@ -582,7 +594,7 @@ const translations = {
     "pricing.chooseUltra": "Ultra 선택",
     "pricing.subscribeEyebrow": "Subscription",
     "pricing.subscribeWarningTitle": "외부 결제 페이지로 이동합니다.",
-    "pricing.subscribeWarningBody": "Patreon checkout이 새 페이지에서 열립니다. 결제 전 플랜 이름과 금액을 다시 확인해 주세요.",
+    "pricing.subscribeWarningBody": "선택한 결제 페이지가 새 페이지에서 열립니다. 결제 전 플랜 이름과 금액을 다시 확인해 주세요.",
     "pricing.subscribeCancel": "취소",
     "pricing.subscribeContinue": "계속하기",
     "pricing.compareEyebrow": "Compare",
@@ -609,13 +621,13 @@ const translations = {
     "pricing.faqEyebrow": "FAQ",
     "pricing.faqTitle": "자주 묻는 질문",
     "pricing.faqOneQuestion": "결제는 어디에서 진행되나요?",
-    "pricing.faqOneAnswer": "Pro, Team, Ultra 플랜은 Patreon checkout 링크를 통해 진행됩니다.",
+    "pricing.faqOneAnswer": "Pro, Team, Ultra 플랜은 Stripe checkout 링크를 통해 진행됩니다.",
     "pricing.faqTwoQuestion": "결제하면 프리미엄 컬러가 자동으로 풀리나요?",
     "pricing.faqTwoAnswer":
-      "현재는 링크 연결 방식이라 자동 잠금 해제는 아직 지원하지 않습니다. 나중에 Patreon 연동을 추가하면 자동으로 연결할 수 있습니다.",
-    "pricing.faqThreeQuestion": "달러와 한화 표시는 실제 환율인가요?",
+      "현재는 링크 연결 방식이라 자동 잠금 해제는 아직 지원하지 않습니다. 나중에 결제 연동을 추가하면 자동으로 연결할 수 있습니다.",
+    "pricing.faqThreeQuestion": "가격은 실시간 환율로 바뀌나요?",
     "pricing.faqThreeAnswer":
-      "현재는 안내용 고정 가격입니다. 실제 결제 금액은 Patreon checkout 화면을 기준으로 확인해야 합니다.",
+      "사이트의 가격 카드는 참고 안내이며, 최종 통화와 결제 금액은 Stripe checkout에서 확인해야 합니다.",
     "pricing.faqFourQuestion": "Team 플랜은 누구에게 적합한가요?",
     "pricing.faqFourAnswer":
       "팀 소개, 구성원 역할, 프로젝트나 활동 정보를 한 페이지에서 정리하려는 경우에 적합합니다.",
@@ -641,7 +653,7 @@ const translations = {
     "offline.tipTwoTitle": "연결 후 다시 불러오세요",
     "offline.tipTwoBody": "네트워크가 복구되면 다시 시도 버튼을 눌러 주세요. 캐시된 페이지는 오프라인에서도 열릴 수 있습니다.",
     "offline.tipThreeTitle": "일부 기능은 인터넷이 필요합니다",
-    "offline.tipThreeBody": "외부 공유, Forms, Patreon 링크, QR 이미지 열기 기능은 네트워크 연결이 필요할 수 있습니다.",
+    "offline.tipThreeBody": "외부 공유, Forms, 결제 링크, QR 이미지 열기 기능은 네트워크 연결이 필요할 수 있습니다.",
     "errorFaq.eyebrow": "FAQ",
     "errorFaq.title": "자주 묻는 질문",
     "errorFaq.oneQuestion": "왜 404 페이지가 보이나요?",
@@ -924,6 +936,7 @@ const translations = {
     "aria.pricingControls": "Pricing display settings",
     "aria.currency": "Currency selection",
     "aria.pricingInfo": "Pricing information",
+    "aria.pricingStripeSummary": "Stripe payment summary",
     "aria.ultraPlan": "Ultra plan",
     "aria.planComparison": "Plan comparison",
     "aria.planComparisonTable": "Plan feature comparison",
@@ -1093,16 +1106,20 @@ const translations = {
     "privacy.summaryAccount": "Accounts",
     "privacy.summaryAccountValue": "Not required",
     "privacy.summaryPayments": "Payments",
-    "privacy.summaryPaymentsValue": "External links",
+    "privacy.summaryPaymentsValue": "Stripe checkout",
     "privacy.localTitle": "Settings stored in your browser",
     "privacy.localBody": "User settings such as theme, language, accent color, display density, and sidebar navigation are stored in browser localStorage.",
     "privacy.noAccountTitle": "No account required",
     "privacy.noAccountBody": "This site currently does not use its own login, sign-up flow, or server database.",
     "privacy.externalTitle": "Features that open external services",
-    "privacy.externalBody": "Feedback, Patreon checkout, and external sharing features follow the privacy practices of those external services.",
+    "privacy.externalBody": "Feedback, Stripe checkout, and external sharing features follow the privacy practices of those external services.",
+    "privacy.stripeTitle": "Stripe payment processing",
+    "privacy.stripeBody":
+      "Payments for the Pro, Team, and Ultra plans are processed through Stripe checkout. This site does not directly store card numbers or payment security details, and information entered during checkout follows Stripe's privacy practices.",
+    "privacy.stripeLink": "Stripe Privacy Policy",
     "privacy.clearTitle": "Clearing settings",
     "privacy.clearBody": "You can remove stored site data through the browser cache cleanup feature in Settings or through your browser settings.",
-    "privacy.updated": "Last updated: May 31, 2026",
+    "privacy.updated": "Last updated: June 3, 2026",
     "license.eyebrow": "Open Source License",
     "license.title": "Site code and usage rules are kept clear.",
     "license.lead": "This page explains how the site template, code, images, and brand assets may be handled.",
@@ -1230,7 +1247,7 @@ const translations = {
     "settings.accentPurple": "Purple",
     "settings.accentProGold": "Pro Gold",
     "settings.accentTeamCyan": "Team Cyan",
-    "settings.premiumLocked": "This accent color is available after supporting on Patreon.",
+    "settings.premiumLocked": "This accent color is available after supporting.",
     "settings.densityTitle": "Display density",
     "settings.densityBody": "Choose the spacing used for profile details and work lists.",
     "settings.densityCompact": "Compact",
@@ -1248,11 +1265,11 @@ const translations = {
     "plans.free": "Free",
     "plans.freePrice": "$0",
     "plans.pro": "Pro",
-    "plans.proPrice": "$20",
+    "plans.proPrice": "Confirm in Stripe",
     "plans.team": "Team",
-    "plans.teamPrice": "$120",
+    "plans.teamPrice": "Confirm in Stripe",
     "plans.ultra": "Ultra",
-    "plans.ultraPrice": "$200",
+    "plans.ultraPrice": "Confirm in Stripe",
     "plans.monthly": "Monthly",
     "plans.recommended": "Recommended",
     "plans.topTier": "Top tier",
@@ -1260,6 +1277,13 @@ const translations = {
     "pricing.title": "Choose the setup that fits your profile.",
     "pricing.lead":
       "Built for emergency responder career summaries, training records, and profile expansion.",
+    "pricing.adaptiveNote": "Final paid-plan amounts and currencies are confirmed in Stripe checkout.",
+    "pricing.summaryCheckout": "Checkout",
+    "pricing.summaryCheckoutValue": "Stripe test links",
+    "pricing.summaryCurrency": "Currency",
+    "pricing.summaryCurrencyValue": "Final amount in checkout",
+    "pricing.summaryAccess": "Access",
+    "pricing.summaryAccessValue": "Manual review for now",
     "pricing.freeBody": "A focused setup for your essential responder profile and sharing flow.",
     "pricing.freeOne": "Core introduction and role summary",
     "pricing.freeTwo": "Three key strengths",
@@ -1287,7 +1311,7 @@ const translations = {
     "pricing.chooseUltra": "Choose Ultra",
     "pricing.subscribeEyebrow": "Subscription",
     "pricing.subscribeWarningTitle": "You are leaving for an external checkout.",
-    "pricing.subscribeWarningBody": "Patreon checkout will open on a new page. Please confirm the plan name and amount before paying.",
+    "pricing.subscribeWarningBody": "The selected checkout page will open on a new page. Please confirm the plan name and amount before paying.",
     "pricing.subscribeCancel": "Cancel",
     "pricing.subscribeContinue": "Continue",
     "pricing.compareEyebrow": "Compare",
@@ -1314,13 +1338,13 @@ const translations = {
     "pricing.faqEyebrow": "FAQ",
     "pricing.faqTitle": "Frequently asked questions",
     "pricing.faqOneQuestion": "Where does payment happen?",
-    "pricing.faqOneAnswer": "The Pro, Team, and Ultra plans are handled through Patreon checkout links.",
+    "pricing.faqOneAnswer": "The Pro, Team, and Ultra plans are handled through Stripe checkout links.",
     "pricing.faqTwoQuestion": "Will premium colors unlock automatically after payment?",
     "pricing.faqTwoAnswer":
-      "Not yet. This site currently uses direct Patreon links. Automatic unlocks can be added later with a Patreon integration.",
-    "pricing.faqThreeQuestion": "Are the USD and KRW prices live exchange rates?",
+      "Not yet. This site currently uses direct checkout links. Automatic unlocks can be added later with a payment integration.",
+    "pricing.faqThreeQuestion": "Do prices change with live exchange rates?",
     "pricing.faqThreeAnswer":
-      "No. They are fixed display prices. The final amount should be confirmed on the Patreon checkout page.",
+      "The pricing cards are guidance only. Final currency and payment amount should be confirmed in Stripe checkout.",
     "pricing.faqFourQuestion": "Who is the Team plan for?",
     "pricing.faqFourAnswer":
       "It fits teams that want to organize a shared introduction, member roles, projects, and activity information in one place.",
@@ -1346,7 +1370,7 @@ const translations = {
     "offline.tipTwoTitle": "Reload after reconnecting",
     "offline.tipTwoBody": "Use the retry button once the connection is restored. Cached pages may still open while offline.",
     "offline.tipThreeTitle": "Some features need the internet",
-    "offline.tipThreeBody": "External sharing, forms, Patreon links, and QR image generation may need a live network connection.",
+    "offline.tipThreeBody": "External sharing, forms, checkout links, and QR image generation may need a live network connection.",
     "errorFaq.eyebrow": "FAQ",
     "errorFaq.title": "Frequently asked questions",
     "errorFaq.oneQuestion": "Why am I seeing a 404 page?",
@@ -1542,15 +1566,15 @@ const translate = (key) => translations[currentLanguage][key] || translations.ko
 const prices = {
   krw: {
     free: "₩0",
-    pro: "₩29,000",
-    team: "₩169,000",
-    ultra: "₩299,000",
+    pro: "Stripe에서 확인",
+    team: "Stripe에서 확인",
+    ultra: "Stripe에서 확인",
   },
   usd: {
     free: "$0",
-    pro: "$20",
-    team: "$120",
-    ultra: "$200",
+    pro: "Confirm in Stripe",
+    team: "Confirm in Stripe",
+    ultra: "Confirm in Stripe",
   },
 };
 
@@ -1605,8 +1629,8 @@ const siteSearchIndex = [
     bodyKey: "search.pricingBody",
     url: "/Pricing",
     keywords: {
-      ko: "pricing 가격 요금제 free pro team ultra patreon 결제 비교표",
-      en: "pricing plans free pro team ultra patreon checkout comparison",
+      ko: "pricing 가격 요금제 free pro team ultra stripe 결제 비교표",
+      en: "pricing plans free pro team ultra stripe checkout comparison",
     },
   },
   {
@@ -1986,17 +2010,18 @@ const setDensity = (density) => {
 };
 
 const setCurrency = (currency) => {
-  localStorage.setItem("profile-currency", currency);
-  currencySwitch?.setAttribute("data-currency", currency);
+  const resolvedCurrency = currentLanguage === "ko" ? "krw" : "usd";
+  localStorage.setItem("profile-currency", resolvedCurrency);
+  currencySwitch?.setAttribute("data-currency", resolvedCurrency);
 
   currencyChoices.forEach((button) => {
-    const isActive = button.dataset.currencyChoice === currency;
+    const isActive = button.dataset.currencyChoice === resolvedCurrency;
     button.classList.toggle("is-active", isActive);
     button.setAttribute("aria-selected", String(isActive));
   });
 
   priceLabels.forEach((label) => {
-    label.textContent = prices[currency]?.[label.dataset.pricePlan] || label.textContent;
+    label.textContent = prices[resolvedCurrency]?.[label.dataset.pricePlan] || label.textContent;
   });
 };
 

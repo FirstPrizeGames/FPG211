@@ -2134,18 +2134,38 @@ h3 {
 .pricing-hero {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+  gap: clamp(24px, 5vw, 72px);
   align-items: end;
-  min-height: clamp(360px, 48vw, 520px);
+  min-height: clamp(360px, 44vw, 500px);
   margin-top: 16px;
   overflow: hidden;
-  padding: clamp(34px, 7vw, 72px);
+  padding: clamp(30px, 6vw, 68px);
   border: 1px solid var(--line);
   border-radius: 8px;
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 46%),
+    linear-gradient(135deg, color-mix(in srgb, #0891b2 12%, transparent), transparent 46%),
+    linear-gradient(180deg, color-mix(in srgb, var(--panel-solid) 62%, transparent), transparent),
     var(--card-bg-strong);
   box-shadow: 0 22px 70px rgba(15, 15, 15, 0.08);
+}
+
+.pricing-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(color-mix(in srgb, var(--line) 54%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--line) 42%, transparent) 1px, transparent 1px);
+  background-size: 54px 54px;
+  mask-image: linear-gradient(135deg, transparent, rgba(0, 0, 0, 0.32), transparent 72%);
+  opacity: 0.5;
+}
+
+.pricing-hero > * {
+  position: relative;
+  z-index: 1;
 }
 
 .pricing-hero p:last-child {
@@ -2155,10 +2175,72 @@ h3 {
   font-size: clamp(18px, 2.4vw, 22px);
 }
 
+.pricing-hero-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.pricing-hero-panel div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  min-height: 70px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel-solid) 86%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+.pricing-hero-panel span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.pricing-hero-panel strong {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 900;
+  text-align: right;
+}
+
 .pricing-controls {
   display: flex;
   justify-content: center;
   padding-top: calc(clamp(18px, 4vw, 32px) * var(--density-section));
+}
+
+.pricing-note {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 860px);
+  min-height: 58px;
+  margin: calc(clamp(18px, 4vw, 32px) * var(--density-section)) auto 0;
+  padding: 14px 22px 14px 52px;
+  border: 1px solid color-mix(in srgb, #0891b2 28%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, #0891b2 8%, var(--card-bg));
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.pricing-note::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  width: 14px;
+  height: 14px;
+  border: 3px solid #0891b2;
+  border-radius: 50%;
+  box-shadow: 0 0 0 5px color-mix(in srgb, #0891b2 12%, transparent);
 }
 
 .currency-switch {
@@ -2212,22 +2294,23 @@ h3 {
 
 .pricing-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   align-items: stretch;
-  gap: calc(16px * var(--density-gap));
-  padding-top: calc(clamp(16px, 3vw, 28px) * var(--density-section));
+  gap: calc(14px * var(--density-gap));
+  padding-top: calc(clamp(22px, 4vw, 36px) * var(--density-section));
 }
 
 .pricing-card {
+  --plan-accent: var(--accent);
   position: relative;
   display: grid;
   align-content: start;
   grid-template-rows: auto auto auto 1fr auto;
-  gap: 16px;
-  min-height: 460px;
+  gap: 15px;
+  min-height: 492px;
   overflow: hidden;
-  padding: calc(clamp(22px, 3vw, 30px) * var(--density-card));
-  border: 1px solid var(--line);
+  padding: calc(clamp(20px, 2.4vw, 28px) * var(--density-card));
+  border: 1px solid color-mix(in srgb, var(--plan-accent) 18%, var(--line));
   border-radius: 8px;
   background: var(--card-bg);
   transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
@@ -2238,30 +2321,36 @@ h3 {
   position: absolute;
   inset: 0 0 auto;
   height: 4px;
-  background: color-mix(in srgb, var(--accent) 48%, transparent);
-  opacity: 0.72;
+  background: var(--plan-accent);
+  opacity: 0.76;
 }
 
 .pricing-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
+  border-color: color-mix(in srgb, var(--plan-accent) 58%, var(--line));
   box-shadow: 0 18px 52px rgba(15, 15, 15, 0.1);
   transform: translateY(-2px);
 }
 
 .pricing-card.is-featured {
-  border-color: color-mix(in srgb, var(--accent) 62%, var(--line));
-  background: var(--card-bg-strong);
-  box-shadow: 0 24px 70px color-mix(in srgb, var(--accent) 18%, transparent);
+  border-color: color-mix(in srgb, var(--plan-accent) 58%, var(--line));
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--plan-accent) 7%, transparent), transparent 48%),
+    var(--card-bg-strong);
+  box-shadow: 0 24px 70px color-mix(in srgb, var(--plan-accent) 18%, transparent);
 }
 
 .pricing-card.is-featured::before {
   height: 5px;
-  background: #ff5416;
+  background: var(--plan-accent);
   opacity: 1;
 }
 
 .pricing-card h2 {
-  font-size: clamp(38px, 5vw, 54px);
+  max-width: 100%;
+  min-height: 62px;
+  font-size: clamp(24px, 2.5vw, 34px);
+  line-height: 1.08;
+  text-wrap: balance;
 }
 
 .plan-card-top {
@@ -2283,10 +2372,10 @@ h3 {
   place-items: center;
   min-height: 28px;
   padding: 0 12px;
-  border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--line));
+  border: 1px solid color-mix(in srgb, var(--plan-accent) 42%, var(--line));
   border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
-  color: var(--accent);
+  background: color-mix(in srgb, var(--plan-accent) 10%, transparent);
+  color: var(--plan-accent);
   font-size: 12px;
   font-weight: 900;
 }
@@ -2297,7 +2386,7 @@ h3 {
   min-height: 30px;
   padding: 0 12px;
   border-radius: 999px;
-  background: #ff5416;
+  background: var(--plan-accent);
   color: #ffffff;
   font-size: 12px;
   font-weight: 900;
@@ -2330,28 +2419,37 @@ h3 {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent);
+  background: var(--plan-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--plan-accent) 12%, transparent);
 }
 
 .pricing-card .button {
   align-self: end;
   width: 100%;
+  height: 52px;
   min-height: 52px;
 }
 
-.ultra-plan-section {
-  display: grid;
-  justify-items: center;
-  padding-top: calc(clamp(18px, 4vw, 36px) * var(--density-section));
+.plan-free {
+  --plan-accent: #64748b;
+}
+
+.plan-pro {
+  --plan-accent: #d97706;
+}
+
+.plan-team {
+  --plan-accent: #0891b2;
+}
+
+.plan-ultra {
+  --plan-accent: #ff5416;
 }
 
 .ultra-card {
-  width: min(100%, 760px);
-  min-height: 0;
-  border-color: color-mix(in srgb, #ff5416 62%, var(--line));
+  border-color: color-mix(in srgb, #ff5416 48%, var(--line));
   background:
-    linear-gradient(135deg, color-mix(in srgb, #ff5416 12%, transparent), transparent 54%),
+    linear-gradient(180deg, color-mix(in srgb, #ff5416 9%, transparent), transparent 54%),
     var(--card-bg-strong);
   box-shadow: 0 24px 72px color-mix(in srgb, #ff5416 18%, transparent);
 }
@@ -2363,7 +2461,7 @@ h3 {
 }
 
 .ultra-card ul {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
 }
 
 .ultra-badge {
@@ -4980,6 +5078,28 @@ h3 {
   .error-page {
     min-height: auto;
     padding: clamp(48px, 10vw, 84px) 0;
+  }
+
+  .pricing-hero {
+    gap: 22px;
+    min-height: auto;
+    padding: 24px;
+  }
+
+  .pricing-hero-panel div {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    min-height: 0;
+  }
+
+  .pricing-hero-panel strong {
+    text-align: left;
+  }
+
+  .pricing-note {
+    justify-content: flex-start;
+    padding-right: 18px;
+    text-align: left;
   }
 
   .offline-page {

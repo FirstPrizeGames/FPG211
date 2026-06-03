@@ -85,6 +85,8 @@ const browserUsageTotal = document.querySelector("[data-browser-total]");
 const browserUsageFee = document.querySelector("[data-browser-fee]");
 const browserUsageRate = document.querySelector("[data-browser-rate]");
 const browserUsageStatus = document.querySelector("[data-browser-status]");
+const browserUsageLimitText = document.querySelector("[data-browser-limit-text]");
+const browserUsageLimitBar = document.querySelector("[data-browser-limit-bar]");
 const homeTabs = [...document.querySelectorAll("[data-home-tab]")];
 const homePanels = [...document.querySelectorAll("[data-home-panel]")];
 const infoTabs = [...document.querySelectorAll("[data-info-tab]")];
@@ -644,7 +646,8 @@ const translations = {
     "usage.fee": "예상 사용료",
     "usage.rate": "요율",
     "usage.rateValue": "자동 통화",
-    "usage.limitStatus": "{remaining} 남음 · {reset} 후 자동 초기화",
+    "usage.freeLimit": "무료 한도",
+    "usage.limitStatus": "{used} / {limit} 사용 · {remaining} 남음 · {reset} 후 자동 초기화",
     "usage.limitRedirect": "사용 한도를 모두 소모했습니다. 구독 페이지로 이동합니다.",
     "usage.cacheTitle": "사이트 데이터 정리",
     "usage.cacheBody": "설정과 사용량 기록을 지우고 기본값으로 되돌립니다.",
@@ -689,33 +692,33 @@ const translations = {
     "pricing.eyebrow": "Pricing",
     "pricing.title": "프로필 활용 방식에 맞게 선택하세요.",
     "pricing.lead":
-      "구급대원 경력 소개, 교육 이력 정리, 포트폴리오 확장까지 필요한 범위에 맞춰 구성했습니다.",
-    "pricing.adaptiveNote": "유료 플랜의 최종 금액과 통화는 Stripe checkout에서 확인됩니다.",
+      "Free는 850 usage units를 제공합니다. 5시간마다 초기화되며, 한도 후 유료 checkout을 선택할 수 있습니다.",
+    "pricing.adaptiveNote": "3 units/min. 유료 금액은 Stripe에서 확인됩니다.",
     "pricing.summaryCheckout": "Checkout",
     "pricing.summaryCheckoutValue": "Stripe 테스트 링크",
     "pricing.summaryCurrency": "Currency",
     "pricing.summaryCurrencyValue": "결제창에서 최종 확인",
     "pricing.summaryAccess": "Access",
-    "pricing.summaryAccessValue": "현재는 수동 확인",
-    "pricing.freeBody": "구급대원으로서의 기본 소개와 공유 흐름을 담기 좋은 구성입니다.",
-    "pricing.freeOne": "핵심 소개와 직무 요약",
-    "pricing.freeTwo": "주요 역량 3개 표시",
-    "pricing.freeThree": "테마, 언어, 접근성 설정",
-    "pricing.freeFour": "공유 및 피드백 흐름",
+    "pricing.summaryAccessValue": "한도 후 checkout",
+    "pricing.freeBody": "기본 플랜입니다. 850 usage units가 포함되며 5시간마다 자동 초기화됩니다.",
+    "pricing.freeOne": "850 usage units 포함",
+    "pricing.freeTwo": "3 units/min 기준으로 차감",
+    "pricing.freeThree": "5시간마다 무료 한도 자동 초기화",
+    "pricing.freeFour": "한도 소진 시 Pricing 페이지로 이동",
     "pricing.chooseFree": "Free로 시작",
-    "pricing.proBody": "현장 경험, 교육 이수, 자격 사항을 더 자세히 보여주기 위한 구성입니다.",
-    "pricing.proOne": "현장 대응 경험 강조",
+    "pricing.proBody": "무료 한도를 모두 사용한 뒤 Pro checkout으로 이어지는 개인용 유료 플랜입니다.",
+    "pricing.proOne": "무료 한도 후 Pro checkout 경로",
     "pricing.proTwo": "교육/자격 정보 섹션",
     "pricing.proThree": "Pro 전용 강조 컬러",
-    "pricing.proFour": "추천서와 활동 이력 확장",
+    "pricing.proFour": "개인 프로필 확장용 구성",
     "pricing.choosePro": "Pro 선택",
-    "pricing.teamBody": "팀 단위 프로필, 공동 소개, 활동 정리를 위한 확장 플랜입니다.",
+    "pricing.teamBody": "무료 한도 이후 팀 단위 프로필, 공동 소개, 활동 정리를 선택할 수 있는 checkout 플랜입니다.",
     "pricing.teamOne": "팀 소개와 공동 프로필 구성",
     "pricing.teamTwo": "구성원별 역할 및 활동 정리",
     "pricing.teamThree": "교육, 프로젝트, 운영 정보 구조화",
     "pricing.teamFour": "Team 전용 컬러와 우선 피드백 흐름",
     "pricing.chooseTeam": "Team 선택",
-    "pricing.ultraBody": "가장 빠른 대응과 공동 기획 참여를 원하는 사용자를 위한 최상위 플랜입니다.",
+    "pricing.ultraBody": "무료 한도 이후 가장 높은 우선순위와 공동 기획 참여를 원하는 사용자를 위한 최상위 checkout 플랜입니다.",
     "pricing.ultraOne": "First, the response",
     "pricing.ultraTwo": "Request priority processing",
     "pricing.ultraThree": "Participating in joint planning",
@@ -733,6 +736,9 @@ const translations = {
     "pricing.compareTitle": "기능 비교",
     "pricing.compareFeature": "기능",
     "pricing.compareProfile": "개인 프로필 구성",
+    "pricing.compareUsage": "브라우저 사용량 한도",
+    "pricing.compareFreeUsage": "850 units / 5시간",
+    "pricing.compareCheckoutUsage": "한도 후 checkout",
     "pricing.compareExperience": "현장 경험 정리",
     "pricing.compareCredentials": "교육/자격 섹션",
     "pricing.compareAccent": "프리미엄 강조 컬러",
@@ -754,15 +760,15 @@ const translations = {
     "pricing.faqTitle": "자주 묻는 질문",
     "pricing.faqOneQuestion": "결제는 어디에서 진행되나요?",
     "pricing.faqOneAnswer": "Pro, Team, Ultra 플랜은 Stripe checkout 링크를 통해 진행됩니다.",
-    "pricing.faqTwoQuestion": "결제하면 프리미엄 컬러가 자동으로 풀리나요?",
+    "pricing.faqTwoQuestion": "850 usage units를 모두 쓰면 어떻게 되나요?",
     "pricing.faqTwoAnswer":
-      "현재는 링크 연결 방식이라 자동 잠금 해제는 아직 지원하지 않습니다. 나중에 결제 연동을 추가하면 자동으로 연결할 수 있습니다.",
+      "Free 한도를 모두 사용하면 Usage 페이지가 Pricing으로 이동합니다. 현재 유료 플랜은 Stripe checkout 링크 방식이며, 결제 후 자동 한도 해제는 아직 연결되어 있지 않습니다.",
     "pricing.faqThreeQuestion": "가격은 실시간 환율로 바뀌나요?",
     "pricing.faqThreeAnswer":
       "사이트의 가격 카드는 참고 안내이며, 최종 통화와 결제 금액은 Stripe checkout에서 확인해야 합니다.",
-    "pricing.faqFourQuestion": "Team 플랜은 누구에게 적합한가요?",
+    "pricing.faqFourQuestion": "Usage units는 실제 과금인가요?",
     "pricing.faqFourAnswer":
-      "팀 소개, 구성원 역할, 프로젝트나 활동 정보를 한 페이지에서 정리하려는 경우에 적합합니다.",
+      "아니요. Usage units는 브라우저 안에서만 계산되는 로컬 사용량 표시입니다. 실제 결제는 Stripe checkout에서만 진행됩니다.",
     "error.eyebrow": "404",
     "error.code": "404_NOT_FOUND",
     "error.title": "페이지를 찾을 수 없습니다.",
@@ -1532,7 +1538,8 @@ const translations = {
     "usage.fee": "Estimated fee",
     "usage.rate": "Rate",
     "usage.rateValue": "Auto currency",
-    "usage.limitStatus": "{remaining} left · resets in {reset}",
+    "usage.freeLimit": "Free limit",
+    "usage.limitStatus": "{used} / {limit} used · {remaining} left · resets in {reset}",
     "usage.limitRedirect": "Usage limit reached. Opening the subscription page.",
     "usage.cacheTitle": "Clear site data",
     "usage.cacheBody": "Clear settings and usage records, then return to defaults.",
@@ -1577,34 +1584,34 @@ const translations = {
     "pricing.eyebrow": "Pricing",
     "pricing.title": "Choose the setup that fits your profile.",
     "pricing.lead":
-      "Built for emergency responder career summaries, training records, and profile expansion.",
-    "pricing.adaptiveNote": "Final paid-plan amounts and currencies are confirmed in Stripe checkout.",
+      "Free includes 850 usage units. It resets every 5 hours, and paid checkout opens after the limit.",
+    "pricing.adaptiveNote": "3 units/min. Stripe confirms paid prices.",
     "pricing.summaryCheckout": "Checkout",
     "pricing.summaryCheckoutValue": "Stripe test links",
     "pricing.summaryCurrency": "Currency",
     "pricing.summaryCurrencyValue": "Final amount in checkout",
     "pricing.summaryAccess": "Access",
-    "pricing.summaryAccessValue": "Manual review for now",
-    "pricing.freeBody": "A focused setup for your essential responder profile and sharing flow.",
-    "pricing.freeOne": "Core introduction and role summary",
-    "pricing.freeTwo": "Three key strengths",
-    "pricing.freeThree": "Theme, language, and accessibility settings",
-    "pricing.freeFour": "Sharing and feedback flow",
+    "pricing.summaryAccessValue": "Checkout after limit",
+    "pricing.freeBody": "The basic plan. It includes 850 usage units and resets automatically every 5 hours.",
+    "pricing.freeOne": "850 usage units included",
+    "pricing.freeTwo": "Counts down at 3 units/min",
+    "pricing.freeThree": "Free limit resets every 5 hours",
+    "pricing.freeFour": "Pricing opens when the limit is used",
     "pricing.chooseFree": "Start with Free",
-    "pricing.proBody": "A fuller setup for field experience, training history, and certifications.",
-    "pricing.proOne": "Highlighted response experience",
+    "pricing.proBody": "A personal paid checkout option after the free usage limit is used.",
+    "pricing.proOne": "Pro checkout path after the free limit",
     "pricing.proTwo": "Training and certification sections",
     "pricing.proThree": "Pro-only accent color",
-    "pricing.proFour": "Testimonials and activity history",
+    "pricing.proFour": "Expanded personal profile structure",
     "pricing.choosePro": "Choose Pro",
     "pricing.teamBody":
-      "An expanded plan for team profiles, shared introductions, and organized activity records.",
+      "A checkout option for team profiles, shared introductions, and organized activity records after the free limit.",
     "pricing.teamOne": "Team intro and shared profile structure",
     "pricing.teamTwo": "Member roles and activity summaries",
     "pricing.teamThree": "Training, project, and operation structure",
     "pricing.teamFour": "Team-only color and priority feedback flow",
     "pricing.chooseTeam": "Choose Team",
-    "pricing.ultraBody": "The top-tier plan for the fastest response and participation in joint planning.",
+    "pricing.ultraBody": "The top-tier checkout option after the free limit, with the highest priority and joint planning participation.",
     "pricing.ultraOne": "First, the response",
     "pricing.ultraTwo": "Request priority processing",
     "pricing.ultraThree": "Participating in joint planning",
@@ -1622,6 +1629,9 @@ const translations = {
     "pricing.compareTitle": "Feature comparison",
     "pricing.compareFeature": "Feature",
     "pricing.compareProfile": "Profile structure",
+    "pricing.compareUsage": "Browser usage limit",
+    "pricing.compareFreeUsage": "850 units / 5 hours",
+    "pricing.compareCheckoutUsage": "Checkout after limit",
     "pricing.compareExperience": "Field experience entries",
     "pricing.compareCredentials": "Training and credentials",
     "pricing.compareAccent": "Premium accent color",
@@ -1643,15 +1653,15 @@ const translations = {
     "pricing.faqTitle": "Frequently asked questions",
     "pricing.faqOneQuestion": "Where does payment happen?",
     "pricing.faqOneAnswer": "The Pro, Team, and Ultra plans are handled through Stripe checkout links.",
-    "pricing.faqTwoQuestion": "Will premium colors unlock automatically after payment?",
+    "pricing.faqTwoQuestion": "What happens after all 850 usage units are used?",
     "pricing.faqTwoAnswer":
-      "Not yet. This site currently uses direct checkout links. Automatic unlocks can be added later with a payment integration.",
+      "When the Free limit is used, the Usage page opens Pricing. Paid plans currently use direct Stripe checkout links, and automatic limit unlocking is not connected yet.",
     "pricing.faqThreeQuestion": "Do prices change with live exchange rates?",
     "pricing.faqThreeAnswer":
       "The pricing cards are guidance only. Final currency and payment amount should be confirmed in Stripe checkout.",
-    "pricing.faqFourQuestion": "Who is the Team plan for?",
+    "pricing.faqFourQuestion": "Are usage units real billing?",
     "pricing.faqFourAnswer":
-      "It fits teams that want to organize a shared introduction, member roles, projects, and activity information in one place.",
+      "No. Usage units are a local browser-side usage display. Real payment only happens inside Stripe checkout.",
     "error.eyebrow": "404",
     "error.code": "404_NOT_FOUND",
     "error.title": "Page not found.",
@@ -2837,6 +2847,8 @@ const formatBytes = (bytes) => {
 };
 
 const browserUsageLimitMs = 5 * 60 * 60 * 1000;
+const browserUsageRateUnitsPerMinute = 3;
+const browserUsageFreeLimitUnits = 850;
 const browserUsageStartedAt = Date.now();
 let browserUsageWindowStart = Number.parseInt(localStorage.getItem("profile-browser-usage-window-start-ms") || "0", 10);
 let browserUsageBaseMs = Number.parseInt(
@@ -2866,8 +2878,8 @@ const detectUsageCurrency = () => {
 
 const usageCurrency = detectUsageCurrency();
 const browserUsageRates = {
-  krw: { amount: 1, currency: "KRW", locale: "ko-KR" },
-  usd: { amount: 0.01, currency: "USD", locale: "en-US" },
+  krw: { amount: 3, currency: "KRW", locale: "ko-KR" },
+  usd: { amount: 0.03, currency: "USD", locale: "en-US" },
 };
 const usageRate = browserUsageRates[usageCurrency] || browserUsageRates.usd;
 
@@ -2888,7 +2900,7 @@ const formatDuration = (milliseconds) => {
   return `${minutes}m ${String(seconds).padStart(2, "0")}s`;
 };
 
-const getCurrentBrowserUsageMs = () => browserUsageBaseMs + (Date.now() - browserUsageStartedAt);
+const getCurrentBrowserUsageMs = () => browserUsageBaseMs + (Date.now() - Math.max(browserUsageStartedAt, browserUsageWindowStart));
 
 const refreshBrowserUsageWindow = () => {
   const now = Date.now();
@@ -2914,22 +2926,28 @@ const updateBrowserUsage = () => {
   refreshBrowserUsageWindow();
   const sessionMs = Date.now() - browserUsageStartedAt;
   const totalMs = Math.min(getCurrentBrowserUsageMs(), browserUsageLimitMs);
-  const remainingMs = Math.max(browserUsageLimitMs - totalMs, 0);
+  const usedUnits = Math.min(Math.floor((totalMs / 60000) * browserUsageRateUnitsPerMinute), browserUsageFreeLimitUnits);
+  const remainingUnits = Math.max(browserUsageFreeLimitUnits - usedUnits, 0);
+  const usagePercent = browserUsageFreeLimitUnits > 0 ? Math.min((usedUnits / browserUsageFreeLimitUnits) * 100, 100) : 0;
   const resetMs = Math.max(browserUsageLimitMs - (Date.now() - browserUsageWindowStart), 0);
   const fee = (totalMs / 60000) * usageRate.amount;
 
   if (browserUsageSession) browserUsageSession.textContent = formatDuration(sessionMs);
   if (browserUsageTotal) browserUsageTotal.textContent = `${formatDuration(totalMs)} / 5h 00m 00s`;
   if (browserUsageFee) browserUsageFee.textContent = formatUsageMoney(fee);
-  if (browserUsageRate) browserUsageRate.textContent = `${formatUsageMoney(usageRate.amount)} / min`;
+  if (browserUsageRate) browserUsageRate.textContent = `${browserUsageRateUnitsPerMinute} units/min · ${formatUsageMoney(usageRate.amount)}/min`;
+  if (browserUsageLimitText) browserUsageLimitText.textContent = `${usedUnits.toLocaleString()} / ${browserUsageFreeLimitUnits.toLocaleString()}`;
+  if (browserUsageLimitBar) browserUsageLimitBar.style.transform = `scaleX(${usagePercent / 100})`;
   if (browserUsageStatus) {
     browserUsageStatus.hidden = false;
     browserUsageStatus.textContent = translate("usage.limitStatus")
-      .replace("{remaining}", formatDuration(remainingMs))
+      .replace("{used}", usedUnits.toLocaleString())
+      .replace("{limit}", browserUsageFreeLimitUnits.toLocaleString())
+      .replace("{remaining}", remainingUnits.toLocaleString())
       .replace("{reset}", formatDuration(resetMs));
   }
 
-  if (totalMs >= browserUsageLimitMs && !browserUsageRedirected) {
+  if ((usedUnits >= browserUsageFreeLimitUnits || totalMs >= browserUsageLimitMs) && !browserUsageRedirected) {
     browserUsageRedirected = true;
     persistBrowserUsage();
     if (browserUsageStatus) browserUsageStatus.textContent = translate("usage.limitRedirect");

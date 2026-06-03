@@ -7922,8 +7922,9 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
 .usage-rate-card strong {
   color: var(--accent);
-  font-size: clamp(24px, 3vw, 40px);
+  font-size: clamp(22px, 2vw, 28px);
   line-height: 1;
+  overflow-wrap: anywhere;
 }
 
 .usage-grid {
@@ -7981,6 +7982,52 @@ html[lang="ko"] .faq-feedback-strip h2 {
   color: var(--ink);
   font-size: clamp(22px, 2.6vw, 32px);
   line-height: 1;
+}
+
+.usage-limit-meter {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel-solid) 82%, transparent);
+}
+
+.usage-limit-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.usage-limit-header strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.usage-limit-track {
+  height: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--line) 42%, transparent);
+}
+
+.usage-limit-track span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 76%, #ffffff), var(--accent));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 220ms ease;
 }
 
 .usage-card .storage-meter {
@@ -8626,9 +8673,18 @@ html[lang="ko"] .faq-feedback-strip h2 {
   }
 
   .pricing-note {
+    display: block;
     justify-content: flex-start;
-    padding-right: 18px;
+    padding: 18px;
     text-align: left;
+    overflow-wrap: anywhere;
+  }
+
+  .pricing-note::before {
+    position: static;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: -2px;
   }
 
   .offline-page {
@@ -9349,6 +9405,39 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 @media (max-width: 760px) {
+  .shell.pricing-page {
+    width: auto;
+    max-width: none;
+    margin-right: 10px;
+    margin-left: 10px;
+    overflow-x: clip;
+  }
+
+  .pricing-page,
+  .pricing-page * {
+    min-width: 0;
+  }
+
+  .pricing-hero p,
+  .pricing-note,
+  .pricing-card p,
+  .pricing-card li {
+    width: min(100%, 300px);
+    max-width: 300px;
+    overflow-wrap: anywhere;
+  }
+
+  .pricing-hero,
+  .pricing-note,
+  .pricing-grid,
+  .pricing-card,
+  .comparison-section,
+  .faq-section {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
   .shell.usage-page {
     width: auto;
     max-width: none;
@@ -9373,6 +9462,16 @@ html[lang="ko"] .faq-feedback-strip h2 {
   .usage-hero p:not(.eyebrow),
   .usage-card p {
     max-width: 30ch;
+  }
+
+  .usage-limit-header {
+    display: grid;
+    justify-content: start;
+    gap: 8px;
+  }
+
+  .usage-limit-header strong {
+    white-space: normal;
   }
 }
 

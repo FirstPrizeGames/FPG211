@@ -8063,6 +8063,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 [data-theme="light"] .home-body,
+[data-theme="light"] .about-body,
 [data-theme="light"] .creator-body,
 [data-theme="light"] .bio-body,
 [data-theme="light"] .faq-body,
@@ -8087,6 +8088,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 [data-theme="dark"] .home-body,
+[data-theme="dark"] .about-body,
 [data-theme="dark"] .creator-body,
 [data-theme="dark"] .bio-body,
 [data-theme="dark"] .faq-body,
@@ -8111,6 +8113,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 [data-theme="lights-off"] .home-body,
+[data-theme="lights-off"] .about-body,
 [data-theme="lights-off"] .creator-body,
 [data-theme="lights-off"] .bio-body,
 [data-theme="lights-off"] .faq-body,
@@ -8135,6 +8138,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 [data-theme] .home-body,
+[data-theme] .about-body,
 [data-theme] .creator-body,
 [data-theme] .bio-body,
 [data-theme] .faq-body,
@@ -8155,6 +8159,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 [data-theme] .home-body .topbar,
+[data-theme] .about-body .topbar,
 [data-theme] .creator-body .topbar,
 [data-theme] .bio-body .topbar,
 [data-theme] .faq-body .topbar,
@@ -8165,6 +8170,10 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 [data-theme] .home-hero h1,
+[data-theme] .about-hero h1,
+[data-theme] .about-section-copy h2,
+[data-theme] .about-trust-copy h2,
+[data-theme] .about-next-direction h2,
 [data-theme] .home-section-copy h2,
 [data-theme] .home-feedback-strip h2,
 [data-theme] .creator-studio-copy h1,
@@ -8177,6 +8186,13 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 [data-theme] .home-lead,
+[data-theme] .about-lead,
+[data-theme] .about-section-copy p:not(.about-section-kicker),
+[data-theme] .about-principle-list p,
+[data-theme] .about-route-list p,
+[data-theme] .about-trust-copy p,
+[data-theme] .about-trust-list span,
+[data-theme] .about-next-direction p,
 [data-theme] .home-section-copy p:not(.home-section-kicker),
 [data-theme] .creator-studio-lead,
 [data-theme] .faq-archive-lead,
@@ -8220,6 +8236,10 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 [data-theme] .bio-media-panel,
+[data-theme] .about-visual-panel,
+[data-theme] .about-ledger,
+[data-theme] .about-route-list,
+[data-theme] .about-route-list a,
 [data-theme] .home-route-list a,
 [data-theme] .home-ledger,
 [data-theme] .home-latest-list,
@@ -8236,6 +8256,10 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 [data-theme] .home-route-list strong,
+[data-theme] .about-ledger strong,
+[data-theme] .about-principle-list strong,
+[data-theme] .about-route-list strong,
+[data-theme] .about-trust-list strong,
 [data-theme] .home-ledger strong,
 [data-theme] .home-latest-list strong,
 [data-theme] .home-action-grid strong,
@@ -8247,6 +8271,11 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 [data-theme] .home-route-list span,
+[data-theme] .about-visual-panel span,
+[data-theme] .about-ledger span,
+[data-theme] .about-section-kicker,
+[data-theme] .about-principle-list > li > span,
+[data-theme] .about-route-list a > span,
 [data-theme] .home-ledger span,
 [data-theme] .home-latest-list span,
 [data-theme] .home-action-grid span,
@@ -8255,6 +8284,39 @@ html[lang="ko"] .faq-feedback-strip h2 {
 [data-theme] .policy-panel p,
 [data-theme] .license-panel p {
   color: var(--muted);
+}
+
+[data-theme] .about-page .button,
+[data-theme] .about-outline-link {
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
+  color: var(--ink);
+}
+
+[data-theme] .about-page .button.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+
+[data-theme] .about-page .button.ghost,
+[data-theme] .about-outline-link:hover,
+[data-theme] .about-route-list a:hover {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+[data-theme] .about-visual-panel {
+  box-shadow: var(--shadow);
+}
+
+[data-theme] .about-visual-panel figcaption {
+  border-color: var(--line);
+  background: color-mix(in srgb, var(--panel-solid) 78%, transparent);
+  color: var(--ink);
+}
+
+[data-theme] .about-trust-mark {
+  border-color: color-mix(in srgb, var(--accent) 54%, var(--line));
+  color: var(--accent);
 }
 
 @media (max-width: 1180px) {

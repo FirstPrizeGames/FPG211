@@ -84,7 +84,6 @@ const browserUsageSession = document.querySelector("[data-browser-session]");
 const browserUsageTotal = document.querySelector("[data-browser-total]");
 const browserUsageFee = document.querySelector("[data-browser-fee]");
 const browserUsageRate = document.querySelector("[data-browser-rate]");
-const browserUsageReset = document.querySelector("[data-browser-reset]");
 const browserUsageStatus = document.querySelector("[data-browser-status]");
 const homeTabs = [...document.querySelectorAll("[data-home-tab]")];
 const homePanels = [...document.querySelectorAll("[data-home-panel]")];
@@ -639,14 +638,14 @@ const translations = {
     "usage.storageTitle": "브라우저 저장용량",
     "usage.storageBody": "테마, 언어, 강조 컬러, 표시 설정처럼 이 사이트가 브라우저에 저장한 데이터를 확인합니다.",
     "usage.feeTitle": "브라우저 사용료",
-    "usage.feeBody": "이 카운터는 페이지가 열려 있는 시간을 기준으로 브라우저 안에서만 증가하는 로컬 추정값입니다.",
+    "usage.feeBody": "이 카운터는 브라우저의 언어, 지역, 시간대를 기준으로 KRW 또는 USD를 고르고, 5시간 사용 한도를 로컬에서 추적합니다.",
     "usage.session": "이번 세션",
-    "usage.total": "누적 사용 시간",
+    "usage.total": "5시간 한도",
     "usage.fee": "예상 사용료",
     "usage.rate": "요율",
-    "usage.rateValue": "분당 ₩1",
-    "usage.reset": "사용량 초기화",
-    "usage.resetDone": "브라우저 사용량을 초기화했습니다.",
+    "usage.rateValue": "자동 통화",
+    "usage.limitStatus": "{remaining} 남음 · {reset} 후 자동 초기화",
+    "usage.limitRedirect": "사용 한도를 모두 소모했습니다. 구독 페이지로 이동합니다.",
     "usage.cacheTitle": "사이트 데이터 정리",
     "usage.cacheBody": "설정과 사용량 기록을 지우고 기본값으로 되돌립니다.",
     "settings.accentTitle": "강조 컬러",
@@ -1527,14 +1526,14 @@ const translations = {
     "usage.storageTitle": "Browser storage",
     "usage.storageBody": "Review data this site keeps in the browser, such as theme, language, accent color, and display preferences.",
     "usage.feeTitle": "Browser usage fee",
-    "usage.feeBody": "This counter is a local estimate that increases only in this browser while the page is open.",
+    "usage.feeBody": "This counter chooses KRW or USD from browser language, region, and time zone, then tracks a local 5-hour usage limit.",
     "usage.session": "This session",
-    "usage.total": "Total browser time",
+    "usage.total": "5-hour limit",
     "usage.fee": "Estimated fee",
     "usage.rate": "Rate",
-    "usage.rateValue": "₩1 per minute",
-    "usage.reset": "Reset usage",
-    "usage.resetDone": "Browser usage has been reset.",
+    "usage.rateValue": "Auto currency",
+    "usage.limitStatus": "{remaining} left · resets in {reset}",
+    "usage.limitRedirect": "Usage limit reached. Opening the subscription page.",
     "usage.cacheTitle": "Clear site data",
     "usage.cacheBody": "Clear settings and usage records, then return to defaults.",
     "settings.accentTitle": "Accent color",
@@ -2788,6 +2787,8 @@ const clearSiteCache = () => {
     "profile-setting-kid-mode",
     "profile-setting-custom-context-menu",
     "profile-browser-usage-total-ms",
+    "profile-browser-usage-used-ms",
+    "profile-browser-usage-window-start-ms",
   ].forEach((key) => localStorage.removeItem(key));
 
   document.documentElement.dataset.theme = "light";
@@ -2835,10 +2836,47 @@ const formatBytes = (bytes) => {
   return `${value.toLocaleString(undefined, { maximumFractionDigits })} ${units[unitIndex]}`;
 };
 
-const browserUsageRatePerMinute = 1;
+const browserUsageLimitMs = 5 * 60 * 60 * 1000;
 const browserUsageStartedAt = Date.now();
-let browserUsageBaseMs = Number.parseInt(localStorage.getItem("profile-browser-usage-total-ms") || "0", 10);
+let browserUsageWindowStart = Number.parseInt(localStorage.getItem("profile-browser-usage-window-start-ms") || "0", 10);
+let browserUsageBaseMs = Number.parseInt(
+  localStorage.getItem("profile-browser-usage-used-ms") || localStorage.getItem("profile-browser-usage-total-ms") || "0",
+  10,
+);
+let browserUsageRedirected = false;
+if (!Number.isFinite(browserUsageWindowStart) || browserUsageWindowStart <= 0) browserUsageWindowStart = browserUsageStartedAt;
 if (!Number.isFinite(browserUsageBaseMs) || browserUsageBaseMs < 0) browserUsageBaseMs = 0;
+
+const detectUsageCurrency = () => {
+  const languages = navigator.languages?.length ? navigator.languages : [navigator.language].filter(Boolean);
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+  const region = languages
+    .map((language) => {
+      try {
+        return new Intl.Locale(language).region;
+      } catch {
+        return "";
+      }
+    })
+    .find(Boolean);
+  const languageText = languages.join(" ").toLowerCase();
+
+  return region === "KR" || languageText.includes("ko") || timeZone === "Asia/Seoul" ? "krw" : "usd";
+};
+
+const usageCurrency = detectUsageCurrency();
+const browserUsageRates = {
+  krw: { amount: 1, currency: "KRW", locale: "ko-KR" },
+  usd: { amount: 0.01, currency: "USD", locale: "en-US" },
+};
+const usageRate = browserUsageRates[usageCurrency] || browserUsageRates.usd;
+
+const formatUsageMoney = (amount) =>
+  new Intl.NumberFormat(usageRate.locale, {
+    style: "currency",
+    currency: usageRate.currency,
+    maximumFractionDigits: usageRate.currency === "KRW" ? 0 : 2,
+  }).format(amount);
 
 const formatDuration = (milliseconds) => {
   const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
@@ -2852,34 +2890,53 @@ const formatDuration = (milliseconds) => {
 
 const getCurrentBrowserUsageMs = () => browserUsageBaseMs + (Date.now() - browserUsageStartedAt);
 
+const refreshBrowserUsageWindow = () => {
+  const now = Date.now();
+  if (now - browserUsageWindowStart < browserUsageLimitMs) return;
+
+  browserUsageWindowStart = now;
+  browserUsageBaseMs = 0;
+  localStorage.setItem("profile-browser-usage-window-start-ms", String(browserUsageWindowStart));
+  localStorage.setItem("profile-browser-usage-used-ms", "0");
+  localStorage.removeItem("profile-browser-usage-total-ms");
+};
+
 const persistBrowserUsage = () => {
-  localStorage.setItem("profile-browser-usage-total-ms", String(getCurrentBrowserUsageMs()));
+  refreshBrowserUsageWindow();
+  localStorage.setItem("profile-browser-usage-window-start-ms", String(browserUsageWindowStart));
+  localStorage.setItem("profile-browser-usage-used-ms", String(Math.min(getCurrentBrowserUsageMs(), browserUsageLimitMs)));
+  localStorage.removeItem("profile-browser-usage-total-ms");
 };
 
 const updateBrowserUsage = () => {
   if (!browserUsageSession && !browserUsageTotal && !browserUsageFee && !browserUsageRate) return;
 
+  refreshBrowserUsageWindow();
   const sessionMs = Date.now() - browserUsageStartedAt;
-  const totalMs = getCurrentBrowserUsageMs();
-  const fee = Math.floor((totalMs / 60000) * browserUsageRatePerMinute);
+  const totalMs = Math.min(getCurrentBrowserUsageMs(), browserUsageLimitMs);
+  const remainingMs = Math.max(browserUsageLimitMs - totalMs, 0);
+  const resetMs = Math.max(browserUsageLimitMs - (Date.now() - browserUsageWindowStart), 0);
+  const fee = (totalMs / 60000) * usageRate.amount;
 
   if (browserUsageSession) browserUsageSession.textContent = formatDuration(sessionMs);
-  if (browserUsageTotal) browserUsageTotal.textContent = formatDuration(totalMs);
-  if (browserUsageFee) browserUsageFee.textContent = `₩${fee.toLocaleString()}`;
-  if (browserUsageRate) browserUsageRate.textContent = translate("usage.rateValue");
-};
+  if (browserUsageTotal) browserUsageTotal.textContent = `${formatDuration(totalMs)} / 5h 00m 00s`;
+  if (browserUsageFee) browserUsageFee.textContent = formatUsageMoney(fee);
+  if (browserUsageRate) browserUsageRate.textContent = `${formatUsageMoney(usageRate.amount)} / min`;
+  if (browserUsageStatus) {
+    browserUsageStatus.hidden = false;
+    browserUsageStatus.textContent = translate("usage.limitStatus")
+      .replace("{remaining}", formatDuration(remainingMs))
+      .replace("{reset}", formatDuration(resetMs));
+  }
 
-const resetBrowserUsage = () => {
-  browserUsageBaseMs = 0;
-  localStorage.setItem("profile-browser-usage-total-ms", "0");
-  updateBrowserUsage();
-  if (!browserUsageStatus) return;
-  browserUsageStatus.hidden = false;
-  browserUsageStatus.textContent = translate("usage.resetDone");
-  window.clearTimeout(resetBrowserUsage.timeoutId);
-  resetBrowserUsage.timeoutId = window.setTimeout(() => {
-    browserUsageStatus.hidden = true;
-  }, 2600);
+  if (totalMs >= browserUsageLimitMs && !browserUsageRedirected) {
+    browserUsageRedirected = true;
+    persistBrowserUsage();
+    if (browserUsageStatus) browserUsageStatus.textContent = translate("usage.limitRedirect");
+    window.setTimeout(() => {
+      window.location.href = "/Pricing";
+    }, 650);
+  }
 };
 
 const updateStorageEstimate = async () => {
@@ -3880,7 +3937,6 @@ clearCacheConfirm?.addEventListener("click", clearSiteCache);
 clearCacheWarning?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === clearCacheWarning) closeClearCacheWarning();
 });
-browserUsageReset?.addEventListener("click", resetBrowserUsage);
 window.addEventListener("pagehide", () => {
   persistBrowserUsage();
   window.clearInterval(browserUsageIntervalId);

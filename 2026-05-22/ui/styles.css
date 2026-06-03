@@ -3554,6 +3554,12 @@ html[lang="ko"] .about-next-direction h2 {
   gap: 10px;
 }
 
+.plan-card-top .eyebrow {
+  width: auto;
+  max-width: none;
+  overflow-wrap: normal;
+}
+
 .plan-price-line {
   display: flex;
   flex-wrap: wrap;
@@ -3576,6 +3582,7 @@ html[lang="ko"] .about-next-direction h2 {
 
 .plan-badge {
   display: inline-grid;
+  flex: 0 0 auto;
   place-items: center;
   min-height: 30px;
   padding: 0 12px;
@@ -3584,6 +3591,8 @@ html[lang="ko"] .about-next-direction h2 {
   color: #ffffff;
   font-size: 12px;
   font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .pricing-card p {
@@ -9003,6 +9012,16 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 @media (max-width: 480px) {
+  .plan-card-top {
+    justify-content: flex-start;
+  }
+
+  .plan-badge {
+    min-height: 28px;
+    padding: 0 10px;
+    font-size: 11px;
+  }
+
   .bio-hero h1,
   .creator-hero h1,
   .faq-hero h1,

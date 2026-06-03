@@ -35,31 +35,46 @@
     <meta name="msapplication-TileColor" content="#030b0f" />
     <script>
       (() => {
-        const savedTheme = localStorage.getItem("profile-theme");
+        const normalizeTheme = (theme) => {
+          if (["light", "dark", "lights-off"].includes(theme)) return theme;
+          if (["dim", "dark-mode", "true"].includes(theme)) return "dark";
+          if (["lightsout", "lights-out", "black", "off"].includes(theme)) return "lights-off";
+          return "";
+        };
+        const normalizeBoolean = (value, fallback = false) => {
+          if ([true, "true", "1", "on"].includes(value)) return true;
+          if ([false, "false", "0", "off"].includes(value)) return false;
+          return fallback;
+        };
+        const normalizeKidMode = (mode) => {
+          if (mode === "true") return "strong";
+          return ["soft", "strong"].includes(mode) ? mode : "off";
+        };
+        const normalizeAccent = (accent) =>
+          ["blue", "green", "rose", "orange", "purple"].includes(accent) ? accent : "neutral";
+        const savedTheme = normalizeTheme(localStorage.getItem("profile-theme"));
         const prefersDark = matchMedia("(prefers-color-scheme: dark)").matches;
-        document.documentElement.dataset.theme =
-          savedTheme || (prefersDark ? "dark" : "light");
-        document.documentElement.lang =
-          localStorage.getItem("profile-language") || "en";
-        document.documentElement.dataset.accent =
-          localStorage.getItem("profile-accent") || "neutral";
-        document.documentElement.dataset.density =
-          localStorage.getItem("profile-density") || "comfortable";
-        if (
-          localStorage.getItem("profile-fast-render") === "true" ||
-          localStorage.getItem("profile-setting-fast-render") === "true"
-        ) {
-          document.documentElement.dataset.fastRender = "true";
-        }
-        const savedKidMode = localStorage.getItem("profile-setting-kid-mode");
-        document.documentElement.dataset.kidMode =
-          savedKidMode === "true"
-            ? "strong"
-            : ["soft", "strong"].includes(savedKidMode)
-              ? savedKidMode
-              : "off";
-        document.documentElement.dataset.navLayout =
-          localStorage.getItem("profile-setting-sidebar-nav") === "false" ? "top" : "sidebar";
+        document.documentElement.dataset.theme = savedTheme || (prefersDark ? "dark" : "light");
+        document.documentElement.lang = ["ko", "en"].includes(localStorage.getItem("profile-language"))
+          ? localStorage.getItem("profile-language")
+          : "en";
+        document.documentElement.dataset.accent = normalizeAccent(localStorage.getItem("profile-accent"));
+        document.documentElement.dataset.density = ["compact", "comfortable", "spacious"].includes(localStorage.getItem("profile-density"))
+          ? localStorage.getItem("profile-density")
+          : "comfortable";
+        document.documentElement.dataset.fastRender = normalizeBoolean(
+          localStorage.getItem("profile-setting-fast-render") || localStorage.getItem("profile-fast-render"),
+          false,
+        )
+          ? "true"
+          : "false";
+        document.documentElement.dataset.kidMode = normalizeKidMode(localStorage.getItem("profile-setting-kid-mode"));
+        document.documentElement.dataset.navLayout = normalizeBoolean(
+          localStorage.getItem("profile-setting-sidebar-nav"),
+          true,
+        )
+          ? "sidebar"
+          : "top";
       })();
     </script>
     <link rel="stylesheet" href="../styles.css?v=20260603-creator-studio" />

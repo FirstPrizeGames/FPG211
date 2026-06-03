@@ -110,6 +110,24 @@
   --accent: #0b7285;
 }
 
+[data-accent="blue"] .privacy-body,
+[data-accent="green"] .privacy-body,
+[data-accent="rose"] .privacy-body,
+[data-accent="orange"] .privacy-body,
+[data-accent="purple"] .privacy-body,
+[data-accent="pro-gold"] .privacy-body,
+[data-accent="team-cyan"] .privacy-body,
+[data-accent="blue"] .license-body,
+[data-accent="green"] .license-body,
+[data-accent="rose"] .license-body,
+[data-accent="orange"] .license-body,
+[data-accent="purple"] .license-body,
+[data-accent="pro-gold"] .license-body,
+[data-accent="team-cyan"] .license-body {
+  --legal-accent: var(--accent);
+  --legal-line-strong: color-mix(in srgb, var(--accent) 48%, var(--legal-line));
+}
+
 :root,
 [data-density="comfortable"] {
   --density-section: 1;
@@ -6161,6 +6179,33 @@ html[lang="ko"] .faq-feedback-strip h2 {
   overflow: visible;
 }
 
+.settings-page,
+.settings-hero,
+.settings-copy,
+.settings-overview,
+.settings-band,
+.settings-stack,
+.settings-sidebar,
+.setting-card,
+.setting-card > div,
+.setting-select,
+.accent-select,
+.setting-compat-panel,
+.accent-compat-panel {
+  min-width: 0;
+}
+
+.settings-page h1,
+.settings-page h2,
+.settings-page h3,
+.settings-page p,
+.settings-page span,
+.settings-page strong,
+.settings-page small,
+.settings-page button {
+  overflow-wrap: anywhere;
+}
+
 .settings-sidebar {
   position: sticky;
   top: 98px;
@@ -6341,6 +6386,75 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
 .setting-card#payments .eyebrow {
   color: #ff5416;
+}
+
+.setting-card#display,
+.setting-card#accent {
+  grid-template-columns: minmax(0, 1fr) minmax(260px, auto);
+}
+
+.setting-card#display > div:first-child,
+.setting-card#accent > div:first-child {
+  grid-row: 1 / span 2;
+}
+
+.setting-card#display .setting-compat-panel,
+.setting-card#accent .accent-compat-panel {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.setting-card#display .setting-select,
+.setting-card#accent .accent-select {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.setting-card#accent .premium-note {
+  grid-column: 2;
+}
+
+.setting-compat-panel,
+.accent-compat-panel {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 14px 16px 14px 20px;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line));
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 9%, transparent), transparent 58%),
+    var(--panel-solid);
+}
+
+.setting-compat-panel::before,
+.accent-compat-panel::before {
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  left: 10px;
+  width: 4px;
+  border-radius: 999px;
+  background: var(--accent);
+  content: "";
+}
+
+.setting-compat-panel span,
+.accent-compat-panel span {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.setting-compat-panel strong,
+.accent-compat-panel strong {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 850;
+  line-height: 1.35;
 }
 
 [data-theme="dark"] .setting-card#payments .eyebrow,
@@ -8277,6 +8391,22 @@ html[lang="ko"] .faq-feedback-strip h2 {
     min-height: 0;
   }
 
+  .setting-card#display,
+  .setting-card#accent {
+    grid-template-columns: 1fr;
+  }
+
+  .setting-card#display > div:first-child,
+  .setting-card#display .setting-compat-panel,
+  .setting-card#display .setting-select,
+  .setting-card#accent > div:first-child,
+  .setting-card#accent .accent-compat-panel,
+  .setting-card#accent .accent-select,
+  .setting-card#accent .premium-note {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
   .settings-stack {
     padding: 14px;
   }
@@ -8397,6 +8527,22 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
   .settings-overview div {
     min-height: 96px;
+  }
+
+  .settings-page {
+    overflow-x: clip;
+  }
+
+  .settings-page .settings-copy p:not(.eyebrow),
+  .settings-page .settings-group-label p,
+  .settings-page .setting-card p {
+    max-width: 29ch;
+  }
+
+  .settings-page .setting-card,
+  .settings-page .settings-hero,
+  .settings-page .settings-stack {
+    overflow: hidden;
   }
 
   .bio-hero {

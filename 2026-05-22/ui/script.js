@@ -34,6 +34,7 @@ const clearCacheNote = document.querySelector("[data-clear-cache-note]");
 const storageMeter = document.querySelector("[data-storage-meter]");
 const storagePercents = [...document.querySelectorAll("[data-storage-percent]")];
 const paymentBlockStatuses = [...document.querySelectorAll("[data-payment-block-status]")];
+const themeStatuses = [...document.querySelectorAll("[data-theme-status]")];
 const storageBar = document.querySelector("[data-storage-bar]");
 const storageUsage = document.querySelector("[data-storage-usage]");
 const shareLinkButton = document.querySelector("[data-share-link]");
@@ -245,6 +246,7 @@ const translations = {
     "aria.settingsOverview": "설정 상태 요약",
     "aria.navLayout": "내비게이션 레이아웃 선택",
     "aria.contextMenuMode": "우클릭 메뉴 방식 선택",
+    "aria.themeCompatibility": "테마 호환 상태",
     "aria.privacySummary": "개인정보 요약",
     "aria.privacyDetails": "개인정보 세부 정보",
     "aria.licenseSummary": "라이선스 요약",
@@ -255,6 +257,7 @@ const translations = {
     "aria.language": "언어 선택",
     "aria.kidMode": "Kid mode 선택",
     "aria.accent": "강조 컬러 선택",
+    "aria.accentCompatibility": "강조 컬러 적용 범위",
     "aria.density": "화면 밀도 선택",
     "faqTopics.emt": "EMT",
     "faqTopics.game": "게임 개발자",
@@ -582,6 +585,8 @@ const translations = {
     "settings.contextMenuConfigure": "설정",
     "settings.themeTitle": "테마 모드",
     "settings.themeBody": "프로필 화면의 밝기를 라이트, 다크, 밝기 끄기 모드로 선택합니다.",
+    "settings.themeScopeLabel": "호환 상태",
+    "settings.themeScopeValue": "모든 페이지가 정규화된 테마 토큰을 사용합니다.",
     "settings.lightsOff": "밝기 끄기",
     "settings.themeLight": "라이트",
     "settings.themeDark": "다크",
@@ -617,7 +622,9 @@ const translations = {
     "settings.storageUsageLoading": "저장용량을 확인하는 중입니다.",
     "settings.storageUsageUnsupported": "이 브라우저에서는 저장용량 표시를 지원하지 않습니다.",
     "settings.accentTitle": "강조 컬러",
-    "settings.accentBody": "버튼, 진행 바, 포커스 표시 등에 사용할 포인트 컬러를 선택합니다.",
+    "settings.accentBody": "버튼, 진행 바, 포커스 표시, 지원되는 페이지의 링크 색상에 사용할 포인트 컬러를 선택합니다.",
+    "settings.accentScopeLabel": "적용 범위",
+    "settings.accentScopeValue": "공통 컨트롤과 지원되는 페이지 강조 요소",
     "settings.accentNeutral": "Neutral",
     "settings.accentBlue": "Blue",
     "settings.accentGreen": "Green",
@@ -1100,6 +1107,7 @@ const translations = {
     "aria.settingsOverview": "Settings status summary",
     "aria.navLayout": "Navigation layout selection",
     "aria.contextMenuMode": "Context menu mode selection",
+    "aria.themeCompatibility": "Theme compatibility status",
     "aria.privacySummary": "Privacy summary",
     "aria.privacyDetails": "Privacy details",
     "aria.licenseSummary": "License summary",
@@ -1110,6 +1118,7 @@ const translations = {
     "aria.language": "Language selection",
     "aria.kidMode": "Kid mode selection",
     "aria.accent": "Accent color selection",
+    "aria.accentCompatibility": "Accent color compatibility status",
     "aria.density": "Display density selection",
     "faqTopics.emt": "EMT",
     "faqTopics.game": "Game Developer",
@@ -1440,6 +1449,8 @@ const translations = {
     "settings.contextMenuConfigure": "Configure",
     "settings.themeTitle": "Theme mode",
     "settings.themeBody": "Choose a light, dark, or lights-off appearance for the profile.",
+    "settings.themeScopeLabel": "Compatibility",
+    "settings.themeScopeValue": "all routes use normalized theme tokens",
     "settings.lightsOff": "Lights Off",
     "settings.themeLight": "Light",
     "settings.themeDark": "Dark",
@@ -1477,7 +1488,9 @@ const translations = {
     "settings.storageUsageLoading": "Checking storage usage.",
     "settings.storageUsageUnsupported": "This browser does not support storage usage details.",
     "settings.accentTitle": "Accent color",
-    "settings.accentBody": "Choose the point color used for buttons, progress bars, and focus states.",
+    "settings.accentBody": "Choose the point color used for buttons, progress bars, focus states, and supported page links.",
+    "settings.accentScopeLabel": "Applies to",
+    "settings.accentScopeValue": "shared controls and supported page accents",
     "settings.accentNeutral": "Neutral",
     "settings.accentBlue": "Blue",
     "settings.accentGreen": "Green",
@@ -1834,18 +1847,35 @@ const translations = {
   },
 };
 
-const getInitialTheme = () => {
-  const savedTheme = localStorage.getItem("profile-theme");
-  if (savedTheme === "dark" || savedTheme === "light" || savedTheme === "lights-off") {
-    return savedTheme;
+const normalizeTheme = (theme) => {
+  if (theme === "light" || theme === "dark" || theme === "lights-off") return theme;
+  if (theme === "dim" || theme === "dark-mode" || theme === "true") return "dark";
+  if (theme === "lightsout" || theme === "lights-out" || theme === "black" || theme === "off") {
+    return "lights-off";
   }
+  return "";
+};
+
+const normalizeLanguage = (language) => (language === "ko" || language === "en" ? language : "en");
+
+const normalizeDensity = (density) => {
+  if (density === "compact" || density === "comfortable" || density === "spacious") return density;
+  return "comfortable";
+};
+
+const normalizeBooleanSetting = (value, fallback = false) => {
+  if (value === true || value === "true" || value === "1" || value === "on") return true;
+  if (value === false || value === "false" || value === "0" || value === "off") return false;
+  return fallback;
+};
+
+const getInitialTheme = () => {
+  const savedTheme = normalizeTheme(localStorage.getItem("profile-theme"));
+  if (savedTheme) return savedTheme;
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 };
 
-const getInitialLanguage = () => {
-  const savedLanguage = localStorage.getItem("profile-language");
-  return savedLanguage === "en" || savedLanguage === "ko" ? savedLanguage : "en";
-};
+const getInitialLanguage = () => normalizeLanguage(localStorage.getItem("profile-language"));
 
 let currentLanguage = getInitialLanguage();
 
@@ -1965,17 +1995,22 @@ const setTheme = (theme) => {
     dark: "settings.themeDark",
     "lights-off": "settings.lightsOff",
   };
+  const resolvedTheme = normalizeTheme(theme) || "light";
 
-  document.documentElement.dataset.theme = theme;
-  localStorage.setItem("profile-theme", theme);
+  document.documentElement.dataset.theme = resolvedTheme;
+  localStorage.setItem("profile-theme", resolvedTheme);
 
   themeChoices.forEach((button) => {
-    const isActive = button.dataset.themeChoice === theme;
+    const isActive = button.dataset.themeChoice === resolvedTheme;
     button.classList.toggle("is-active", isActive);
     button.setAttribute("aria-selected", String(isActive));
   });
 
-  if (themeLabel) themeLabel.textContent = translate(themeLabelKeys[theme] || "settings.themeLight");
+  if (themeLabel) themeLabel.textContent = translate(themeLabelKeys[resolvedTheme] || "settings.themeLight");
+  themeStatuses.forEach((status) => {
+    status.textContent = translate(themeLabelKeys[resolvedTheme] || "settings.themeLight");
+    status.dataset.themeState = resolvedTheme;
+  });
 };
 
 const setLanguage = (language) => {
@@ -1983,10 +2018,11 @@ const setLanguage = (language) => {
     ko: "settings.languageKorean",
     en: "settings.languageEnglish",
   };
+  const resolvedLanguage = normalizeLanguage(language);
 
-  currentLanguage = language;
-  document.documentElement.lang = language;
-  localStorage.setItem("profile-language", language);
+  currentLanguage = resolvedLanguage;
+  document.documentElement.lang = resolvedLanguage;
+  localStorage.setItem("profile-language", resolvedLanguage);
 
   document.querySelectorAll("[data-i18n]").forEach((element) => {
     element.textContent = translate(element.dataset.i18n);
@@ -2001,20 +2037,20 @@ const setLanguage = (language) => {
   });
 
   languageChoices.forEach((button) => {
-    const isActive = button.dataset.languageChoice === language;
+    const isActive = button.dataset.languageChoice === resolvedLanguage;
     button.classList.toggle("is-active", isActive);
     button.setAttribute("aria-selected", String(isActive));
   });
 
   if (languageLabel) {
-    languageLabel.textContent = translate(languageLabelKeys[language] || "settings.languageEnglish");
+    languageLabel.textContent = translate(languageLabelKeys[resolvedLanguage] || "settings.languageEnglish");
   }
 
   shareLinkButton?.setAttribute("aria-label", translate("share.copy"));
 
   setTheme(document.documentElement.dataset.theme || getInitialTheme());
   setAccent(document.documentElement.dataset.accent || "neutral");
-  setCurrency(localStorage.getItem("profile-currency") || (language === "ko" ? "krw" : "usd"));
+  setCurrency(localStorage.getItem("profile-currency") || (resolvedLanguage === "ko" ? "krw" : "usd"));
   setFastRender(document.documentElement.dataset.fastRender === "true");
   setKidMode(document.documentElement.dataset.kidMode || "off");
   settingToggles.forEach((button) => {
@@ -2076,9 +2112,10 @@ const setupSettingToggles = () => {
   settingToggles.forEach((button) => {
     const storageKey = `profile-setting-${button.dataset.toggleKey}`;
     const savedValue = localStorage.getItem(storageKey);
-    const isOn = savedValue === null ? button.classList.contains("is-on") : savedValue === "true";
+    const isOn = normalizeBooleanSetting(savedValue, button.classList.contains("is-on"));
 
     updateSettingToggle(button, isOn);
+    localStorage.setItem(storageKey, String(isOn));
 
     button.addEventListener("click", () => {
       const nextValue = !button.classList.contains("is-on");
@@ -2135,8 +2172,9 @@ const closeNavLayoutDialog = () => {
 
 const setupNavLayoutDialog = () => {
   const savedValue = localStorage.getItem("profile-setting-sidebar-nav");
-  const initialLayout = savedValue === "false" ? "top" : "sidebar";
+  const initialLayout = normalizeBooleanSetting(savedValue, true) ? "sidebar" : "top";
   updateNavLayoutControls(initialLayout);
+  localStorage.setItem("profile-setting-sidebar-nav", String(initialLayout === "sidebar"));
 
   navLayoutOpen?.addEventListener("click", showNavLayoutDialog);
   navLayoutCloseButtons.forEach((button) => {
@@ -2171,8 +2209,12 @@ const setContextMenuMode = (mode) => {
 const showContextMenuModeDialog = () => {
   if (!contextModeDialog) return;
 
-  const currentMode =
-    localStorage.getItem("profile-setting-custom-context-menu") === "false" ? "native" : "custom";
+  const currentMode = normalizeBooleanSetting(
+    localStorage.getItem("profile-setting-custom-context-menu"),
+    true,
+  )
+    ? "custom"
+    : "native";
   updateContextMenuModeControls(currentMode);
   contextModeDialog.classList.remove("is-closing");
   contextModeDialog.hidden = false;
@@ -2189,9 +2231,14 @@ const closeContextMenuModeDialog = () => {
 };
 
 const setupContextMenuModeDialog = () => {
-  const initialMode =
-    localStorage.getItem("profile-setting-custom-context-menu") === "false" ? "native" : "custom";
+  const initialMode = normalizeBooleanSetting(
+    localStorage.getItem("profile-setting-custom-context-menu"),
+    true,
+  )
+    ? "custom"
+    : "native";
   updateContextMenuModeControls(initialMode);
+  localStorage.setItem("profile-setting-custom-context-menu", String(initialMode === "custom"));
 
   contextModeOpen?.addEventListener("click", showContextMenuModeDialog);
   contextModeCloseButtons.forEach((button) => {
@@ -2226,7 +2273,7 @@ const setupFastRenderSwipe = () => {
   const savedValue =
     localStorage.getItem("profile-setting-fast-render") ||
     localStorage.getItem("profile-fast-render");
-  setFastRender(savedValue === "true");
+  setFastRender(normalizeBooleanSetting(savedValue, false));
 
   const updateFromPointer = (event) => {
     const rect = fastRenderSwipe.getBoundingClientRect();
@@ -2296,18 +2343,19 @@ const setDensity = (density) => {
     comfortable: "settings.densityComfortable",
     spacious: "settings.densitySpacious",
   };
+  const resolvedDensity = normalizeDensity(density);
 
-  document.documentElement.dataset.density = density;
-  localStorage.setItem("profile-density", density);
+  document.documentElement.dataset.density = resolvedDensity;
+  localStorage.setItem("profile-density", resolvedDensity);
 
   densityChoices.forEach((button) => {
-    const isActive = button.dataset.densityChoice === density;
+    const isActive = button.dataset.densityChoice === resolvedDensity;
     button.classList.toggle("is-active", isActive);
     button.setAttribute("aria-selected", String(isActive));
   });
 
   if (densityLabel) {
-    densityLabel.textContent = translate(densityLabelKeys[density] || "settings.densityComfortable");
+    densityLabel.textContent = translate(densityLabelKeys[resolvedDensity] || "settings.densityComfortable");
   }
 };
 
@@ -2338,8 +2386,13 @@ const setAccent = (accent) => {
     "pro-gold": "settings.accentProGold",
     "team-cyan": "settings.accentTeamCyan",
   };
-  const selectedButton = accentChoices.find((button) => button.dataset.accentChoice === accent);
-  const resolvedAccent = selectedButton?.dataset.premiumPlan ? "neutral" : accent;
+  const lockedAccents = new Set(["pro-gold", "team-cyan"]);
+  const fallbackAccent = "neutral";
+  const requestedAccent = accentLabelKeys[accent] ? accent : fallbackAccent;
+  const selectedButton = accentChoices.find((button) => button.dataset.accentChoice === requestedAccent);
+  const resolvedAccent = selectedButton?.dataset.premiumPlan || lockedAccents.has(requestedAccent)
+    ? fallbackAccent
+    : requestedAccent;
 
   document.documentElement.dataset.accent = resolvedAccent;
   localStorage.setItem("profile-accent", resolvedAccent);
@@ -2702,6 +2755,7 @@ const clearSiteCache = () => {
 
   settingToggles.forEach((button) => {
     const defaultOn = !["fast-render", "payment-block"].includes(button.dataset.toggleKey);
+    localStorage.setItem(`profile-setting-${button.dataset.toggleKey}`, String(defaultOn));
     updateSettingToggle(button, defaultOn);
   });
 
@@ -3003,7 +3057,7 @@ const showContextMenu = (event) => {
   if (
     !contextMenu ||
     shouldUseNativeContextMenu() ||
-    localStorage.getItem("profile-setting-custom-context-menu") === "false" ||
+    !normalizeBooleanSetting(localStorage.getItem("profile-setting-custom-context-menu"), true) ||
     isNativeContextTarget(event.target)
   ) {
     return;

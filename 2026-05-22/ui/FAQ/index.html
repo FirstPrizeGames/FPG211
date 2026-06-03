@@ -8,7 +8,7 @@
       name="description"
       content="FAQ topics covering EMT and paramedic paths in the United States, game development, and contact guidance."
     />
-    <meta name="theme-color" content="#efefec" />
+    <meta name="theme-color" content="#050706" />
     <link rel="canonical" href="https://firstprizegames211.app/FAQ" />
     <meta property="og:title" content="FAQ · Emergency Responder Profile" />
     <meta
@@ -18,21 +18,21 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Emergency Responder Profile" />
     <meta property="og:url" content="https://firstprizegames211.app/FAQ" />
-    <meta property="og:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
+    <meta property="og:image" content="https://firstprizegames211.app/assets/faq-knowledge-hero.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="FAQ · Emergency Responder Profile" />
     <meta
       name="twitter:description"
       content="Explore FAQ topics about emergency medical careers, game development, and ways to get in touch."
     />
-    <meta name="twitter:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
+    <meta name="twitter:image" content="https://firstprizegames211.app/assets/faq-knowledge-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="application-name" content="Emergency Responder Profile" />
-    <meta name="msapplication-TileColor" content="#efefec" />
+    <meta name="msapplication-TileColor" content="#050706" />
     <script>
       (() => {
         const savedTheme = localStorage.getItem("profile-theme");
@@ -62,9 +62,9 @@
           localStorage.getItem("profile-setting-sidebar-nav") === "false" ? "top" : "sidebar";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260602-legal-context-menu" />
+    <link rel="stylesheet" href="../styles.css?v=20260603-faq-archive" />
   </head>
-  <body>
+  <body class="faq-body">
     <div class="loading-bar" aria-hidden="true"></div>
     <div class="scroll-progress" aria-hidden="true"></div>
     <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
@@ -75,7 +75,7 @@
       <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
     </div>
     <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
-    <main class="shell" id="main-content" tabindex="-1">
+    <main class="shell faq-page" id="main-content" tabindex="-1">
       <nav class="topbar" aria-label="FAQ 메뉴" data-i18n-aria-label="aria.faqMenu">
         <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
           <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
@@ -101,45 +101,65 @@
         </div>
       </nav>
 
-      <section class="faq-hero">
-        <div class="faq-hero-copy">
-          <p class="eyebrow" data-i18n="careerFaq.eyebrow">FAQ</p>
-          <h1 data-i18n="faq.heroTitle">궁금한 내용을 주제별로 쉽게 찾을 수 있습니다.</h1>
-          <p data-i18n="faq.heroLead">
-            EMT, 게임 개발, 연락 방법, 사이트 운영을 짧은 답변으로 정리했습니다.
+      <section class="faq-archive-hero">
+        <div class="faq-archive-copy">
+          <h1 data-i18n="faq.heroTitle">답변을 선명하게 정리했습니다.</h1>
+          <p class="faq-archive-lead" data-i18n="faq.heroLead">
+            EMT 경로, 게임 개발, 연락 방법, 사이트 운영을 빠르게 확인할 수 있도록 기록실처럼 분류했습니다.
           </p>
+          <div class="faq-archive-actions">
+            <a class="button primary" href="#emt-faq" data-i18n="faq.heroCtaEmt">EMT 질문 보기</a>
+            <a class="button ghost" href="#site-faq" data-i18n="faq.heroCtaSite">사이트 질문 보기</a>
+          </div>
         </div>
-        <div class="faq-hero-panel" aria-label="FAQ 요약" data-i18n-aria-label="aria.faqSummary">
-          <div>
-            <span data-i18n="faq.summaryTopics">Topics</span>
-            <strong>4</strong>
-          </div>
-          <div>
-            <span data-i18n="faq.summaryAnswers">Answers</span>
-            <strong>17</strong>
-          </div>
-          <div>
-            <span data-i18n="faq.summaryFormat">Format</span>
-            <strong data-i18n="faq.summaryFormatValue">Quick read</strong>
-          </div>
+        <figure class="faq-archive-media">
+          <img src="../assets/faq-knowledge-hero.jpg" alt="" width="1800" height="1000" loading="eager" decoding="async" />
+          <figcaption>
+            <span data-i18n="faq.mediaLabel">Archive</span>
+            <strong data-i18n="faq.mediaValue">Career, build, site</strong>
+          </figcaption>
+        </figure>
+      </section>
+
+      <section class="faq-ledger" aria-label="FAQ 요약" data-i18n-aria-label="aria.faqSummary">
+        <div>
+          <span data-i18n="faq.summaryTopics">Topics</span>
+          <strong>4</strong>
+        </div>
+        <div>
+          <span data-i18n="faq.summaryAnswers">Answers</span>
+          <strong>17</strong>
+        </div>
+        <div>
+          <span data-i18n="faq.summaryFormat">Format</span>
+          <strong data-i18n="faq.summaryFormatValue">Quick read</strong>
+        </div>
+        <div>
+          <span data-i18n="faq.summaryUpdated">Updated</span>
+          <strong data-i18n="faq.summaryUpdatedValue">June 3, 2026</strong>
         </div>
       </section>
 
-      <nav class="faq-topic-nav" aria-label="FAQ 주제 이동" data-i18n-aria-label="aria.faqTopics">
+      <nav class="faq-topic-rail" aria-label="FAQ 주제 이동" data-i18n-aria-label="aria.faqTopics">
+        <p data-i18n="faq.topicRailKicker">Browse by topic</p>
         <a href="#emt-faq">
-          <span data-i18n="faqTopics.emt">EMT</span>
+          <span>01</span>
+          <strong data-i18n="faqTopics.emt">EMT</strong>
           <small data-i18n="faq.topicEmtBody">EMT 시작 과정</small>
         </a>
         <a href="#game-dev-faq">
-          <span data-i18n="faqTopics.game">Game Developer</span>
+          <span>02</span>
+          <strong data-i18n="faqTopics.game">Game Developer</strong>
           <small data-i18n="faq.topicGameBody">게임 개발 첫 단계</small>
         </a>
         <a href="#meet-faq">
-          <span data-i18n="faqTopics.meet">Meet</span>
+          <span>03</span>
+          <strong data-i18n="faqTopics.meet">Meet</strong>
           <small data-i18n="faq.topicMeetBody">연락 방법</small>
         </a>
         <a href="#site-faq">
-          <span data-i18n="faqTopics.site">Site</span>
+          <span>04</span>
+          <strong data-i18n="faqTopics.site">Site</strong>
           <small data-i18n="faq.topicSiteBody">배포와 개인정보</small>
         </a>
       </nav>
@@ -284,6 +304,21 @@
           </details>
         </div>
       </section>
+
+      <section class="faq-feedback-strip" aria-label="FAQ 피드백" data-i18n-aria-label="aria.faqFeedback">
+        <div>
+          <p class="faq-section-kicker" data-i18n="faq.feedbackKicker">Still unclear?</p>
+          <h2 data-i18n="faq.feedbackTitle">질문이 남아 있으면 기록에 추가하겠습니다.</h2>
+          <p data-i18n="faq.feedbackBody">빠진 답변, 틀린 번역, 더 자세히 알고 싶은 주제를 Feedback으로 보내주세요.</p>
+        </div>
+        <a class="faq-feedback-link" href="/feedback">
+          <span data-i18n="faq.feedbackButton">Feedback 보내기</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M5 12h14" />
+            <path d="m13 6 6 6-6 6" />
+          </svg>
+        </a>
+      </section>
     </main>
     <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
       <button type="button" data-scroll-to="top" aria-label="맨 위로 이동" data-i18n-aria-label="aria.scrollTop">
@@ -388,6 +423,6 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260602-legal-context-menu" defer></script>
+    <script src="../script.js?v=20260603-faq-archive" defer></script>
   </body>
 </html>

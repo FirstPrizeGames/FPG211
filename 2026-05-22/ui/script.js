@@ -33,6 +33,7 @@ const clearCacheConfirm = document.querySelector("[data-clear-cache-confirm]");
 const clearCacheNote = document.querySelector("[data-clear-cache-note]");
 const storageMeter = document.querySelector("[data-storage-meter]");
 const storagePercents = [...document.querySelectorAll("[data-storage-percent]")];
+const paymentBlockStatuses = [...document.querySelectorAll("[data-payment-block-status]")];
 const storageBar = document.querySelector("[data-storage-bar]");
 const storageUsage = document.querySelector("[data-storage-usage]");
 const shareLinkButton = document.querySelector("[data-share-link]");
@@ -437,6 +438,9 @@ const translations = {
     "settings.overviewProfileValue": "Public",
     "settings.overviewTheme": "Theme",
     "settings.overviewThemeValue": "Synced",
+    "settings.overviewPayments": "Payments",
+    "settings.overviewPaymentsAllowed": "허용",
+    "settings.overviewPaymentsBlocked": "차단됨",
     "settings.overviewStorage": "Storage",
     "settings.sidebarEyebrow": "Workspace",
     "settings.sidebarTitle": "Controls",
@@ -450,6 +454,7 @@ const translations = {
     "settings.groupBrandBody": "강조 컬러와 화면 밀도를 사이트 톤에 맞춥니다.",
     "settings.profileTab": "Profile",
     "settings.privacyTab": "Privacy",
+    "settings.paymentTab": "Payments",
     "settings.displayTab": "Display",
     "settings.navigationTab": "Navigation",
     "settings.languageTab": "Language",
@@ -465,6 +470,10 @@ const translations = {
     "settings.profileOff": "프로필 공개 꺼짐",
     "settings.contactOn": "연락처 표시 켜짐",
     "settings.contactOff": "연락처 표시 꺼짐",
+    "settings.paymentBlockTitle": "결제 차단",
+    "settings.paymentBlockBody": "이 설정을 켜면 Pricing 페이지의 유료 플랜 버튼이 외부 Stripe checkout으로 이동하지 않습니다.",
+    "settings.paymentBlockOn": "결제 차단 켜짐",
+    "settings.paymentBlockOff": "결제 차단 꺼짐",
     "settings.sidebarNavOn": "사이드바 내비게이션 켜짐",
     "settings.sidebarNavOff": "사이드바 내비게이션 꺼짐",
     "settings.navigationEnabled": "Sidebar",
@@ -597,6 +606,9 @@ const translations = {
     "pricing.subscribeWarningBody": "선택한 결제 페이지가 새 페이지에서 열립니다. 결제 전 플랜 이름과 금액을 다시 확인해 주세요.",
     "pricing.subscribeCancel": "취소",
     "pricing.subscribeContinue": "계속하기",
+    "pricing.paymentBlockedTitle": "결제가 차단되어 있습니다.",
+    "pricing.paymentBlockedBody": "Settings에서 결제 차단이 켜져 있어 Stripe checkout으로 이동하지 않습니다.",
+    "pricing.paymentBlockedClose": "확인",
     "pricing.compareEyebrow": "Compare",
     "pricing.compareTitle": "기능 비교",
     "pricing.compareFeature": "기능",
@@ -1149,6 +1161,9 @@ const translations = {
     "settings.overviewProfileValue": "Public",
     "settings.overviewTheme": "Theme",
     "settings.overviewThemeValue": "Synced",
+    "settings.overviewPayments": "Payments",
+    "settings.overviewPaymentsAllowed": "Allowed",
+    "settings.overviewPaymentsBlocked": "Blocked",
     "settings.overviewStorage": "Storage",
     "settings.sidebarEyebrow": "Workspace",
     "settings.sidebarTitle": "Controls",
@@ -1162,6 +1177,7 @@ const translations = {
     "settings.groupBrandBody": "Match accent color and display density to the site tone.",
     "settings.profileTab": "Profile",
     "settings.privacyTab": "Privacy",
+    "settings.paymentTab": "Payments",
     "settings.displayTab": "Display",
     "settings.navigationTab": "Navigation",
     "settings.languageTab": "Language",
@@ -1179,6 +1195,10 @@ const translations = {
     "settings.profileOff": "Public profile off",
     "settings.contactOn": "Contact visibility on",
     "settings.contactOff": "Contact visibility off",
+    "settings.paymentBlockTitle": "Payment blocking",
+    "settings.paymentBlockBody": "When this is on, paid plan buttons on the Pricing page will not open external Stripe checkout.",
+    "settings.paymentBlockOn": "Payment blocking on",
+    "settings.paymentBlockOff": "Payment blocking off",
     "settings.sidebarNavOn": "Sidebar navigation on",
     "settings.sidebarNavOff": "Sidebar navigation off",
     "settings.navigationEnabled": "Sidebar",
@@ -1314,6 +1334,9 @@ const translations = {
     "pricing.subscribeWarningBody": "The selected checkout page will open on a new page. Please confirm the plan name and amount before paying.",
     "pricing.subscribeCancel": "Cancel",
     "pricing.subscribeContinue": "Continue",
+    "pricing.paymentBlockedTitle": "Payments are blocked.",
+    "pricing.paymentBlockedBody": "Payment blocking is turned on in Settings, so Stripe checkout will not open.",
+    "pricing.paymentBlockedClose": "OK",
     "pricing.compareEyebrow": "Compare",
     "pricing.compareTitle": "Feature comparison",
     "pricing.compareFeature": "Feature",
@@ -1740,6 +1763,7 @@ const getToggleLabelKey = (key, isOn) => {
   const labels = {
     "profile-public": isOn ? "settings.profileOn" : "settings.profileOff",
     "contact-visible": isOn ? "settings.contactOn" : "settings.contactOff",
+    "payment-block": isOn ? "settings.paymentBlockOn" : "settings.paymentBlockOff",
     "sidebar-nav": isOn ? "settings.sidebarNavOn" : "settings.sidebarNavOff",
     "fast-render": isOn ? "settings.fastRenderOn" : "settings.fastRenderOff",
     "kid-mode": isOn ? "settings.kidModeOn" : "settings.kidModeOff",
@@ -1747,6 +1771,15 @@ const getToggleLabelKey = (key, isOn) => {
   };
 
   return labels[key];
+};
+
+const updatePaymentBlockSummary = (isBlocked) => {
+  paymentBlockStatuses.forEach((status) => {
+    status.textContent = translate(
+      isBlocked ? "settings.overviewPaymentsBlocked" : "settings.overviewPaymentsAllowed"
+    );
+    status.dataset.paymentState = isBlocked ? "blocked" : "allowed";
+  });
 };
 
 const updateSettingToggle = (button, isOn) => {
@@ -1763,6 +1796,10 @@ const updateSettingToggle = (button, isOn) => {
 
   if (button.dataset.toggleKey === "sidebar-nav") {
     document.documentElement.dataset.navLayout = isOn ? "sidebar" : "top";
+  }
+
+  if (button.dataset.toggleKey === "payment-block") {
+    updatePaymentBlockSummary(isOn);
   }
 
   const labelKey = getToggleLabelKey(button.dataset.toggleKey, isOn);
@@ -2377,6 +2414,7 @@ const clearSiteCache = () => {
     "profile-fast-render",
     "profile-setting-profile-public",
     "profile-setting-contact-visible",
+    "profile-setting-payment-block",
     "profile-setting-sidebar-nav",
     "profile-setting-fast-render",
     "profile-setting-kid-mode",
@@ -2398,7 +2436,7 @@ const clearSiteCache = () => {
   setKidMode("off");
 
   settingToggles.forEach((button) => {
-    const defaultOn = button.dataset.toggleKey !== "fast-render";
+    const defaultOn = !["fast-render", "payment-block"].includes(button.dataset.toggleKey);
     updateSettingToggle(button, defaultOn);
   });
 
@@ -2470,7 +2508,29 @@ const showFeedbackWarning = (event) => {
 };
 
 const showSubscribeWarning = (button) => {
+  if (localStorage.getItem("profile-setting-payment-block") === "true") {
+    pendingSubscribeUrl = "";
+    if (!subscribeWarning) {
+      window.alert(translate("pricing.paymentBlockedBody"));
+      return;
+    }
+
+    const title = subscribeWarning.querySelector("#subscribe-dialog-title");
+    const body = subscribeWarning.querySelector("[data-i18n='pricing.subscribeWarningBody']");
+
+    subscribeWarning.dataset.paymentBlocked = "true";
+    if (title) title.textContent = translate("pricing.paymentBlockedTitle");
+    if (body) body.textContent = translate("pricing.paymentBlockedBody");
+    if (subscribeConfirm) subscribeConfirm.hidden = true;
+    if (subscribeCancel) subscribeCancel.textContent = translate("pricing.paymentBlockedClose");
+    subscribeWarning.hidden = false;
+    return;
+  }
+
   pendingSubscribeUrl = button.dataset.subscribeUrl || "";
+  if (subscribeWarning) delete subscribeWarning.dataset.paymentBlocked;
+  if (subscribeConfirm) subscribeConfirm.hidden = false;
+  if (subscribeCancel) subscribeCancel.textContent = translate("pricing.subscribeCancel");
   if (!subscribeWarning) {
     if (pendingSubscribeUrl) window.open(pendingSubscribeUrl, "_blank", "noopener,noreferrer");
     return;
@@ -2530,6 +2590,13 @@ const closeSubscribeWarning = () => {
   window.setTimeout(() => {
     subscribeWarning.hidden = true;
     subscribeWarning.classList.remove("is-closing");
+    delete subscribeWarning.dataset.paymentBlocked;
+    const title = subscribeWarning.querySelector("#subscribe-dialog-title");
+    const body = subscribeWarning.querySelector("[data-i18n='pricing.subscribeWarningBody']");
+    if (title) title.textContent = translate("pricing.subscribeWarningTitle");
+    if (body) body.textContent = translate("pricing.subscribeWarningBody");
+    if (subscribeConfirm) subscribeConfirm.hidden = false;
+    if (subscribeCancel) subscribeCancel.textContent = translate("pricing.subscribeCancel");
   }, 170);
 };
 

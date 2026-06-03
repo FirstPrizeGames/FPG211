@@ -8,7 +8,7 @@
       name="description"
       content="A modern personal profile for an emergency responder, with bio, FAQ, pricing, feedback, and accessible display settings."
     />
-    <meta name="theme-color" content="#efefec" />
+    <meta name="theme-color" content="#050706" />
     <link rel="canonical" href="https://firstprizegames211.app/" />
     <meta property="og:title" content="Emergency Responder Profile" />
     <meta
@@ -18,22 +18,22 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Emergency Responder Profile" />
     <meta property="og:url" content="https://firstprizegames211.app/" />
-    <meta property="og:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
+    <meta property="og:image" content="https://firstprizegames211.app/assets/home-signal-hero.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Emergency Responder Profile" />
     <meta
       name="twitter:description"
       content="A calm, modern profile site for emergency response work, bio details, FAQ, and feedback."
     />
-    <meta name="twitter:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
+    <meta name="twitter:image" content="https://firstprizegames211.app/assets/home-signal-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="application-name" content="Emergency Responder Profile" />
-    <meta name="msapplication-TileColor" content="#efefec" />
-    <link rel="preload" href="assets/profile-hero-1280.jpg" as="image" fetchpriority="high" />
+    <meta name="msapplication-TileColor" content="#050706" />
+    <link rel="preload" href="assets/home-signal-hero.jpg" as="image" fetchpriority="high" />
     <script>
       (() => {
         const savedTheme = localStorage.getItem("profile-theme");
@@ -63,9 +63,9 @@
           localStorage.getItem("profile-setting-sidebar-nav") === "false" ? "top" : "sidebar";
       })();
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260602-legal-context-menu" />
+    <link rel="stylesheet" href="styles.css?v=20260603-home-atlas" />
   </head>
-  <body>
+  <body class="home-body">
     <div class="loading-bar" aria-hidden="true"></div>
     <div class="scroll-progress" aria-hidden="true"></div>
     <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
@@ -76,7 +76,7 @@
       <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
     </div>
     <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
-    <main class="shell" id="main-content" tabindex="-1">
+    <main class="shell home-page" id="main-content" tabindex="-1">
       <nav class="topbar" aria-label="프로필 메뉴" data-i18n-aria-label="aria.profileMenu">
         <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
           <img src="/assets/logo.png" alt="" width="537" height="532" decoding="async" draggable="false" />
@@ -102,136 +102,151 @@
         </div>
       </nav>
 
-      <section class="hero" id="intro">
-        <div class="hero-media" aria-hidden="true"></div>
-        <div class="profile-panel">
-          <p class="eyebrow" data-i18n="home.heroEyebrow">Personal Profile</p>
-          <h1 data-i18n="home.heroTitle">응급 현장과 게임 제작을 함께 기록합니다.</h1>
-          <p class="lead" data-i18n="home.lead">
-            현장에서 빠른 판단과 침착한 대응으로 생명을 지키는 구급대원입니다.
+      <section class="home-hero" id="intro">
+        <div class="home-hero-copy">
+          <h1 data-i18n="home.heroTitle">차분한 대응. 선명한 시스템.</h1>
+          <p class="home-lead" data-i18n="home.lead">
+            응급 대응, 창작 기록, 후원 경로, 개인정보와 설정을 빠르게 찾을 수 있게 정리한 공개 프로필 포털입니다.
           </p>
-          <div class="meta-grid" aria-label="프로필 요약" data-i18n-aria-label="aria.profileSummary">
-            <div>
-              <span data-i18n="home.roleLabel">Role</span>
-              <strong data-i18n="home.roleValue">구급대원</strong>
-            </div>
-            <div>
-              <span data-i18n="home.focusLabel">Focus</span>
-              <strong data-i18n="home.focusValue">Prehospital Care</strong>
-            </div>
-            <div>
-              <span data-i18n="home.buildLabel">Build</span>
-              <strong data-i18n="home.buildValue">Unity Game Dev</strong>
-            </div>
-          </div>
-          <div class="actions hero-actions">
-            <button class="button primary hero-button hero-button-contact" type="button" data-go-url="#home-tabs" data-home-open="contact" aria-label="연락 섹션으로 이동" data-i18n-aria-label="aria.contactSection">
-              <span class="hero-button-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path d="M7 17 17 7" />
-                  <path d="M9 7h8v8" />
-                </svg>
-              </span>
-              <span data-i18n="nav.contact">Contact</span>
-            </button>
-            <button class="button ghost hero-button hero-button-work" type="button" data-go-url="#home-tabs" data-home-open="work" aria-label="작업 섹션으로 이동" data-i18n-aria-label="aria.workSection">
-              <span class="hero-button-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path d="m8 9-4 3 4 3" />
-                  <path d="m16 9 4 3-4 3" />
-                  <path d="m14 5-4 14" />
-                </svg>
-              </span>
-              <span data-i18n="home.viewWork">View Work</span>
-            </button>
+          <div class="home-hero-actions">
+            <a class="button primary" href="/Bio" data-i18n="home.openBio">Bio 열기</a>
+            <a class="button ghost" href="/settings" data-i18n="home.openSettings">설정 열기</a>
           </div>
         </div>
-        <div class="hero-note" aria-hidden="true">
-          <span data-i18n="home.heroNoteLabel">Updated</span>
-          <strong data-i18n="home.heroNoteValue">Profile, game work, and site tools</strong>
+        <figure class="home-hero-media">
+          <img src="assets/home-signal-hero.jpg" alt="" width="1800" height="1000" loading="eager" decoding="async" />
+          <figcaption>
+            <span data-i18n="home.signalLabel">Signal</span>
+            <strong data-i18n="home.signalValue">Response, creation, support</strong>
+          </figcaption>
+        </figure>
+      </section>
+
+      <section class="home-ledger" aria-label="Home system summary" data-i18n-aria-label="aria.homeLedger">
+        <div>
+          <span data-i18n="home.ledgerResponseLabel">Response</span>
+          <strong data-i18n="home.ledgerResponseValue">Ready</strong>
+        </div>
+        <div>
+          <span data-i18n="home.ledgerCreatorLabel">Creator</span>
+          <strong data-i18n="home.ledgerCreatorValue">Tools and games</strong>
+        </div>
+        <div>
+          <span data-i18n="home.ledgerSupportLabel">Support</span>
+          <strong data-i18n="home.ledgerSupportValue">Stripe links</strong>
+        </div>
+        <div>
+          <span data-i18n="home.ledgerPrivacyLabel">Privacy</span>
+          <strong data-i18n="home.ledgerPrivacyValue">Local-first controls</strong>
         </div>
       </section>
 
-      <section class="home-tabs-section" id="home-tabs">
-        <div class="home-tabs-header">
-          <div class="section-heading">
-            <p class="eyebrow" data-i18n="nav.home">Home</p>
-            <h2 data-i18n="home.tabsTitle">필요한 정보만 빠르게 볼 수 있게 나눴습니다.</h2>
-          </div>
-          <div class="home-tabs" role="tablist" aria-label="홈 섹션 탭" data-i18n-aria-label="aria.homeTabs">
-            <button class="is-active" type="button" role="tab" aria-selected="true" aria-controls="home-about-panel" id="home-about-tab" data-home-tab="about" data-i18n="nav.about">
-              About
-            </button>
-            <button type="button" role="tab" aria-selected="false" aria-controls="home-work-panel" id="home-work-tab" data-home-tab="work" data-i18n="nav.work">
-              Work
-            </button>
-            <button type="button" role="tab" aria-selected="false" aria-controls="home-contact-panel" id="home-contact-tab" data-home-tab="contact" data-i18n="nav.contact">
-              Contact
-            </button>
-          </div>
+      <section class="home-route-deck" aria-label="Primary routes" data-i18n-aria-label="aria.homeRoutes">
+        <div class="home-section-copy">
+          <p class="home-section-kicker" data-i18n="home.routesKicker">Routes</p>
+          <h2 data-i18n="home.routesTitle">바로 갈 수 있는 네 개의 입구.</h2>
+          <p data-i18n="home.routesLead">홈은 길을 찾는 곳으로 두고, 자세한 내용은 각 전용 페이지에서 더 깊게 볼 수 있게 나눴습니다.</p>
         </div>
-
-        <div class="home-tab-panel is-active" id="home-about-panel" role="tabpanel" aria-labelledby="home-about-tab" data-home-panel="about">
-          <div class="section-heading">
-            <p class="eyebrow" data-i18n="nav.about">About</p>
-            <h2 data-i18n="home.aboutTitle">가장 긴급한 순간에 차분하게 도착합니다.</h2>
-          </div>
-          <div class="about-grid">
-            <p data-i18n="home.aboutBody">
-              응급 현장에서 환자의 상태를 빠르게 파악하고 필요한 처치를 연결하는 일을 하고 있습니다. 긴박한 순간일수록 기본에 충실한 판단, 팀과의 명확한 소통, 환자를 향한 존중을 중요하게 생각합니다.
-            </p>
-          </div>
-        </div>
-
-        <div class="home-tab-panel" id="home-work-panel" role="tabpanel" aria-labelledby="home-work-tab" data-home-panel="work" hidden>
-          <div class="section-heading">
-            <p class="eyebrow" data-i18n="home.selectedWork">Game Work</p>
-            <h2 data-i18n="home.workTitle">게임을 만들고 개발하는 작업</h2>
-          </div>
-          <div class="work-list">
-            <article class="work-item">
-              <span>01</span>
-              <div>
-                <h3 data-i18n="home.workOneTitle">게임 아이디어와 기획</h3>
-                <p data-i18n="home.workOneBody">작은 플레이 목표를 먼저 정하고, 조작 방식, 승리 조건, 실패 조건을 간단한 문서로 정리합니다.</p>
-              </div>
-            </article>
-            <article class="work-item">
-              <span>02</span>
-              <div>
-                <h3 data-i18n="home.workTwoTitle">Unity와 C# 개발</h3>
-                <p data-i18n="home.workTwoBody">씬, 프리팹, 컴포넌트를 정리하고 C# 스크립트로 이동, 충돌, 점수, UI 같은 핵심 기능을 구현합니다.</p>
-              </div>
-            </article>
-            <article class="work-item">
-              <span>03</span>
-              <div>
-                <h3 data-i18n="home.workThreeTitle">테스트와 배포 준비</h3>
-                <p data-i18n="home.workThreeBody">직접 플레이하며 난이도와 버그를 점검하고, PC, WebGL, 모바일 환경에서 화면 비율과 성능을 확인합니다.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-
-        <div class="home-tab-panel" id="home-contact-panel" role="tabpanel" aria-labelledby="home-contact-tab" data-home-panel="contact" hidden>
-          <div class="contact-band">
+        <div class="home-route-list">
+          <a href="/Bio">
+            <span>01</span>
             <div>
-              <p class="eyebrow" data-i18n="nav.contact">Contact</p>
-              <h2 data-i18n="home.contactTitle">이 페이지를 공유하고 필요한 의견을 남겨주세요.</h2>
+              <strong data-i18n="home.routeBioTitle">Who I am</strong>
+              <p data-i18n="home.routeBioBody">응급 대응자 프로필과 관심사.</p>
             </div>
-            <div class="contact-links">
-              <button class="icon-button" type="button" data-share-link aria-label="페이지 링크 복사" data-i18n-aria-label="aria.copyPageLink">
-                <svg aria-hidden="true" viewBox="0 0 24 24">
-                  <circle cx="18" cy="5" r="3" />
-                  <circle cx="6" cy="12" r="3" />
-                  <circle cx="18" cy="19" r="3" />
-                  <path d="m8.6 10.6 6.8-4.2" />
-                  <path d="m8.6 13.4 6.8 4.2" />
-                </svg>
-              </button>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
+          </a>
+          <a href="/about">
+            <span>02</span>
+            <div>
+              <strong data-i18n="home.routeAboutTitle">The system</strong>
+              <p data-i18n="home.routeAboutBody">사이트 구조와 운영 원칙.</p>
             </div>
-          </div>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
+          </a>
+          <a href="/Pricing">
+            <span>03</span>
+            <div>
+              <strong data-i18n="home.routePricingTitle">Support plans</strong>
+              <p data-i18n="home.routePricingBody">후원형 플랜과 결제 링크.</p>
+            </div>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
+          </a>
+          <a href="/settings">
+            <span>04</span>
+            <div>
+              <strong data-i18n="home.routeSettingsTitle">Your control</strong>
+              <p data-i18n="home.routeSettingsBody">언어, 테마, 결제 차단 설정.</p>
+            </div>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
+          </a>
         </div>
+      </section>
+
+      <section class="home-switchboard" aria-label="Quick actions" data-i18n-aria-label="aria.homeSwitchboard">
+        <div class="home-section-copy">
+          <p class="home-section-kicker" data-i18n="home.switchKicker">Quick switchboard</p>
+          <h2 data-i18n="home.switchTitle">자주 쓰는 작업을 한 번에.</h2>
+        </div>
+        <div class="home-action-grid">
+          <a href="/feedback">
+            <span data-i18n="home.actionFeedbackLabel">Feedback</span>
+            <strong data-i18n="home.actionFeedbackTitle">의견 보내기</strong>
+          </a>
+          <a href="/FAQ">
+            <span data-i18n="home.actionFaqLabel">FAQ</span>
+            <strong data-i18n="home.actionFaqTitle">질문 확인</strong>
+          </a>
+          <a href="/Creator">
+            <span data-i18n="home.actionCreatorLabel">Creator</span>
+            <strong data-i18n="home.actionCreatorTitle">제작 기록</strong>
+          </a>
+          <a href="/privacy">
+            <span data-i18n="home.actionPrivacyLabel">Privacy</span>
+            <strong data-i18n="home.actionPrivacyTitle">정책 보기</strong>
+          </a>
+          <a href="/settings#payments">
+            <span data-i18n="home.actionPaymentsLabel">Payments</span>
+            <strong data-i18n="home.actionPaymentsTitle">결제 제어</strong>
+          </a>
+          <button type="button" data-share-link>
+            <span data-i18n="home.actionShareLabel">Share</span>
+            <strong data-i18n="home.actionShareTitle">링크 복사</strong>
+          </button>
+        </div>
+      </section>
+
+      <section class="home-latest" aria-label="Latest updates" data-i18n-aria-label="aria.homeLatest">
+        <p class="home-section-kicker" data-i18n="home.latestKicker">Latest</p>
+        <div class="home-latest-list">
+          <article>
+            <span data-i18n="home.latestOneDate">June 3, 2026</span>
+            <strong data-i18n="home.latestOneTitle">Home redesign</strong>
+            <p data-i18n="home.latestOneBody">홈을 독립적인 운영 포털로 재구성했습니다.</p>
+          </article>
+          <article>
+            <span data-i18n="home.latestTwoDate">June 3, 2026</span>
+            <strong data-i18n="home.latestTwoTitle">About and Bio</strong>
+            <p data-i18n="home.latestTwoBody">소개 페이지들을 각각 다른 고급 디자인으로 분리했습니다.</p>
+          </article>
+          <article>
+            <span data-i18n="home.latestThreeDate">June 3, 2026</span>
+            <strong data-i18n="home.latestThreeTitle">Payment controls</strong>
+            <p data-i18n="home.latestThreeBody">설정에서 결제 차단과 Stripe 링크 상태를 관리할 수 있습니다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="home-feedback-strip" aria-label="Feedback" data-i18n-aria-label="aria.homeFeedback">
+        <div>
+          <p class="home-section-kicker" data-i18n="home.feedbackKicker">Feedback</p>
+          <h2 data-i18n="home.feedbackTitle">이 시스템을 더 좋게 만드는 신호.</h2>
+          <p data-i18n="home.feedbackBody">불편한 흐름, 번역 누락, 결제 접근성, 디자인 균형을 발견하면 바로 알려주세요.</p>
+        </div>
+        <a class="home-feedback-link" href="/feedback">
+          <span data-i18n="home.feedbackButton">Feedback 보내기</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
+        </a>
       </section>
 
       <div class="cache-dialog share-dialog" data-share-dialog hidden>
@@ -365,6 +380,6 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="script.js?v=20260602-legal-context-menu" defer></script>
+    <script src="script.js?v=20260603-home-atlas" defer></script>
   </body>
 </html>

@@ -8,7 +8,7 @@
       name="description"
       content="About this modern profile site, its purpose, values, public pages, and feedback-driven direction."
     />
-    <meta name="theme-color" content="#efefec" />
+    <meta name="theme-color" content="#050605" />
     <link rel="canonical" href="https://firstprizegames211.app/about" />
     <meta property="og:title" content="About us · Emergency Responder Profile" />
     <meta
@@ -18,14 +18,14 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Emergency Responder Profile" />
     <meta property="og:url" content="https://firstprizegames211.app/about" />
-    <meta property="og:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
+    <meta property="og:image" content="https://firstprizegames211.app/assets/about-system-hero.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="About us · Emergency Responder Profile" />
     <meta
       name="twitter:description"
       content="Learn what this profile site is for, how it is organized, and how feedback shapes it."
     />
-    <meta name="twitter:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
+    <meta name="twitter:image" content="https://firstprizegames211.app/assets/about-system-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
@@ -62,9 +62,9 @@
           localStorage.getItem("profile-setting-sidebar-nav") === "false" ? "top" : "sidebar";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260602-legal-context-menu" />
+    <link rel="stylesheet" href="../styles.css?v=20260603-about-editorial" />
   </head>
-  <body>
+  <body class="about-body">
     <div class="loading-bar" aria-hidden="true"></div>
     <div class="scroll-progress" aria-hidden="true"></div>
     <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
@@ -75,7 +75,7 @@
       <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
     </div>
     <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
-    <main class="shell" id="main-content" tabindex="-1">
+    <main class="shell about-page" id="main-content" tabindex="-1">
       <nav class="topbar" aria-label="About us 메뉴" data-i18n-aria-label="aria.aboutMenu">
         <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
           <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
@@ -104,88 +104,173 @@
       
       <section class="about-hero" aria-labelledby="about-title">
         <div class="about-hero-copy">
-          <p class="eyebrow" data-i18n="about.eyebrow">About us</p>
-          <h1 id="about-title" data-i18n="about.title">A public profile built around calm response and creative work.</h1>
-          <p data-i18n="about.lead">
-            This site brings together emergency response values, game creation notes, support options, and clear feedback paths in one quiet, readable place.
+          <h1 id="about-title" data-i18n="about.title">About the system.</h1>
+          <p class="about-lead" data-i18n="about.lead">
+            A public profile designed to keep response values, creation notes, support paths, privacy, and settings in their proper places.
           </p>
           <div class="about-hero-actions">
-            <button class="button primary" type="button" data-go-url="/Bio" data-i18n="about.bioButton">Read the bio</button>
-            <button class="button ghost" type="button" data-go-url="/feedback" data-i18n="about.feedbackButton">Leave feedback</button>
+            <a class="button primary" href="#operating-principles" data-i18n="about.principlesButton">View principles</a>
+            <a class="button ghost" href="#site-map-panel" data-i18n="about.routesButton">See routes</a>
           </div>
         </div>
-        <aside class="about-snapshot" aria-label="About summary" data-i18n-aria-label="aria.aboutSummary">
-          <div>
-            <span data-i18n="about.snapshotFocusLabel">Focus</span>
-            <strong data-i18n="about.snapshotFocusValue">Emergency response</strong>
-          </div>
-          <div>
-            <span data-i18n="about.snapshotBuildLabel">Build</span>
-            <strong data-i18n="about.snapshotBuildValue">Unity and site tools</strong>
-          </div>
-          <div>
-            <span data-i18n="about.snapshotModeLabel">Mode</span>
-            <strong data-i18n="about.snapshotModeValue">Public, editable, lightweight</strong>
-          </div>
-        </aside>
+        <figure class="about-visual-panel">
+          <img src="../assets/about-system-hero.jpg" alt="" width="1600" height="1000" loading="eager" decoding="async" />
+          <figcaption>
+            <span data-i18n="about.mediaLabel">Signal</span>
+            <strong data-i18n="about.mediaValue">Response, creation, trust</strong>
+          </figcaption>
+        </figure>
       </section>
 
-      <section class="about-values" aria-label="About values" data-i18n-aria-label="aria.aboutValues">
-        <article>
-          <span>01</span>
-          <h2 data-i18n="about.valueOneTitle">Clear purpose</h2>
-          <p data-i18n="about.valueOneBody">
-            The site is designed to explain who the profile represents, what kind of work is being built, and where visitors should go next without forcing them through clutter.
-          </p>
-        </article>
-        <article>
-          <span>02</span>
-          <h2 data-i18n="about.valueTwoTitle">Practical trust</h2>
-          <p data-i18n="about.valueTwoBody">
-            Privacy, license, feedback, pricing, and FAQ pages are separated so important information stays easy to find and easy to update.
-          </p>
-        </article>
-        <article>
-          <span>03</span>
-          <h2 data-i18n="about.valueThreeTitle">Modern accessibility</h2>
-          <p data-i18n="about.valueThreeBody">
-            Theme modes, language options, keyboard focus, mobile navigation, and reduced visual noise make the profile more comfortable across devices.
-          </p>
-        </article>
-      </section>
-
-      <section class="about-system" aria-label="Site system" data-i18n-aria-label="aria.aboutSystem">
-        <div class="section-heading">
-          <p class="eyebrow" data-i18n="about.systemEyebrow">Site system</p>
-          <h2 data-i18n="about.systemTitle">What this page network includes</h2>
-          <p data-i18n="about.systemLead">Each route has a job, so the homepage can stay focused and the deeper details can live where they belong.</p>
+      <section class="about-ledger" aria-label="About summary" data-i18n-aria-label="aria.aboutSummary">
+        <div>
+          <span data-i18n="about.ledgerPurposeLabel">Purpose</span>
+          <strong data-i18n="about.ledgerPurposeValue">Public profile</strong>
         </div>
-        <div class="about-system-grid">
+        <div>
+          <span data-i18n="about.ledgerScopeLabel">Scope</span>
+          <strong data-i18n="about.ledgerScopeValue">Response + creation</strong>
+        </div>
+        <div>
+          <span data-i18n="about.ledgerPrivacyLabel">Privacy</span>
+          <strong data-i18n="about.ledgerPrivacyValue">Local-first preferences</strong>
+        </div>
+        <div>
+          <span data-i18n="about.ledgerPaymentsLabel">Payments</span>
+          <strong data-i18n="about.ledgerPaymentsValue">External Stripe checkout</strong>
+        </div>
+      </section>
+
+      <section class="about-principles" id="operating-principles" aria-label="Operating principles" data-i18n-aria-label="aria.aboutValues">
+        <div class="about-section-copy">
+          <p class="about-section-kicker" data-i18n="about.principlesKicker">Operating principles</p>
+          <h2 data-i18n="about.principlesTitle">Keep the system useful when it matters.</h2>
+          <p data-i18n="about.principlesLead">
+            The site is arranged around a few durable rules: reduce noise, keep trust boundaries clear, and make every route earn its place.
+          </p>
+        </div>
+        <ol class="about-principle-list">
+          <li>
+            <span>01</span>
+            <div>
+              <strong data-i18n="about.principleOneTitle">Serve first</strong>
+              <p data-i18n="about.principleOneBody">Put clarity and usefulness ahead of decoration.</p>
+            </div>
+          </li>
+          <li>
+            <span>02</span>
+            <div>
+              <strong data-i18n="about.principleTwoTitle">Stay calm</strong>
+              <p data-i18n="about.principleTwoBody">Organize information so visitors do not have to fight the interface.</p>
+            </div>
+          </li>
+          <li>
+            <span>03</span>
+            <div>
+              <strong data-i18n="about.principleThreeTitle">Tell the truth</strong>
+              <p data-i18n="about.principleThreeBody">Keep privacy, payment, and product claims plain and easy to verify.</p>
+            </div>
+          </li>
+          <li>
+            <span>04</span>
+            <div>
+              <strong data-i18n="about.principleFourTitle">Build small systems</strong>
+              <p data-i18n="about.principleFourBody">Separate long information into dedicated pages instead of crowding the homepage.</p>
+            </div>
+          </li>
+          <li>
+            <span>05</span>
+            <div>
+              <strong data-i18n="about.principleFiveTitle">Leave room to improve</strong>
+              <p data-i18n="about.principleFiveBody">Make the site easy to revise as the profile, tools, and support options evolve.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="about-route-index" id="site-map-panel" aria-label="Site system" data-i18n-aria-label="aria.aboutSystem">
+        <div class="about-section-copy">
+          <p class="about-section-kicker" data-i18n="about.routesKicker">Route index</p>
+          <h2 data-i18n="about.routesTitle">Every page has one job.</h2>
+          <p data-i18n="about.routesLead">The homepage can stay light because the detailed information lives in focused, predictable routes.</p>
+        </div>
+        <div class="about-route-list">
+          <a href="/">
+            <span>01</span>
+            <strong data-i18n="nav.home">Home</strong>
+            <p data-i18n="about.routeHome">First view and main navigation paths.</p>
+          </a>
           <a href="/Bio">
-            <span data-i18n="nav.bio">Bio</span>
-            <strong data-i18n="about.systemBio">Personal profile without a real name</strong>
+            <span>02</span>
+            <strong data-i18n="nav.bio">Bio</strong>
+            <p data-i18n="about.routeBio">Responder profile, values, and interests.</p>
           </a>
           <a href="/Creator">
-            <span data-i18n="nav.creator">Creator</span>
-            <strong data-i18n="about.systemCreator">Unity game creation notes</strong>
+            <span>03</span>
+            <strong data-i18n="nav.creator">Creator</strong>
+            <p data-i18n="about.routeCreator">Game creation and tool-building notes.</p>
           </a>
-          <a href="/FAQ">
-            <span data-i18n="nav.faq">FAQ</span>
-            <strong data-i18n="about.systemFaq">EMT, game dev, deployment, and privacy answers</strong>
+          <a href="/Pricing">
+            <span>04</span>
+            <strong data-i18n="nav.pricing">Pricing</strong>
+            <p data-i18n="about.routePricing">Support plans and Stripe payment links.</p>
           </a>
           <a href="/settings">
-            <span data-i18n="nav.settings">Settings</span>
-            <strong data-i18n="about.systemSettings">Theme, language, accent, and navigation controls</strong>
+            <span>05</span>
+            <strong data-i18n="nav.settings">Settings</strong>
+            <p data-i18n="about.routeSettings">Theme, language, density, and payment blocking.</p>
+          </a>
+          <a href="/privacy">
+            <span>06</span>
+            <strong data-i18n="nav.privacy">Privacy Policy</strong>
+            <p data-i18n="about.routePrivacy">Local data notes and external checkout boundaries.</p>
           </a>
         </div>
       </section>
 
-      <section class="about-closing">
-        <p class="eyebrow" data-i18n="about.closingEyebrow">Direction</p>
-        <h2 data-i18n="about.closingTitle">Built to stay small, useful, and easy to improve.</h2>
-        <p data-i18n="about.closingBody">
-          Future features can grow from this foundation: AI tools, sign-in, premium access, analytics, or payments can be added later only when they are genuinely needed.
-        </p>
+      <section class="about-trust-band" aria-label="Privacy and payments" data-i18n-aria-label="aria.aboutTrust">
+        <div class="about-trust-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64">
+            <path d="M32 5 11 14v16c0 13.4 8.4 25.4 21 29 12.6-3.6 21-15.6 21-29V14L32 5Z" />
+            <path d="m23 33 6 6 13-16" />
+          </svg>
+        </div>
+        <div class="about-trust-copy">
+          <h2 data-i18n="about.trustTitle">Privacy. Payments. Trust.</h2>
+          <p data-i18n="about.trustLead">
+            The site keeps preferences local, explains public policies in dedicated pages, and sends checkout activity to Stripe instead of handling card details itself.
+          </p>
+        </div>
+        <ul class="about-trust-list">
+          <li>
+            <strong data-i18n="about.trustLocalTitle">Local preferences</strong>
+            <span data-i18n="about.trustLocalBody">Theme, language, and layout settings stay in the browser.</span>
+          </li>
+          <li>
+            <strong data-i18n="about.trustStripeTitle">Stripe checkout</strong>
+            <span data-i18n="about.trustStripeBody">Payment links open Stripe-hosted checkout pages.</span>
+          </li>
+          <li>
+            <strong data-i18n="about.trustControlTitle">Visitor control</strong>
+            <span data-i18n="about.trustControlBody">Settings include payment blocking and comfort controls.</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="about-next-direction" aria-label="Next direction" data-i18n-aria-label="aria.aboutNext">
+        <div>
+          <h2 data-i18n="about.nextTitle">Next direction.</h2>
+          <p data-i18n="about.nextBody">
+            The site can grow into stronger stories, cleaner support tools, and better public documentation without losing its calm structure.
+          </p>
+        </div>
+        <a class="about-outline-link" href="/feedback">
+          <span data-i18n="about.nextButton">Open feedback</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M5 12h14" />
+            <path d="m13 6 6 6-6 6" />
+          </svg>
+        </a>
       </section>
     </main>
     <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
@@ -291,6 +376,6 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260602-legal-context-menu" defer></script>
+    <script src="../script.js?v=20260603-about-editorial" defer></script>
   </body>
 </html>

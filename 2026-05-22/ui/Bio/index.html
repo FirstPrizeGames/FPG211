@@ -18,14 +18,14 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Emergency Responder Profile" />
     <meta property="og:url" content="https://firstprizegames211.app/Bio" />
-    <meta property="og:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
+    <meta property="og:image" content="https://firstprizegames211.app/assets/bio-response-hero.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Bio · Emergency Responder Profile" />
     <meta
       name="twitter:description"
       content="Read a concise personal bio focused on emergency response, values, and interests."
     />
-    <meta name="twitter:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
+    <meta name="twitter:image" content="https://firstprizegames211.app/assets/bio-response-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
@@ -62,7 +62,7 @@
           localStorage.getItem("profile-setting-sidebar-nav") === "false" ? "top" : "sidebar";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260602-legal-context-menu" />
+    <link rel="stylesheet" href="../styles.css?v=20260603-bio-editorial" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -104,71 +104,111 @@
       <section class="bio-hero">
         <div class="bio-hero-copy">
           <p class="eyebrow" data-i18n="bio.eyebrow">Bio</p>
-          <h1 data-i18n="bio.title">응급 현장에 필요한 침착함을 믿습니다.</h1>
+          <h1 data-i18n="bio.title">Calm under pressure.</h1>
           <p data-i18n="bio.lead">
-            저는 환자의 가장 불안한 순간에 도착해 상황을 빠르게 읽고, 필요한 처치와 이송을 연결하는 구급대원입니다.
+            위험한 순간에도 먼저 호흡을 고르고, 현장을 읽고, 필요한 결정을 단정하게 연결합니다.
           </p>
+          <div class="bio-hero-actions" aria-label="Bio shortcuts">
+            <a href="#principles" data-i18n="bio.actionPrinciples">원칙 보기</a>
+            <a href="#field-notes" data-i18n="bio.actionNotes">기록 보기</a>
+          </div>
         </div>
-        <aside class="bio-profile-card" aria-label="자기소개 요약" data-i18n-aria-label="aria.bioSummary">
-          <div class="bio-profile-mark" aria-hidden="true">FP</div>
-          <div class="bio-profile-row">
-            <span data-i18n="bio.summaryRoleLabel">Role</span>
-            <strong data-i18n="bio.summaryRoleValue">Emergency responder</strong>
-          </div>
-          <div class="bio-profile-row">
-            <span data-i18n="bio.summaryFocusLabel">Focus</span>
-            <strong data-i18n="bio.summaryFocusValue">Calm field response</strong>
-          </div>
-          <div class="bio-profile-row">
-            <span data-i18n="bio.summaryBuildLabel">Build</span>
-            <strong data-i18n="bio.summaryBuildValue">Game UI and tools</strong>
-          </div>
-        </aside>
+        <figure class="bio-media-panel">
+          <img src="../assets/bio-response-hero.jpg" alt="" width="1024" height="1792" loading="eager" decoding="async" />
+          <figcaption>
+            <span data-i18n="bio.mediaLabel">Field profile</span>
+            <strong data-i18n="bio.mediaValue">Prepared, quiet, precise.</strong>
+          </figcaption>
+        </figure>
       </section>
 
-      <section class="bio-content" aria-label="자기소개" data-i18n-aria-label="aria.bioContent">
-        <article>
-          <span class="bio-section-index">01</span>
-          <div>
-            <h2 data-i18n="bio.sectionOneTitle">현장에서의 태도</h2>
-            <p data-i18n="bio.sectionOneBody">
-              응급 상황에서는 빠른 판단만큼 차분한 태도가 중요하다고 생각합니다. 환자의 상태를 확인하고, 보호자와 동료에게 필요한 정보를 명확히 전달하며, 안전한 처치가 이어질 수 있도록 현장을 정리합니다.
-            </p>
-          </div>
-        </article>
-        <article>
-          <span class="bio-section-index">02</span>
-          <div>
-            <h2 data-i18n="bio.sectionTwoTitle">중요하게 생각하는 기준</h2>
-            <p data-i18n="bio.sectionTwoBody">
-              기본에 충실한 평가, 팀과의 정확한 소통, 환자를 향한 존중을 기준으로 움직입니다. 긴박한 순간일수록 절차와 원칙을 놓치지 않는 것이 더 나은 결과로 이어진다고 믿습니다.
-            </p>
-          </div>
-        </article>
-        <article>
-          <span class="bio-section-index">03</span>
-          <div>
-            <h2 data-i18n="bio.sectionThreeTitle">앞으로의 방향</h2>
-            <p data-i18n="bio.sectionThreeBody">
-              현장 경험을 바탕으로 더 나은 응급의료 대응과 교육, 기록 문화에 기여하고 싶습니다. 누군가에게 가장 힘든 순간을 조금 더 안전하게 지나가게 하는 사람이 되는 것이 목표입니다.
-            </p>
-          </div>
-        </article>
+      <section class="bio-dossier" aria-label="자기소개 요약" data-i18n-aria-label="aria.bioSummary">
+        <div>
+          <span>01</span>
+          <p data-i18n="bio.summaryRoleLabel">Role</p>
+          <strong data-i18n="bio.summaryRoleValue">구급대원</strong>
+        </div>
+        <div>
+          <span>02</span>
+          <p data-i18n="bio.summaryFocusLabel">Field focus</p>
+          <strong data-i18n="bio.summaryFocusValue">현장 판단 · 처치 연결</strong>
+        </div>
+        <div>
+          <span>03</span>
+          <p data-i18n="bio.summaryResponseLabel">Response style</p>
+          <strong data-i18n="bio.summaryResponseValue">침착함 · 속도 · 팀워크</strong>
+        </div>
+        <div>
+          <span>04</span>
+          <p data-i18n="bio.summaryBuildLabel">Creative work</p>
+          <strong data-i18n="bio.summaryBuildValue">게임 UI · 도구 · 기록</strong>
+        </div>
       </section>
 
-      <section class="likes-section" aria-label="좋아하는 것들" data-i18n-aria-label="aria.likes">
-        <div class="section-heading">
-          <p class="eyebrow" data-i18n="bio.likesEyebrow">Likes</p>
-          <h2 data-i18n="bio.likesTitle">좋아하는 것들</h2>
-          <p data-i18n="bio.likesLead">이 영역은 나중에 취향이나 관심사가 바뀌면 쉽게 수정할 수 있는 템플릿입니다.</p>
-        </div>
-        <div class="likes-list">
-          <span data-i18n="bio.likeOne">게임 UI & UX 디자인, 게임 개발</span>
-          <span data-i18n="bio.likeTwo">Roblox, Baldi's Basics 게임</span>
-          <span data-i18n="bio.likeThree">현장에서 사람을 돕는 일</span>
-          <span data-i18n="bio.likeFour">BBQ 파티</span>
-          <span data-i18n="bio.likeFive">새로운 도구 배우기</span>
-        </div>
+      <section class="bio-editorial-grid" aria-label="자기소개" data-i18n-aria-label="aria.bioContent">
+        <article class="bio-principles" id="principles">
+          <p class="eyebrow" data-i18n="bio.principlesEyebrow">Principles</p>
+          <h2 data-i18n="bio.principlesTitle">판단은 조용하게, 움직임은 정확하게.</h2>
+          <ol>
+            <li>
+              <strong data-i18n="bio.principleOneTitle">사람이 먼저입니다.</strong>
+              <span data-i18n="bio.principleOneBody">모든 판단의 기준은 생명과 안전입니다.</span>
+            </li>
+            <li>
+              <strong data-i18n="bio.principleTwoTitle">현장을 읽고 순서를 정합니다.</strong>
+              <span data-i18n="bio.principleTwoBody">정보를 모으고, 우선순위를 정해 팀이 움직일 방향을 만듭니다.</span>
+            </li>
+            <li>
+              <strong data-i18n="bio.principleThreeTitle">기록하고 개선합니다.</strong>
+              <span data-i18n="bio.principleThreeBody">경험을 남겨 다음 대응이 조금 더 안전해지게 합니다.</span>
+            </li>
+          </ol>
+        </article>
+
+        <article class="bio-field-notes" id="field-notes">
+          <p class="eyebrow" data-i18n="bio.notesEyebrow">Field notes</p>
+          <h2 data-i18n="bio.notesTitle">짧게 남기는 현장 메모</h2>
+          <div class="bio-note-list">
+            <div>
+              <time datetime="2026-05-28">2026.05.28</time>
+              <strong data-i18n="bio.noteOneTitle">공공 안전 대응 지원</strong>
+              <span data-i18n="bio.noteOneBody">혼잡한 공간에서 동선과 위험 요소를 먼저 정리했습니다.</span>
+            </div>
+            <div>
+              <time datetime="2026-04-17">2026.04.17</time>
+              <strong data-i18n="bio.noteTwoTitle">교통사고 구조 보조</strong>
+              <span data-i18n="bio.noteTwoBody">2차 사고 예방과 환자 안정 확보를 우선했습니다.</span>
+            </div>
+            <div>
+              <time datetime="2026-03-03">2026.03.03</time>
+              <strong data-i18n="bio.noteThreeTitle">기록 체계 정리</strong>
+              <span data-i18n="bio.noteThreeBody">반복되는 대응 정보를 더 빠르게 찾을 수 있게 정리했습니다.</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="bio-direction">
+          <p class="eyebrow" data-i18n="bio.directionEyebrow">Direction statement</p>
+          <blockquote data-i18n="bio.directionQuote">
+            기술은 장비에서, 판단은 경험에서, 신뢰는 태도에서 나옵니다.
+          </blockquote>
+          <p data-i18n="bio.directionBody">
+            저는 현장에서 검증된 원칙을 바탕으로 사람과 시스템을 연결하고, 더 안전한 대응 문화를 만드는 쪽으로 나아가고 있습니다.
+          </p>
+        </article>
+
+        <article class="bio-interests" aria-label="좋아하는 것들" data-i18n-aria-label="aria.likes">
+          <p class="eyebrow" data-i18n="bio.likesEyebrow">Interests</p>
+          <h2 data-i18n="bio.likesTitle">집중하는 것들</h2>
+          <div class="likes-list">
+            <span data-i18n="bio.likeOne">게임 UI & UX</span>
+            <span data-i18n="bio.likeTwo">Roblox 시스템</span>
+            <span data-i18n="bio.likeThree">현장 기록</span>
+            <span data-i18n="bio.likeFour">도구 설계</span>
+            <span data-i18n="bio.likeFive">응급 대응</span>
+            <span data-i18n="bio.likeSix">지식 정리</span>
+          </div>
+        </article>
       </section>
     </main>
     <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
@@ -274,6 +314,6 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260602-legal-context-menu" defer></script>
+    <script src="../script.js?v=20260603-bio-editorial" defer></script>
   </body>
 </html>

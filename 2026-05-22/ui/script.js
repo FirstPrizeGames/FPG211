@@ -80,6 +80,12 @@ const contextModeDialog = document.querySelector("[data-context-mode-dialog]");
 const contextModeCloseButtons = [...document.querySelectorAll("[data-context-mode-close]")];
 const contextModeChoices = [...document.querySelectorAll("[data-context-menu-choice]")];
 const fastRenderSwipe = document.querySelector("[data-fast-render-swipe]");
+const browserUsageSession = document.querySelector("[data-browser-session]");
+const browserUsageTotal = document.querySelector("[data-browser-total]");
+const browserUsageFee = document.querySelector("[data-browser-fee]");
+const browserUsageRate = document.querySelector("[data-browser-rate]");
+const browserUsageReset = document.querySelector("[data-browser-reset]");
+const browserUsageStatus = document.querySelector("[data-browser-status]");
 const homeTabs = [...document.querySelectorAll("[data-home-tab]")];
 const homePanels = [...document.querySelectorAll("[data-home-panel]")];
 const infoTabs = [...document.querySelectorAll("[data-info-tab]")];
@@ -129,6 +135,7 @@ const translations = {
     "nav.bio": "Bio",
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
+    "usage.nav": "Usage",
     "nav.privacy": "Privacy Policy",
     "nav.license": "License",
     "nav.feedback": "Feedback",
@@ -244,6 +251,8 @@ const translations = {
     "aria.settingsPanel": "프로필 설정",
     "aria.settingsCategories": "설정 분류",
     "aria.settingsOverview": "설정 상태 요약",
+    "aria.usageMenu": "사용량 메뉴",
+    "aria.usageSummary": "브라우저 사용량 요약",
     "aria.navLayout": "내비게이션 레이아웃 선택",
     "aria.contextMenuMode": "우클릭 메뉴 방식 선택",
     "aria.themeCompatibility": "테마 호환 상태",
@@ -621,6 +630,25 @@ const translations = {
     "settings.storageUsageTitle": "저장용량",
     "settings.storageUsageLoading": "저장용량을 확인하는 중입니다.",
     "settings.storageUsageUnsupported": "이 브라우저에서는 저장용량 표시를 지원하지 않습니다.",
+    "usage.title": "사용량 콘솔",
+    "usage.lead": "브라우저에 저장된 사이트 데이터와 현재 브라우저 사용료 카운터를 분리해서 확인합니다.",
+    "usage.settingsTitle": "사용량 페이지",
+    "usage.settingsBody": "저장용량, 브라우저 사용 시간, 사용료 카운터는 Usage 페이지에서 확인하고 정리합니다.",
+    "usage.open": "Usage 열기",
+    "usage.summaryValue": "페이지 이동",
+    "usage.storageTitle": "브라우저 저장용량",
+    "usage.storageBody": "테마, 언어, 강조 컬러, 표시 설정처럼 이 사이트가 브라우저에 저장한 데이터를 확인합니다.",
+    "usage.feeTitle": "브라우저 사용료",
+    "usage.feeBody": "이 카운터는 페이지가 열려 있는 시간을 기준으로 브라우저 안에서만 증가하는 로컬 추정값입니다.",
+    "usage.session": "이번 세션",
+    "usage.total": "누적 사용 시간",
+    "usage.fee": "예상 사용료",
+    "usage.rate": "요율",
+    "usage.rateValue": "분당 ₩1",
+    "usage.reset": "사용량 초기화",
+    "usage.resetDone": "브라우저 사용량을 초기화했습니다.",
+    "usage.cacheTitle": "사이트 데이터 정리",
+    "usage.cacheBody": "설정과 사용량 기록을 지우고 기본값으로 되돌립니다.",
     "settings.accentTitle": "강조 컬러",
     "settings.accentBody": "버튼, 진행 바, 포커스 표시, 지원되는 페이지의 링크 색상에 사용할 포인트 컬러를 선택합니다.",
     "settings.accentScopeLabel": "적용 범위",
@@ -990,6 +1018,7 @@ const translations = {
     "nav.bio": "Bio",
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
+    "usage.nav": "Usage",
     "nav.privacy": "Privacy Policy",
     "nav.license": "License",
     "nav.feedback": "Feedback",
@@ -1105,6 +1134,8 @@ const translations = {
     "aria.settingsPanel": "Profile settings",
     "aria.settingsCategories": "Settings categories",
     "aria.settingsOverview": "Settings status summary",
+    "aria.usageMenu": "Usage menu",
+    "aria.usageSummary": "Browser usage summary",
     "aria.navLayout": "Navigation layout selection",
     "aria.contextMenuMode": "Context menu mode selection",
     "aria.themeCompatibility": "Theme compatibility status",
@@ -1487,6 +1518,25 @@ const translations = {
     "settings.storageUsageTitle": "Storage usage",
     "settings.storageUsageLoading": "Checking storage usage.",
     "settings.storageUsageUnsupported": "This browser does not support storage usage details.",
+    "usage.title": "Usage console",
+    "usage.lead": "Review browser-stored site data and a separate browser usage fee counter.",
+    "usage.settingsTitle": "Usage page",
+    "usage.settingsBody": "Storage usage, browser time, and the usage fee counter now live on the Usage page.",
+    "usage.open": "Open Usage",
+    "usage.summaryValue": "Open page",
+    "usage.storageTitle": "Browser storage",
+    "usage.storageBody": "Review data this site keeps in the browser, such as theme, language, accent color, and display preferences.",
+    "usage.feeTitle": "Browser usage fee",
+    "usage.feeBody": "This counter is a local estimate that increases only in this browser while the page is open.",
+    "usage.session": "This session",
+    "usage.total": "Total browser time",
+    "usage.fee": "Estimated fee",
+    "usage.rate": "Rate",
+    "usage.rateValue": "₩1 per minute",
+    "usage.reset": "Reset usage",
+    "usage.resetDone": "Browser usage has been reset.",
+    "usage.cacheTitle": "Clear site data",
+    "usage.cacheBody": "Clear settings and usage records, then return to defaults.",
     "settings.accentTitle": "Accent color",
     "settings.accentBody": "Choose the point color used for buttons, progress bars, focus states, and supported page links.",
     "settings.accentScopeLabel": "Applies to",
@@ -2737,6 +2787,7 @@ const clearSiteCache = () => {
     "profile-setting-fast-render",
     "profile-setting-kid-mode",
     "profile-setting-custom-context-menu",
+    "profile-browser-usage-total-ms",
   ].forEach((key) => localStorage.removeItem(key));
 
   document.documentElement.dataset.theme = "light";
@@ -2782,6 +2833,53 @@ const formatBytes = (bytes) => {
 
   const maximumFractionDigits = value >= 10 || unitIndex === 0 ? 0 : 1;
   return `${value.toLocaleString(undefined, { maximumFractionDigits })} ${units[unitIndex]}`;
+};
+
+const browserUsageRatePerMinute = 1;
+const browserUsageStartedAt = Date.now();
+let browserUsageBaseMs = Number.parseInt(localStorage.getItem("profile-browser-usage-total-ms") || "0", 10);
+if (!Number.isFinite(browserUsageBaseMs) || browserUsageBaseMs < 0) browserUsageBaseMs = 0;
+
+const formatDuration = (milliseconds) => {
+  const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  if (hours > 0) return `${hours}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`;
+  return `${minutes}m ${String(seconds).padStart(2, "0")}s`;
+};
+
+const getCurrentBrowserUsageMs = () => browserUsageBaseMs + (Date.now() - browserUsageStartedAt);
+
+const persistBrowserUsage = () => {
+  localStorage.setItem("profile-browser-usage-total-ms", String(getCurrentBrowserUsageMs()));
+};
+
+const updateBrowserUsage = () => {
+  if (!browserUsageSession && !browserUsageTotal && !browserUsageFee && !browserUsageRate) return;
+
+  const sessionMs = Date.now() - browserUsageStartedAt;
+  const totalMs = getCurrentBrowserUsageMs();
+  const fee = Math.floor((totalMs / 60000) * browserUsageRatePerMinute);
+
+  if (browserUsageSession) browserUsageSession.textContent = formatDuration(sessionMs);
+  if (browserUsageTotal) browserUsageTotal.textContent = formatDuration(totalMs);
+  if (browserUsageFee) browserUsageFee.textContent = `₩${fee.toLocaleString()}`;
+  if (browserUsageRate) browserUsageRate.textContent = translate("usage.rateValue");
+};
+
+const resetBrowserUsage = () => {
+  browserUsageBaseMs = 0;
+  localStorage.setItem("profile-browser-usage-total-ms", "0");
+  updateBrowserUsage();
+  if (!browserUsageStatus) return;
+  browserUsageStatus.hidden = false;
+  browserUsageStatus.textContent = translate("usage.resetDone");
+  window.clearTimeout(resetBrowserUsage.timeoutId);
+  resetBrowserUsage.timeoutId = window.setTimeout(() => {
+    browserUsageStatus.hidden = true;
+  }, 2600);
 };
 
 const updateStorageEstimate = async () => {
@@ -3656,6 +3754,11 @@ setupPremiumAccentLocks();
 setAccent(localStorage.getItem("profile-accent") || "neutral");
 setCurrency(localStorage.getItem("profile-currency") || (currentLanguage === "ko" ? "krw" : "usd"));
 updateStorageEstimate();
+updateBrowserUsage();
+const browserUsageIntervalId = window.setInterval(() => {
+  updateBrowserUsage();
+  persistBrowserUsage();
+}, 1000);
 
 themeChoices.forEach((button) => {
   button.addEventListener("click", () => {
@@ -3776,6 +3879,11 @@ clearCacheCancel?.addEventListener("click", () => {
 clearCacheConfirm?.addEventListener("click", clearSiteCache);
 clearCacheWarning?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === clearCacheWarning) closeClearCacheWarning();
+});
+browserUsageReset?.addEventListener("click", resetBrowserUsage);
+window.addEventListener("pagehide", () => {
+  persistBrowserUsage();
+  window.clearInterval(browserUsageIntervalId);
 });
 feedbackOpen?.addEventListener("click", showFeedbackWarning);
 feedbackCancel?.addEventListener("click", closeFeedbackWarning);

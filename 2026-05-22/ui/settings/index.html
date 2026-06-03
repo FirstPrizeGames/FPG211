@@ -138,8 +138,8 @@
             <strong data-payment-block-status data-i18n="settings.overviewPaymentsAllowed">Allowed</strong>
           </div>
           <div>
-            <span data-i18n="settings.overviewStorage">Storage</span>
-            <strong data-storage-percent>--</strong>
+            <span data-i18n="usage.nav">Usage</span>
+            <strong data-i18n="usage.summaryValue">Open page</strong>
           </div>
         </div>
       </section>
@@ -216,13 +216,13 @@
             </svg>
             <span data-i18n="settings.performanceTab">Performance</span>
           </a>
-          <a href="#storage">
+          <a href="/usage">
             <svg aria-hidden="true" viewBox="0 0 24 24">
               <ellipse cx="12" cy="5" rx="8" ry="3" />
               <path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5" />
               <path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" />
             </svg>
-            <span data-i18n="settings.storageTab">Storage</span>
+            <span data-i18n="usage.nav">Usage</span>
           </a>
           <a href="#accent">
             <svg aria-hidden="true" viewBox="0 0 24 24">
@@ -443,28 +443,13 @@
             </button>
           </article>
 
-          <article class="setting-card" id="storage">
+          <article class="setting-card setting-card-navigation" id="usage">
             <div>
-              <p class="eyebrow" data-i18n="settings.storageTab">Storage</p>
-              <h3 data-i18n="settings.clearCacheTitle">브라우저 캐시 정리</h3>
-              <p data-i18n="settings.clearCacheBody">이 사이트에 저장된 테마, 언어, 표시 설정을 삭제하고 기본값으로 되돌립니다.</p>
+              <p class="eyebrow" data-i18n="usage.nav">Usage</p>
+              <h3 data-i18n="usage.settingsTitle">사용량 페이지</h3>
+              <p data-i18n="usage.settingsBody">저장용량, 브라우저 사용 시간, 사용료 카운터는 Usage 페이지에서 확인하고 정리합니다.</p>
             </div>
-            <button class="button cache-button" type="button" data-clear-cache data-i18n="settings.clearCacheButton">
-              캐시 정리
-            </button>
-            <div class="storage-meter" data-storage-meter>
-              <div class="storage-meter-header">
-                <span data-i18n="settings.storageUsageTitle">저장용량</span>
-                <strong data-storage-percent>--</strong>
-              </div>
-              <div class="storage-meter-track" aria-hidden="true">
-                <span data-storage-bar></span>
-              </div>
-              <p data-storage-usage data-i18n="settings.storageUsageLoading">저장용량을 확인하는 중입니다.</p>
-            </div>
-            <p class="cache-note" data-clear-cache-note data-i18n="settings.clearCacheDone" hidden>
-              저장된 설정을 정리했습니다.
-            </p>
+            <a class="button setting-popup-button" href="/usage" data-i18n="usage.open">Usage 열기</a>
           </article>
 
           <div class="settings-group-label">
@@ -626,7 +611,7 @@
 
       <div class="cache-dialog" data-clear-cache-warning hidden>
         <div class="cache-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="cache-dialog-title">
-          <p class="eyebrow" data-i18n="settings.storageTab">Storage</p>
+          <p class="eyebrow" data-i18n="usage.nav">Usage</p>
           <h2 id="cache-dialog-title" data-i18n="settings.clearCacheTitle">브라우저 캐시 정리</h2>
           <p data-i18n="settings.clearCacheWarning">
             저장된 테마, 언어, 표시 설정이 모두 삭제됩니다. 계속하시겠습니까?

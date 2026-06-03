@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Usage · Emergency Responder Profile</title>
+    <meta
+      name="description"
+      content="Browser storage usage and local browser usage fee counter for the profile site."
+    />
+    <meta name="theme-color" content="#151514" />
+    <link rel="canonical" href="https://firstprizegames211.app/usage" />
+    <meta property="og:title" content="Usage · Emergency Responder Profile" />
+    <meta property="og:description" content="Review browser storage and local usage counters for this site." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Emergency Responder Profile" />
+    <meta property="og:url" content="https://firstprizegames211.app/usage" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="application-name" content="Emergency Responder Profile" />
+    <meta name="msapplication-TileColor" content="#151514" />
+    <script>
+      (() => {
+        const normalizeTheme = (theme) => {
+          if (["light", "dark", "lights-off"].includes(theme)) return theme;
+          if (["dim", "dark-mode", "true"].includes(theme)) return "dark";
+          if (["lightsout", "lights-out", "black", "off"].includes(theme)) return "lights-off";
+          return "";
+        };
+        const normalizeBoolean = (value, fallback = false) => {
+          if ([true, "true", "1", "on"].includes(value)) return true;
+          if ([false, "false", "0", "off"].includes(value)) return false;
+          return fallback;
+        };
+        const normalizeKidMode = (mode) => {
+          if (mode === "true") return "strong";
+          return ["soft", "strong"].includes(mode) ? mode : "off";
+        };
+        const normalizeAccent = (accent) =>
+          ["blue", "green", "rose", "orange", "purple"].includes(accent) ? accent : "neutral";
+        const savedTheme = normalizeTheme(localStorage.getItem("profile-theme"));
+        const prefersDark = matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = savedTheme || (prefersDark ? "dark" : "light");
+        document.documentElement.lang = ["ko", "en"].includes(localStorage.getItem("profile-language"))
+          ? localStorage.getItem("profile-language")
+          : "en";
+        document.documentElement.dataset.accent = normalizeAccent(localStorage.getItem("profile-accent"));
+        document.documentElement.dataset.density = ["compact", "comfortable", "spacious"].includes(localStorage.getItem("profile-density"))
+          ? localStorage.getItem("profile-density")
+          : "comfortable";
+        document.documentElement.dataset.fastRender = normalizeBoolean(
+          localStorage.getItem("profile-setting-fast-render") || localStorage.getItem("profile-fast-render"),
+          false,
+        )
+          ? "true"
+          : "false";
+        document.documentElement.dataset.kidMode = normalizeKidMode(localStorage.getItem("profile-setting-kid-mode"));
+        document.documentElement.dataset.navLayout = normalizeBoolean(
+          localStorage.getItem("profile-setting-sidebar-nav"),
+          true,
+        )
+          ? "sidebar"
+          : "top";
+      })();
+    </script>
+    <link rel="stylesheet" href="../styles.css?v=20260603-usage-page" />
+  </head>
+  <body>
+    <div class="loading-bar" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
+    <div class="adblock-notice" data-adblock-notice hidden>
+      <p data-i18n="adblock.message">
+        광고 차단기가 일부 사이트 기능을 제한할 수 있습니다. 문제가 보이면 이 사이트를 허용 목록에 추가해 주세요.
+      </p>
+      <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
+    </div>
+    <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
+    <main class="shell usage-page" id="main-content" tabindex="-1">
+      <nav class="topbar" aria-label="사용량 메뉴" data-i18n-aria-label="aria.usageMenu">
+        <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
+          <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
+          <span>FP</span>
+        </a>
+        <button class="mobile-menu-button" type="button" aria-expanded="false" data-mobile-menu-toggle>
+          <span data-i18n="nav.menu">Menu</span>
+          <svg class="mobile-menu-icon" aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </button>
+        <div class="nav-links" data-mobile-menu>
+          <a href="/"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg><span data-i18n="nav.home">Home</span></a>
+          <a href="/Creator"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z" /><path d="m3 14 9 5 9-5" /><path d="m3 11 9 5 9-5" /></svg><span data-i18n="nav.creator">Creator</span></a>
+          <a href="/Bio"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0" /><circle cx="12" cy="7" r="4" /></svg><span data-i18n="nav.bio">Bio</span></a>
+          <a href="/about"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg><span data-i18n="nav.aboutUs">About us</span></a>
+          <a href="/FAQ"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 1 1 5.8 1c-.5.9-1.4 1.3-2.1 1.9-.6.5-.8.9-.8 2.1" /><path d="M12 17h.01" /></svg><span data-i18n="nav.faq">FAQ</span></a>
+          <a href="/Pricing"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 10h18" /><path d="M7 15h4" /></svg><span data-i18n="nav.pricing">Pricing</span></a>
+          <a href="/settings"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3h.1A1.7 1.7 0 0 0 10 3.1V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1A1.7 1.7 0 0 0 20.9 10h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" /></svg><span data-i18n="nav.settings">Settings</span></a>
+          <a class="is-active" href="/usage"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 19V5" /><path d="M4 19h16" /><path d="M8 16v-5" /><path d="M12 16V8" /><path d="M16 16v-3" /></svg><span data-i18n="usage.nav">Usage</span></a>
+          <a href="/privacy"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-5" /></svg><span data-i18n="nav.privacy">Privacy Policy</span></a>
+          <a href="/license"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z" /><path d="M14 3v6h5" /><path d="M9 14h6" /><path d="M9 18h4" /><path d="M5 7v14" /></svg><span data-i18n="nav.license">License</span></a>
+          <a class="nav-feedback-link" href="/feedback" data-i18n="nav.feedback">Feedback</a>
+        </div>
+      </nav>
+
+      <section class="usage-hero">
+        <div>
+          <p class="eyebrow" data-i18n="usage.nav">Usage</p>
+          <h1 data-i18n="usage.title">사용량 콘솔</h1>
+          <p data-i18n="usage.lead">브라우저에 저장된 사이트 데이터와 현재 브라우저 사용료 카운터를 분리해서 확인합니다.</p>
+        </div>
+        <div class="usage-rate-card">
+          <span data-i18n="usage.rate">요율</span>
+          <strong data-browser-rate data-i18n="usage.rateValue">분당 ₩1</strong>
+        </div>
+      </section>
+
+      <section class="usage-grid" aria-label="브라우저 사용량" data-i18n-aria-label="aria.usageSummary">
+        <article class="usage-card usage-card-wide">
+          <span data-i18n="usage.feeTitle">브라우저 사용료</span>
+          <h2 data-browser-fee>₩0</h2>
+          <p data-i18n="usage.feeBody">이 카운터는 페이지가 열려 있는 시간을 기준으로 브라우저 안에서만 증가하는 로컬 추정값입니다.</p>
+          <div class="usage-metrics">
+            <div>
+              <span data-i18n="usage.session">이번 세션</span>
+              <strong data-browser-session>0m 00s</strong>
+            </div>
+            <div>
+              <span data-i18n="usage.total">누적 사용 시간</span>
+              <strong data-browser-total>0m 00s</strong>
+            </div>
+          </div>
+          <button class="button cache-button" type="button" data-browser-reset data-i18n="usage.reset">사용량 초기화</button>
+          <p class="cache-note" data-browser-status hidden></p>
+        </article>
+
+        <article class="usage-card">
+          <span data-i18n="usage.storageTitle">브라우저 저장용량</span>
+          <h2 data-storage-percent>--</h2>
+          <p data-i18n="usage.storageBody">테마, 언어, 강조 컬러, 표시 설정처럼 이 사이트가 브라우저에 저장한 데이터를 확인합니다.</p>
+          <div class="storage-meter" data-storage-meter>
+            <div class="storage-meter-header">
+              <span data-i18n="settings.storageUsageTitle">저장용량</span>
+              <strong data-storage-percent>--</strong>
+            </div>
+            <div class="storage-meter-track" aria-hidden="true">
+              <span data-storage-bar></span>
+            </div>
+            <p data-storage-usage data-i18n="settings.storageUsageLoading">저장용량을 확인하는 중입니다.</p>
+          </div>
+        </article>
+
+        <article class="usage-card">
+          <span data-i18n="usage.cacheTitle">사이트 데이터 정리</span>
+          <h2 data-i18n="settings.clearCacheTitle">브라우저 캐시 정리</h2>
+          <p data-i18n="usage.cacheBody">설정과 사용량 기록을 지우고 기본값으로 되돌립니다.</p>
+          <button class="button cache-button" type="button" data-clear-cache data-i18n="settings.clearCacheButton">캐시 정리</button>
+          <p class="cache-note" data-clear-cache-note data-i18n="settings.clearCacheDone" hidden>저장된 설정을 정리했습니다.</p>
+        </article>
+      </section>
+
+      <div class="cache-dialog" data-clear-cache-warning hidden>
+        <div class="cache-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="cache-dialog-title">
+          <button class="dialog-close-button" type="button" data-clear-cache-cancel aria-label="닫기" data-i18n-aria-label="share.close">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+          </button>
+          <p class="eyebrow" data-i18n="usage.nav">Usage</p>
+          <h2 id="cache-dialog-title" data-i18n="settings.clearCacheTitle">브라우저 캐시 정리</h2>
+          <p data-i18n="settings.clearCacheWarning">저장된 테마, 언어, 표시 설정이 모두 삭제됩니다. 계속하시겠습니까?</p>
+          <div class="cache-dialog-actions">
+            <button class="button" type="button" data-clear-cache-cancel data-i18n="settings.clearCacheCancel">취소</button>
+            <button class="button cache-confirm-button" type="button" data-clear-cache-confirm data-i18n="settings.clearCacheConfirm">정리하기</button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="../script.js?v=20260603-usage-page" defer></script>
+  </body>
+</html>

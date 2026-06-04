@@ -20,12 +20,22 @@ const createNavAnchor = ({ href, icon, labelKey, fallback }) => {
   return anchor;
 };
 
+const normalizeAnalyticsLink = (link) => {
+  if (!link) return null;
+  link.innerHTML = `${navIconMarkup.analytics}<span data-i18n="nav.analytics">Analytics</span>`;
+  if (normalizeNavPath(window.location.pathname) === normalizeNavPath(link.getAttribute("href") || "")) {
+    link.classList.add("is-active");
+  }
+  return link;
+};
+
 const enhanceSidebarNavigation = () => {
   document.querySelectorAll(".nav-links").forEach((nav) => {
     const homeLink = nav.querySelector('a[href="/"]');
     const pricingLink = nav.querySelector('a[href="/Pricing"]');
     const settingsLink = nav.querySelector('a[href="/settings"]');
     const feedbackLink = nav.querySelector('a[href="/feedback"]');
+    let analyticsLink = nav.querySelector('a[href="/usage"]');
 
     if (feedbackLink) {
       feedbackLink.classList.remove("nav-feedback-link");
@@ -37,15 +47,20 @@ const enhanceSidebarNavigation = () => {
       }
     }
 
-    if (!nav.querySelector('a[href="/usage"]') && feedbackLink) {
-      feedbackLink.after(
-        createNavAnchor({
+    if (!analyticsLink && feedbackLink) {
+      analyticsLink = createNavAnchor({
           href: "/usage",
           icon: navIconMarkup.analytics,
           labelKey: "nav.analytics",
           fallback: "Analytics",
-        }),
-      );
+        });
+      feedbackLink.after(analyticsLink);
+    } else {
+      normalizeAnalyticsLink(analyticsLink);
+    }
+
+    if (feedbackLink && analyticsLink && analyticsLink.previousElementSibling !== feedbackLink) {
+      feedbackLink.after(analyticsLink);
     }
 
     nav.querySelectorAll(".nav-section-label").forEach((label) => label.remove());

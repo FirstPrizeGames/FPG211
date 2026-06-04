@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260604-404-redesign";
+const CACHE_NAME = "profile-offline-20260604-sidebar-analytics-order";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

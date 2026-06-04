@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260602-legal-context-menu";
+const CACHE_NAME = "profile-offline-20260604-favicon-links";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
@@ -8,6 +8,8 @@ const PRECACHE_URLS = [
   "/favicon.ico",
   "/site.webmanifest",
   "/assets/favicon-32.png",
+  "/assets/favicon-48.png",
+  "/assets/favicon-96.png",
   "/assets/apple-touch-icon.png",
   "/assets/icon-192.png",
   "/assets/icon-512.png",

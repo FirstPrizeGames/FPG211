@@ -9,7 +9,7 @@
       content="You appear to be offline. This page helps you reconnect or return to cached profile content."
     />
     <meta name="robots" content="noindex" />
-    <meta name="theme-color" content="#efefec" />
+    <meta name="theme-color" content="#151514" />
     <link rel="canonical" href="https://firstprizegames211.app/offline" />
     <meta property="og:title" content="Offline · Emergency Responder Profile" />
     <meta
@@ -35,11 +35,12 @@
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="application-name" content="Emergency Responder Profile" />
-    <meta name="msapplication-TileColor" content="#efefec" />
+    <meta name="msapplication-TileColor" content="#151514" />
     <script>
       (() => {
         const normalizeTheme = (theme) => {
-          if (["light", "dark", "lights-off"].includes(theme)) return theme;
+          if (["dark", "lights-off"].includes(theme)) return theme;
+          if (theme === "light") return "dark";
           if (["dim", "dark-mode", "true"].includes(theme)) return "dark";
           if (["lightsout", "lights-out", "black", "off"].includes(theme)) return "lights-off";
           return "";
@@ -56,8 +57,7 @@
         const normalizeAccent = (accent) =>
           ["blue", "green", "rose", "orange", "purple"].includes(accent) ? accent : "neutral";
         const savedTheme = normalizeTheme(localStorage.getItem("profile-theme"));
-        const prefersDark = matchMedia("(prefers-color-scheme: dark)").matches;
-        document.documentElement.dataset.theme = savedTheme || (prefersDark ? "dark" : "light");
+        document.documentElement.dataset.theme = savedTheme || "dark";
         document.documentElement.lang = ["ko", "en"].includes(localStorage.getItem("profile-language"))
           ? localStorage.getItem("profile-language")
           : "en";
@@ -72,15 +72,20 @@
           ? "true"
           : "false";
         document.documentElement.dataset.kidMode = normalizeKidMode(localStorage.getItem("profile-setting-kid-mode"));
-        document.documentElement.dataset.navLayout = normalizeBoolean(
+        const sidebarNavEnabled = normalizeBoolean(
           localStorage.getItem("profile-setting-sidebar-nav"),
           true,
+        );
+        document.documentElement.dataset.navLayout = sidebarNavEnabled ? "sidebar" : "top";
+        document.documentElement.dataset.sidebarCollapsed = sidebarNavEnabled && normalizeBoolean(
+          localStorage.getItem("profile-sidebar-collapsed"),
+          false,
         )
-          ? "sidebar"
-          : "top";
+          ? "true"
+          : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260602-legal-context-menu" />
+    <link rel="stylesheet" href="../styles.css?v=20260604-404-redesign" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -265,6 +270,10 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260602-legal-context-menu" defer></script>
+    <script src="../script.js?v=20260604-404-redesign" defer></script>
   </body>
 </html>
+
+
+
+

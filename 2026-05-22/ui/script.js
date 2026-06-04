@@ -1,3 +1,72 @@
+const navIconMarkup = {
+  support:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="M9.8 12.2 11.4 14l3.2-4" /></svg>',
+  analytics:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 20V10" /><path d="M10 20V6" /><path d="M16 20v-8" /><path d="M22 20H2" /></svg>',
+};
+
+const normalizeNavPath = (path) => {
+  const normalized = path.replace(/\/index\.html$/i, "").replace(/\/+$/, "");
+  return normalized || "/";
+};
+
+const createNavAnchor = ({ href, icon, labelKey, fallback }) => {
+  const anchor = document.createElement("a");
+  anchor.href = href;
+  anchor.innerHTML = `${icon}<span data-i18n="${labelKey}">${fallback}</span>`;
+  if (normalizeNavPath(window.location.pathname) === normalizeNavPath(href)) {
+    anchor.classList.add("is-active");
+  }
+  return anchor;
+};
+
+const enhanceSidebarNavigation = () => {
+  document.querySelectorAll(".nav-links").forEach((nav) => {
+    const homeLink = nav.querySelector('a[href="/"]');
+    const pricingLink = nav.querySelector('a[href="/Pricing"]');
+    const settingsLink = nav.querySelector('a[href="/settings"]');
+    const feedbackLink = nav.querySelector('a[href="/feedback"]');
+
+    if (feedbackLink) {
+      feedbackLink.classList.remove("nav-feedback-link");
+      feedbackLink.classList.add("nav-support-link");
+      feedbackLink.removeAttribute("data-i18n");
+      feedbackLink.innerHTML = `${navIconMarkup.support}<span data-i18n="nav.support">Support</span>`;
+      if (pricingLink && feedbackLink.previousElementSibling !== pricingLink) {
+        pricingLink.after(feedbackLink);
+      }
+    }
+
+    if (!nav.querySelector('a[href="/usage"]') && feedbackLink) {
+      feedbackLink.after(
+        createNavAnchor({
+          href: "/usage",
+          icon: navIconMarkup.analytics,
+          labelKey: "nav.analytics",
+          fallback: "Analytics",
+        }),
+      );
+    }
+
+    nav.querySelectorAll(".nav-section-label").forEach((label) => label.remove());
+
+    [
+      [homeLink, "COMMAND"],
+      [pricingLink, "MANAGE"],
+      [settingsLink, "ACCOUNT"],
+    ].forEach(([link, label]) => {
+      if (!link) return;
+      const sectionLabel = document.createElement("span");
+      sectionLabel.className = "nav-section-label";
+      sectionLabel.textContent = label;
+      sectionLabel.setAttribute("aria-hidden", "true");
+      link.before(sectionLabel);
+    });
+  });
+};
+
+enhanceSidebarNavigation();
+
 const navLinks = [...document.querySelectorAll(".nav-links a")];
 const themeChoices = [...document.querySelectorAll("[data-theme-choice]")];
 const languageChoices = [...document.querySelectorAll("[data-language-choice]")];
@@ -101,6 +170,7 @@ const contextMenuActions = [...document.querySelectorAll("[data-context-action]"
 const mobileMenuButton = document.querySelector("[data-mobile-menu-toggle]");
 const mobileMenu = document.querySelector("[data-mobile-menu]");
 const brandLogoImage = document.querySelector(".brand-logo img");
+const desktopSidebarQuery = window.matchMedia("(min-width: 1024px)");
 const feedbackOpen = document.querySelector("[data-feedback-open]");
 const feedbackWarning = document.querySelector("[data-feedback-warning]");
 const feedbackCancel = document.querySelector("[data-feedback-cancel]");
@@ -115,7 +185,7 @@ let contextTargetLink = null;
 let contextTargetImage = null;
 const highlightTargets = [
   ...document.querySelectorAll(
-    ".mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .faq-topic-nav a, .currency-switch button, .setting-select-trigger, .setting-select-menu button, .accent-trigger, .accent-menu button, .home-tabs button, .info-tabs button, .share-socials button, .scroll-actions button, .context-menu button",
+    ".mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .currency-switch button, .setting-select-trigger, .setting-select-menu button, .accent-trigger, .accent-menu button, .share-socials button, .scroll-actions button, .context-menu button",
   ),
 ];
 const sections = navLinks
@@ -133,6 +203,8 @@ const translations = {
     "nav.work": "Work",
     "nav.contact": "Contact",
     "nav.pricing": "Pricing",
+    "nav.support": "Support",
+    "nav.analytics": "Analytics",
     "nav.bio": "Bio",
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
@@ -141,6 +213,8 @@ const translations = {
     "nav.license": "License",
     "nav.feedback": "Feedback",
     "nav.menu": "메뉴",
+    "nav.collapseSidebar": "사이드바 접기",
+    "nav.expandSidebar": "사이드바 펼치기",
     "context.close": "닫기",
     "context.copy": "페이지 링크 복사",
     "context.copySelection": "선택한 텍스트 복사",
@@ -226,7 +300,8 @@ const translations = {
     "aria.scrollControls": "페이지 스크롤 컨트롤",
     "aria.scrollTop": "맨 위로 이동",
     "aria.scrollBottom": "맨 아래로 이동",
-    "aria.errorFaq": "404 자주 묻는 질문",
+    "aria.errorRecovery": "404 복구 옵션",
+    "aria.errorRoutes": "추천 이동 경로",
     "aria.bioContent": "자기소개",
     "aria.bioSummary": "자기소개 요약",
     "aria.aboutSummary": "About us 요약",
@@ -597,11 +672,10 @@ const translations = {
     "settings.contextMenuOff": "커스텀 우클릭 메뉴 꺼짐",
     "settings.contextMenuConfigure": "설정",
     "settings.themeTitle": "테마 모드",
-    "settings.themeBody": "프로필 화면의 밝기를 라이트, 다크, 밝기 끄기 모드로 선택합니다.",
+    "settings.themeBody": "프로필 화면을 다크 또는 밝기 끄기 모드로 관리합니다.",
     "settings.themeScopeLabel": "호환 상태",
     "settings.themeScopeValue": "모든 페이지가 정규화된 테마 토큰을 사용합니다.",
     "settings.lightsOff": "밝기 끄기",
-    "settings.themeLight": "라이트",
     "settings.themeDark": "다크",
     "settings.navigationTitle": "사이드바 내비게이션",
     "settings.navigationBody": "데스크톱 화면에서 상단 메뉴를 왼쪽 세로 버튼 리스트로 표시합니다.",
@@ -774,12 +848,14 @@ const translations = {
       "아니요. Usage units는 브라우저 안에서만 계산되는 로컬 사용량 표시입니다. 실제 결제는 Stripe checkout에서만 진행됩니다.",
     "error.eyebrow": "404",
     "error.code": "404_NOT_FOUND",
-    "error.title": "페이지를 찾을 수 없습니다.",
-    "error.body": "요청한 주소가 변경되었거나 아직 준비되지 않은 페이지일 수 있습니다.",
+    "error.title": "길을 잃은 주소입니다.",
+    "error.body": "이 경로는 이동되었거나 아직 공개되지 않았습니다. 아래에서 가장 가까운 목적지를 바로 열 수 있습니다.",
     "error.home": "홈으로 이동",
-    "error.faq": "FAQ 보기",
-    "error.feedback": "Feedback 보내기",
-    "error.settings": "설정 열기",
+    "error.pricing": "Pricing 보기",
+    "error.feedback": "문제 알리기",
+    "error.consoleLabel": "Route recovery",
+    "error.statusLabel": "Last check",
+    "error.statusValue": "일치하는 경로 없음",
     "offline.eyebrow": "Offline",
     "offline.code": "NETWORK_OFFLINE",
     "offline.title": "네트워크 또는 Wi-Fi 연결이 없습니다.",
@@ -809,6 +885,15 @@ const translations = {
     "errorFaq.fourQuestion": "광고 차단기가 영향을 줄 수 있나요?",
     "errorFaq.fourAnswer":
       "일부 광고 차단기는 버튼, 커뮤니티 링크, 안내 배너 같은 요소를 숨길 수 있습니다. 기능이 보이지 않으면 이 사이트를 허용 목록에 추가해 주세요.",
+    "errorRoute.homeLabel": "Start over",
+    "errorRoute.homeTitle": "Home",
+    "errorRoute.homeBody": "최근 안내와 주요 링크로 돌아갑니다.",
+    "errorRoute.faqLabel": "Need context",
+    "errorRoute.faqTitle": "FAQ",
+    "errorRoute.faqBody": "자주 묻는 질문에서 흐름을 다시 확인합니다.",
+    "errorRoute.settingsLabel": "Adjust site",
+    "errorRoute.settingsTitle": "Settings",
+    "errorRoute.settingsBody": "테마, 언어, 사용 환경을 조정합니다.",
     "share.copy": "페이지 링크 복사",
     "share.copied": "페이지 링크 복사됨",
     "share.eyebrow": "Share",
@@ -1023,6 +1108,8 @@ const translations = {
     "nav.work": "Work",
     "nav.contact": "Contact",
     "nav.pricing": "Pricing",
+    "nav.support": "Support",
+    "nav.analytics": "Analytics",
     "nav.bio": "Bio",
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
@@ -1031,6 +1118,8 @@ const translations = {
     "nav.license": "License",
     "nav.feedback": "Feedback",
     "nav.menu": "Menu",
+    "nav.collapseSidebar": "Collapse sidebar",
+    "nav.expandSidebar": "Expand sidebar",
     "context.close": "Close",
     "context.copy": "Copy page link",
     "context.copySelection": "Copy selected text",
@@ -1116,7 +1205,8 @@ const translations = {
     "aria.scrollControls": "Page scroll controls",
     "aria.scrollTop": "Scroll to top",
     "aria.scrollBottom": "Scroll to bottom",
-    "aria.errorFaq": "404 frequently asked questions",
+    "aria.errorRecovery": "404 recovery options",
+    "aria.errorRoutes": "Suggested routes",
     "aria.bioContent": "Bio",
     "aria.bioSummary": "Bio summary",
     "aria.aboutSummary": "About us summary",
@@ -1490,11 +1580,10 @@ const translations = {
     "settings.contextMenuOff": "Custom context menu off",
     "settings.contextMenuConfigure": "Configure",
     "settings.themeTitle": "Theme mode",
-    "settings.themeBody": "Choose a light, dark, or lights-off appearance for the profile.",
+    "settings.themeBody": "Manage the profile with Dark or Lights Off mode.",
     "settings.themeScopeLabel": "Compatibility",
     "settings.themeScopeValue": "all routes use normalized theme tokens",
     "settings.lightsOff": "Lights Off",
-    "settings.themeLight": "Light",
     "settings.themeDark": "Dark",
     "settings.navigationTitle": "Sidebar navigation",
     "settings.navigationBody": "Show the desktop menu as a vertical button list on the left side.",
@@ -1670,12 +1759,14 @@ const translations = {
       "No. Usage units are a local browser-side usage display. Real payment only happens inside Stripe checkout.",
     "error.eyebrow": "404",
     "error.code": "404_NOT_FOUND",
-    "error.title": "Page not found.",
-    "error.body": "The page may have moved, or it may not be ready yet.",
+    "error.title": "This route lost its way.",
+    "error.body": "This path moved or has not been published yet. Open the nearest destination below.",
     "error.home": "Go home",
-    "error.faq": "Open FAQ",
-    "error.feedback": "Send feedback",
-    "error.settings": "Open settings",
+    "error.pricing": "View Pricing",
+    "error.feedback": "Report issue",
+    "error.consoleLabel": "Route recovery",
+    "error.statusLabel": "Last check",
+    "error.statusValue": "No matching route found",
     "offline.eyebrow": "Offline",
     "offline.code": "NETWORK_OFFLINE",
     "offline.title": "No network or Wi-Fi connection.",
@@ -1705,6 +1796,15 @@ const translations = {
     "errorFaq.fourQuestion": "Can an ad blocker affect this page?",
     "errorFaq.fourAnswer":
       "Some ad blockers can hide buttons, community links, or notice banners. If something is missing, please allow this site in your blocker.",
+    "errorRoute.homeLabel": "Start over",
+    "errorRoute.homeTitle": "Home",
+    "errorRoute.homeBody": "Return to the latest notes and primary links.",
+    "errorRoute.faqLabel": "Need context",
+    "errorRoute.faqTitle": "FAQ",
+    "errorRoute.faqBody": "Check the common questions and site flow.",
+    "errorRoute.settingsLabel": "Adjust site",
+    "errorRoute.settingsTitle": "Settings",
+    "errorRoute.settingsBody": "Tune theme, language, and browsing preferences.",
     "share.copy": "Copy page link",
     "share.copied": "Page link copied",
     "share.eyebrow": "Share",
@@ -1913,7 +2013,8 @@ const translations = {
 };
 
 const normalizeTheme = (theme) => {
-  if (theme === "light" || theme === "dark" || theme === "lights-off") return theme;
+  if (theme === "dark" || theme === "lights-off") return theme;
+  if (theme === "light") return "dark";
   if (theme === "dim" || theme === "dark-mode" || theme === "true") return "dark";
   if (theme === "lightsout" || theme === "lights-out" || theme === "black" || theme === "off") {
     return "lights-off";
@@ -1934,10 +2035,13 @@ const normalizeBooleanSetting = (value, fallback = false) => {
   return fallback;
 };
 
+const getInitialSidebarCollapsed = () =>
+  normalizeBooleanSetting(localStorage.getItem("profile-sidebar-collapsed"), false);
+
 const getInitialTheme = () => {
   const savedTheme = normalizeTheme(localStorage.getItem("profile-theme"));
   if (savedTheme) return savedTheme;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  return "dark";
 };
 
 const getInitialLanguage = () => normalizeLanguage(localStorage.getItem("profile-language"));
@@ -2056,11 +2160,10 @@ const siteSearchIndex = [
 
 const setTheme = (theme) => {
   const themeLabelKeys = {
-    light: "settings.themeLight",
     dark: "settings.themeDark",
     "lights-off": "settings.lightsOff",
   };
-  const resolvedTheme = normalizeTheme(theme) || "light";
+  const resolvedTheme = normalizeTheme(theme) || "dark";
 
   document.documentElement.dataset.theme = resolvedTheme;
   localStorage.setItem("profile-theme", resolvedTheme);
@@ -2071,9 +2174,9 @@ const setTheme = (theme) => {
     button.setAttribute("aria-selected", String(isActive));
   });
 
-  if (themeLabel) themeLabel.textContent = translate(themeLabelKeys[resolvedTheme] || "settings.themeLight");
+  if (themeLabel) themeLabel.textContent = translate(themeLabelKeys[resolvedTheme] || "settings.themeDark");
   themeStatuses.forEach((status) => {
-    status.textContent = translate(themeLabelKeys[resolvedTheme] || "settings.themeLight");
+    status.textContent = translate(themeLabelKeys[resolvedTheme] || "settings.themeDark");
     status.dataset.themeState = resolvedTheme;
   });
 };
@@ -2091,6 +2194,10 @@ const setLanguage = (language) => {
 
   document.querySelectorAll("[data-i18n]").forEach((element) => {
     element.textContent = translate(element.dataset.i18n);
+  });
+
+  document.querySelectorAll("[data-sidebar-label-key]").forEach((element) => {
+    element.textContent = translate(element.dataset.sidebarLabelKey);
   });
 
   document.querySelectorAll("[data-i18n-aria-label]").forEach((element) => {
@@ -2203,6 +2310,7 @@ const updateNavLayoutControls = (layout) => {
   const resolvedLayout = layout === "top" ? "top" : "sidebar";
 
   document.documentElement.dataset.navLayout = resolvedLayout;
+  if (resolvedLayout === "top") setSidebarCollapsed(false, false);
 
   navLayoutChoices.forEach((button) => {
     const isActive = button.dataset.navLayoutChoice === resolvedLayout;
@@ -2239,6 +2347,7 @@ const setupNavLayoutDialog = () => {
   const savedValue = localStorage.getItem("profile-setting-sidebar-nav");
   const initialLayout = normalizeBooleanSetting(savedValue, true) ? "sidebar" : "top";
   updateNavLayoutControls(initialLayout);
+  setSidebarCollapsed(initialLayout === "sidebar" && getInitialSidebarCollapsed(), false);
   localStorage.setItem("profile-setting-sidebar-nav", String(initialLayout === "sidebar"));
 
   navLayoutOpen?.addEventListener("click", showNavLayoutDialog);
@@ -2799,6 +2908,7 @@ const clearSiteCache = () => {
     "profile-setting-contact-visible",
     "profile-setting-payment-block",
     "profile-setting-sidebar-nav",
+    "profile-sidebar-collapsed",
     "profile-setting-fast-render",
     "profile-setting-kid-mode",
     "profile-setting-custom-context-menu",
@@ -2807,7 +2917,7 @@ const clearSiteCache = () => {
     "profile-browser-usage-window-start-ms",
   ].forEach((key) => localStorage.removeItem(key));
 
-  document.documentElement.dataset.theme = "light";
+  document.documentElement.dataset.theme = "dark";
   document.documentElement.dataset.accent = "neutral";
   document.documentElement.dataset.fastRender = "false";
   document.documentElement.dataset.kidMode = "off";
@@ -3049,16 +3159,39 @@ const openSubscriptionCheckout = () => {
   if (url) window.open(url, "_blank", "noopener,noreferrer");
 };
 
+const positionSelectMenu = (select, menu) => {
+  if (!select || !menu || menu.hidden) return;
+
+  select.classList.remove("is-open-up");
+  const selectRect = select.getBoundingClientRect();
+  const menuHeight = menu.offsetHeight;
+  const spaceBelow = window.innerHeight - selectRect.bottom;
+  const spaceAbove = selectRect.top;
+  select.classList.toggle("is-open-up", spaceBelow < menuHeight + 16 && spaceAbove > spaceBelow);
+};
+
+const positionOpenSelectMenus = () => {
+  positionSelectMenu(themeSelect, themeMenu);
+  positionSelectMenu(languageSelect, languageMenu);
+  positionSelectMenu(densitySelect, densityMenu);
+  positionSelectMenu(kidModeSelect, kidModeMenu);
+  positionSelectMenu(accentSelect, accentMenu);
+};
+
 const setAccentMenuOpen = (isOpen) => {
   accentSelect?.classList.toggle("is-open", isOpen);
   accentTrigger?.setAttribute("aria-expanded", String(isOpen));
   if (accentMenu) accentMenu.hidden = !isOpen;
+  if (isOpen) positionSelectMenu(accentSelect, accentMenu);
+  else accentSelect?.classList.remove("is-open-up");
 };
 
 const setSettingSelectOpen = (select, trigger, menu, isOpen) => {
   select?.classList.toggle("is-open", isOpen);
   trigger?.setAttribute("aria-expanded", String(isOpen));
   if (menu) menu.hidden = !isOpen;
+  if (isOpen) positionSelectMenu(select, menu);
+  else select?.classList.remove("is-open-up");
 };
 
 const closeClearCacheWarning = () => {
@@ -3658,6 +3791,24 @@ const setMobileMenuOpen = (isOpen) => {
   mobileMenuButton?.setAttribute("aria-expanded", String(isOpen));
 };
 
+const setSidebarCollapsed = (isCollapsed, persist = true) => {
+  const resolved = Boolean(isCollapsed);
+
+  document.documentElement.dataset.sidebarCollapsed = String(resolved);
+  if (persist) localStorage.setItem("profile-sidebar-collapsed", String(resolved));
+
+  mobileMenuButton?.setAttribute("aria-expanded", String(!resolved));
+  mobileMenuButton?.setAttribute(
+    "aria-label",
+    resolved ? translate("nav.expandSidebar") : translate("nav.collapseSidebar"),
+  );
+};
+
+const toggleSidebarCollapsed = () => {
+  setMobileMenuOpen(false);
+  setSidebarCollapsed(document.documentElement.dataset.sidebarCollapsed !== "true");
+};
+
 const setupBrandLogo = () => {
   if (!brandLogoImage) return;
 
@@ -3944,7 +4095,18 @@ accentTrigger?.addEventListener("click", () => {
   setAccentMenuOpen(!accentSelect?.classList.contains("is-open"));
 });
 
+window.addEventListener("resize", positionOpenSelectMenus);
+window.addEventListener("scroll", positionOpenSelectMenus, { passive: true });
+
 mobileMenuButton?.addEventListener("click", () => {
+  if (
+    desktopSidebarQuery.matches &&
+    document.documentElement.dataset.navLayout === "sidebar"
+  ) {
+    toggleSidebarCollapsed();
+    return;
+  }
+
   const topbar = mobileMenuButton.closest(".topbar");
   setMobileMenuOpen(!topbar?.classList.contains("is-open"));
 });

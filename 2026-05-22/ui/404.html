@@ -9,7 +9,7 @@
       content="The requested page could not be found. Use the profile navigation to return home or open settings."
     />
     <meta name="robots" content="noindex" />
-    <meta name="theme-color" content="#efefec" />
+    <meta name="theme-color" content="#151514" />
     <link rel="canonical" href="https://firstprizegames211.app/404" />
     <meta property="og:title" content="404 · Emergency Responder Profile" />
     <meta
@@ -35,11 +35,12 @@
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="application-name" content="Emergency Responder Profile" />
-    <meta name="msapplication-TileColor" content="#efefec" />
+    <meta name="msapplication-TileColor" content="#151514" />
     <script>
       (() => {
         const normalizeTheme = (theme) => {
-          if (["light", "dark", "lights-off"].includes(theme)) return theme;
+          if (["dark", "lights-off"].includes(theme)) return theme;
+          if (theme === "light") return "dark";
           if (["dim", "dark-mode", "true"].includes(theme)) return "dark";
           if (["lightsout", "lights-out", "black", "off"].includes(theme)) return "lights-off";
           return "";
@@ -56,8 +57,7 @@
         const normalizeAccent = (accent) =>
           ["blue", "green", "rose", "orange", "purple"].includes(accent) ? accent : "neutral";
         const savedTheme = normalizeTheme(localStorage.getItem("profile-theme"));
-        const prefersDark = matchMedia("(prefers-color-scheme: dark)").matches;
-        document.documentElement.dataset.theme = savedTheme || (prefersDark ? "dark" : "light");
+        document.documentElement.dataset.theme = savedTheme || "dark";
         document.documentElement.lang = ["ko", "en"].includes(localStorage.getItem("profile-language"))
           ? localStorage.getItem("profile-language")
           : "en";
@@ -72,15 +72,20 @@
           ? "true"
           : "false";
         document.documentElement.dataset.kidMode = normalizeKidMode(localStorage.getItem("profile-setting-kid-mode"));
-        document.documentElement.dataset.navLayout = normalizeBoolean(
+        const sidebarNavEnabled = normalizeBoolean(
           localStorage.getItem("profile-setting-sidebar-nav"),
           true,
+        );
+        document.documentElement.dataset.navLayout = sidebarNavEnabled ? "sidebar" : "top";
+        document.documentElement.dataset.sidebarCollapsed = sidebarNavEnabled && normalizeBoolean(
+          localStorage.getItem("profile-sidebar-collapsed"),
+          false,
         )
-          ? "sidebar"
-          : "top";
+          ? "true"
+          : "false";
       })();
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260602-legal-context-menu" />
+    <link rel="stylesheet" href="styles.css?v=20260604-404-redesign" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -119,69 +124,52 @@
         </div>
       </nav>
 
-      <section class="error-page" aria-labelledby="error-title">
+      <section class="error-page error-page-redesign" aria-labelledby="error-title">
         <div class="error-copy">
-          <p class="eyebrow" data-i18n="error.eyebrow">404</p>
           <p class="error-code" data-i18n="error.code">404_NOT_FOUND</p>
-          <h1 id="error-title" data-i18n="error.title">페이지를 찾을 수 없습니다.</h1>
+          <h1 id="error-title" data-i18n="error.title">길을 잃은 주소입니다.</h1>
           <p data-i18n="error.body">
-            요청한 주소가 변경되었거나 아직 준비되지 않은 페이지일 수 있습니다.
+            이 경로는 이동되었거나 아직 공개되지 않았습니다. 아래에서 가장 가까운 목적지를 바로 열 수 있습니다.
           </p>
-          <div class="actions">
+          <div class="actions error-actions">
             <button class="button primary" type="button" data-go-url="/" data-i18n="error.home">홈으로 이동</button>
-            <button class="button ghost" type="button" data-go-url="/FAQ" data-i18n="error.faq">FAQ 보기</button>
-            <button class="button ghost" type="button" data-go-url="/feedback" data-i18n="error.feedback">Feedback 보내기</button>
-            <button class="button ghost" type="button" data-go-url="/settings" data-i18n="error.settings">설정 열기</button>
+            <button class="button ghost" type="button" data-go-url="/Pricing" data-i18n="error.pricing">Pricing 보기</button>
+            <button class="button ghost" type="button" data-go-url="/feedback" data-i18n="error.feedback">문제 알리기</button>
           </div>
         </div>
-        <div class="error-character" aria-hidden="true">
-          <div class="character-shadow"></div>
-          <div class="character-card">
-            <span class="character-signal"></span>
-            <div class="character-head">
-              <span class="character-eye"></span>
-              <span class="character-eye"></span>
-            </div>
-            <div class="character-body">
-              <span class="character-badge">404</span>
-              <span class="character-line"></span>
-              <span class="character-line short"></span>
-            </div>
+        <aside class="error-console" aria-label="복구 옵션" data-i18n-aria-label="aria.errorRecovery">
+          <div class="error-console-top">
+            <span data-i18n="error.consoleLabel">Route recovery</span>
+            <strong>404</strong>
           </div>
-        </div>
+          <div class="error-console-map" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="error-console-status">
+            <span data-i18n="error.statusLabel">Last check</span>
+            <strong data-i18n="error.statusValue">No matching route found</strong>
+          </div>
+        </aside>
       </section>
 
-      <section class="faq-section error-faq-section" aria-label="404 자주 묻는 질문" data-i18n-aria-label="aria.errorFaq">
-        <div class="section-heading">
-          <p class="eyebrow" data-i18n="errorFaq.eyebrow">FAQ</p>
-          <h2 data-i18n="errorFaq.title">자주 묻는 질문</h2>
-        </div>
-        <div class="faq-list">
-          <details open>
-            <summary data-i18n="errorFaq.oneQuestion">왜 404 페이지가 보이나요?</summary>
-            <p data-i18n="errorFaq.oneAnswer">
-              주소가 잘못 입력되었거나, 페이지 이름이 바뀌었거나, 아직 공개되지 않은 경로일 수 있습니다.
-            </p>
-          </details>
-          <details>
-            <summary data-i18n="errorFaq.twoQuestion">어디로 이동하면 되나요?</summary>
-            <p data-i18n="errorFaq.twoAnswer">
-              홈, Pricing, Bio, FAQ, Settings 메뉴를 통해 준비된 페이지로 이동할 수 있습니다.
-            </p>
-          </details>
-          <details>
-            <summary data-i18n="errorFaq.threeQuestion">문제가 계속되면 어떻게 하나요?</summary>
-            <p data-i18n="errorFaq.threeAnswer">
-              상단의 Feedback 탭이나 Google Forms 링크를 통해 잘못된 주소를 알려주세요.
-            </p>
-          </details>
-          <details>
-            <summary data-i18n="errorFaq.fourQuestion">광고 차단기가 영향을 줄 수 있나요?</summary>
-            <p data-i18n="errorFaq.fourAnswer">
-              일부 광고 차단기는 버튼, 커뮤니티 링크, 안내 배너 같은 요소를 숨길 수 있습니다. 기능이 보이지 않으면 이 사이트를 허용 목록에 추가해 주세요.
-            </p>
-          </details>
-        </div>
+      <section class="error-route-section" aria-label="추천 이동 경로" data-i18n-aria-label="aria.errorRoutes">
+        <a href="/" class="error-route-card">
+          <span data-i18n="errorRoute.homeLabel">Start over</span>
+          <strong data-i18n="errorRoute.homeTitle">Home</strong>
+          <small data-i18n="errorRoute.homeBody">최근 안내와 주요 링크로 돌아갑니다.</small>
+        </a>
+        <a href="/FAQ" class="error-route-card">
+          <span data-i18n="errorRoute.faqLabel">Need context</span>
+          <strong data-i18n="errorRoute.faqTitle">FAQ</strong>
+          <small data-i18n="errorRoute.faqBody">자주 묻는 질문에서 흐름을 다시 확인합니다.</small>
+        </a>
+        <a href="/settings" class="error-route-card">
+          <span data-i18n="errorRoute.settingsLabel">Adjust site</span>
+          <strong data-i18n="errorRoute.settingsTitle">Settings</strong>
+          <small data-i18n="errorRoute.settingsBody">테마, 언어, 사용 환경을 조정합니다.</small>
+        </a>
       </section>
     </main>
     <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
@@ -287,6 +275,6 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="script.js?v=20260602-legal-context-menu" defer></script>
+    <script src="script.js?v=20260604-404-redesign" defer></script>
   </body>
 </html>

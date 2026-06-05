@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260605-sidebar-logo-command-align";
+const CACHE_NAME = "profile-offline-20260605-usage-offline-reset";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

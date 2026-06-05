@@ -541,12 +541,13 @@ const translations = {
     "creator.learnLink": "Unity Learn",
     "creator.twoDLink": "Unity 2D Tools",
     "feedback.eyebrow": "Feedback",
-    "feedback.title": "의견을 남겨주세요.",
-    "feedback.lead": "버그, 개선 아이디어, 보기 불편한 부분을 알려주시면 다음 업데이트에 반영할 수 있습니다.",
+    "feedback.title": "사이트를 더 정확하게 만드는 신호.",
+    "feedback.lead": "깨진 화면, 어색한 문장, 결제나 설정에서 막히는 흐름을 남겨주세요. 짧은 제보도 다음 수정의 기준점이 됩니다.",
     "feedback.cta": "Google Forms로 피드백 남기기",
-    "feedback.panelEyebrow": "Guide",
+    "feedback.panelEyebrow": "Signal desk",
+    "feedback.panelMetric": "3 queues",
     "feedback.panelTitle": "짧아도 괜찮습니다.",
-    "feedback.panelBody": "어떤 페이지에서 문제가 있었는지, 무엇을 기대했는지, 실제로 무엇이 보였는지만 적어도 충분합니다.",
+    "feedback.panelBody": "페이지, 기대한 결과, 실제로 보인 결과만 적어도 충분합니다.",
     "feedback.statusOne": "버그 제보",
     "feedback.statusTwo": "디자인 문제",
     "feedback.statusThree": "기능 제안",
@@ -1459,12 +1460,13 @@ const translations = {
     "creator.learnLink": "Unity Learn",
     "creator.twoDLink": "Unity 2D Tools",
     "feedback.eyebrow": "Feedback",
-    "feedback.title": "Share your feedback.",
-    "feedback.lead": "Send bugs, improvement ideas, or anything that feels uncomfortable to use so it can be improved in the next update.",
+    "feedback.title": "The signal that makes the site more accurate.",
+    "feedback.lead": "Report broken screens, awkward copy, or flows that block payments and settings. Even a short note can guide the next fix.",
     "feedback.cta": "Leave feedback on Google Forms",
-    "feedback.panelEyebrow": "Guide",
+    "feedback.panelEyebrow": "Signal desk",
+    "feedback.panelMetric": "3 queues",
     "feedback.panelTitle": "Short notes are fine.",
-    "feedback.panelBody": "It is enough to say which page had a problem, what you expected, and what actually appeared.",
+    "feedback.panelBody": "The page, expected result, and actual result are enough.",
     "feedback.statusOne": "Bug report",
     "feedback.statusTwo": "Design issue",
     "feedback.statusThree": "Feature idea",
@@ -3057,17 +3059,23 @@ const formatDuration = (milliseconds) => {
   return `${minutes}m ${String(seconds).padStart(2, "0")}s`;
 };
 
-const getCurrentBrowserUsageMs = () => browserUsageBaseMs + (Date.now() - Math.max(browserUsageStartedAt, browserUsageWindowStart));
-
 const refreshBrowserUsageWindow = () => {
   const now = Date.now();
   if (now - browserUsageWindowStart < browserUsageLimitMs) return;
 
   browserUsageWindowStart = now;
   browserUsageBaseMs = 0;
+  browserUsageRedirected = false;
   localStorage.setItem("profile-browser-usage-window-start-ms", String(browserUsageWindowStart));
   localStorage.setItem("profile-browser-usage-used-ms", "0");
   localStorage.removeItem("profile-browser-usage-total-ms");
+};
+
+refreshBrowserUsageWindow();
+
+const getCurrentBrowserUsageMs = () => {
+  refreshBrowserUsageWindow();
+  return browserUsageBaseMs + (Date.now() - Math.max(browserUsageStartedAt, browserUsageWindowStart));
 };
 
 const persistBrowserUsage = () => {
@@ -3078,9 +3086,9 @@ const persistBrowserUsage = () => {
 };
 
 const updateBrowserUsage = () => {
+  refreshBrowserUsageWindow();
   if (!browserUsageSession && !browserUsageTotal && !browserUsageFee && !browserUsageRate) return;
 
-  refreshBrowserUsageWindow();
   const sessionMs = Date.now() - browserUsageStartedAt;
   const totalMs = Math.min(getCurrentBrowserUsageMs(), browserUsageLimitMs);
   const usedUnits = Math.min(Math.floor((totalMs / 60000) * browserUsageRateUnitsPerMinute), browserUsageFreeLimitUnits);

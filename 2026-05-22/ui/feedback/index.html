@@ -84,7 +84,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260605-sidebar-logo-command-align" />
+    <link rel="stylesheet" href="../styles.css?v=20260605-usage-offline-reset" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -97,7 +97,7 @@
       <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
     </div>
     <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
-    <main class="shell" id="main-content" tabindex="-1">
+    <main class="shell feedback-page" id="main-content" tabindex="-1">
       <nav class="topbar" aria-label="피드백 메뉴" data-i18n-aria-label="aria.feedbackMenu">
         <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
           <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
@@ -126,25 +126,37 @@
       <section class="feedback-hero">
         <div class="feedback-intro">
           <p class="eyebrow" data-i18n="feedback.eyebrow">Feedback</p>
-          <h1 data-i18n="feedback.title">의견을 남겨주세요.</h1>
+          <h1 data-i18n="feedback.title">사이트를 더 정확하게 만드는 신호.</h1>
           <p data-i18n="feedback.lead">
-            버그, 개선 아이디어, 보기 불편한 부분을 알려주시면 다음 업데이트에 반영할 수 있습니다.
+            깨진 화면, 어색한 문장, 결제나 설정에서 막히는 흐름을 남겨주세요. 짧은 제보도 다음 수정의 기준점이 됩니다.
           </p>
           <button class="feedback-cta" type="button" data-feedback-open>
             <span data-i18n="feedback.cta">Google Forms로 피드백 남기기</span>
-            <span aria-hidden="true">↗</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M7 17 17 7" />
+              <path d="M8 7h9v9" />
+            </svg>
           </button>
         </div>
         <aside class="feedback-panel" aria-label="피드백 안내" data-i18n-aria-label="aria.feedbackGuide">
-          <p class="eyebrow" data-i18n="feedback.panelEyebrow">Guide</p>
+          <div class="feedback-panel-top">
+            <span data-i18n="feedback.panelEyebrow">Signal desk</span>
+            <strong data-i18n="feedback.panelMetric">3 queues</strong>
+          </div>
+          <figure class="feedback-visual">
+            <img src="../assets/feedback-signal-desk.png" alt="" width="1536" height="960" loading="eager" decoding="async" />
+          </figure>
           <h2 data-i18n="feedback.panelTitle">짧아도 괜찮습니다.</h2>
-          <p data-i18n="feedback.panelBody">
-            어떤 페이지에서 문제가 있었는지, 무엇을 기대했는지, 실제로 무엇이 보였는지만 적어도 충분합니다.
-          </p>
+          <p data-i18n="feedback.panelBody">페이지, 기대한 결과, 실제로 보인 결과만 적어도 충분합니다.</p>
           <div class="feedback-status-list">
             <span data-i18n="feedback.statusOne">Bug report</span>
             <span data-i18n="feedback.statusTwo">Design issue</span>
             <span data-i18n="feedback.statusThree">Feature idea</span>
+          </div>
+          <div class="feedback-signal-meter" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
           </div>
         </aside>
       </section>
@@ -168,11 +180,11 @@
       </section>
 
       <section class="feedback-note" aria-label="개인정보 안내" data-i18n-aria-label="aria.feedbackPrivacy">
-        <p class="eyebrow" data-i18n="feedback.privacyEyebrow">Privacy</p>
-        <h2 data-i18n="feedback.privacyTitle">개인정보는 필요한 만큼만 입력하세요.</h2>
-        <p data-i18n="feedback.privacyBody">
-          피드백 양식은 외부 Google Forms에서 열립니다. 답장을 원하지 않는다면 이름, 이메일, 연락처를 비워두는 편이 좋습니다.
-        </p>
+        <div>
+          <p class="eyebrow" data-i18n="feedback.privacyEyebrow">Privacy</p>
+          <h2 data-i18n="feedback.privacyTitle">개인정보는 필요한 만큼만 입력하세요.</h2>
+        </div>
+        <p data-i18n="feedback.privacyBody">피드백 양식은 외부 Google Forms에서 열립니다. 답장을 원하지 않는다면 이름, 이메일, 연락처를 비워두는 편이 좋습니다.</p>
       </section>
 
       <div class="cache-dialog feedback-dialog" data-feedback-warning hidden>
@@ -296,7 +308,7 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260605-sidebar-logo-command-align" defer></script>
+    <script src="../script.js?v=20260605-usage-offline-reset" defer></script>
   </body>
 </html>
 

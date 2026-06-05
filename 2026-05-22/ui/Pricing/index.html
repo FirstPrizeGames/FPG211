@@ -84,7 +84,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260604-sidebar-analytics-order" />
+    <link rel="stylesheet" href="../styles.css?v=20260605-sidebar-logo-command-align" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -271,76 +271,155 @@
           <p class="eyebrow" data-i18n="pricing.compareEyebrow">Compare</p>
           <h2 data-i18n="pricing.compareTitle">기능 비교</h2>
         </div>
-        <div class="comparison-table" role="table" aria-label="요금제 기능 비교" data-i18n-aria-label="aria.planComparisonTable">
-          <div class="comparison-row comparison-head" role="row">
-            <span role="columnheader" data-i18n="pricing.compareFeature">기능</span>
-            <span role="columnheader" data-i18n="plans.free">Free</span>
-            <span role="columnheader" data-i18n="plans.pro">Pro</span>
-            <span role="columnheader" data-i18n="plans.team">Team</span>
-            <span role="columnheader" data-i18n="plans.ultra">Ultra</span>
-          </div>
-          <div class="comparison-row" role="row">
-            <span role="cell" data-i18n="pricing.compareProfile">개인 프로필 구성</span>
-            <strong role="cell" data-i18n="pricing.compareBasic">기본</strong>
-            <strong role="cell" data-i18n="pricing.compareAdvanced">확장</strong>
-            <strong role="cell" data-i18n="pricing.compareOrg">조직형</strong>
-            <strong role="cell" data-i18n="pricing.compareTopTier">최상위</strong>
-          </div>
-          <div class="comparison-row" role="row">
-            <span role="cell" data-i18n="pricing.compareUsage">브라우저 사용량 한도</span>
-            <strong role="cell" data-i18n="pricing.compareFreeUsage">850 units / 5시간</strong>
-            <strong role="cell" data-i18n="pricing.compareCheckoutUsage">한도 후 checkout</strong>
-            <strong role="cell" data-i18n="pricing.compareCheckoutUsage">한도 후 checkout</strong>
-            <strong role="cell" data-i18n="pricing.compareCheckoutUsage">한도 후 checkout</strong>
-          </div>
-          <div class="comparison-row" role="row">
-            <span role="cell" data-i18n="pricing.compareExperience">현장 경험 정리</span>
-            <strong role="cell">3</strong>
-            <strong role="cell">6+</strong>
-            <strong role="cell" data-i18n="pricing.compareUnlimited">무제한</strong>
-            <strong role="cell" data-i18n="pricing.compareUnlimited">무제한</strong>
-          </div>
-          <div class="comparison-row" role="row">
-            <span role="cell" data-i18n="pricing.compareCredentials">교육/자격 섹션</span>
-            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
-            <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
-            <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
-            <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
-          </div>
-          <div class="comparison-row" role="row">
-            <span role="cell" data-i18n="pricing.compareAccent">프리미엄 강조 컬러</span>
-            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
-            <strong role="cell">Pro Gold</strong>
-            <strong role="cell">Team Cyan</strong>
-            <strong role="cell" data-i18n="pricing.compareUltraPurple">Ultra Purple</strong>
-          </div>
-          <div class="comparison-row" role="row">
-            <span role="cell" data-i18n="pricing.compareTeam">팀/기관 소개</span>
-            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
-            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
-            <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
-            <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
-          </div>
-          <div class="comparison-row" role="row">
-            <span role="cell" data-i18n="pricing.comparePriority">요청 우선 처리</span>
-            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
-            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
-            <strong role="cell" data-i18n="pricing.comparePriorityValue">우선</strong>
-            <strong role="cell" data-i18n="pricing.compareTopPriority">최우선</strong>
-          </div>
-          <div class="comparison-row" role="row">
-            <span role="cell" data-i18n="pricing.comparePlanning">공동 기획 참여</span>
-            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
-            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
-            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
-            <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
-          </div>
-          <div class="comparison-row" role="row">
-            <span role="cell" data-i18n="pricing.compareUnreleased">미공개 컷</span>
-            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
-            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
-            <strong role="cell" data-i18n="pricing.compareNo">없음</strong>
-            <strong role="cell" data-i18n="pricing.compareYes">포함</strong>
+        <div class="comparison-scroll" tabindex="0">
+          <div class="comparison-table comparison-table-redesign" role="table" aria-label="요금제 기능 비교" data-i18n-aria-label="aria.planComparisonTable">
+            <div class="comparison-row comparison-plans" role="row">
+              <div class="comparison-side comparison-plan-filter" role="columnheader">
+                <label class="comparison-select-wrap">
+                  <span class="sr-only" data-i18n="pricing.comparePlanPicker">Free usage window</span>
+                  <select class="comparison-plan-select" aria-label="Free usage window" data-i18n-aria-label="pricing.comparePlanPicker">
+                    <option data-i18n="pricing.comparePlanPicker">Free usage window</option>
+                    <option data-i18n="pricing.comparePaidBadge">Stripe checkout</option>
+                    <option data-i18n="pricing.compareUltraBar">Top response</option>
+                  </select>
+                </label>
+                <span data-i18n="pricing.comparePlanHint">850 units reset every 5 hours</span>
+              </div>
+              <article class="comparison-plan-card" role="columnheader">
+                <span class="comparison-save" data-i18n="pricing.compareFreeBadge">Starter</span>
+                <h3 data-i18n="plans.free">Free</h3>
+                <p><strong data-price-plan="free">$0</strong><span data-i18n="pricing.compareForever">/ forever</span></p>
+                <small data-i18n="pricing.compareFreeNote">Local usage tracking and core profile tools.</small>
+                <button class="button ghost" type="button" data-go-url="/settings" data-i18n="pricing.chooseFree">Free로 시작</button>
+              </article>
+              <article class="comparison-plan-card" role="columnheader">
+                <span class="comparison-save" data-i18n="pricing.comparePaidBadge">Stripe checkout</span>
+                <h3 data-i18n="plans.pro">Pro</h3>
+                <p><strong data-price-plan="pro">Confirm in Stripe</strong></p>
+                <small data-i18n="pricing.compareProNote">Personal checkout path after the free limit.</small>
+                <button
+                  class="button ghost"
+                  type="button"
+                  data-subscribe-url="https://buy.stripe.com/test_aFa5kD8XlbUc0nUg07bwk00"
+                  data-i18n="pricing.choosePro"
+                >
+                  Pro 선택
+                </button>
+              </article>
+              <article class="comparison-plan-card" role="columnheader">
+                <span class="comparison-save" data-i18n="pricing.comparePaidBadge">Stripe checkout</span>
+                <h3 data-i18n="plans.team">Team</h3>
+                <p><strong data-price-plan="team">Confirm in Stripe</strong></p>
+                <small data-i18n="pricing.compareTeamNote">Shared profile and priority feedback flow.</small>
+                <button
+                  class="button ghost"
+                  type="button"
+                  data-subscribe-url="https://buy.stripe.com/test_aFaaEXddB1fy0nUdRZbwk01"
+                  data-i18n="pricing.chooseTeam"
+                >
+                  Team 선택
+                </button>
+              </article>
+              <article class="comparison-plan-card comparison-plan-card-featured" role="columnheader">
+                <span class="comparison-feature-bar" data-i18n="pricing.compareUltraBar">Top response</span>
+                <span class="comparison-save" data-i18n="pricing.comparePaidBadge">Stripe checkout</span>
+                <h3 data-i18n="plans.ultra">Ultra</h3>
+                <p><strong data-price-plan="ultra">Confirm in Stripe</strong></p>
+                <small data-i18n="pricing.compareUltraNote">Highest priority and joint planning access.</small>
+                <button
+                  class="button primary ultra-button"
+                  type="button"
+                  data-subscribe-url="https://buy.stripe.com/test_bJeeVd5L9aQ87Qm7tBbwk02"
+                  data-i18n="pricing.chooseUltra"
+                >
+                  Ultra 선택
+                </button>
+              </article>
+            </div>
+            <div class="comparison-row comparison-guarantee" role="row">
+              <span class="comparison-side" role="rowheader" data-i18n="pricing.compareGuarantee">30-day money-back guarantee</span>
+              <strong class="compare-check" role="cell" aria-label="Included"></strong>
+              <strong class="compare-check" role="cell" aria-label="Included"></strong>
+              <strong class="compare-check" role="cell" aria-label="Included"></strong>
+              <strong class="compare-check" role="cell" aria-label="Included"></strong>
+            </div>
+            <div class="comparison-row comparison-category" role="row">
+              <span class="comparison-side" role="rowheader" data-i18n="pricing.compareCoreFeatures">Profile features</span>
+              <strong role="cell"></strong>
+              <strong role="cell"></strong>
+              <strong role="cell"></strong>
+              <strong role="cell"></strong>
+            </div>
+            <div class="comparison-row" role="row">
+              <span class="comparison-side" role="rowheader" data-i18n="pricing.compareProfile">개인 프로필 구성</span>
+              <strong role="cell" data-i18n="pricing.compareBasic">기본</strong>
+              <strong role="cell" data-i18n="pricing.compareAdvanced">확장</strong>
+              <strong role="cell" data-i18n="pricing.compareOrg">조직형</strong>
+              <strong role="cell" data-i18n="pricing.compareTopTier">최상위</strong>
+            </div>
+            <div class="comparison-row" role="row">
+              <span class="comparison-side" role="rowheader" data-i18n="pricing.compareUsage">브라우저 사용량 한도</span>
+              <strong role="cell" data-i18n="pricing.compareFreeUsage">850 units / 5시간</strong>
+              <strong role="cell" data-i18n="pricing.compareCheckoutUsage">한도 후 checkout</strong>
+              <strong role="cell" data-i18n="pricing.compareCheckoutUsage">한도 후 checkout</strong>
+              <strong role="cell" data-i18n="pricing.compareCheckoutUsage">한도 후 checkout</strong>
+            </div>
+            <div class="comparison-row" role="row">
+              <span class="comparison-side" role="rowheader" data-i18n="pricing.compareExperience">현장 경험 정리</span>
+              <strong role="cell">3</strong>
+              <strong role="cell">6+</strong>
+              <strong role="cell" data-i18n="pricing.compareUnlimited">무제한</strong>
+              <strong role="cell" data-i18n="pricing.compareUnlimited">무제한</strong>
+            </div>
+            <div class="comparison-row" role="row">
+              <span class="comparison-side" role="rowheader" data-i18n="pricing.compareCredentials">교육/자격 섹션</span>
+              <strong class="compare-muted" role="cell" data-i18n="pricing.compareNo">없음</strong>
+              <strong class="compare-check" role="cell" aria-label="Included"></strong>
+              <strong class="compare-check" role="cell" aria-label="Included"></strong>
+              <strong class="compare-check" role="cell" aria-label="Included"></strong>
+            </div>
+            <div class="comparison-row" role="row">
+              <span class="comparison-side" role="rowheader" data-i18n="pricing.compareAccent">프리미엄 강조 컬러</span>
+              <strong class="compare-muted" role="cell" data-i18n="pricing.compareNo">없음</strong>
+              <strong role="cell">Pro Gold</strong>
+              <strong role="cell">Team Cyan</strong>
+              <strong role="cell" data-i18n="pricing.compareUltraPurple">Ultra Purple</strong>
+            </div>
+            <div class="comparison-row comparison-category" role="row">
+              <span class="comparison-side" role="rowheader" data-i18n="pricing.compareTeamFeatures">Team and priority</span>
+              <strong role="cell"></strong>
+              <strong role="cell"></strong>
+              <strong role="cell"></strong>
+              <strong role="cell"></strong>
+            </div>
+            <div class="comparison-row" role="row">
+              <span class="comparison-side" role="rowheader" data-i18n="pricing.compareTeam">팀/기관 소개</span>
+              <strong class="compare-muted" role="cell" data-i18n="pricing.compareNo">없음</strong>
+              <strong class="compare-muted" role="cell" data-i18n="pricing.compareNo">없음</strong>
+              <strong class="compare-check" role="cell" aria-label="Included"></strong>
+              <strong class="compare-check" role="cell" aria-label="Included"></strong>
+            </div>
+            <div class="comparison-row" role="row">
+              <span class="comparison-side" role="rowheader" data-i18n="pricing.comparePriority">요청 우선 처리</span>
+              <strong class="compare-muted" role="cell" data-i18n="pricing.compareNo">없음</strong>
+              <strong class="compare-muted" role="cell" data-i18n="pricing.compareNo">없음</strong>
+              <strong role="cell" data-i18n="pricing.comparePriorityValue">우선</strong>
+              <strong role="cell" data-i18n="pricing.compareTopPriority">최우선</strong>
+            </div>
+            <div class="comparison-row" role="row">
+              <span class="comparison-side" role="rowheader" data-i18n="pricing.comparePlanning">공동 기획 참여</span>
+              <strong class="compare-muted" role="cell" data-i18n="pricing.compareNo">없음</strong>
+              <strong class="compare-muted" role="cell" data-i18n="pricing.compareNo">없음</strong>
+              <strong class="compare-muted" role="cell" data-i18n="pricing.compareNo">없음</strong>
+              <strong class="compare-check" role="cell" aria-label="Included"></strong>
+            </div>
+            <div class="comparison-row" role="row">
+              <span class="comparison-side" role="rowheader" data-i18n="pricing.compareUnreleased">미공개 컷</span>
+              <strong class="compare-muted" role="cell" data-i18n="pricing.compareNo">없음</strong>
+              <strong class="compare-muted" role="cell" data-i18n="pricing.compareNo">없음</strong>
+              <strong class="compare-muted" role="cell" data-i18n="pricing.compareNo">없음</strong>
+              <strong class="compare-check" role="cell" aria-label="Included"></strong>
+            </div>
           </div>
         </div>
       </section>
@@ -481,7 +560,7 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260604-sidebar-analytics-order" defer></script>
+    <script src="../script.js?v=20260605-sidebar-logo-command-align" defer></script>
   </body>
 </html>
 

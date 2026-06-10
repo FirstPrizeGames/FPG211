@@ -5,6 +5,8 @@ const navIconMarkup = {
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="M9.8 12.2 11.4 14l3.2-4" /></svg>',
   analytics:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 20V10" /><path d="M10 20V6" /><path d="M16 20v-8" /><path d="M22 20H2" /></svg>',
+  updates:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5h10" /><path d="M4 12h16" /><path d="M4 19h10" /><path d="m17 4 3 3-3 3" /></svg>',
   terms:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z" /><path d="M15 3v4h4" /><path d="M9 11h6" /><path d="M9 15h6" /><path d="M9 19h4" /></svg>',
   accessibility:
@@ -52,6 +54,7 @@ const enhanceSidebarNavigation = () => {
     const licenseLink = nav.querySelector('a[href="/license"]');
     const feedbackLink = nav.querySelector('a[href="/feedback"]');
     let searchButton = nav.querySelector("[data-site-search-open]");
+    let updatesLink = nav.querySelector('a[href="/updates"]');
     let accessibilityLink = nav.querySelector('a[href="/accessibility"]');
     let analyticsLink = nav.querySelector('a[href="/usage"]');
     let termsLink = nav.querySelector('a[href="/terms"]');
@@ -63,6 +66,20 @@ const enhanceSidebarNavigation = () => {
       } else {
         nav.prepend(searchButton);
       }
+    }
+
+    if (!updatesLink) {
+      updatesLink = createNavAnchor({
+        href: "/updates",
+        icon: navIconMarkup.updates,
+        labelKey: "nav.updates",
+        fallback: "Latest updates",
+      });
+      searchButton?.after(updatesLink);
+    }
+
+    if (searchButton && updatesLink && updatesLink.previousElementSibling !== searchButton) {
+      searchButton.after(updatesLink);
     }
 
     if (feedbackLink) {
@@ -316,6 +333,11 @@ const contextModeOpen = document.querySelector("[data-context-menu-open]");
 const contextModeDialog = document.querySelector("[data-context-mode-dialog]");
 const contextModeCloseButtons = [...document.querySelectorAll("[data-context-mode-close]")];
 const contextModeChoices = [...document.querySelectorAll("[data-context-menu-choice]")];
+const cookieSettingsOpen = document.querySelector("[data-cookie-settings-open]");
+const cookieSettingsDialog = document.querySelector("[data-cookie-settings-dialog]");
+const cookieSettingsCloseButtons = [...document.querySelectorAll("[data-cookie-settings-close]")];
+const cookiePreferenceToggle = document.querySelector("[data-cookie-preference-toggle]");
+const cookieSettingsStatus = document.querySelector("[data-cookie-settings-status]");
 const fastRenderSwipe = document.querySelector("[data-fast-render-swipe]");
 const browserUsageSession = document.querySelector("[data-browser-session]");
 const browserUsageTotal = document.querySelector("[data-browser-total]");
@@ -374,6 +396,7 @@ const translations = {
     "nav.pricing": "Pricing",
     "nav.support": "Support",
     "nav.analytics": "Analytics",
+    "nav.updates": "최신 업데이트",
     "nav.bio": "Bio",
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
@@ -420,6 +443,7 @@ const translations = {
       "이 사이트는 테마, 언어, 사이드바 상태처럼 화면을 편하게 보기 위한 설정을 이 브라우저에 저장합니다. 로그인 추적용 쿠키나 광고 쿠키는 사용하지 않습니다.",
     "cookie.accept": "확인",
     "cookie.settings": "Settings 보기",
+    "cookie.learnMore": "자세히 알아보기",
     "search.homeTitle": "Home",
     "search.homeBody": "응급 대응 프로필의 소개, 주요 역량, 공유 기능을 확인합니다.",
     "search.creatorTitle": "Creator",
@@ -432,6 +456,8 @@ const translations = {
     "search.faqBody": "미국 EMT 경로, 게임 개발자 FAQ, 사이트 운영 안내를 봅니다.",
     "search.pricingTitle": "Pricing",
     "search.pricingBody": "Free, Pro, Team, Ultra 플랜과 비교표를 확인합니다.",
+    "search.updatesTitle": "최신 업데이트",
+    "search.updatesBody": "최근 사이트 변경 사항과 다음에 손볼 항목을 확인합니다.",
     "search.settingsTitle": "Settings",
     "search.settingsBody": "테마, 언어, 강조 컬러, 우클릭 메뉴, 저장용량 설정을 관리합니다.",
     "search.accessibilityTitle": "Accessibility",
@@ -456,6 +482,9 @@ const translations = {
     "aria.faqMenu": "FAQ 메뉴",
     "aria.pricingMenu": "요금제 메뉴",
     "aria.settingsMenu": "설정 메뉴",
+    "aria.updatesMenu": "최신 업데이트 메뉴",
+    "aria.updatesSummary": "최신 업데이트 요약",
+    "aria.updatesTimeline": "최신 업데이트 목록",
     "aria.accessibilityMenu": "접근성 메뉴",
     "aria.accessibilitySummary": "접근성 요약",
     "aria.accessibilityDetails": "접근성 세부 정보",
@@ -520,6 +549,7 @@ const translations = {
     "aria.usageSummary": "브라우저 사용량 요약",
     "aria.navLayout": "내비게이션 레이아웃 선택",
     "aria.contextMenuMode": "우클릭 메뉴 방식 선택",
+    "aria.cookieSettings": "쿠키 종류 선택",
     "aria.themeCompatibility": "테마 호환 상태",
     "aria.privacySummary": "개인정보 요약",
     "aria.privacyDetails": "개인정보 세부 정보",
@@ -874,6 +904,26 @@ const translations = {
     "feedback.warningBody": "Google Forms가 새 페이지에서 열립니다. 이름이나 연락처 같은 개인정보는 필요한 경우에만 입력해 주세요.",
     "feedback.cancel": "취소",
     "feedback.continue": "계속하기",
+    "updates.eyebrow": "Latest updates",
+    "updates.title": "최근 바뀐 내용을 한눈에 봅니다.",
+    "updates.lead": "사이드바, 접근성, 쿠키 설정처럼 바로 체감되는 변경 사항을 최신 순서로 정리했습니다.",
+    "updates.summaryNav": "Sidebar",
+    "updates.summaryNavValue": "최신 업데이트 추가",
+    "updates.summaryPrivacy": "Privacy",
+    "updates.summaryPrivacyValue": "쿠키 설정 팝업",
+    "updates.summaryAccess": "Access",
+    "updates.summaryAccessValue": "Accessibility 페이지",
+    "updates.latestLabel": "2026.06.10",
+    "updates.latestTitle": "사이드바에 최신 업데이트를 추가했습니다.",
+    "updates.latestBody": "모든 페이지의 사이드바 상단에서 최신 업데이트 페이지로 바로 이동할 수 있게 했습니다.",
+    "updates.cookieTitle": "쿠키 설정 팝업을 넣었습니다.",
+    "updates.cookieBody": "설정 페이지에서 필수 쿠키와 설정 저장 쿠키 상태를 확인하고, 설정 저장 쿠키를 직접 켜거나 끌 수 있습니다.",
+    "updates.accessTitle": "Accessibility 페이지를 추가했습니다.",
+    "updates.accessBody": "키보드 이동, 대비, 언어, 표시 밀도, Kid mode 같은 접근성 지원 범위를 별도 페이지로 정리했습니다.",
+    "updates.nextTitle": "다음 점검",
+    "updates.nextBody": "사이드바 항목이 늘어난 만큼 모바일 메뉴와 접힌 사이드바 상태의 간격을 계속 점검합니다.",
+    "updates.openSettings": "설정 열기",
+    "updates.openAccessibility": "Accessibility 열기",
     "settings.title": "설정 관리 콘솔",
     "settings.lead":
       "공개 상태, 표시 방식, 성능, 저장소 설정을 한 화면에서 관리합니다.",
@@ -968,6 +1018,21 @@ const translations = {
     "settings.contextMenuCustomBody": "Copy, share, QR code, search, print 같은 사이트 작업을 한 메뉴에서 엽니다.",
     "settings.contextMenuNativeTitle": "Browser default",
     "settings.contextMenuNativeBody": "브라우저가 제공하는 기본 우클릭 메뉴를 그대로 사용합니다.",
+    "settings.cookieSettingsTitle": "쿠키 설정",
+    "settings.cookieSettingsBody": "브라우저 저장 안내 쿠키를 팝업에서 켜거나 끕니다. 필수 항목은 사이트 기본 동작을 위해 유지됩니다.",
+    "settings.cookieSettingsButton": "쿠키 설정",
+    "settings.cookieDialogTitle": "쿠키 설정",
+    "settings.cookieDialogBody": "이 사이트에서 사용하는 쿠키 종류를 선택합니다. 현재 광고나 분석 쿠키는 사용하지 않습니다.",
+    "settings.cookieEssentialTitle": "필수 쿠키",
+    "settings.cookieEssentialBody": "보안과 기본 동작에 필요한 항목입니다. 이 항목은 끌 수 없습니다.",
+    "settings.cookieEssentialOn": "필수 쿠키 켜짐",
+    "settings.cookiePreferenceTitle": "설정 저장 쿠키",
+    "settings.cookiePreferenceBody": "브라우저 저장 안내를 확인했다는 선택을 이 브라우저에 저장합니다.",
+    "settings.cookiePreferenceOn": "설정 저장 쿠키 켜짐",
+    "settings.cookiePreferenceOff": "설정 저장 쿠키 꺼짐",
+    "settings.cookieStatusOn": "설정 저장 쿠키가 켜져 있습니다.",
+    "settings.cookieStatusOff": "설정 저장 쿠키가 꺼져 있습니다.",
+    "settings.cookieLearnMore": "자세히 알아보기",
     "settings.clearCacheTitle": "브라우저 캐시 정리",
     "settings.clearCacheBody": "이 사이트에 저장된 테마, 언어, 표시 설정을 삭제하고 기본값으로 되돌립니다.",
     "settings.clearCacheButton": "캐시 정리",
@@ -1394,6 +1459,7 @@ const translations = {
     "nav.pricing": "Pricing",
     "nav.support": "Support",
     "nav.analytics": "Analytics",
+    "nav.updates": "Latest updates",
     "nav.bio": "Bio",
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
@@ -1440,6 +1506,7 @@ const translations = {
       "This site stores display preferences like theme, language, and sidebar state in this browser. It does not use login tracking cookies or advertising cookies.",
     "cookie.accept": "Got it",
     "cookie.settings": "View Settings",
+    "cookie.learnMore": "Learn more",
     "search.homeTitle": "Home",
     "search.homeBody": "View the emergency response profile intro, core strengths, and sharing tools.",
     "search.creatorTitle": "Creator",
@@ -1452,6 +1519,8 @@ const translations = {
     "search.faqBody": "Browse United States EMT guidance, game developer FAQ, and site operation notes.",
     "search.pricingTitle": "Pricing",
     "search.pricingBody": "Compare Free, Pro, Team, and Ultra plans.",
+    "search.updatesTitle": "Latest updates",
+    "search.updatesBody": "Review recent site changes and the next polish items.",
     "search.settingsTitle": "Settings",
     "search.settingsBody": "Manage theme, language, accent color, context menu, and storage settings.",
     "search.accessibilityTitle": "Accessibility",
@@ -1476,6 +1545,9 @@ const translations = {
     "aria.faqMenu": "FAQ menu",
     "aria.pricingMenu": "Pricing menu",
     "aria.settingsMenu": "Settings menu",
+    "aria.updatesMenu": "Latest updates menu",
+    "aria.updatesSummary": "Latest updates summary",
+    "aria.updatesTimeline": "Latest updates list",
     "aria.accessibilityMenu": "Accessibility menu",
     "aria.accessibilitySummary": "Accessibility summary",
     "aria.accessibilityDetails": "Accessibility details",
@@ -1540,6 +1612,7 @@ const translations = {
     "aria.usageSummary": "Browser usage summary",
     "aria.navLayout": "Navigation layout selection",
     "aria.contextMenuMode": "Context menu mode selection",
+    "aria.cookieSettings": "Cookie type selection",
     "aria.themeCompatibility": "Theme compatibility status",
     "aria.privacySummary": "Privacy summary",
     "aria.privacyDetails": "Privacy details",
@@ -1895,6 +1968,26 @@ const translations = {
     "feedback.warningBody": "Google Forms will open on a new page. Only enter personal information such as your name or contact details if it is necessary.",
     "feedback.cancel": "Cancel",
     "feedback.continue": "Continue",
+    "updates.eyebrow": "Latest updates",
+    "updates.title": "See what changed recently.",
+    "updates.lead": "Recent visible changes such as the sidebar, accessibility page, and cookie settings are collected in one place.",
+    "updates.summaryNav": "Sidebar",
+    "updates.summaryNavValue": "Latest updates added",
+    "updates.summaryPrivacy": "Privacy",
+    "updates.summaryPrivacyValue": "Cookie settings popup",
+    "updates.summaryAccess": "Access",
+    "updates.summaryAccessValue": "Accessibility page",
+    "updates.latestLabel": "2026.06.10",
+    "updates.latestTitle": "Latest updates was added to the sidebar.",
+    "updates.latestBody": "Every page now has a sidebar link near the top that opens this updates page.",
+    "updates.cookieTitle": "Cookie settings popup was added.",
+    "updates.cookieBody": "The Settings page lets visitors review required cookies and turn the preference cookie on or off.",
+    "updates.accessTitle": "Accessibility page was added.",
+    "updates.accessBody": "Keyboard navigation, contrast, language, density, and Kid mode support now live on a dedicated page.",
+    "updates.nextTitle": "Next check",
+    "updates.nextBody": "As the sidebar grows, mobile menu spacing and collapsed-sidebar spacing will stay on the polish list.",
+    "updates.openSettings": "Open settings",
+    "updates.openAccessibility": "Open Accessibility",
     "settings.title": "Settings management console",
     "settings.lead":
       "Manage public status, display behavior, performance, and storage settings from one screen.",
@@ -1991,6 +2084,21 @@ const translations = {
     "settings.contextMenuCustomBody": "Open site actions like copy, share, QR code, search, and print from one menu.",
     "settings.contextMenuNativeTitle": "Browser default",
     "settings.contextMenuNativeBody": "Use the browser's native right-click menu without replacing it.",
+    "settings.cookieSettingsTitle": "Cookie settings",
+    "settings.cookieSettingsBody": "Turn the browser storage notice cookie on or off in a popup. Required items stay on for basic site behavior.",
+    "settings.cookieSettingsButton": "Cookie settings",
+    "settings.cookieDialogTitle": "Cookie settings",
+    "settings.cookieDialogBody": "Choose which cookies this site can use. This site currently does not use advertising or analytics cookies.",
+    "settings.cookieEssentialTitle": "Required cookies",
+    "settings.cookieEssentialBody": "Needed for security and basic behavior. This item cannot be turned off.",
+    "settings.cookieEssentialOn": "Required cookies on",
+    "settings.cookiePreferenceTitle": "Preference cookie",
+    "settings.cookiePreferenceBody": "Stores that you have acknowledged the browser storage notice in this browser.",
+    "settings.cookiePreferenceOn": "Preference cookie on",
+    "settings.cookiePreferenceOff": "Preference cookie off",
+    "settings.cookieStatusOn": "Preference cookie is on.",
+    "settings.cookieStatusOff": "Preference cookie is off.",
+    "settings.cookieLearnMore": "Learn more",
     "settings.clearCacheTitle": "Clear browser cache",
     "settings.clearCacheBody":
       "Removes this site's saved theme, language, and display preferences and restores defaults.",
@@ -2519,6 +2627,15 @@ const siteSearchIndex = [
     },
   },
   {
+    titleKey: "search.updatesTitle",
+    bodyKey: "search.updatesBody",
+    url: "/updates",
+    keywords: {
+      ko: "최신 업데이트 변경 사항 릴리스 사이드바 쿠키 설정 접근성 새 기능",
+      en: "latest updates changes release notes sidebar cookie settings accessibility new features",
+    },
+  },
+  {
     titleKey: "search.settingsTitle",
     bodyKey: "search.settingsBody",
     url: "/settings",
@@ -2645,6 +2762,7 @@ const setLanguage = (language) => {
     updateSettingToggle(button, button.classList.contains("is-on"));
   });
   updateNavLayoutControls(document.documentElement.dataset.navLayout || "sidebar");
+  updateCookiePreferenceControls(getCookiePreferences().preferences);
   updateStorageEstimate();
 };
 
@@ -3210,6 +3328,7 @@ const createPrintDialog = () => {
 
 const storageConsentKey = "profile-storage-consent";
 const storageConsentCookieName = "profile_storage_consent";
+const cookiePreferenceKey = "profile-cookie-preferences";
 
 const getStorageConsentCookie = () =>
   document.cookie
@@ -3222,8 +3341,32 @@ const hasStorageConsent = () =>
   localStorage.getItem(storageConsentKey) === "accepted" ||
   getStorageConsentCookie() === "accepted";
 
+const getCookiePreferences = () => {
+  try {
+    const savedPreferences = JSON.parse(localStorage.getItem(cookiePreferenceKey) || "{}");
+    if (typeof savedPreferences.preferences === "boolean") {
+      return { essential: true, preferences: savedPreferences.preferences };
+    }
+  } catch (error) {
+    localStorage.removeItem(cookiePreferenceKey);
+  }
+
+  return { essential: true, preferences: hasStorageConsent() };
+};
+
+const saveCookiePreferences = (preferences) => {
+  localStorage.setItem(
+    cookiePreferenceKey,
+    JSON.stringify({
+      essential: true,
+      preferences: Boolean(preferences.preferences),
+    }),
+  );
+};
+
 const setStorageConsent = () => {
   localStorage.setItem(storageConsentKey, "accepted");
+  saveCookiePreferences({ preferences: true });
   document.cookie = `${storageConsentCookieName}=accepted; Max-Age=31536000; Path=/; SameSite=Lax`;
 };
 
@@ -3233,7 +3376,13 @@ const clearStorageConsent = () => {
 };
 
 const createCookieNotice = () => {
-  if (hasStorageConsent() || document.querySelector("[data-cookie-notice]")) return;
+  if (
+    hasStorageConsent() ||
+    localStorage.getItem(cookiePreferenceKey) ||
+    document.querySelector("[data-cookie-notice]")
+  ) {
+    return;
+  }
 
   const notice = document.createElement("section");
   notice.className = "cookie-notice";
@@ -3247,6 +3396,7 @@ const createCookieNotice = () => {
       <p data-i18n="cookie.body">이 사이트는 테마, 언어, 사이드바 상태처럼 화면을 편하게 보기 위한 설정을 이 브라우저에 저장합니다. 로그인 추적용 쿠키나 광고 쿠키는 사용하지 않습니다.</p>
     </div>
     <div class="cookie-notice-actions">
+      <a href="/privacy#cookies" data-i18n="cookie.learnMore">자세히 알아보기</a>
       <a href="/settings#storage" data-i18n="cookie.settings">Settings 보기</a>
       <button type="button" data-cookie-accept data-i18n="cookie.accept">확인</button>
     </div>
@@ -3266,6 +3416,68 @@ const closeCookieNotice = () => {
 const setupCookieNotice = () => {
   createCookieNotice();
   document.querySelector("[data-cookie-accept]")?.addEventListener("click", closeCookieNotice);
+};
+
+const updateCookiePreferenceControls = (isOn) => {
+  cookiePreferenceToggle?.classList.toggle("is-on", isOn);
+  cookiePreferenceToggle?.setAttribute("aria-pressed", String(isOn));
+  cookiePreferenceToggle?.setAttribute(
+    "aria-label",
+    translate(isOn ? "settings.cookiePreferenceOn" : "settings.cookiePreferenceOff"),
+  );
+  if (cookieSettingsStatus) {
+    cookieSettingsStatus.textContent = translate(
+      isOn ? "settings.cookieStatusOn" : "settings.cookieStatusOff",
+    );
+  }
+};
+
+const setCookiePreference = (isOn) => {
+  const nextValue = Boolean(isOn);
+
+  if (nextValue) setStorageConsent();
+  else clearStorageConsent();
+
+  saveCookiePreferences({ preferences: nextValue });
+  updateCookiePreferenceControls(nextValue);
+
+  const notice = document.querySelector("[data-cookie-notice]");
+  if (notice) {
+    notice.classList.add("is-closing");
+    window.setTimeout(() => notice.remove(), 190);
+  }
+};
+
+const showCookieSettingsDialog = () => {
+  if (!cookieSettingsDialog) return;
+
+  updateCookiePreferenceControls(getCookiePreferences().preferences);
+  cookieSettingsDialog.classList.remove("is-closing");
+  cookieSettingsDialog.hidden = false;
+};
+
+const closeCookieSettingsDialog = () => {
+  if (!cookieSettingsDialog || cookieSettingsDialog.hidden) return;
+
+  cookieSettingsDialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    cookieSettingsDialog.hidden = true;
+    cookieSettingsDialog.classList.remove("is-closing");
+  }, 170);
+};
+
+const setupCookieSettingsDialog = () => {
+  updateCookiePreferenceControls(getCookiePreferences().preferences);
+  cookieSettingsOpen?.addEventListener("click", showCookieSettingsDialog);
+  cookieSettingsCloseButtons.forEach((button) => {
+    button.addEventListener("click", closeCookieSettingsDialog);
+  });
+  cookieSettingsDialog?.addEventListener("click", (event) => {
+    if (event.button === 0 && event.target === cookieSettingsDialog) closeCookieSettingsDialog();
+  });
+  cookiePreferenceToggle?.addEventListener("click", () => {
+    setCookiePreference(!cookiePreferenceToggle.classList.contains("is-on"));
+  });
 };
 
 const selectHomeTab = (selectedTab) => {
@@ -3390,6 +3602,7 @@ const clearSiteCache = () => {
     "profile-setting-fast-render",
     "profile-setting-kid-mode",
     "profile-setting-custom-context-menu",
+    "profile-cookie-preferences",
     "profile-browser-usage-total-ms",
     "profile-browser-usage-used-ms",
     "profile-browser-usage-window-start-ms",
@@ -4463,6 +4676,7 @@ setTheme(getInitialTheme());
 setupSettingToggles();
 setupNavLayoutDialog();
 setupContextMenuModeDialog();
+setupCookieSettingsDialog();
 setupFastRenderSwipe();
 setupToggleRightTrack();
 setupBrandLogo();
@@ -4720,6 +4934,7 @@ document.addEventListener("keydown", (event) => {
     closePrintDialog();
     closeNavLayoutDialog();
     closeContextMenuModeDialog();
+    closeCookieSettingsDialog();
     closeClearCacheWarning();
     closeFeedbackWarning();
     closeSubscribeWarning();

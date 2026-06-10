@@ -1,9 +1,10 @@
-const CACHE_NAME = "profile-offline-20260610-cookie-notice";
+const CACHE_NAME = "profile-offline-20260610-cookie-learn-more";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
   "/",
   "/accessibility",
+  "/updates",
   "/terms",
   "/feedback",
   "/styles.css",

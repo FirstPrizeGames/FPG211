@@ -84,7 +84,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260610-cookie-notice" />
+    <link rel="stylesheet" href="../styles.css?v=20260610-cookie-learn-more" />
   </head>
   <body class="settings-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -476,6 +476,22 @@
             <a class="button setting-popup-button" href="/usage" data-i18n="usage.open">Usage 열기</a>
           </article>
 
+          <article class="setting-card setting-card-navigation" id="storage">
+            <div>
+              <p class="eyebrow" data-i18n="settings.storageTab">Storage</p>
+              <h3 data-i18n="settings.cookieSettingsTitle">쿠키 설정</h3>
+              <p data-i18n="settings.cookieSettingsBody">브라우저 저장 안내 쿠키를 팝업에서 켜거나 끕니다. 필수 항목은 사이트 기본 동작을 위해 유지됩니다.</p>
+            </div>
+            <button
+              class="button setting-popup-button"
+              type="button"
+              data-cookie-settings-open
+              data-i18n="settings.cookieSettingsButton"
+            >
+              쿠키 설정
+            </button>
+          </article>
+
           <div class="settings-group-label">
             <span data-i18n="settings.groupBrand">Brand system</span>
             <p data-i18n="settings.groupBrandBody">강조 컬러와 화면 밀도를 사이트 톤에 맞춥니다.</p>
@@ -696,6 +712,49 @@
           </div>
         </div>
       </div>
+      <div class="cache-dialog cookie-settings-dialog" data-cookie-settings-dialog hidden>
+        <div class="cache-dialog-panel cookie-settings-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="cookie-settings-dialog-title">
+          <button class="dialog-close-button" type="button" data-cookie-settings-close aria-label="닫기" data-i18n-aria-label="share.close">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+          </button>
+          <p class="eyebrow" data-i18n="settings.storageTab">Storage</p>
+          <h2 id="cookie-settings-dialog-title" data-i18n="settings.cookieDialogTitle">쿠키 설정</h2>
+          <p data-i18n="settings.cookieDialogBody">
+            이 사이트에서 사용하는 쿠키 종류를 선택합니다. 현재 광고나 분석 쿠키는 사용하지 않습니다.
+          </p>
+          <a class="cookie-settings-more" href="/privacy#cookies" data-i18n="settings.cookieLearnMore">자세히 알아보기</a>
+          <div class="cookie-choice-list" aria-label="쿠키 종류 선택" data-i18n-aria-label="aria.cookieSettings">
+            <div class="cookie-choice is-required">
+              <span class="cookie-choice-copy">
+                <strong data-i18n="settings.cookieEssentialTitle">필수 쿠키</strong>
+                <small data-i18n="settings.cookieEssentialBody">보안과 기본 동작에 필요한 항목입니다. 이 항목은 끌 수 없습니다.</small>
+              </span>
+              <button
+                class="toggle is-on"
+                type="button"
+                aria-label="필수 쿠키 켜짐"
+                aria-pressed="true"
+                disabled
+                data-i18n-aria-label="settings.cookieEssentialOn"
+              ></button>
+            </div>
+            <div class="cookie-choice">
+              <span class="cookie-choice-copy">
+                <strong data-i18n="settings.cookiePreferenceTitle">설정 저장 쿠키</strong>
+                <small data-i18n="settings.cookiePreferenceBody">브라우저 저장 안내를 확인했다는 선택을 이 브라우저에 저장합니다.</small>
+              </span>
+              <button
+                class="toggle"
+                type="button"
+                aria-label="설정 저장 쿠키 꺼짐"
+                aria-pressed="false"
+                data-cookie-preference-toggle
+              ></button>
+            </div>
+          </div>
+          <p class="cookie-settings-status" data-cookie-settings-status role="status" aria-live="polite"></p>
+        </div>
+      </div>
       <div class="cache-dialog context-mode-dialog" data-context-mode-dialog hidden>
         <div class="cache-dialog-panel context-mode-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="context-mode-dialog-title">
           <button class="dialog-close-button" type="button" data-context-mode-close aria-label="닫기" data-i18n-aria-label="share.close">
@@ -836,7 +895,7 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260610-cookie-notice" defer></script>
+    <script src="../script.js?v=20260610-cookie-learn-more" defer></script>
   </body>
 </html>
 

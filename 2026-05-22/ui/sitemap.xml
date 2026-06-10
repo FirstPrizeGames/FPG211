@@ -37,6 +37,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://firstprizegames211.app/updates</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://firstprizegames211.app/settings</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>monthly</changefreq>

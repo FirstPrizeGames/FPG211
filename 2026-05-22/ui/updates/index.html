@@ -3,29 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Terms of Use · Emergency Responder Profile</title>
+    <title>Latest updates · Emergency Responder Profile</title>
     <meta
       name="description"
-      content="Terms of use for browsing the profile site, opening support links, using local settings, and leaving feedback."
+      content="Recent updates for the Emergency Responder Profile site, including sidebar, accessibility, and cookie settings changes."
     />
-    <meta name="theme-color" content="#0c0906" />
-    <link rel="canonical" href="https://firstprizegames211.app/terms" />
-    <meta property="og:title" content="Terms of Use · Emergency Responder Profile" />
+    <meta name="theme-color" content="#151514" />
+    <link rel="canonical" href="https://firstprizegames211.app/updates" />
+    <meta property="og:title" content="Latest updates · Emergency Responder Profile" />
     <meta
       property="og:description"
-      content="Review the browsing, support, feedback, and external checkout terms for this profile site."
+      content="Review recent visible site changes and the next polish items."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Emergency Responder Profile" />
-    <meta property="og:url" content="https://firstprizegames211.app/terms" />
-    <meta property="og:image" content="https://firstprizegames211.app/assets/license-ledger-hero.jpg" />
+    <meta property="og:url" content="https://firstprizegames211.app/updates" />
+    <meta property="og:image" content="https://firstprizegames211.app/assets/about-system-hero.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Terms of Use · Emergency Responder Profile" />
+    <meta name="twitter:title" content="Latest updates · Emergency Responder Profile" />
     <meta
       name="twitter:description"
-      content="Review the browsing, support, feedback, and external checkout terms for this profile site."
+      content="Review recent visible site changes and the next polish items."
     />
-    <meta name="twitter:image" content="https://firstprizegames211.app/assets/license-ledger-hero.jpg" />
+    <meta name="twitter:image" content="https://firstprizegames211.app/assets/about-system-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png" />
@@ -34,7 +34,7 @@
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="application-name" content="Emergency Responder Profile" />
-    <meta name="msapplication-TileColor" content="#0c0906" />
+    <meta name="msapplication-TileColor" content="#151514" />
     <script>
       (() => {
         const normalizeTheme = (theme) => {
@@ -71,10 +71,7 @@
           ? "true"
           : "false";
         document.documentElement.dataset.kidMode = normalizeKidMode(localStorage.getItem("profile-setting-kid-mode"));
-        const sidebarNavEnabled = normalizeBoolean(
-          localStorage.getItem("profile-setting-sidebar-nav"),
-          true,
-        );
+        const sidebarNavEnabled = normalizeBoolean(localStorage.getItem("profile-setting-sidebar-nav"), true);
         document.documentElement.dataset.navLayout = sidebarNavEnabled ? "sidebar" : "top";
         document.documentElement.dataset.sidebarCollapsed = sidebarNavEnabled && normalizeBoolean(
           localStorage.getItem("profile-sidebar-collapsed"),
@@ -86,7 +83,7 @@
     </script>
     <link rel="stylesheet" href="../styles.css?v=20260610-cookie-learn-more" />
   </head>
-  <body class="terms-body legal-document-body">
+  <body class="updates-body">
     <div class="loading-bar" aria-hidden="true"></div>
     <div class="scroll-progress" aria-hidden="true"></div>
     <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
@@ -97,8 +94,8 @@
       <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
     </div>
     <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
-    <main class="shell legal-document-page terms-page" id="main-content" tabindex="-1">
-      <nav class="topbar" aria-label="이용약관 메뉴" data-i18n-aria-label="aria.termsMenu">
+    <main class="shell updates-page" id="main-content" tabindex="-1">
+      <nav class="topbar" aria-label="최신 업데이트 메뉴" data-i18n-aria-label="aria.updatesMenu">
         <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
           <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
           <span>FP</span>
@@ -123,101 +120,73 @@
         </div>
       </nav>
 
-      <section class="terms-hero">
-        <div class="terms-hero-copy">
-          <h1 data-i18n="terms.title">사이트 이용 조건을 짧고 분명하게 정리했습니다.</h1>
-          <p class="terms-lead" data-i18n="terms.lead">
-            이 페이지는 프로필 사이트를 읽고, 설정을 저장하고, 피드백과 결제 링크를 여는 방식에 대한 기본 기준을 설명합니다.
+      <section class="updates-hero" aria-labelledby="updates-title">
+        <div class="updates-hero-copy">
+          <p class="eyebrow" data-i18n="updates.eyebrow">Latest updates</p>
+          <h1 id="updates-title" data-i18n="updates.title">최근 바뀐 내용을 한눈에 봅니다.</h1>
+          <p data-i18n="updates.lead">
+            사이드바, 접근성, 쿠키 설정처럼 바로 체감되는 변경 사항을 최신 순서로 정리했습니다.
           </p>
-          <p class="terms-updated" data-i18n="terms.updated">마지막 업데이트: 2026년 6월 7일</p>
+          <div class="updates-actions">
+            <a class="button" href="/settings" data-i18n="updates.openSettings">설정 열기</a>
+            <a class="button secondary-button" href="/accessibility" data-i18n="updates.openAccessibility">Accessibility 열기</a>
+          </div>
         </div>
-        <figure class="terms-hero-media">
-          <img src="../assets/license-ledger-hero.jpg" alt="" width="1800" height="1000" loading="eager" decoding="async" />
-          <figcaption>
-            <span data-i18n="terms.mediaLabel">Terms registry</span>
-            <strong data-i18n="terms.mediaValue">Read, support, report</strong>
-          </figcaption>
-        </figure>
+        <div class="updates-visual" aria-hidden="true"></div>
       </section>
 
-      <section class="terms-ledger" aria-label="이용약관 요약" data-i18n-aria-label="aria.termsSummary">
+      <section class="updates-summary" aria-label="최신 업데이트 요약" data-i18n-aria-label="aria.updatesSummary">
         <div>
-          <span data-i18n="terms.summaryUse">Use</span>
-          <strong data-i18n="terms.summaryUseValue">Public reading</strong>
+          <span data-i18n="updates.summaryNav">Sidebar</span>
+          <strong data-i18n="updates.summaryNavValue">최신 업데이트 추가</strong>
         </div>
         <div>
-          <span data-i18n="terms.summarySupport">Support</span>
-          <strong data-i18n="terms.summarySupportValue">External checkout</strong>
+          <span data-i18n="updates.summaryPrivacy">Privacy</span>
+          <strong data-i18n="updates.summaryPrivacyValue">쿠키 설정 팝업</strong>
         </div>
         <div>
-          <span data-i18n="terms.summaryData">Data</span>
-          <strong data-i18n="terms.summaryDataValue">Local settings</strong>
-        </div>
-        <div>
-          <span data-i18n="terms.summaryChanges">Changes</span>
-          <strong data-i18n="terms.summaryChangesValue">Updated here</strong>
+          <span data-i18n="updates.summaryAccess">Access</span>
+          <strong data-i18n="updates.summaryAccessValue">Accessibility 페이지</strong>
         </div>
       </section>
 
-      <section class="terms-dossier" aria-label="이용약관 세부 정보" data-i18n-aria-label="aria.termsDetails">
-        <article>
-          <span>01</span>
-          <h2 data-i18n="terms.acceptTitle">사이트를 계속 이용하면 이 기준에 동의한 것으로 봅니다.</h2>
-          <p data-i18n="terms.acceptBody">
-            이 사이트는 공개 프로필, 창작 기록, 가격 안내, 설정, 개인정보 안내를 제공하는 정적 웹사이트입니다. 내용을 읽거나 링크를 열면 이 약관과 개인정보 처리방침을 기준으로 이용하는 것으로 봅니다.
-          </p>
+      <section class="updates-timeline" aria-label="최신 업데이트 목록" data-i18n-aria-label="aria.updatesTimeline">
+        <article class="update-item is-latest">
+          <time datetime="2026-06-10" data-i18n="updates.latestLabel">2026.06.10</time>
+          <div>
+            <h2 data-i18n="updates.latestTitle">사이드바에 최신 업데이트를 추가했습니다.</h2>
+            <p data-i18n="updates.latestBody">모든 페이지의 사이드바 상단에서 최신 업데이트 페이지로 바로 이동할 수 있게 했습니다.</p>
+          </div>
         </article>
-        <article>
-          <span>02</span>
-          <h2 data-i18n="terms.contentTitle">정보는 안내 목적입니다.</h2>
-          <p data-i18n="terms.contentBody">
-            응급 대응, 개발, 가격, 지원 관련 문구는 사이트 소개와 안내를 위한 것입니다. 전문 의료, 법률, 재정 조언으로 해석하지 말고 중요한 결정에는 공식 기관이나 서비스 제공자의 최신 정보를 확인해 주세요.
-          </p>
+        <article class="update-item">
+          <time datetime="2026-06-10" data-i18n="updates.latestLabel">2026.06.10</time>
+          <div>
+            <h2 data-i18n="updates.cookieTitle">쿠키 설정 팝업을 넣었습니다.</h2>
+            <p data-i18n="updates.cookieBody">설정 페이지에서 필수 쿠키와 설정 저장 쿠키 상태를 확인하고, 설정 저장 쿠키를 직접 켜거나 끌 수 있습니다.</p>
+          </div>
         </article>
-        <article>
-          <span>03</span>
-          <h2 data-i18n="terms.checkoutTitle">결제와 외부 양식은 외부 서비스에서 처리됩니다.</h2>
-          <p data-i18n="terms.checkoutBody">
-            Stripe Checkout, Google Forms, 공유 서비스처럼 외부 화면으로 이동하는 기능은 해당 서비스의 약관과 개인정보 기준을 따릅니다. 이 사이트는 카드 번호나 외부 양식 응답을 직접 처리하지 않습니다.
-          </p>
+        <article class="update-item">
+          <time datetime="2026-06-09" data-i18n="accessibility.updated">마지막 업데이트: 2026년 6월 9일</time>
+          <div>
+            <h2 data-i18n="updates.accessTitle">Accessibility 페이지를 추가했습니다.</h2>
+            <p data-i18n="updates.accessBody">키보드 이동, 대비, 언어, 표시 밀도, Kid mode 같은 접근성 지원 범위를 별도 페이지로 정리했습니다.</p>
+          </div>
         </article>
-        <article>
-          <span>04</span>
-          <h2 data-i18n="terms.localTitle">설정은 브라우저 안에서 관리됩니다.</h2>
-          <p data-i18n="terms.localBody">
-            테마, 언어, 표시 밀도, 결제 차단 같은 설정은 같은 브라우저의 localStorage에 저장됩니다. Settings 또는 Usage 페이지에서 사이트 데이터를 정리할 수 있습니다.
-          </p>
-        </article>
-        <article>
-          <span>05</span>
-          <h2 data-i18n="terms.fairUseTitle">공정한 사용을 부탁드립니다.</h2>
-          <p data-i18n="terms.fairUseBody">
-            사이트를 방해하거나, 자동 요청으로 과도한 부하를 만들거나, 이미지와 로고 같은 개인 자산을 허가 없이 복제하지 말아 주세요. 코드와 자산의 재사용 기준은 License 페이지에서 확인할 수 있습니다.
-          </p>
-        </article>
-        <article>
-          <span>06</span>
-          <h2 data-i18n="terms.contactTitle">문제가 있으면 Support로 알려주세요.</h2>
-          <p data-i18n="terms.contactBody">
-            깨진 링크, 잘못된 문구, 결제 접근 문제, 개인정보 관련 요청은 Support 페이지에서 피드백으로 남길 수 있습니다. 필요한 경우 이 약관은 더 명확하게 업데이트될 수 있습니다.
-          </p>
+        <article class="update-item">
+          <time datetime="2026-06-10" data-i18n="updates.latestLabel">2026.06.10</time>
+          <div>
+            <h2 data-i18n="updates.nextTitle">다음 점검</h2>
+            <p data-i18n="updates.nextBody">사이드바 항목이 늘어난 만큼 모바일 메뉴와 접힌 사이드바 상태의 간격을 계속 점검합니다.</p>
+          </div>
         </article>
       </section>
     </main>
     <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
       <button type="button" data-scroll-to="top" aria-label="맨 위로 이동" data-i18n-aria-label="aria.scrollTop">
-        <svg aria-hidden="true" viewBox="0 0 24 24">
-          <path d="M12 5 5 12" />
-          <path d="m12 5 7 7" />
-          <path d="M12 6v13" />
-        </svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5 5 12" /><path d="m12 5 7 7" /><path d="M12 6v13" /></svg>
       </button>
       <button type="button" data-scroll-to="bottom" aria-label="맨 아래로 이동" data-i18n-aria-label="aria.scrollBottom">
-        <svg aria-hidden="true" viewBox="0 0 24 24">
-          <path d="M12 19 5 12" />
-          <path d="m12 19 7-7" />
-          <path d="M12 18V5" />
-        </svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 19 5 12" /><path d="m12 19 7-7" /><path d="M12 18V5" /></svg>
       </button>
     </div>
     <script src="../script.js?v=20260610-cookie-learn-more" defer></script>

@@ -36,6 +36,34 @@
     <meta name="application-name" content="Emergency Responder Profile" />
     <meta name="msapplication-TileColor" content="#050706" />
     <link rel="preload" href="assets/home-us-ambulance-hero.png" as="image" fetchpriority="high" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://firstprizegames211.app/#website",
+            "name": "Emergency Responder Profile",
+            "url": "https://firstprizegames211.app/",
+            "inLanguage": ["ko", "en"],
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://firstprizegames211.app/?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          },
+          {
+            "@type": "Person",
+            "@id": "https://firstprizegames211.app/#profile",
+            "name": "Emergency Responder Profile",
+            "jobTitle": "Emergency responder",
+            "url": "https://firstprizegames211.app/",
+            "image": "https://firstprizegames211.app/assets/profile-hero.png",
+            "knowsAbout": ["Emergency response", "Game UI", "Roblox systems", "Unity development"]
+          }
+        ]
+      }
+    </script>
     <script>
       (() => {
         const normalizeTheme = (theme) => {
@@ -85,7 +113,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260605-usage-offline-reset" />
+    <link rel="stylesheet" href="styles.css?v=20260610-cookie-notice" />
   </head>
   <body class="home-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -131,8 +159,8 @@
             응급 대응, 창작 기록, 후원 경로, 개인정보와 설정을 빠르게 찾을 수 있게 정리한 공개 프로필 포털입니다.
           </p>
           <div class="home-hero-actions">
-            <a class="button primary" href="/Bio" data-i18n="home.openBio">Bio 열기</a>
-            <a class="button ghost" href="/settings" data-i18n="home.openSettings">설정 열기</a>
+            <a class="button primary" href="/Creator" data-i18n="home.openCreator">Creator 보기</a>
+            <a class="button ghost" href="/feedback" data-i18n="home.openSupport">Support 문의</a>
           </div>
         </div>
         <figure class="home-hero-media">
@@ -419,7 +447,7 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="script.js?v=20260605-usage-offline-reset" defer></script>
+    <script src="script.js?v=20260610-cookie-notice" defer></script>
   </body>
 </html>
 

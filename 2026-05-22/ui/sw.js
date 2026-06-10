@@ -1,8 +1,11 @@
-const CACHE_NAME = "profile-offline-20260605-usage-offline-reset";
+const CACHE_NAME = "profile-offline-20260610-cookie-notice";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
   "/",
+  "/accessibility",
+  "/terms",
+  "/feedback",
   "/styles.css",
   "/script.js",
   "/favicon.ico",
@@ -14,6 +17,7 @@ const PRECACHE_URLS = [
   "/assets/icon-192.png",
   "/assets/icon-512.png",
   "/assets/logo.png",
+  "/assets/accessibility-firetruck-hero.png",
   "/assets/profile-hero-1280.jpg",
 ];
 

@@ -1,8 +1,14 @@
 const navIconMarkup = {
+  search:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m16 16 5 5" /></svg>',
   support:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="M9.8 12.2 11.4 14l3.2-4" /></svg>',
   analytics:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 20V10" /><path d="M10 20V6" /><path d="M16 20v-8" /><path d="M22 20H2" /></svg>',
+  terms:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z" /><path d="M15 3v4h4" /><path d="M9 11h6" /><path d="M9 15h6" /><path d="M9 19h4" /></svg>',
+  accessibility:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2" /><path d="M5 8h14" /><path d="M12 8v13" /><path d="M8 21l4-8 4 8" /></svg>',
 };
 
 const normalizeNavPath = (path) => {
@@ -20,6 +26,15 @@ const createNavAnchor = ({ href, icon, labelKey, fallback }) => {
   return anchor;
 };
 
+const createNavSearchButton = () => {
+  const button = document.createElement("button");
+  button.className = "nav-search-button";
+  button.type = "button";
+  button.dataset.siteSearchOpen = "";
+  button.innerHTML = `${navIconMarkup.search}<span data-i18n="nav.search">Search</span><kbd>Ctrl+K</kbd>`;
+  return button;
+};
+
 const normalizeAnalyticsLink = (link) => {
   if (!link) return null;
   link.innerHTML = `${navIconMarkup.analytics}<span data-i18n="nav.analytics">Analytics</span>`;
@@ -34,8 +49,21 @@ const enhanceSidebarNavigation = () => {
     const homeLink = nav.querySelector('a[href="/"]');
     const pricingLink = nav.querySelector('a[href="/Pricing"]');
     const settingsLink = nav.querySelector('a[href="/settings"]');
+    const licenseLink = nav.querySelector('a[href="/license"]');
     const feedbackLink = nav.querySelector('a[href="/feedback"]');
+    let searchButton = nav.querySelector("[data-site-search-open]");
+    let accessibilityLink = nav.querySelector('a[href="/accessibility"]');
     let analyticsLink = nav.querySelector('a[href="/usage"]');
+    let termsLink = nav.querySelector('a[href="/terms"]');
+
+    if (!searchButton) {
+      searchButton = createNavSearchButton();
+      if (homeLink) {
+        homeLink.before(searchButton);
+      } else {
+        nav.prepend(searchButton);
+      }
+    }
 
     if (feedbackLink) {
       feedbackLink.classList.remove("nav-feedback-link");
@@ -63,10 +91,38 @@ const enhanceSidebarNavigation = () => {
       feedbackLink.after(analyticsLink);
     }
 
+    if (!accessibilityLink && settingsLink) {
+      accessibilityLink = createNavAnchor({
+        href: "/accessibility",
+        icon: navIconMarkup.accessibility,
+        labelKey: "nav.accessibility",
+        fallback: "Accessibility",
+      });
+      settingsLink.after(accessibilityLink);
+    }
+
+    if (settingsLink && accessibilityLink && accessibilityLink.previousElementSibling !== settingsLink) {
+      settingsLink.after(accessibilityLink);
+    }
+
+    if (!termsLink && licenseLink) {
+      termsLink = createNavAnchor({
+        href: "/terms",
+        icon: navIconMarkup.terms,
+        labelKey: "nav.terms",
+        fallback: "Terms",
+      });
+      licenseLink.after(termsLink);
+    }
+
+    if (licenseLink && termsLink && termsLink.previousElementSibling !== licenseLink) {
+      licenseLink.after(termsLink);
+    }
+
     nav.querySelectorAll(".nav-section-label").forEach((label) => label.remove());
 
     [
-      [homeLink, "COMMAND"],
+      [searchButton, "COMMAND"],
       [pricingLink, "MANAGE"],
       [settingsLink, "ACCOUNT"],
     ].forEach(([link, label]) => {
@@ -81,6 +137,103 @@ const enhanceSidebarNavigation = () => {
 };
 
 enhanceSidebarNavigation();
+
+const createContextMenuFallback = () => {
+  const menu = document.createElement("div");
+  menu.className = "context-menu";
+  menu.dataset.contextMenu = "";
+  menu.hidden = true;
+  menu.innerHTML = `
+    <button type="button" data-context-action="close">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+      <span data-i18n="context.close">닫기</span><kbd class="context-shortcut">Esc</kbd>
+    </button>
+    <div class="context-menu-separator" role="separator" aria-hidden="true"></div>
+    <button type="button" data-context-action="open-link" hidden>
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7" /><path d="M8 7h9v9" /><path d="M5 5h6" /><path d="M5 5v14h14v-6" /></svg>
+      <span data-i18n="context.openLink">새 탭에서 링크 열기</span>
+    </button>
+    <button type="button" data-context-action="copy-link" hidden>
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1" /><path d="M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1.1" /></svg>
+      <span data-i18n="context.copyLink">링크 주소 복사</span>
+    </button>
+    <button type="button" data-context-action="save-image" disabled aria-disabled="true">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M5 21h14" /></svg>
+      <span data-i18n="context.saveImage">이미지 저장</span>
+    </button>
+    <button type="button" data-context-action="copy-selection" hidden>
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 7h8" /><path d="M8 12h8" /><path d="M8 17h5" /><rect x="4" y="3" width="16" height="18" rx="2" /></svg>
+      <span data-i18n="context.copySelection">선택한 텍스트 복사</span><kbd class="context-shortcut">Ctrl+C</kbd>
+    </button>
+    <button type="button" data-context-action="paste" disabled aria-disabled="true">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 4h6" /><path d="M10 2h4v4h-4z" /><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2" /><path d="M9 14h6" /><path d="M12 11v6" /></svg>
+      <span data-i18n="context.paste">붙여넣기</span><kbd class="context-shortcut">Ctrl+V</kbd>
+    </button>
+    <div class="context-menu-separator" role="separator" aria-hidden="true"></div>
+    <button type="button" data-context-action="copy">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1" /><path d="M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1.1" /></svg>
+      <span data-i18n="context.copy">페이지 링크 복사</span><kbd class="context-shortcut">Ctrl+Shift+C</kbd>
+    </button>
+    <button type="button" data-context-action="copy-title">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7V5h16v2" /><path d="M9 20h6" /><path d="M12 5v15" /></svg>
+      <span data-i18n="context.copyTitle">페이지 제목 복사</span>
+    </button>
+    <button type="button" data-context-action="share">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.6 10.6 6.8-4.2" /><path d="m8.6 13.4 6.8 4.2" /></svg>
+      <span data-i18n="context.share">공유 열기</span><kbd class="context-shortcut">Ctrl+Shift+S</kbd>
+    </button>
+    <button type="button" data-context-action="qr">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><path d="M14 14h3v3" /><path d="M21 14v7h-7" /><path d="M17 17h4" /></svg>
+      <span data-i18n="context.qr">QR 코드 만들기</span><kbd class="context-shortcut">Ctrl+Shift+Q</kbd>
+    </button>
+    <div class="context-menu-separator" role="separator" aria-hidden="true"></div>
+    <button type="button" data-context-action="search">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m16.5 16.5 4 4" /></svg>
+      <span data-i18n="context.search">사이트 검색</span><kbd class="context-shortcut">Ctrl+K</kbd>
+    </button>
+    <button type="button" data-context-action="print">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 9V3h12v6" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><path d="M6 14h12v7H6z" /><path d="M18 12h.01" /></svg>
+      <span data-i18n="context.print">인쇄</span><kbd class="context-shortcut">Ctrl+P</kbd>
+    </button>
+    <button type="button" data-context-action="source">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m8 9-4 3 4 3" /><path d="m16 9 4 3-4 3" /><path d="m14 5-4 14" /></svg>
+      <span data-i18n="context.source">페이지 소스 보기</span><kbd class="context-shortcut">Ctrl+U</kbd>
+    </button>
+    <div class="context-menu-separator" role="separator" aria-hidden="true"></div>
+    <button type="button" data-context-action="back">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5" /><path d="m11 6-6 6 6 6" /></svg>
+      <span data-i18n="context.back">뒤로 가기</span><kbd class="context-shortcut">Alt+Left</kbd>
+    </button>
+    <button type="button" data-context-action="forward">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
+      <span data-i18n="context.forward">앞으로 가기</span><kbd class="context-shortcut">Alt+Right</kbd>
+    </button>
+    <button type="button" data-context-action="refresh">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-15.3 6.4" /><path d="M3 12A9 9 0 0 1 18.3 5.6" /><path d="M18 2v4h4" /><path d="M6 22v-4H2" /></svg>
+      <span data-i18n="context.refresh">새로고침</span><kbd class="context-shortcut">Ctrl+R</kbd>
+    </button>
+    <button type="button" data-context-action="top">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5 5 12" /><path d="m12 5 7 7" /><path d="M12 6v13" /></svg>
+      <span data-i18n="context.top">맨 위로 이동</span><kbd class="context-shortcut">Home</kbd>
+    </button>
+    <div class="context-menu-separator" role="separator" aria-hidden="true"></div>
+    <button type="button" data-context-action="creator">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z" /><path d="m3 14 9 5 9-5" /><path d="m3 11 9 5 9-5" /></svg>
+      <span data-i18n="context.creator">Creator 열기</span>
+    </button>
+    <button type="button" data-context-action="feedback">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z" /><path d="M8 9h8" /><path d="M8 13h5" /></svg>
+      <span data-i18n="context.feedback">Feedback 열기</span>
+    </button>
+    <button type="button" data-context-action="settings">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3h.1A1.7 1.7 0 0 0 10 3.1V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1A1.7 1.7 0 0 0 20.9 10h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" /></svg>
+      <span data-i18n="context.settings">설정 열기</span>
+    </button>`;
+  document.body.append(menu);
+  return menu;
+};
+
+const ensureContextMenu = () => document.querySelector("[data-context-menu]") || createContextMenuFallback();
 
 const navLinks = [...document.querySelectorAll(".nav-links a")];
 const themeChoices = [...document.querySelectorAll("[data-theme-choice]")];
@@ -180,7 +333,7 @@ const scrollProgress = document.querySelector(".scroll-progress");
 const scrollActions = document.querySelector("[data-scroll-actions]");
 const scrollActionButtons = [...document.querySelectorAll("[data-scroll-to]")];
 const actionButtons = [...document.querySelectorAll("[data-go-url]")];
-const contextMenu = document.querySelector("[data-context-menu]");
+const contextMenu = ensureContextMenu();
 const contextMenuActions = [...document.querySelectorAll("[data-context-action]")];
 const mobileMenuButton = document.querySelector("[data-mobile-menu-toggle]");
 const mobileMenu = document.querySelector("[data-mobile-menu]");
@@ -200,7 +353,7 @@ let contextTargetLink = null;
 let contextTargetImage = null;
 const highlightTargets = [
   ...document.querySelectorAll(
-    ".mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .currency-switch button, .setting-select-trigger, .setting-select-menu button, .accent-trigger, .accent-menu button, .share-socials button, .scroll-actions button, .context-menu button",
+    ".mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .currency-switch button, .setting-select-trigger, .setting-select-menu button, .accent-trigger, .accent-menu button, .share-socials button, .scroll-actions button, .context-menu button, .nav-search-button",
   ),
 ];
 const sections = navLinks
@@ -211,6 +364,7 @@ const sections = navLinks
 const translations = {
   ko: {
     "accessibility.skip": "본문으로 바로 이동",
+    "nav.search": "Search",
     "nav.home": "Home",
     "nav.creator": "Creator",
     "nav.about": "About",
@@ -223,9 +377,11 @@ const translations = {
     "nav.bio": "Bio",
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
+    "nav.accessibility": "Accessibility",
     "usage.nav": "Usage",
     "nav.privacy": "Privacy Policy",
     "nav.license": "License",
+    "nav.terms": "Terms",
     "nav.feedback": "Feedback",
     "nav.menu": "메뉴",
     "nav.collapseSidebar": "사이드바 접기",
@@ -258,6 +414,12 @@ const translations = {
     "search.noResults": "일치하는 결과가 없습니다.",
     "search.close": "닫기",
     "search.open": "열기",
+    "cookie.eyebrow": "Privacy",
+    "cookie.title": "브라우저 저장 안내",
+    "cookie.body":
+      "이 사이트는 테마, 언어, 사이드바 상태처럼 화면을 편하게 보기 위한 설정을 이 브라우저에 저장합니다. 로그인 추적용 쿠키나 광고 쿠키는 사용하지 않습니다.",
+    "cookie.accept": "확인",
+    "cookie.settings": "Settings 보기",
     "search.homeTitle": "Home",
     "search.homeBody": "응급 대응 프로필의 소개, 주요 역량, 공유 기능을 확인합니다.",
     "search.creatorTitle": "Creator",
@@ -272,14 +434,21 @@ const translations = {
     "search.pricingBody": "Free, Pro, Team, Ultra 플랜과 비교표를 확인합니다.",
     "search.settingsTitle": "Settings",
     "search.settingsBody": "테마, 언어, 강조 컬러, 우클릭 메뉴, 저장용량 설정을 관리합니다.",
+    "search.accessibilityTitle": "Accessibility",
+    "search.accessibilityBody": "키보드 이동, 색 대비, 언어, 화면 밀도, Kid mode 지원 범위를 확인합니다.",
     "search.privacyTitle": "Privacy Policy",
     "search.privacyBody": "로컬 설정 저장, 외부 링크, 피드백 개인정보 기준을 확인합니다.",
     "search.licenseTitle": "Open Source License",
     "search.licenseBody": "사이트 코드, 이미지, 로고, 시스템 글꼴의 라이선스 기준을 확인합니다.",
+    "search.termsTitle": "Terms of Use",
+    "search.termsBody": "사이트 이용, 외부 결제, 피드백, 로컬 설정 기준을 확인합니다.",
     "search.feedbackTitle": "Feedback",
     "search.feedbackBody": "버그, 개선 의견, 사용성 피드백을 Google Forms로 보냅니다.",
     "aria.home": "홈",
     "aria.profileMenu": "프로필 메뉴",
+    "aria.termsMenu": "이용약관 메뉴",
+    "aria.termsSummary": "이용약관 요약",
+    "aria.termsDetails": "이용약관 세부 정보",
     "aria.homeTabs": "홈 섹션 탭",
     "aria.creatorMenu": "Creator 메뉴",
     "aria.bioMenu": "자기소개 메뉴",
@@ -287,12 +456,16 @@ const translations = {
     "aria.faqMenu": "FAQ 메뉴",
     "aria.pricingMenu": "요금제 메뉴",
     "aria.settingsMenu": "설정 메뉴",
+    "aria.accessibilityMenu": "접근성 메뉴",
+    "aria.accessibilitySummary": "접근성 요약",
+    "aria.accessibilityDetails": "접근성 세부 정보",
     "aria.privacyMenu": "개인정보처리방침 메뉴",
     "aria.licenseMenu": "오픈소스 라이선스 메뉴",
     "aria.feedbackMenu": "피드백 메뉴",
     "aria.feedbackGuide": "피드백 안내",
     "aria.feedbackTopics": "피드백 주제",
     "aria.feedbackPrivacy": "개인정보 안내",
+    "aria.supportDesk": "지원 안내",
     "aria.errorMenu": "오류 페이지 메뉴",
     "aria.offlineMenu": "오프라인 페이지 메뉴",
     "aria.profileSummary": "프로필 요약",
@@ -391,6 +564,8 @@ const translations = {
       "응급 대응, 창작 기록, 후원 경로, 개인정보와 설정을 빠르게 찾을 수 있게 정리한 공개 프로필 포털입니다.",
     "home.openBio": "Bio 열기",
     "home.openSettings": "설정 열기",
+    "home.openCreator": "Creator 보기",
+    "home.openSupport": "Support 문의",
     "home.signalLabel": "Emergency",
     "home.signalValue": "응급 입구 앞 미국 구급차",
     "home.ledgerResponseLabel": "Response",
@@ -557,9 +732,52 @@ const translations = {
     "feedback.topicTwoBody": "어색한 영어/한국어 문장, 너무 딱딱한 안내, 이해하기 어려운 설정 이름을 보낼 수 있습니다.",
     "feedback.topicThreeTitle": "다음에 필요한 기능",
     "feedback.topicThreeBody": "공유, 접근성, 가격 페이지, 설정, 우클릭 메뉴처럼 더 개선되면 좋은 부분을 제안해 주세요.",
+    "support.eyebrow": "Support",
+    "support.title": "문의 유형을 고르면 더 빨리 정리할 수 있습니다.",
+    "support.lead": "급하지 않은 문의, 결제 접근 문제, 개인정보 요청을 같은 양식으로 받되 목적을 분명히 적어 주세요.",
+    "support.routeOneLabel": "Bug",
+    "support.routeOneTitle": "화면이나 버튼 문제",
+    "support.routeOneBody": "문제가 생긴 페이지, 눌렀던 버튼, 기대한 결과를 함께 남겨 주세요.",
+    "support.routeTwoLabel": "Payment",
+    "support.routeTwoTitle": "결제와 플랜 접근",
+    "support.routeTwoBody": "Pricing, Stripe 링크, 결제 차단 설정에서 막힌 흐름을 알려주세요.",
+    "support.routeThreeLabel": "Policy",
+    "support.routeThreeTitle": "개인정보와 약관 요청",
+    "support.routeThreeBody": "Privacy, License, Terms에서 더 명확해야 할 문장을 알려주세요.",
     "feedback.privacyEyebrow": "Privacy",
     "feedback.privacyTitle": "개인정보는 필요한 만큼만 입력하세요.",
     "feedback.privacyBody": "피드백 양식은 외부 Google Forms에서 열립니다. 답장을 원하지 않는다면 이름, 이메일, 연락처를 비워두는 편이 좋습니다.",
+    "accessibility.title": "접근성을 사이트의 기본 기능으로 관리합니다.",
+    "accessibility.lead":
+      "이 사이트는 키보드 이동, 명확한 포커스 표시, 언어 전환, 읽기 모드, 화면 밀도 조정을 통해 더 편하게 탐색할 수 있게 설계했습니다.",
+    "accessibility.mediaLabel": "Accessibility",
+    "accessibility.mediaValue": "Keyboard, contrast, readable controls",
+    "accessibility.summaryKeyboard": "Keyboard",
+    "accessibility.summaryKeyboardValue": "Skip link and focus",
+    "accessibility.summaryContrast": "Contrast",
+    "accessibility.summaryContrastValue": "Dark readable UI",
+    "accessibility.summaryLanguage": "Language",
+    "accessibility.summaryLanguageValue": "Korean and English",
+    "accessibility.summaryControls": "Controls",
+    "accessibility.summaryControlsValue": "Settings page",
+    "accessibility.keyboardTitle": "키보드로 이동할 수 있습니다.",
+    "accessibility.keyboardBody":
+      "각 페이지에는 본문으로 바로 이동하는 skip link가 있고, 버튼과 링크에는 focus-visible 표시가 적용됩니다. 우클릭 메뉴와 공유, QR, 인쇄 같은 대화상자도 버튼 기반으로 열립니다.",
+    "accessibility.contrastTitle": "기본 화면은 어두운 고대비 구성을 사용합니다.",
+    "accessibility.contrastBody":
+      "다크와 밝기 끄기 테마는 텍스트와 컨트롤이 보이도록 공통 토큰으로 관리됩니다. 사이드바는 색 장식을 줄이고 단색 회색 배경으로 정리했습니다.",
+    "accessibility.readingTitle": "읽기 편한 표시 설정을 제공합니다.",
+    "accessibility.readingBody":
+      "Settings에서 언어, 화면 밀도, Kid mode, 빠른 렌더링을 조정할 수 있습니다. Kid mode는 글자 크기와 움직임 감소 정도를 단계별로 바꿉니다.",
+    "accessibility.motionTitle": "움직임과 무거운 효과를 줄일 수 있습니다.",
+    "accessibility.motionBody":
+      "빠른 렌더링을 켜면 블러, 그림자, 애니메이션 부담을 줄입니다. 기기의 reduced motion 설정도 존중하도록 애니메이션 사용을 제한합니다.",
+    "accessibility.feedbackTitle": "불편한 부분은 Support로 알려주세요.",
+    "accessibility.feedbackBody":
+      "키보드 이동, 읽기 대비, 언어 전환, 모바일 표시에서 문제가 보이면 Feedback 페이지로 알려주세요. 접근성 개선 요청은 다음 수정의 우선 신호로 봅니다.",
+    "accessibility.settingsLink": "Accessibility settings 열기",
+    "accessibility.feedbackLink": "Support로 문제 알리기",
+    "accessibility.updated": "마지막 업데이트: 2026년 6월 9일",
     "privacy.eyebrow": "Privacy Policy",
     "privacy.title": "개인정보를 읽기 쉽게 정리했습니다.",
     "privacy.lead":
@@ -620,6 +838,38 @@ const translations = {
     "license.permissionTitle": "개인 자산은 먼저 허가를 요청하세요.",
     "license.permissionBody": "사이트 이름, 로고, 이미지, 결제 문구, 개인 소개 문장처럼 소유자 식별과 연결되는 자료를 쓰고 싶다면 먼저 허가를 요청해 주세요.",
     "license.updated": "마지막 업데이트: 2026년 6월 3일",
+    "terms.title": "사이트 이용 조건을 짧고 분명하게 정리했습니다.",
+    "terms.lead":
+      "이 페이지는 프로필 사이트를 읽고, 설정을 저장하고, 피드백과 결제 링크를 여는 방식에 대한 기본 기준을 설명합니다.",
+    "terms.mediaLabel": "Terms registry",
+    "terms.mediaValue": "읽기, 지원, 제보",
+    "terms.summaryUse": "Use",
+    "terms.summaryUseValue": "Public reading",
+    "terms.summarySupport": "Support",
+    "terms.summarySupportValue": "External checkout",
+    "terms.summaryData": "Data",
+    "terms.summaryDataValue": "Local settings",
+    "terms.summaryChanges": "Changes",
+    "terms.summaryChangesValue": "Updated here",
+    "terms.acceptTitle": "사이트를 계속 이용하면 이 기준에 동의한 것으로 봅니다.",
+    "terms.acceptBody":
+      "이 사이트는 공개 프로필, 창작 기록, 가격 안내, 설정, 개인정보 안내를 제공하는 정적 웹사이트입니다. 내용을 읽거나 링크를 열면 이 약관과 개인정보 처리방침을 기준으로 이용하는 것으로 봅니다.",
+    "terms.contentTitle": "정보는 안내 목적입니다.",
+    "terms.contentBody":
+      "응급 대응, 개발, 가격, 지원 관련 문구는 사이트 소개와 안내를 위한 것입니다. 전문 의료, 법률, 재정 조언으로 해석하지 말고 중요한 결정에는 공식 기관이나 서비스 제공자의 최신 정보를 확인해 주세요.",
+    "terms.checkoutTitle": "결제와 외부 양식은 외부 서비스에서 처리됩니다.",
+    "terms.checkoutBody":
+      "Stripe Checkout, Google Forms, 공유 서비스처럼 외부 화면으로 이동하는 기능은 해당 서비스의 약관과 개인정보 기준을 따릅니다. 이 사이트는 카드 번호나 외부 양식 응답을 직접 처리하지 않습니다.",
+    "terms.localTitle": "설정은 브라우저 안에서 관리됩니다.",
+    "terms.localBody":
+      "테마, 언어, 표시 밀도, 결제 차단 같은 설정은 같은 브라우저의 localStorage에 저장됩니다. Settings 또는 Usage 페이지에서 사이트 데이터를 정리할 수 있습니다.",
+    "terms.fairUseTitle": "공정한 사용을 부탁드립니다.",
+    "terms.fairUseBody":
+      "사이트를 방해하거나, 자동 요청으로 과도한 부하를 만들거나, 이미지와 로고 같은 개인 자산을 허가 없이 복제하지 말아 주세요. 코드와 자산의 재사용 기준은 License 페이지에서 확인할 수 있습니다.",
+    "terms.contactTitle": "문제가 있으면 Support로 알려주세요.",
+    "terms.contactBody":
+      "깨진 링크, 잘못된 문구, 결제 접근 문제, 개인정보 관련 요청은 Support 페이지에서 피드백으로 남길 수 있습니다. 필요한 경우 이 약관은 더 명확하게 업데이트될 수 있습니다.",
+    "terms.updated": "마지막 업데이트: 2026년 6월 7일",
     "feedback.warningTitle": "외부 양식으로 이동합니다.",
     "feedback.warningBody": "Google Forms가 새 페이지에서 열립니다. 이름이나 연락처 같은 개인정보는 필요한 경우에만 입력해 주세요.",
     "feedback.cancel": "취소",
@@ -651,6 +901,7 @@ const translations = {
     "settings.displayTab": "Display",
     "settings.navigationTab": "Navigation",
     "settings.languageTab": "Language",
+    "settings.accessibilityTab": "Accessibility",
     "settings.performanceTab": "Performance",
     "settings.storageTab": "Storage",
     "settings.accentTab": "Accent",
@@ -706,6 +957,9 @@ const translations = {
     "settings.kidModeOffLevel": "Off",
     "settings.kidModeSoftLevel": "Soft",
     "settings.kidModeStrongLevel": "Strong",
+    "settings.accessibilityTitle": "접근성 안내",
+    "settings.accessibilityBody": "키보드 이동, 색 대비, 언어, Kid mode, 움직임 감소 지원 범위를 확인합니다.",
+    "settings.accessibilityOpen": "Accessibility 열기",
     "settings.contextMenuTitle": "커스텀 우클릭 메뉴",
     "settings.contextMenuBody": "빠른 작업을 담은 디자인 우클릭 메뉴를 사용합니다.",
     "settings.contextMenuDialogTitle": "우클릭 메뉴 방식 선택",
@@ -1130,6 +1384,7 @@ const translations = {
   },
   en: {
     "accessibility.skip": "Skip to main content",
+    "nav.search": "Search",
     "nav.home": "Home",
     "nav.creator": "Creator",
     "nav.about": "About",
@@ -1142,9 +1397,11 @@ const translations = {
     "nav.bio": "Bio",
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
+    "nav.accessibility": "Accessibility",
     "usage.nav": "Usage",
     "nav.privacy": "Privacy Policy",
     "nav.license": "License",
+    "nav.terms": "Terms",
     "nav.feedback": "Feedback",
     "nav.menu": "Menu",
     "nav.collapseSidebar": "Collapse sidebar",
@@ -1177,6 +1434,12 @@ const translations = {
     "search.noResults": "No matching results.",
     "search.close": "Close",
     "search.open": "Open",
+    "cookie.eyebrow": "Privacy",
+    "cookie.title": "Browser storage notice",
+    "cookie.body":
+      "This site stores display preferences like theme, language, and sidebar state in this browser. It does not use login tracking cookies or advertising cookies.",
+    "cookie.accept": "Got it",
+    "cookie.settings": "View Settings",
     "search.homeTitle": "Home",
     "search.homeBody": "View the emergency response profile intro, core strengths, and sharing tools.",
     "search.creatorTitle": "Creator",
@@ -1191,14 +1454,21 @@ const translations = {
     "search.pricingBody": "Compare Free, Pro, Team, and Ultra plans.",
     "search.settingsTitle": "Settings",
     "search.settingsBody": "Manage theme, language, accent color, context menu, and storage settings.",
+    "search.accessibilityTitle": "Accessibility",
+    "search.accessibilityBody": "Review keyboard navigation, contrast, language, density, and Kid mode support.",
     "search.privacyTitle": "Privacy Policy",
     "search.privacyBody": "Review local preference storage, external links, and feedback privacy notes.",
     "search.licenseTitle": "Open Source License",
     "search.licenseBody": "Review the license rules for the site code, images, logo, and system fonts.",
+    "search.termsTitle": "Terms of Use",
+    "search.termsBody": "Review site use, external checkout, feedback, and local settings terms.",
     "search.feedbackTitle": "Feedback",
     "search.feedbackBody": "Send bugs, improvement ideas, and usability feedback through Google Forms.",
     "aria.home": "Home",
     "aria.profileMenu": "Profile menu",
+    "aria.termsMenu": "Terms menu",
+    "aria.termsSummary": "Terms summary",
+    "aria.termsDetails": "Terms details",
     "aria.homeTabs": "Home section tabs",
     "aria.creatorMenu": "Creator menu",
     "aria.bioMenu": "Bio menu",
@@ -1206,12 +1476,16 @@ const translations = {
     "aria.faqMenu": "FAQ menu",
     "aria.pricingMenu": "Pricing menu",
     "aria.settingsMenu": "Settings menu",
+    "aria.accessibilityMenu": "Accessibility menu",
+    "aria.accessibilitySummary": "Accessibility summary",
+    "aria.accessibilityDetails": "Accessibility details",
     "aria.privacyMenu": "Privacy policy menu",
     "aria.licenseMenu": "Open source license menu",
     "aria.feedbackMenu": "Feedback menu",
     "aria.feedbackGuide": "Feedback guide",
     "aria.feedbackTopics": "Feedback topics",
     "aria.feedbackPrivacy": "Privacy note",
+    "aria.supportDesk": "Support desk",
     "aria.errorMenu": "Error page menu",
     "aria.offlineMenu": "Offline page menu",
     "aria.profileSummary": "Profile summary",
@@ -1310,6 +1584,8 @@ const translations = {
       "A public profile portal for emergency response, creation notes, support paths, privacy, and settings, arranged so each signal is easy to find.",
     "home.openBio": "Open Bio",
     "home.openSettings": "Open Settings",
+    "home.openCreator": "View Creator",
+    "home.openSupport": "Contact Support",
     "home.signalLabel": "Emergency",
     "home.signalValue": "U.S. ambulance at emergency entry",
     "home.ledgerResponseLabel": "Response",
@@ -1476,9 +1752,52 @@ const translations = {
     "feedback.topicTwoBody": "Send awkward English or Korean copy, overly stiff notices, or setting names that are hard to understand.",
     "feedback.topicThreeTitle": "Useful next features",
     "feedback.topicThreeBody": "Suggest improvements for sharing, accessibility, pricing, settings, or the custom context menu.",
+    "support.eyebrow": "Support",
+    "support.title": "Choosing a support type makes the request easier to sort.",
+    "support.lead": "Use the same form for non-urgent questions, checkout access issues, and privacy requests, but include the purpose clearly.",
+    "support.routeOneLabel": "Bug",
+    "support.routeOneTitle": "Screen or button issue",
+    "support.routeOneBody": "Include the page, the button you tried, and what you expected to happen.",
+    "support.routeTwoLabel": "Payment",
+    "support.routeTwoTitle": "Payment and plan access",
+    "support.routeTwoBody": "Report blocked flows around Pricing, Stripe links, or payment blocking settings.",
+    "support.routeThreeLabel": "Policy",
+    "support.routeThreeTitle": "Privacy and terms requests",
+    "support.routeThreeBody": "Point out copy in Privacy, License, or Terms that should be clearer.",
     "feedback.privacyEyebrow": "Privacy",
     "feedback.privacyTitle": "Only enter the personal details you need.",
     "feedback.privacyBody": "The feedback form opens in Google Forms. If you do not need a reply, it is better to leave your name, email, and contact details blank.",
+    "accessibility.title": "Accessibility is managed as a core site feature.",
+    "accessibility.lead":
+      "This site is designed for easier navigation through keyboard access, visible focus states, language switching, reading modes, and display density controls.",
+    "accessibility.mediaLabel": "Accessibility",
+    "accessibility.mediaValue": "Keyboard, contrast, readable controls",
+    "accessibility.summaryKeyboard": "Keyboard",
+    "accessibility.summaryKeyboardValue": "Skip link and focus",
+    "accessibility.summaryContrast": "Contrast",
+    "accessibility.summaryContrastValue": "Dark readable UI",
+    "accessibility.summaryLanguage": "Language",
+    "accessibility.summaryLanguageValue": "Korean and English",
+    "accessibility.summaryControls": "Controls",
+    "accessibility.summaryControlsValue": "Settings page",
+    "accessibility.keyboardTitle": "You can navigate with the keyboard.",
+    "accessibility.keyboardBody":
+      "Every page includes a skip link to the main content, and buttons and links use focus-visible states. Context menu, share, QR, and print dialogs are opened through button controls.",
+    "accessibility.contrastTitle": "The default interface uses a dark high-contrast layout.",
+    "accessibility.contrastBody":
+      "Dark and lights-off themes are managed with shared tokens so text and controls stay visible. The sidebar now uses a solid gray rail with reduced decorative color.",
+    "accessibility.readingTitle": "Readable display settings are available.",
+    "accessibility.readingBody":
+      "Settings can adjust language, density, Kid mode, and fast rendering. Kid mode changes readable scale and motion reduction by level.",
+    "accessibility.motionTitle": "Motion and heavy effects can be reduced.",
+    "accessibility.motionBody":
+      "Fast rendering lowers blur, shadow, and animation load. Motion is also limited when the device asks for reduced motion.",
+    "accessibility.feedbackTitle": "Tell Support when something is uncomfortable.",
+    "accessibility.feedbackBody":
+      "If keyboard flow, reading contrast, language switching, or mobile layout feels wrong, report it through Feedback. Accessibility reports are treated as priority signals for the next fix.",
+    "accessibility.settingsLink": "Open accessibility settings",
+    "accessibility.feedbackLink": "Report issue to Support",
+    "accessibility.updated": "Last updated: June 9, 2026",
     "privacy.eyebrow": "Privacy Policy",
     "privacy.title": "Privacy, made readable.",
     "privacy.lead":
@@ -1540,6 +1859,38 @@ const translations = {
     "license.permissionBody":
       "Please ask permission before using material tied to the owner, such as the site name, logo, images, payment copy, or personal introduction text.",
     "license.updated": "Last updated: June 3, 2026",
+    "terms.title": "Terms of use, kept short and clear.",
+    "terms.lead":
+      "This page explains the basic rules for reading the profile site, saving display settings, sending feedback, and opening payment links.",
+    "terms.mediaLabel": "Terms registry",
+    "terms.mediaValue": "Read, support, report",
+    "terms.summaryUse": "Use",
+    "terms.summaryUseValue": "Public reading",
+    "terms.summarySupport": "Support",
+    "terms.summarySupportValue": "External checkout",
+    "terms.summaryData": "Data",
+    "terms.summaryDataValue": "Local settings",
+    "terms.summaryChanges": "Changes",
+    "terms.summaryChangesValue": "Updated here",
+    "terms.acceptTitle": "Continuing to use the site means you accept these terms.",
+    "terms.acceptBody":
+      "This is a static website for a public profile, creation notes, pricing guidance, settings, and privacy information. Reading content or opening links means using the site under these terms and the Privacy Policy.",
+    "terms.contentTitle": "Information is for guidance.",
+    "terms.contentBody":
+      "Emergency response, development, pricing, and support copy is provided for site introduction and guidance. Do not treat it as professional medical, legal, or financial advice, and verify important decisions with official organizations or providers.",
+    "terms.checkoutTitle": "Payments and external forms are handled by outside services.",
+    "terms.checkoutBody":
+      "Features that open Stripe Checkout, Google Forms, or sharing services follow those services' terms and privacy rules. This site does not directly process card numbers or external form responses.",
+    "terms.localTitle": "Settings are managed in the browser.",
+    "terms.localBody":
+      "Theme, language, density, and payment-blocking preferences are stored in localStorage for the same browser. You can clear site data from Settings or Usage.",
+    "terms.fairUseTitle": "Please use the site fairly.",
+    "terms.fairUseBody":
+      "Do not disrupt the site, create excessive automated requests, or copy personal assets such as images and logos without permission. Reuse rules for code and assets are explained on the License page.",
+    "terms.contactTitle": "Tell Support when something is wrong.",
+    "terms.contactBody":
+      "Broken links, incorrect copy, checkout access issues, and privacy requests can be sent through Support feedback. These terms may be updated to make the rules clearer.",
+    "terms.updated": "Last updated: June 7, 2026",
     "feedback.warningTitle": "You are leaving for an external form.",
     "feedback.warningBody": "Google Forms will open on a new page. Only enter personal information such as your name or contact details if it is necessary.",
     "feedback.cancel": "Cancel",
@@ -1571,6 +1922,7 @@ const translations = {
     "settings.displayTab": "Display",
     "settings.navigationTab": "Navigation",
     "settings.languageTab": "Language",
+    "settings.accessibilityTab": "Accessibility",
     "settings.performanceTab": "Performance",
     "settings.storageTab": "Storage",
     "settings.accentTab": "Accent",
@@ -1628,6 +1980,9 @@ const translations = {
     "settings.kidModeOffLevel": "Off",
     "settings.kidModeSoftLevel": "Soft",
     "settings.kidModeStrongLevel": "Strong",
+    "settings.accessibilityTitle": "Accessibility guidance",
+    "settings.accessibilityBody": "Review support for keyboard flow, contrast, language, Kid mode, and reduced motion.",
+    "settings.accessibilityOpen": "Open Accessibility",
     "settings.contextMenuTitle": "Custom context menu",
     "settings.contextMenuBody": "Use a styled right-click menu with quick actions.",
     "settings.contextMenuDialogTitle": "Choose right-click menu mode",
@@ -2168,8 +2523,17 @@ const siteSearchIndex = [
     bodyKey: "search.settingsBody",
     url: "/settings",
     keywords: {
-      ko: "settings 설정 테마 언어 강조 컬러 우클릭 메뉴 캐시 저장용량 kid mode 사이드바 내비게이션",
-      en: "settings theme language accent color context menu cache storage kid mode sidebar navigation",
+      ko: "settings 설정 테마 언어 강조 컬러 우클릭 메뉴 캐시 저장용량 kid mode 접근성 사이드바 내비게이션",
+      en: "settings theme language accent color context menu cache storage kid mode accessibility sidebar navigation",
+    },
+  },
+  {
+    titleKey: "search.accessibilityTitle",
+    bodyKey: "search.accessibilityBody",
+    url: "/accessibility",
+    keywords: {
+      ko: "accessibility 접근성 키보드 포커스 색 대비 언어 화면 밀도 kid mode 움직임 감소",
+      en: "accessibility keyboard focus contrast language display density kid mode reduced motion",
     },
   },
   {
@@ -2188,6 +2552,15 @@ const siteSearchIndex = [
     keywords: {
       ko: "license 오픈소스 라이선스 mit 코드 이미지 로고 저작권",
       en: "license open source mit code images logo copyright",
+    },
+  },
+  {
+    titleKey: "search.termsTitle",
+    bodyKey: "search.termsBody",
+    url: "/terms",
+    keywords: {
+      ko: "terms 이용약관 약관 사용 조건 외부 결제 피드백 로컬 설정",
+      en: "terms terms of use conditions external checkout feedback local settings",
     },
   },
   {
@@ -2835,6 +3208,66 @@ const createPrintDialog = () => {
   printConfirm = document.querySelector("[data-print-confirm]");
 };
 
+const storageConsentKey = "profile-storage-consent";
+const storageConsentCookieName = "profile_storage_consent";
+
+const getStorageConsentCookie = () =>
+  document.cookie
+    .split(";")
+    .map((part) => part.trim())
+    .find((part) => part.startsWith(`${storageConsentCookieName}=`))
+    ?.split("=")[1] || "";
+
+const hasStorageConsent = () =>
+  localStorage.getItem(storageConsentKey) === "accepted" ||
+  getStorageConsentCookie() === "accepted";
+
+const setStorageConsent = () => {
+  localStorage.setItem(storageConsentKey, "accepted");
+  document.cookie = `${storageConsentCookieName}=accepted; Max-Age=31536000; Path=/; SameSite=Lax`;
+};
+
+const clearStorageConsent = () => {
+  localStorage.removeItem(storageConsentKey);
+  document.cookie = `${storageConsentCookieName}=; Max-Age=0; Path=/; SameSite=Lax`;
+};
+
+const createCookieNotice = () => {
+  if (hasStorageConsent() || document.querySelector("[data-cookie-notice]")) return;
+
+  const notice = document.createElement("section");
+  notice.className = "cookie-notice";
+  notice.dataset.cookieNotice = "";
+  notice.setAttribute("aria-label", "브라우저 저장 안내");
+  notice.setAttribute("data-i18n-aria-label", "cookie.title");
+  notice.innerHTML = `
+    <div class="cookie-notice-copy">
+      <p class="eyebrow" data-i18n="cookie.eyebrow">Privacy</p>
+      <h2 data-i18n="cookie.title">브라우저 저장 안내</h2>
+      <p data-i18n="cookie.body">이 사이트는 테마, 언어, 사이드바 상태처럼 화면을 편하게 보기 위한 설정을 이 브라우저에 저장합니다. 로그인 추적용 쿠키나 광고 쿠키는 사용하지 않습니다.</p>
+    </div>
+    <div class="cookie-notice-actions">
+      <a href="/settings#storage" data-i18n="cookie.settings">Settings 보기</a>
+      <button type="button" data-cookie-accept data-i18n="cookie.accept">확인</button>
+    </div>
+  `;
+  document.body.appendChild(notice);
+};
+
+const closeCookieNotice = () => {
+  const notice = document.querySelector("[data-cookie-notice]");
+  if (!notice) return;
+
+  setStorageConsent();
+  notice.classList.add("is-closing");
+  window.setTimeout(() => notice.remove(), 190);
+};
+
+const setupCookieNotice = () => {
+  createCookieNotice();
+  document.querySelector("[data-cookie-accept]")?.addEventListener("click", closeCookieNotice);
+};
+
 const selectHomeTab = (selectedTab) => {
   if (!selectedTab) return;
 
@@ -2924,7 +3357,9 @@ const setupSiteSearch = () => {
   const input = document.querySelector("[data-site-search-input]");
   const closeButton = document.querySelector("[data-site-search-close]");
   const resultsContainer = document.querySelector("[data-site-search-results]");
+  const openButtons = [...document.querySelectorAll("[data-site-search-open]")];
 
+  openButtons.forEach((button) => button.addEventListener("click", showSiteSearchDialog));
   input?.addEventListener("input", () => renderSearchResults(input.value));
   closeButton?.addEventListener("click", closeSiteSearchDialog);
   dialog?.addEventListener("click", (event) => {
@@ -2959,6 +3394,7 @@ const clearSiteCache = () => {
     "profile-browser-usage-used-ms",
     "profile-browser-usage-window-start-ms",
   ].forEach((key) => localStorage.removeItem(key));
+  clearStorageConsent();
 
   document.documentElement.dataset.theme = "dark";
   document.documentElement.dataset.accent = "neutral";
@@ -3600,11 +4036,11 @@ const addRipple = (event) => {
   const rect = target.getBoundingClientRect();
   const ripple = document.createElement("span");
   const isSidebarNav =
-    target.matches(".nav-links a") &&
+    target.matches(".nav-links a, .nav-search-button") &&
     document.documentElement.dataset.navLayout === "sidebar" &&
     window.matchMedia("(min-width: 1024px)").matches;
   const isMobileNav =
-    target.matches(".nav-links a") &&
+    target.matches(".nav-links a, .nav-search-button") &&
     window.matchMedia("(max-width: 760px), (hover: none), (pointer: coarse)").matches;
 
   if (isSidebarNav || isMobileNav) return;
@@ -4013,6 +4449,7 @@ createSiteSearchDialog();
 createQrDialog();
 createSourceDialog();
 createPrintDialog();
+setupCookieNotice();
 setLanguage(currentLanguage);
 if (homeTabs.length) {
   const activeHomeTab =

@@ -373,7 +373,14 @@ const paymentBlockStatuses = [...document.querySelectorAll("[data-payment-block-
 const themeStatuses = [...document.querySelectorAll("[data-theme-status]")];
 const storageBar = document.querySelector("[data-storage-bar]");
 const storageUsage = document.querySelector("[data-storage-usage]");
+const betaStatuses = [...document.querySelectorAll("[data-beta-status]")];
+const betaLabOpen = document.querySelector("[data-beta-lab-open]");
+const betaLabDialog = document.querySelector("[data-beta-lab-dialog]");
+const betaLabCloseButtons = [...document.querySelectorAll("[data-beta-lab-close]")];
+const betaFeatureButtons = [...document.querySelectorAll("[data-beta-feature]")];
+const betaRedesignStates = [...document.querySelectorAll("[data-beta-redesign-state]")];
 const notificationStatuses = [...document.querySelectorAll("[data-notification-status]")];
+const notificationTestButtons = [...document.querySelectorAll("[data-notification-test]")];
 const shareLinkButton = document.querySelector("[data-share-link]");
 let shareDialog = document.querySelector("[data-share-dialog]");
 let shareClose = document.querySelector("[data-share-close]");
@@ -1054,6 +1061,8 @@ const translations = {
     "settings.groupIdentityBody": "공개 프로필과 방문자 연결 방식을 관리합니다.",
     "settings.groupExperience": "Experience",
     "settings.groupExperienceBody": "방문자가 보는 화면의 테마, 언어, 접근성을 조정합니다.",
+    "settings.groupBeta": "Beta lab",
+    "settings.groupBetaBody": "아직 실험 중인 기능을 분리해서 켜거나 끕니다.",
     "settings.groupSystem": "System",
     "settings.groupSystemBody": "렌더링, 저장용량, 브라우저 캐시를 관리합니다.",
     "settings.groupBrand": "Brand system",
@@ -1064,6 +1073,7 @@ const translations = {
     "settings.displayTab": "Display",
     "settings.navigationTab": "Navigation",
     "settings.notificationsTab": "Notifications",
+    "settings.betaTab": "Beta",
     "settings.languageTab": "Language",
     "settings.accessibilityTab": "Accessibility",
     "settings.performanceTab": "Performance",
@@ -1086,6 +1096,22 @@ const translations = {
     "settings.notificationsAllowed": "허용됨",
     "settings.notificationsBlocked": "브라우저에서 차단됨",
     "settings.notificationsUnsupported": "지원되지 않음",
+    "settings.notificationsTest": "테스트",
+    "settings.notificationsTestTitle": "테스트 알림",
+    "settings.notificationsTestBody": "알림이 정상적으로 표시됩니다.",
+    "settings.betaTitle": "베타 기능",
+    "settings.betaBody": "새 검색 UI, Activity 필터, 모바일 액션 커스터마이즈 같은 실험 기능을 먼저 사용합니다.",
+    "settings.betaOn": "베타 기능 켜짐",
+    "settings.betaOff": "베타 기능 꺼짐",
+    "settings.betaStatusOn": "On",
+    "settings.betaStatusOff": "Off",
+    "settings.betaOpen": "기능 보기",
+    "settings.betaDialogTitle": "베타 기능",
+    "settings.betaDialogBody": "실험 중인 기능을 선택해서 이 브라우저에서 먼저 사용합니다.",
+    "settings.betaRedesignTitle": "설정 페이지 재디자인",
+    "settings.betaRedesignBody": "설정 페이지를 더 현대적인 분할 레이아웃과 조용한 패널 디자인으로 바꿉니다.",
+    "settings.betaRedesignApply": "적용",
+    "settings.betaRedesignActive": "끄기",
     "settings.paymentBlockTitle": "결제 차단",
     "settings.paymentBlockBody": "이 설정을 켜면 Pricing 페이지의 유료 플랜 버튼이 외부 Stripe checkout으로 이동하지 않습니다.",
     "settings.paymentBlockOn": "결제 차단 켜짐",
@@ -2161,6 +2187,8 @@ const translations = {
     "settings.groupIdentityBody": "Manage the public profile and how visitors connect with you.",
     "settings.groupExperience": "Experience",
     "settings.groupExperienceBody": "Adjust theme, language, and accessibility for visitors.",
+    "settings.groupBeta": "Beta lab",
+    "settings.groupBetaBody": "Keep experimental features separated and easy to turn off.",
     "settings.groupSystem": "System",
     "settings.groupSystemBody": "Manage rendering, storage usage, and browser cache.",
     "settings.groupBrand": "Brand system",
@@ -2171,6 +2199,7 @@ const translations = {
     "settings.displayTab": "Display",
     "settings.navigationTab": "Navigation",
     "settings.notificationsTab": "Notifications",
+    "settings.betaTab": "Beta",
     "settings.languageTab": "Language",
     "settings.accessibilityTab": "Accessibility",
     "settings.performanceTab": "Performance",
@@ -2195,6 +2224,22 @@ const translations = {
     "settings.notificationsAllowed": "Allowed",
     "settings.notificationsBlocked": "Blocked in browser",
     "settings.notificationsUnsupported": "Not supported",
+    "settings.notificationsTest": "Test",
+    "settings.notificationsTestTitle": "Test notification",
+    "settings.notificationsTestBody": "Notifications are working.",
+    "settings.betaTitle": "Beta features",
+    "settings.betaBody": "Try experimental features such as new search UI, Activity filters, and mobile action customization.",
+    "settings.betaOn": "Beta features on",
+    "settings.betaOff": "Beta features off",
+    "settings.betaStatusOn": "On",
+    "settings.betaStatusOff": "Off",
+    "settings.betaOpen": "View features",
+    "settings.betaDialogTitle": "Beta features",
+    "settings.betaDialogBody": "Choose experimental features to try early in this browser.",
+    "settings.betaRedesignTitle": "Settings page redesign",
+    "settings.betaRedesignBody": "Switch Settings to a more modern split layout with quiet panel styling.",
+    "settings.betaRedesignApply": "Apply",
+    "settings.betaRedesignActive": "Turn off",
     "settings.paymentBlockTitle": "Payment blocking",
     "settings.paymentBlockBody": "When this is on, paid plan buttons on the Pricing page will not open external Stripe checkout.",
     "settings.paymentBlockOn": "Payment blocking on",
@@ -2946,6 +2991,7 @@ const setLanguage = (language) => {
   });
   updateNavLayoutControls(document.documentElement.dataset.navLayout || "sidebar");
   updateCookiePreferenceControls(getCookiePreferences().preferences);
+  updateBetaStatus(localStorage.getItem("profile-beta-settings-redesign") === "true");
   updateNotificationStatus(localStorage.getItem("profile-setting-notifications") === "true");
   updateStorageEstimate();
   renderActivityPage();
@@ -2956,6 +3002,7 @@ const getToggleLabelKey = (key, isOn) => {
     "profile-public": isOn ? "settings.profileOn" : "settings.profileOff",
     "contact-visible": isOn ? "settings.contactOn" : "settings.contactOff",
     notifications: isOn ? "settings.notificationsOn" : "settings.notificationsOff",
+    "beta-features": isOn ? "settings.betaOn" : "settings.betaOff",
     "payment-block": isOn ? "settings.paymentBlockOn" : "settings.paymentBlockOff",
     "sidebar-nav": isOn ? "settings.sidebarNavOn" : "settings.sidebarNavOff",
     "fast-render": isOn ? "settings.fastRenderOn" : "settings.fastRenderOff",
@@ -2964,6 +3011,54 @@ const getToggleLabelKey = (key, isOn) => {
   };
 
   return labels[key];
+};
+
+const updateBetaStatus = (isOn) => {
+  document.documentElement.dataset.betaFeatures = isOn ? "true" : "false";
+  document.documentElement.dataset.settingsRedesign = isOn ? "true" : "false";
+  document.body?.classList.toggle("settings-redesign", isOn);
+  betaStatuses.forEach((status) => {
+    status.textContent = translate(isOn ? "settings.betaStatusOn" : "settings.betaStatusOff");
+    status.dataset.betaState = isOn ? "on" : "off";
+  });
+  betaRedesignStates.forEach((status) => {
+    status.textContent = translate(isOn ? "settings.betaRedesignActive" : "settings.betaRedesignApply");
+    status.dataset.betaFeatureState = isOn ? "active" : "idle";
+  });
+};
+
+const openBetaLabDialog = () => {
+  if (!betaLabDialog) return;
+  betaLabDialog.classList.remove("is-closing");
+  betaLabDialog.hidden = false;
+};
+
+const closeBetaLabDialog = () => {
+  if (!betaLabDialog || betaLabDialog.hidden) return;
+  betaLabDialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    betaLabDialog.hidden = true;
+    betaLabDialog.classList.remove("is-closing");
+  }, 180);
+};
+
+const toggleBetaFeature = (feature) => {
+  if (feature !== "settings-redesign") return;
+  const nextValue = localStorage.getItem("profile-beta-settings-redesign") !== "true";
+  localStorage.setItem("profile-beta-settings-redesign", String(nextValue));
+  localStorage.setItem("profile-setting-beta-features", String(nextValue));
+  updateBetaStatus(nextValue);
+};
+
+const setupBetaLabDialog = () => {
+  betaLabOpen?.addEventListener("click", openBetaLabDialog);
+  betaLabCloseButtons.forEach((button) => button.addEventListener("click", closeBetaLabDialog));
+  betaLabDialog?.addEventListener("click", (event) => {
+    if (event.button === 0 && event.target === betaLabDialog) closeBetaLabDialog();
+  });
+  betaFeatureButtons.forEach((button) => {
+    button.addEventListener("click", () => toggleBetaFeature(button.dataset.betaFeature));
+  });
 };
 
 const getNotificationPermissionState = () => {
@@ -2981,6 +3076,12 @@ const updateNotificationStatus = (isOn) => {
   notificationStatuses.forEach((status) => {
     status.textContent = translate(statusKey);
     status.dataset.notificationState = permission;
+  });
+
+  notificationTestButtons.forEach((button) => {
+    const isUnavailable = permission === "denied" || permission === "unsupported";
+    button.disabled = isUnavailable;
+    button.setAttribute("aria-disabled", String(isUnavailable));
   });
 };
 
@@ -3017,6 +3118,10 @@ const updateSettingToggle = (button, isOn) => {
     updateNotificationStatus(isOn);
   }
 
+  if (button.dataset.toggleKey === "beta-features") {
+    updateBetaStatus(isOn);
+  }
+
   const labelKey = getToggleLabelKey(button.dataset.toggleKey, isOn);
   if (labelKey) button.setAttribute("aria-label", translate(labelKey));
 
@@ -3034,6 +3139,24 @@ const resolveNotificationToggle = async (nextValue) => {
   } catch {
     return false;
   }
+};
+
+const showTestNotification = async () => {
+  const enabled = await resolveNotificationToggle(true);
+  localStorage.setItem("profile-setting-notifications", String(enabled));
+
+  const notificationToggle = document.querySelector('[data-toggle-key="notifications"]');
+  if (notificationToggle) updateSettingToggle(notificationToggle, enabled);
+  if (!enabled || getNotificationPermissionState() !== "granted") return;
+
+  const notification = new Notification(translate("settings.notificationsTestTitle"), {
+    body: translate("settings.notificationsTestBody"),
+    icon: "/assets/icon-192.png",
+    badge: "/assets/favicon-96.png",
+    tag: "profile-test-notification",
+  });
+
+  window.setTimeout(() => notification.close?.(), 5000);
 };
 
 const setupSettingToggles = () => {
@@ -3069,6 +3192,16 @@ const setupSettingToggles = () => {
         document.documentElement.dataset.navLayout = nextValue ? "sidebar" : "top";
       }
       updateSettingToggle(button, nextValue);
+    });
+  });
+};
+
+const setupNotificationTest = () => {
+  notificationTestButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      showTestNotification().catch(() => {
+        updateNotificationStatus(false);
+      });
     });
   });
 };
@@ -4017,6 +4150,8 @@ const clearSiteCache = () => {
     "profile-setting-profile-public",
     "profile-setting-contact-visible",
     "profile-setting-payment-block",
+    "profile-setting-beta-features",
+    "profile-beta-settings-redesign",
     "profile-setting-notifications",
     "profile-setting-sidebar-nav",
     "profile-sidebar-collapsed",
@@ -5103,6 +5238,8 @@ setupSearchPage();
 setupOfflineRetry();
 setTheme(getInitialTheme());
 setupSettingToggles();
+setupBetaLabDialog();
+setupNotificationTest();
 setupNavLayoutDialog();
 setupContextMenuModeDialog();
 setupCookieSettingsDialog();

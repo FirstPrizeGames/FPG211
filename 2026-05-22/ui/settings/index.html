@@ -71,6 +71,12 @@
           ? "true"
           : "false";
         document.documentElement.dataset.kidMode = normalizeKidMode(localStorage.getItem("profile-setting-kid-mode"));
+        document.documentElement.dataset.settingsRedesign = normalizeBoolean(
+          localStorage.getItem("profile-beta-settings-redesign"),
+          false,
+        )
+          ? "true"
+          : "false";
         const sidebarNavEnabled = normalizeBoolean(
           localStorage.getItem("profile-setting-sidebar-nav"),
           true,
@@ -84,7 +90,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260610-mobile-icons-visible" />
+    <link rel="stylesheet" href="../styles.css?v=20260610-beta-toggle-features" />
   </head>
   <body class="settings-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -224,6 +230,14 @@
             </svg>
             <span data-i18n="settings.accessibilityTab">Accessibility</span>
           </a>
+          <a href="#beta">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M10 2v6.5L5 18a3 3 0 0 0 2.6 4h8.8A3 3 0 0 0 19 18l-5-9.5V2" />
+              <path d="M8 2h8" />
+              <path d="M8.5 15h7" />
+            </svg>
+            <span data-i18n="settings.betaTab">Beta</span>
+          </a>
           <a href="#language">
             <svg aria-hidden="true" viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="10" />
@@ -302,6 +316,9 @@
             </div>
             <div class="notification-control">
               <span class="notification-status" data-notification-status data-i18n="settings.notificationsReady">준비됨</span>
+              <button class="notification-test-button" type="button" data-notification-test data-i18n="settings.notificationsTest">
+                테스트
+              </button>
               <button
                 class="toggle"
                 type="button"
@@ -467,6 +484,29 @@
               <p data-i18n="settings.accessibilityBody">키보드 이동, 색 대비, 언어, Kid mode, 움직임 감소 지원 범위를 확인합니다.</p>
             </div>
             <a class="button setting-popup-button" href="/accessibility" data-i18n="settings.accessibilityOpen">Accessibility 열기</a>
+          </article>
+
+          <div class="settings-group-label">
+            <span data-i18n="settings.groupBeta">Beta lab</span>
+            <p data-i18n="settings.groupBetaBody">아직 실험 중인 기능을 분리해서 켜거나 끕니다.</p>
+          </div>
+          <article class="setting-card setting-card-beta" id="beta">
+            <div>
+              <p class="eyebrow" data-i18n="settings.betaTab">Beta</p>
+              <h3 data-i18n="settings.betaTitle">베타 기능</h3>
+              <p data-i18n="settings.betaBody">새 검색 UI, Activity 필터, 모바일 액션 커스터마이즈 같은 실험 기능을 먼저 사용합니다.</p>
+            </div>
+            <div class="beta-control">
+              <span class="beta-status" data-beta-status data-i18n="settings.betaStatusOff">Off</span>
+              <button
+                class="button setting-popup-button"
+                type="button"
+                data-beta-lab-open
+                data-i18n="settings.betaOpen"
+              >
+                기능 보기
+              </button>
+            </div>
           </article>
 
           <div class="settings-group-label">
@@ -816,6 +856,28 @@
           </div>
         </div>
       </div>
+      <div class="cache-dialog beta-lab-dialog" data-beta-lab-dialog hidden>
+        <div class="cache-dialog-panel beta-lab-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="beta-lab-dialog-title">
+          <button class="dialog-close-button" type="button" data-beta-lab-close aria-label="닫기" data-i18n-aria-label="share.close">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+          </button>
+          <p class="eyebrow" data-i18n="settings.betaTab">Beta</p>
+          <h2 id="beta-lab-dialog-title" data-i18n="settings.betaDialogTitle">베타 기능</h2>
+          <p data-i18n="settings.betaDialogBody">실험 중인 기능을 선택해서 이 브라우저에서 먼저 사용합니다.</p>
+          <div class="beta-feature-list">
+            <button class="beta-feature-card" type="button" data-beta-feature="settings-redesign">
+              <span class="beta-feature-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 6h16" /><path d="M4 12h10" /><path d="M4 18h16" /><path d="M17 10l3 3-3 3" /></svg>
+              </span>
+              <span class="beta-feature-copy">
+                <strong data-i18n="settings.betaRedesignTitle">설정 페이지 재디자인</strong>
+                <small data-i18n="settings.betaRedesignBody">설정 페이지를 더 현대적인 분할 레이아웃과 조용한 패널 디자인으로 바꿉니다.</small>
+              </span>
+              <span class="beta-feature-state" data-beta-redesign-state data-i18n="settings.betaRedesignApply">적용</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </main>
     <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
       <button type="button" data-scroll-to="top" aria-label="맨 위로 이동" data-i18n-aria-label="aria.scrollTop">
@@ -920,7 +982,7 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260610-mobile-icons-visible" defer></script>
+    <script src="../script.js?v=20260610-beta-toggle-features" defer></script>
   </body>
 </html>
 

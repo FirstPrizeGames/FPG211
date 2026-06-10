@@ -1381,12 +1381,12 @@ summary {
 @keyframes mobileMenuIn {
   from {
     opacity: 0;
-    transform: translate(-50%, -46%) scale(0.96);
+    transform: translateY(10px) scale(0.96);
   }
 
   to {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -10002,10 +10002,27 @@ html[lang="ko"] .faq-feedback-strip h2 {
     content: "";
     position: fixed;
     inset: 0;
-    z-index: 89;
+    z-index: 0;
     background: rgba(0, 0, 0, 0.54);
     backdrop-filter: blur(6px);
     animation: mobileMenuBackdropIn 160ms ease both;
+  }
+
+  .topbar.is-open {
+    position: fixed;
+    inset: 0;
+    z-index: 120;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+    place-items: center;
+    width: 100%;
+    min-height: 100dvh;
+    padding: calc(10px + env(safe-area-inset-top)) 10px calc(18px + env(safe-area-inset-bottom));
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
   }
 
   .brand-logo {
@@ -10014,7 +10031,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
   .mobile-menu-button {
     position: relative;
-    z-index: 91;
+    z-index: 2;
     display: flex;
     width: 100%;
     min-height: 50px;
@@ -10023,12 +10040,12 @@ html[lang="ko"] .faq-feedback-strip h2 {
   }
 
   .nav-links {
-    position: fixed;
-    top: 52%;
-    left: 50%;
-    z-index: 90;
+    position: relative;
+    z-index: 1;
     display: none;
     grid-template-columns: 1fr;
+    align-self: center;
+    justify-self: center;
     gap: 7px;
     width: min(360px, calc(100vw - 32px));
     max-height: min(76dvh, 560px);

@@ -18,6 +18,12 @@
   --dark: #f4f3ee;
   --soft: #252520;
   --accent: #c7c0b4;
+  --action-bg: #f4f3ee;
+  --action-ink: #151514;
+  --action-border: rgba(244, 243, 238, 0.32);
+  --action-muted-bg: rgba(244, 243, 238, 0.08);
+  --danger-bg: #d8d5cc;
+  --danger-ink: #151514;
   --shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
   --hero-tint: linear-gradient(90deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.26) 64%);
   --hero-tint-mobile: linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.74));
@@ -46,6 +52,12 @@
   --dark: #f4f3ee;
   --soft: #252520;
   --accent: #c7c0b4;
+  --action-bg: #f4f3ee;
+  --action-ink: #151514;
+  --action-border: rgba(244, 243, 238, 0.32);
+  --action-muted-bg: rgba(244, 243, 238, 0.08);
+  --danger-bg: #d8d5cc;
+  --danger-ink: #151514;
   --shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
   --hero-tint: linear-gradient(90deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.26) 64%);
   --hero-tint-mobile: linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.74));
@@ -74,6 +86,12 @@
   --dark: #f2f1ec;
   --soft: #11110f;
   --accent: #bdb5a7;
+  --action-bg: #f2f1ec;
+  --action-ink: #060606;
+  --action-border: rgba(242, 241, 236, 0.28);
+  --action-muted-bg: rgba(242, 241, 236, 0.07);
+  --danger-bg: #d1cec4;
+  --danger-ink: #060606;
   --shadow: 0 28px 80px rgba(0, 0, 0, 0.58);
   --hero-tint: linear-gradient(90deg, rgba(0, 0, 0, 0.84), rgba(0, 0, 0, 0.46) 64%);
   --hero-tint-mobile: linear-gradient(180deg, rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0.86));
@@ -2607,8 +2625,10 @@ html[lang="ko"] .home-feedback-strip h2 {
 }
 
 .icon-button.is-copied {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--action-border);
+  background: color-mix(in srgb, var(--action-bg) 12%, var(--pill-bg));
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--action-bg) 16%, transparent);
 }
 
 .site-info {
@@ -8463,6 +8483,13 @@ html[lang="ko"] .faq-feedback-strip h2 {
   width: min(620px, 100%);
 }
 
+.share-dialog .cache-dialog-panel {
+  border-color: color-mix(in srgb, var(--line) 88%, transparent);
+  background: var(--panel-solid);
+  color: var(--ink);
+  box-shadow: 0 28px 84px rgba(0, 0, 0, 0.34);
+}
+
 .search-dialog-panel {
   width: min(720px, 100%);
 }
@@ -8826,7 +8853,8 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 .share-link-field input:focus {
-  outline: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-color: var(--action-border);
+  outline: 2px solid color-mix(in srgb, var(--action-bg) 24%, transparent);
   outline-offset: 3px;
 }
 
@@ -8977,11 +9005,11 @@ html[lang="ko"] .faq-feedback-strip h2 {
   position: fixed;
   z-index: 150;
   display: grid;
-  gap: 6px;
-  width: min(320px, calc(100vw - 20px));
+  gap: 4px;
+  width: min(292px, calc(100vw - 20px));
   max-height: min(580px, calc(100vh - 20px));
   overflow-y: auto;
-  padding: 12px;
+  padding: 8px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--panel-solid);
@@ -9017,11 +9045,11 @@ html[lang="ko"] .faq-feedback-strip h2 {
   position: relative;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 24px minmax(0, 1fr) auto;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
   align-items: center;
-  gap: 12px;
-  min-height: 56px;
-  padding: 0 18px;
+  gap: 10px;
+  min-height: 42px;
+  padding: 0 12px;
   border: 0;
   border-radius: 6px;
   background: transparent;
@@ -9039,12 +9067,12 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
 .context-shortcut {
   justify-self: end;
-  padding: 3px 7px;
+  padding: 3px 6px;
   border: 1px solid var(--line);
   border-radius: 6px;
   color: var(--muted);
   background: color-mix(in srgb, var(--ink) 4%, transparent);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 850;
   line-height: 1;
   white-space: nowrap;
@@ -9052,10 +9080,10 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
 .context-menu svg {
   justify-self: center;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   stroke: currentColor;
-  stroke-width: 2.2;
+  stroke-width: 2.1;
   stroke-linecap: round;
   stroke-linejoin: round;
   fill: none;
@@ -9063,7 +9091,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
 .context-menu-separator {
   height: 1px;
-  margin: 4px 6px;
+  margin: 3px 6px;
   background: var(--line);
 }
 
@@ -9726,6 +9754,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 [data-theme] .home-ledger,
 [data-theme] .home-latest-list,
 [data-theme] .home-action-grid a,
+[data-theme] .home-action-grid button,
 [data-theme] .creator-guide > article,
 [data-theme] .faq-archive-card,
 [data-theme] .policy-panel,
@@ -9750,6 +9779,13 @@ html[lang="ko"] .faq-feedback-strip h2 {
 [data-theme] .faq-archive-card h2,
 [data-theme] .policy-panel h2,
 [data-theme] .license-panel h2 {
+  color: var(--ink);
+}
+
+[data-theme] .home-action-grid a:hover,
+[data-theme] .home-action-grid button:hover {
+  border-color: var(--action-border);
+  background: color-mix(in srgb, var(--ink) 6%, var(--card-bg));
   color: var(--ink);
 }
 
@@ -9973,7 +10009,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
 @media (max-width: 760px) {
   .context-menu button {
-    grid-template-columns: 24px minmax(0, 1fr);
+    grid-template-columns: 20px minmax(0, 1fr);
   }
 
   .context-shortcut {
@@ -11844,10 +11880,313 @@ html[lang="ko"] .faq-feedback-strip h2 {
     padding-inline: 8px;
   }
 
-  [data-theme][data-nav-layout="sidebar"][data-sidebar-collapsed="true"] .mobile-menu-button {
+[data-theme][data-nav-layout="sidebar"][data-sidebar-collapsed="true"] .mobile-menu-button {
     top: 58px;
     right: 22px;
   }
+}
+
+/* Modern neutral control pass */
+.button,
+.hero-button,
+.feedback-cta,
+.cache-confirm-button,
+.feedback-confirm-button,
+.subscribe-confirm-button,
+.share-copy-button,
+.cookie-notice-actions button,
+.pricing-card .button,
+.setting-popup-button,
+.cache-button,
+.share-socials button,
+.home-action-grid button {
+  border-color: var(--action-border);
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent),
+    var(--action-muted-bg);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.button.primary,
+.hero-button-contact,
+.feedback-cta,
+.cache-confirm-button,
+.feedback-confirm-button,
+.share-copy-button,
+.cookie-notice-actions button,
+.pricing-card .button,
+.pricing-card.is-featured .button,
+.button.primary.ultra-button {
+  border-color: var(--action-bg);
+  background: var(--action-bg);
+  color: var(--action-ink);
+}
+
+.button:hover,
+.hero-button:hover,
+.feedback-cta:hover,
+.cache-confirm-button:hover,
+.feedback-confirm-button:hover,
+.subscribe-confirm-button:hover,
+.share-copy-button:hover,
+.cookie-notice-actions button:hover,
+.pricing-card .button:hover,
+.setting-popup-button:hover,
+.cache-button:hover,
+.share-socials button:hover,
+.home-action-grid button:hover {
+  border-color: var(--action-bg);
+  background: color-mix(in srgb, var(--action-bg) 88%, var(--panel-solid));
+  color: var(--action-ink);
+  transform: translateY(-1px);
+}
+
+.button.ghost,
+.hero-button-work,
+.cookie-notice-actions a,
+.cache-cancel-button {
+  border-color: var(--action-border);
+  background: var(--action-muted-bg);
+  color: var(--ink);
+}
+
+.share-dialog .share-socials button,
+.share-dialog .cache-cancel-button,
+.share-dialog .share-copy-button {
+  min-height: 46px;
+  border-color: color-mix(in srgb, var(--line) 92%, transparent);
+  background: color-mix(in srgb, var(--ink) 5%, var(--panel-solid));
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.share-dialog .share-socials button:hover,
+.share-dialog .share-socials button:focus-visible,
+.share-dialog .cache-cancel-button:hover,
+.share-dialog .cache-cancel-button:focus-visible {
+  border-color: var(--action-border);
+  background: color-mix(in srgb, var(--ink) 9%, var(--panel-solid));
+  color: var(--ink);
+  transform: none;
+}
+
+.share-dialog .share-copy-button,
+.share-dialog .share-copy-button:hover,
+.share-dialog .share-copy-button:focus-visible {
+  border-color: var(--action-bg);
+  background: var(--action-bg);
+  color: var(--action-ink);
+  transform: none;
+}
+
+.share-dialog .share-status {
+  color: var(--ink);
+}
+
+.settings-body {
+  --settings-bg:
+    linear-gradient(135deg, #111110 0%, #171715 52%, #20201d 100%);
+  --settings-surface: rgba(31, 31, 29, 0.76);
+  --settings-surface-strong: rgba(38, 38, 35, 0.92);
+  --settings-rail: rgba(30, 30, 28, 0.9);
+  --settings-line: color-mix(in srgb, var(--line) 92%, rgba(244, 243, 238, 0.12));
+  --settings-text: var(--ink);
+  --settings-muted: var(--muted);
+  --settings-accent: #c7c0b4;
+  --settings-caution: #d8d5cc;
+  --settings-shadow: 0 28px 80px rgba(0, 0, 0, 0.26);
+  --settings-soft-shadow: 0 16px 38px rgba(0, 0, 0, 0.18);
+  --settings-grid-line: rgba(244, 243, 238, 0.055);
+}
+
+.settings-body .settings-hero,
+.settings-body .settings-stack,
+.settings-body .settings-sidebar,
+.settings-body .settings-overview div,
+.settings-body .settings-group-label,
+.settings-body .setting-compat-panel,
+.settings-body .accent-compat-panel,
+.settings-body .setting-select-trigger,
+.settings-body .accent-trigger,
+.settings-body .setting-popup-button,
+.settings-body .cookie-choice,
+.settings-body .swipe-control,
+.settings-body .cache-button {
+  border-color: var(--settings-line);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--settings-surface-strong) 68%, transparent), transparent),
+    var(--settings-surface);
+  color: var(--settings-text);
+}
+
+.settings-body .settings-hero {
+  background:
+    linear-gradient(var(--settings-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--settings-grid-line) 1px, transparent 1px),
+    linear-gradient(180deg, var(--settings-surface-strong), var(--settings-surface));
+  background-size: 34px 34px, 34px 34px, auto;
+}
+
+.settings-body .settings-hero::before {
+  border-color: color-mix(in srgb, var(--settings-line) 78%, transparent);
+}
+
+.settings-body .settings-overview div::after,
+.settings-body .setting-card::before,
+.settings-body .setting-compat-panel::before,
+.settings-body .accent-compat-panel::before,
+.settings-body .setting-card#payments::before {
+  background: linear-gradient(180deg, var(--settings-accent), transparent);
+}
+
+.settings-body .settings-copy .eyebrow,
+.settings-body .settings-overview span,
+.settings-body .settings-sidebar-title span,
+.settings-body .settings-group-label span,
+.settings-body .setting-card .eyebrow,
+.settings-body .setting-card#payments .eyebrow,
+.settings-body .setting-compat-panel span,
+.settings-body .accent-compat-panel span,
+.settings-body [data-payment-block-status][data-payment-state="blocked"] {
+  color: var(--settings-accent);
+}
+
+.settings-body .settings-sidebar a:hover,
+.settings-body .settings-sidebar a.is-active,
+.settings-body .setting-card:hover,
+.settings-body .setting-card:focus-within,
+.settings-body .setting-select-menu button.is-active,
+.settings-body .accent-menu button.is-active {
+  border-color: var(--settings-line);
+  background: color-mix(in srgb, var(--settings-text) 7%, var(--settings-surface));
+  color: var(--settings-text);
+  box-shadow: none;
+}
+
+.settings-body .setting-card#payments {
+  background: color-mix(in srgb, var(--settings-text) 3%, transparent);
+}
+
+.settings-body .toggle {
+  border-color: var(--settings-line);
+  background: color-mix(in srgb, var(--settings-text) 8%, var(--settings-rail));
+}
+
+.settings-body .toggle.is-on {
+  border-color: var(--action-border);
+  background: color-mix(in srgb, var(--action-bg) 18%, var(--settings-rail));
+}
+
+.settings-body .toggle.is-on::after {
+  background: var(--action-bg);
+}
+
+.settings-body .swipe-control.is-on .swipe-thumb {
+  background: var(--action-bg);
+}
+
+.settings-body .setting-popup-button:hover,
+.settings-body .cache-button:hover,
+.settings-body .setting-select-trigger:hover,
+.settings-body .accent-trigger:hover {
+  border-color: var(--action-border);
+  background: color-mix(in srgb, var(--settings-text) 8%, var(--settings-surface));
+  color: var(--settings-text);
+}
+
+.nav-links a.nav-feedback-link,
+[data-nav-layout="sidebar"] .nav-links a.nav-feedback-link {
+  border-color: rgba(226, 226, 226, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(242, 242, 242, 0.88);
+  box-shadow: none;
+}
+
+.nav-links a.nav-feedback-link:hover,
+.nav-links a.nav-feedback-link.is-active,
+[data-nav-layout="sidebar"] .nav-links a.nav-feedback-link:hover,
+[data-nav-layout="sidebar"] .nav-links a.nav-feedback-link.is-active {
+  border-color: rgba(244, 244, 244, 0.28);
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+.context-menu [data-context-action="close"] {
+  --accent: var(--danger-bg);
+}
+
+.context-menu [data-context-action="close"]:hover,
+.context-menu [data-context-action="close"]:focus-visible {
+  background: color-mix(in srgb, var(--danger-bg) 14%, transparent);
+  color: var(--danger-bg);
+}
+
+[data-accent="blue"],
+[data-accent="green"],
+[data-accent="rose"],
+[data-accent="orange"],
+[data-accent="purple"],
+[data-accent="pro-gold"],
+[data-accent="team-cyan"] {
+  --accent: #c7c0b4;
+}
+
+.home-body,
+.about-body,
+.bio-body,
+.creator-body,
+.faq-body,
+.privacy-body,
+.license-body,
+.terms-body,
+.accessibility-body,
+.updates-body,
+.settings-body {
+  --accent: #c7c0b4;
+  --legal-accent: #c7c0b4;
+  --settings-accent: #c7c0b4;
+  --settings-caution: #d8d5cc;
+}
+
+.pricing-card,
+.pricing-card.is-featured,
+.pricing-card.creator-card,
+.pricing-card.pro-card,
+.pricing-card.enterprise-card,
+.ultra-card {
+  --plan-accent: #c7c0b4;
+  border-color: color-mix(in srgb, var(--line) 88%, transparent);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--panel-solid) 92%, transparent), transparent),
+    var(--card-bg);
+  box-shadow: var(--shadow);
+}
+
+.plan-pill,
+.plan-price,
+.pricing-card strong,
+.home-latest-list span,
+.bio-kicker,
+.creator-studio-tag,
+.faq-answer-marker,
+.policy-dossier article > span,
+.license-dossier article > span,
+.terms-dossier article > span,
+.accessibility-dossier article > span {
+  color: var(--accent);
+}
+
+.accent-dot,
+.setting-card#payments::before,
+.settings-body .setting-card#payments::before,
+.settings-body .setting-card::before,
+.policy-dossier article > span::after,
+.license-dossier article > span::after,
+.terms-dossier article > span::after,
+.accessibility-dossier article > span::after {
+  background: var(--accent);
 }
 
 @media print {

@@ -10360,9 +10360,15 @@ html[lang="ko"] .faq-feedback-strip h2 {
   }
 
   .mobile-quick-action .nav-icon {
+    display: block;
     width: 21px;
     height: 21px;
     color: currentColor;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 
   .mobile-quick-action:hover,

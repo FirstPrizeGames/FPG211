@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260610-cookie-learn-more";
+const CACHE_NAME = "profile-offline-20260610-mobile-menu-popup";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

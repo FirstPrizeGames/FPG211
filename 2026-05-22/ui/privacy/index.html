@@ -84,7 +84,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260610-cookie-learn-more" />
+    <link rel="stylesheet" href="../styles.css?v=20260610-mobile-menu-popup" />
   </head>
   <body class="privacy-body legal-document-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -162,10 +162,24 @@
       <section class="policy-dossier" aria-label="개인정보 세부 정보" data-i18n-aria-label="aria.privacyDetails">
         <article id="cookies">
           <span>01</span>
-          <h2 data-i18n="privacy.localTitle">기기 안에 남는 설정</h2>
+          <h2 data-i18n="privacy.localTitle">쿠키와 브라우저 저장소</h2>
           <p data-i18n="privacy.localBody">
-            테마, 언어, 강조 색상, 화면 밀도, 사이드바 사용 여부처럼 화면을 편하게 보기 위한 설정은 브라우저 localStorage에 저장됩니다. 이 값은 사이트 서버로 전송하지 않으며 같은 브라우저에서만 유지됩니다.
+            이 사이트는 로그인 추적용 쿠키나 광고 쿠키를 사용하지 않습니다. 테마, 언어, 화면 밀도, 사이드바 상태 같은 보기 설정은 이 브라우저의 localStorage에 저장되고, 쿠키 안내를 확인했다는 선택만 profile_storage_consent 쿠키로 저장됩니다.
           </p>
+          <ul class="privacy-cookie-list">
+            <li>
+              <strong data-i18n="privacy.cookieEssentialTitle">필수 쿠키</strong>
+              <span data-i18n="privacy.cookieEssentialBody">보안과 기본 동작을 위한 항목이며 끌 수 없습니다.</span>
+            </li>
+            <li>
+              <strong data-i18n="privacy.cookiePreferenceTitle">설정 저장 쿠키</strong>
+              <span data-i18n="privacy.cookiePreferenceBody">쿠키 안내 확인 여부를 저장하며 Settings의 쿠키 설정 팝업에서 켜거나 끌 수 있습니다.</span>
+            </li>
+            <li>
+              <strong data-i18n="privacy.cookieAdsTitle">광고/분석 쿠키</strong>
+              <span data-i18n="privacy.cookieAdsBody">현재 사용하지 않습니다.</span>
+            </li>
+          </ul>
         </article>
         <article>
           <span>02</span>
@@ -289,7 +303,7 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260610-cookie-learn-more" defer></script>
+    <script src="../script.js?v=20260610-mobile-menu-popup" defer></script>
   </body>
 </html>
 

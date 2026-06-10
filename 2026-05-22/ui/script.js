@@ -822,9 +822,15 @@ const translations = {
     "privacy.summaryPaymentsValue": "Stripe checkout",
     "privacy.summaryControl": "Control",
     "privacy.summaryControlValue": "Clear anytime",
-    "privacy.localTitle": "기기 안에 남는 설정",
+    "privacy.localTitle": "쿠키와 브라우저 저장소",
     "privacy.localBody":
-      "테마, 언어, 강조 색상, 화면 밀도, 사이드바 사용 여부처럼 화면을 편하게 보기 위한 설정은 브라우저 localStorage에 저장됩니다. 이 값은 사이트 서버로 전송하지 않으며 같은 브라우저에서만 유지됩니다.",
+      "이 사이트는 로그인 추적용 쿠키나 광고 쿠키를 사용하지 않습니다. 테마, 언어, 화면 밀도, 사이드바 상태 같은 보기 설정은 이 브라우저의 localStorage에 저장되고, 쿠키 안내를 확인했다는 선택만 profile_storage_consent 쿠키로 저장됩니다.",
+    "privacy.cookieEssentialTitle": "필수 쿠키",
+    "privacy.cookieEssentialBody": "보안과 기본 동작을 위한 항목이며 끌 수 없습니다.",
+    "privacy.cookiePreferenceTitle": "설정 저장 쿠키",
+    "privacy.cookiePreferenceBody": "쿠키 안내 확인 여부를 저장하며 Settings의 쿠키 설정 팝업에서 켜거나 끌 수 있습니다.",
+    "privacy.cookieAdsTitle": "광고/분석 쿠키",
+    "privacy.cookieAdsBody": "현재 사용하지 않습니다.",
     "privacy.noAccountTitle": "계정 없이 읽는 사이트",
     "privacy.noAccountBody":
       "현재 이 사이트는 자체 로그인, 회원가입, 사용자 프로필 데이터베이스를 운영하지 않습니다. 이름, 비밀번호, 계정 식별자를 만들거나 보관하지 않습니다.",
@@ -1885,9 +1891,15 @@ const translations = {
     "privacy.summaryPaymentsValue": "Stripe checkout",
     "privacy.summaryControl": "Control",
     "privacy.summaryControlValue": "Clear anytime",
-    "privacy.localTitle": "Settings that stay on your device",
+    "privacy.localTitle": "Cookies and browser storage",
     "privacy.localBody":
-      "Theme, language, accent color, density, and sidebar preferences are stored in browser localStorage so the page feels familiar. These values are not sent to this site's server and stay in the same browser.",
+      "This site does not use login tracking cookies or advertising cookies. Display preferences such as theme, language, density, and sidebar state are stored in this browser's localStorage, and only the choice that you acknowledged the cookie notice is stored as the profile_storage_consent cookie.",
+    "privacy.cookieEssentialTitle": "Required cookies",
+    "privacy.cookieEssentialBody": "Needed for security and basic behavior, and cannot be turned off.",
+    "privacy.cookiePreferenceTitle": "Preference cookie",
+    "privacy.cookiePreferenceBody": "Stores whether you acknowledged the cookie notice, and can be turned on or off from the Cookie settings popup in Settings.",
+    "privacy.cookieAdsTitle": "Advertising and analytics cookies",
+    "privacy.cookieAdsBody": "Not currently used.",
     "privacy.noAccountTitle": "A site you can read without an account",
     "privacy.noAccountBody":
       "This site currently does not run its own login, sign-up flow, or user profile database. It does not create or store names, passwords, or account identifiers.",
@@ -4811,7 +4823,21 @@ mobileMenuButton?.addEventListener("click", () => {
   setMobileMenuOpen(!topbar?.classList.contains("is-open"));
 });
 
-mobileMenu?.querySelectorAll("a").forEach((link) => {
+document.addEventListener("click", (event) => {
+  const topbar = mobileMenuButton?.closest(".topbar");
+
+  if (!topbar?.classList.contains("is-open")) return;
+  if (event.target instanceof Element && topbar.contains(event.target)) return;
+
+  setMobileMenuOpen(false);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  setMobileMenuOpen(false);
+});
+
+mobileMenu?.querySelectorAll("a, .nav-search-button").forEach((link) => {
   link.addEventListener("click", () => setMobileMenuOpen(false));
 });
 

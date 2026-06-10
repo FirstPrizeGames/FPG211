@@ -1,10 +1,12 @@
-const CACHE_NAME = "profile-offline-20260610-settings-neutral-fix";
+﻿const CACHE_NAME = "profile-offline-20260610-mobile-quick-actions";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
   "/",
   "/accessibility",
   "/updates",
+  "/search",
+  "/activity",
   "/terms",
   "/feedback",
   "/styles.css",

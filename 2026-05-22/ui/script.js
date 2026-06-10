@@ -1,12 +1,20 @@
 const navIconMarkup = {
   search:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m16 16 5 5" /></svg>',
+  home:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg>',
+  share:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.6 10.8 6.8-4.1" /><path d="m8.6 13.2 6.8 4.1" /></svg>',
+  settings:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3h.1A1.7 1.7 0 0 0 10 3.1V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1A1.7 1.7 0 0 0 20.9 10h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" /></svg>',
   support:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="M9.8 12.2 11.4 14l3.2-4" /></svg>',
   analytics:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 20V10" /><path d="M10 20V6" /><path d="M16 20v-8" /><path d="M22 20H2" /></svg>',
   updates:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5h10" /><path d="M4 12h16" /><path d="M4 19h10" /><path d="m17 4 3 3-3 3" /></svg>',
+  activity:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 19V5" /><path d="M4 19h16" /><path d="M8 15l3-4 3 2 4-6" /><circle cx="8" cy="15" r="1" /><circle cx="11" cy="11" r="1" /><circle cx="14" cy="13" r="1" /><circle cx="18" cy="7" r="1" /></svg>',
   terms:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z" /><path d="M15 3v4h4" /><path d="M9 11h6" /><path d="M9 15h6" /><path d="M9 19h4" /></svg>',
   accessibility:
@@ -37,6 +45,63 @@ const createNavSearchButton = () => {
   return button;
 };
 
+const createMobileQuickActionButton = ({ type = "button", href, action, icon, labelKey, fallback }) => {
+  const element = document.createElement(href ? "a" : "button");
+  element.className = "mobile-quick-action";
+  if (href) {
+    element.href = href;
+    if (normalizeNavPath(window.location.pathname) === normalizeNavPath(href)) {
+      element.classList.add("is-active");
+      element.setAttribute("aria-current", "page");
+    }
+  } else {
+    element.type = type;
+    if (action) element.dataset.mobileQuickAction = action;
+  }
+  element.innerHTML = `${icon}<span data-i18n="${labelKey}">${fallback}</span>`;
+  return element;
+};
+
+const createMobileQuickActions = () => {
+  if (document.querySelector("[data-mobile-quick-actions]")) return;
+
+  const bar = document.createElement("nav");
+  bar.className = "mobile-quick-actions";
+  bar.dataset.mobileQuickActions = "";
+  bar.setAttribute("aria-label", translate("quickActions.label"));
+  bar.innerHTML = '<div class="mobile-quick-actions-inner"></div>';
+
+  const inner = bar.querySelector(".mobile-quick-actions-inner");
+  [
+    {
+      href: "/",
+      icon: navIconMarkup.home,
+      labelKey: "quickActions.home",
+      fallback: "Home",
+    },
+    {
+      action: "search",
+      icon: navIconMarkup.search,
+      labelKey: "quickActions.search",
+      fallback: "Search",
+    },
+    {
+      action: "share",
+      icon: navIconMarkup.share,
+      labelKey: "quickActions.share",
+      fallback: "Share",
+    },
+    {
+      href: "/settings",
+      icon: navIconMarkup.settings,
+      labelKey: "quickActions.settings",
+      fallback: "Settings",
+    },
+  ].forEach((item) => inner.append(createMobileQuickActionButton(item)));
+
+  document.body.append(bar);
+};
+
 const normalizeAnalyticsLink = (link) => {
   if (!link) return null;
   link.innerHTML = `${navIconMarkup.analytics}<span data-i18n="nav.analytics">Analytics</span>`;
@@ -55,6 +120,7 @@ const enhanceSidebarNavigation = () => {
     const feedbackLink = nav.querySelector('a[href="/feedback"]');
     let searchButton = nav.querySelector("[data-site-search-open]");
     let updatesLink = nav.querySelector('a[href="/updates"]');
+    let activityLink = nav.querySelector('a[href="/activity"]');
     let accessibilityLink = nav.querySelector('a[href="/accessibility"]');
     let analyticsLink = nav.querySelector('a[href="/usage"]');
     let termsLink = nav.querySelector('a[href="/terms"]');
@@ -80,6 +146,20 @@ const enhanceSidebarNavigation = () => {
 
     if (searchButton && updatesLink && updatesLink.previousElementSibling !== searchButton) {
       searchButton.after(updatesLink);
+    }
+
+    if (!activityLink) {
+      activityLink = createNavAnchor({
+        href: "/activity",
+        icon: navIconMarkup.activity,
+        labelKey: "nav.activity",
+        fallback: "Activity",
+      });
+      updatesLink?.after(activityLink);
+    }
+
+    if (updatesLink && activityLink && activityLink.previousElementSibling !== updatesLink) {
+      updatesLink.after(activityLink);
     }
 
     if (feedbackLink) {
@@ -291,6 +371,7 @@ const paymentBlockStatuses = [...document.querySelectorAll("[data-payment-block-
 const themeStatuses = [...document.querySelectorAll("[data-theme-status]")];
 const storageBar = document.querySelector("[data-storage-bar]");
 const storageUsage = document.querySelector("[data-storage-usage]");
+const notificationStatuses = [...document.querySelectorAll("[data-notification-status]")];
 const shareLinkButton = document.querySelector("[data-share-link]");
 let shareDialog = document.querySelector("[data-share-dialog]");
 let shareClose = document.querySelector("[data-share-close]");
@@ -397,6 +478,7 @@ const translations = {
     "nav.support": "Support",
     "nav.analytics": "Analytics",
     "nav.updates": "최신 업데이트",
+    "nav.activity": "Activity",
     "nav.bio": "Bio",
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
@@ -437,6 +519,24 @@ const translations = {
     "search.noResults": "일치하는 결과가 없습니다.",
     "search.close": "닫기",
     "search.open": "열기",
+    "search.pageLead": "사이트 안의 주요 페이지를 한 화면에서 검색하고 바로 이동합니다.",
+    "search.pageHint": "검색어를 입력하면 Home, Settings, Privacy, FAQ 같은 페이지가 즉시 정리됩니다.",
+    "activity.eyebrow": "Activity",
+    "activity.title": "최근 활동",
+    "activity.lead": "이 브라우저에서 열어본 페이지와 주요 동작을 로컬에만 기록합니다.",
+    "activity.local": "기록은 이 기기에만 저장됩니다.",
+    "activity.timeline": "Timeline",
+    "activity.visits": "방문",
+    "activity.actions": "동작",
+    "activity.latest": "최근",
+    "activity.emptyTitle": "아직 활동이 없습니다.",
+    "activity.emptyBody": "페이지를 둘러보거나 공유, 검색 같은 기능을 사용하면 여기에 표시됩니다.",
+    "activity.clear": "활동 지우기",
+    "activity.visit": "페이지 방문",
+    "activity.copyLink": "링크 복사",
+    "activity.openSearch": "검색 열기",
+    "activity.openShare": "공유 열기",
+    "activity.openSettings": "설정 열기",
     "cookie.eyebrow": "Privacy",
     "cookie.title": "브라우저 저장 안내",
     "cookie.body":
@@ -458,6 +558,8 @@ const translations = {
     "search.pricingBody": "Free, Pro, Team, Ultra 플랜과 비교표를 확인합니다.",
     "search.updatesTitle": "최신 업데이트",
     "search.updatesBody": "최근 사이트 변경 사항과 다음에 손볼 항목을 확인합니다.",
+    "search.activityTitle": "Activity",
+    "search.activityBody": "이 브라우저에 저장된 최근 방문과 주요 동작을 확인하고 지웁니다.",
     "search.settingsTitle": "Settings",
     "search.settingsBody": "테마, 언어, 강조 컬러, 우클릭 메뉴, 저장용량 설정을 관리합니다.",
     "search.accessibilityTitle": "Accessibility",
@@ -485,6 +587,9 @@ const translations = {
     "aria.updatesMenu": "최신 업데이트 메뉴",
     "aria.updatesSummary": "최신 업데이트 요약",
     "aria.updatesTimeline": "최신 업데이트 목록",
+    "aria.activityMenu": "Activity 메뉴",
+    "aria.activitySummary": "Activity 요약",
+    "aria.activityTimeline": "Activity 목록",
     "aria.accessibilityMenu": "접근성 메뉴",
     "aria.accessibilitySummary": "접근성 요약",
     "aria.accessibilityDetails": "접근성 세부 정보",
@@ -956,6 +1061,7 @@ const translations = {
     "settings.paymentTab": "Payments",
     "settings.displayTab": "Display",
     "settings.navigationTab": "Navigation",
+    "settings.notificationsTab": "Notifications",
     "settings.languageTab": "Language",
     "settings.accessibilityTab": "Accessibility",
     "settings.performanceTab": "Performance",
@@ -970,6 +1076,14 @@ const translations = {
     "settings.profileOff": "프로필 공개 꺼짐",
     "settings.contactOn": "연락처 표시 켜짐",
     "settings.contactOff": "연락처 표시 꺼짐",
+    "settings.notificationsTitle": "알림",
+    "settings.notificationsBody": "중요한 사이트 업데이트를 이 브라우저에서 알림으로 받을 수 있게 합니다.",
+    "settings.notificationsOn": "알림 켜짐",
+    "settings.notificationsOff": "알림 꺼짐",
+    "settings.notificationsReady": "준비됨",
+    "settings.notificationsAllowed": "허용됨",
+    "settings.notificationsBlocked": "브라우저에서 차단됨",
+    "settings.notificationsUnsupported": "지원되지 않음",
     "settings.paymentBlockTitle": "결제 차단",
     "settings.paymentBlockBody": "이 설정을 켜면 Pricing 페이지의 유료 플랜 버튼이 외부 Stripe checkout으로 이동하지 않습니다.",
     "settings.paymentBlockOn": "결제 차단 켜짐",
@@ -1256,6 +1370,11 @@ const translations = {
     "share.linkLabel": "공유 링크",
     "share.close": "닫기",
     "share.native": "기기 공유",
+    "quickActions.label": "모바일 빠른 액션",
+    "quickActions.home": "Home",
+    "quickActions.search": "Search",
+    "quickActions.share": "Share",
+    "quickActions.settings": "Settings",
     "qr.eyebrow": "QR Code",
     "qr.title": "QR 코드 만들기",
     "qr.body": "현재 페이지 링크를 스캔 가능한 QR 코드로 표시합니다.",
@@ -1506,6 +1625,24 @@ const translations = {
     "search.noResults": "No matching results.",
     "search.close": "Close",
     "search.open": "Open",
+    "search.pageLead": "Search the main pages from one full-screen surface and jump directly where you need to go.",
+    "search.pageHint": "Type a query to sort pages such as Home, Settings, Privacy, and FAQ instantly.",
+    "activity.eyebrow": "Activity",
+    "activity.title": "Recent activity",
+    "activity.lead": "Review page visits and key actions saved only in this browser.",
+    "activity.local": "Activity stays on this device.",
+    "activity.timeline": "Timeline",
+    "activity.visits": "Visits",
+    "activity.actions": "Actions",
+    "activity.latest": "Latest",
+    "activity.emptyTitle": "No activity yet.",
+    "activity.emptyBody": "Visit pages or use actions such as share and search to see them here.",
+    "activity.clear": "Clear activity",
+    "activity.visit": "Page visit",
+    "activity.copyLink": "Copied link",
+    "activity.openSearch": "Opened search",
+    "activity.openShare": "Opened share",
+    "activity.openSettings": "Opened settings",
     "cookie.eyebrow": "Privacy",
     "cookie.title": "Browser storage notice",
     "cookie.body":
@@ -1527,6 +1664,8 @@ const translations = {
     "search.pricingBody": "Compare Free, Pro, Team, and Ultra plans.",
     "search.updatesTitle": "Latest updates",
     "search.updatesBody": "Review recent site changes and the next polish items.",
+    "search.activityTitle": "Activity",
+    "search.activityBody": "Review and clear recent visits and key actions saved in this browser.",
     "search.settingsTitle": "Settings",
     "search.settingsBody": "Manage theme, language, accent color, context menu, and storage settings.",
     "search.accessibilityTitle": "Accessibility",
@@ -1554,6 +1693,9 @@ const translations = {
     "aria.updatesMenu": "Latest updates menu",
     "aria.updatesSummary": "Latest updates summary",
     "aria.updatesTimeline": "Latest updates list",
+    "aria.activityMenu": "Activity menu",
+    "aria.activitySummary": "Activity summary",
+    "aria.activityTimeline": "Activity timeline",
     "aria.accessibilityMenu": "Accessibility menu",
     "aria.accessibilitySummary": "Accessibility summary",
     "aria.accessibilityDetails": "Accessibility details",
@@ -2026,6 +2168,7 @@ const translations = {
     "settings.paymentTab": "Payments",
     "settings.displayTab": "Display",
     "settings.navigationTab": "Navigation",
+    "settings.notificationsTab": "Notifications",
     "settings.languageTab": "Language",
     "settings.accessibilityTab": "Accessibility",
     "settings.performanceTab": "Performance",
@@ -2042,6 +2185,14 @@ const translations = {
     "settings.profileOff": "Public profile off",
     "settings.contactOn": "Contact visibility on",
     "settings.contactOff": "Contact visibility off",
+    "settings.notificationsTitle": "Notifications",
+    "settings.notificationsBody": "Allow this browser to show important site update notifications.",
+    "settings.notificationsOn": "Notifications on",
+    "settings.notificationsOff": "Notifications off",
+    "settings.notificationsReady": "Ready",
+    "settings.notificationsAllowed": "Allowed",
+    "settings.notificationsBlocked": "Blocked in browser",
+    "settings.notificationsUnsupported": "Not supported",
     "settings.paymentBlockTitle": "Payment blocking",
     "settings.paymentBlockBody": "When this is on, paid plan buttons on the Pricing page will not open external Stripe checkout.",
     "settings.paymentBlockOn": "Payment blocking on",
@@ -2331,6 +2482,11 @@ const translations = {
     "share.linkLabel": "Share link",
     "share.close": "Close",
     "share.native": "Device share",
+    "quickActions.label": "Mobile quick actions",
+    "quickActions.home": "Home",
+    "quickActions.search": "Search",
+    "quickActions.share": "Share",
+    "quickActions.settings": "Settings",
     "qr.eyebrow": "QR Code",
     "qr.title": "Create QR Code",
     "qr.body": "Show the current page link as a scannable QR code.",
@@ -2648,6 +2804,15 @@ const siteSearchIndex = [
     },
   },
   {
+    titleKey: "search.activityTitle",
+    bodyKey: "search.activityBody",
+    url: "/activity",
+    keywords: {
+      ko: "activity 활동 최근 방문 기록 타임라인 검색 공유 로컬 저장소 지우기",
+      en: "activity recent visits actions timeline search share local storage clear",
+    },
+  },
+  {
     titleKey: "search.settingsTitle",
     bodyKey: "search.settingsBody",
     url: "/settings",
@@ -2749,6 +2914,10 @@ const setLanguage = (language) => {
     element.setAttribute("aria-label", translate(element.dataset.i18nAriaLabel));
   });
 
+  document.querySelectorAll("[data-mobile-quick-actions]").forEach((element) => {
+    element.setAttribute("aria-label", translate("quickActions.label"));
+  });
+
   document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
     element.setAttribute("placeholder", translate(element.dataset.i18nPlaceholder));
   });
@@ -2775,13 +2944,16 @@ const setLanguage = (language) => {
   });
   updateNavLayoutControls(document.documentElement.dataset.navLayout || "sidebar");
   updateCookiePreferenceControls(getCookiePreferences().preferences);
+  updateNotificationStatus(localStorage.getItem("profile-setting-notifications") === "true");
   updateStorageEstimate();
+  renderActivityPage();
 };
 
 const getToggleLabelKey = (key, isOn) => {
   const labels = {
     "profile-public": isOn ? "settings.profileOn" : "settings.profileOff",
     "contact-visible": isOn ? "settings.contactOn" : "settings.contactOff",
+    notifications: isOn ? "settings.notificationsOn" : "settings.notificationsOff",
     "payment-block": isOn ? "settings.paymentBlockOn" : "settings.paymentBlockOff",
     "sidebar-nav": isOn ? "settings.sidebarNavOn" : "settings.sidebarNavOff",
     "fast-render": isOn ? "settings.fastRenderOn" : "settings.fastRenderOff",
@@ -2790,6 +2962,24 @@ const getToggleLabelKey = (key, isOn) => {
   };
 
   return labels[key];
+};
+
+const getNotificationPermissionState = () => {
+  if (!("Notification" in window)) return "unsupported";
+  return Notification.permission;
+};
+
+const updateNotificationStatus = (isOn) => {
+  const permission = getNotificationPermissionState();
+  let statusKey = "settings.notificationsReady";
+  if (permission === "granted" && isOn) statusKey = "settings.notificationsAllowed";
+  if (permission === "denied") statusKey = "settings.notificationsBlocked";
+  if (permission === "unsupported") statusKey = "settings.notificationsUnsupported";
+
+  notificationStatuses.forEach((status) => {
+    status.textContent = translate(statusKey);
+    status.dataset.notificationState = permission;
+  });
 };
 
 const updatePaymentBlockSummary = (isBlocked) => {
@@ -2821,22 +3011,51 @@ const updateSettingToggle = (button, isOn) => {
     updatePaymentBlockSummary(isOn);
   }
 
+  if (button.dataset.toggleKey === "notifications") {
+    updateNotificationStatus(isOn);
+  }
+
   const labelKey = getToggleLabelKey(button.dataset.toggleKey, isOn);
   if (labelKey) button.setAttribute("aria-label", translate(labelKey));
 
+};
+
+const resolveNotificationToggle = async (nextValue) => {
+  if (!nextValue) return false;
+  if (!("Notification" in window)) return false;
+  if (Notification.permission === "granted") return true;
+  if (Notification.permission === "denied") return false;
+
+  try {
+    const permission = await Notification.requestPermission();
+    return permission === "granted";
+  } catch {
+    return false;
+  }
 };
 
 const setupSettingToggles = () => {
   settingToggles.forEach((button) => {
     const storageKey = `profile-setting-${button.dataset.toggleKey}`;
     const savedValue = localStorage.getItem(storageKey);
-    const isOn = normalizeBooleanSetting(savedValue, button.classList.contains("is-on"));
+    let isOn = normalizeBooleanSetting(savedValue, button.classList.contains("is-on"));
+
+    if (button.dataset.toggleKey === "notifications" && getNotificationPermissionState() !== "granted") {
+      isOn = false;
+    }
 
     updateSettingToggle(button, isOn);
     localStorage.setItem(storageKey, String(isOn));
 
-    button.addEventListener("click", () => {
-      const nextValue = !button.classList.contains("is-on");
+    button.addEventListener("click", async () => {
+      let nextValue = !button.classList.contains("is-on");
+
+      if (button.dataset.toggleKey === "notifications") {
+        button.disabled = true;
+        nextValue = await resolveNotificationToggle(nextValue);
+        button.disabled = false;
+      }
+
       localStorage.setItem(storageKey, String(nextValue));
       if (button.dataset.toggleKey === "fast-render") {
         document.documentElement.dataset.fastRender = nextValue ? "true" : "false";
@@ -3510,14 +3729,10 @@ const selectHomeTab = (selectedTab) => {
 
 const normalizeSearchText = (value) => value.toLowerCase().replace(/\s+/g, " ").trim();
 
-const renderSearchResults = (query = "") => {
-  const resultsContainer = document.querySelector("[data-site-search-results]");
-  if (!resultsContainer) return;
-
+const getSearchResultsMarkup = (query = "") => {
   const normalizedQuery = normalizeSearchText(query);
   if (!normalizedQuery) {
-    resultsContainer.innerHTML = `<p class="search-empty">${translate("search.empty")}</p>`;
-    return;
+    return `<p class="search-empty">${translate("search.empty")}</p>`;
   }
 
   const results = siteSearchIndex
@@ -3537,11 +3752,10 @@ const renderSearchResults = (query = "") => {
     .sort((a, b) => b.score - a.score);
 
   if (!results.length) {
-    resultsContainer.innerHTML = `<p class="search-empty">${translate("search.noResults")}</p>`;
-    return;
+    return `<p class="search-empty">${translate("search.noResults")}</p>`;
   }
 
-  resultsContainer.innerHTML = results
+  return results
     .map(
       (item) => `
         <button type="button" class="search-result" data-search-url="${item.url}">
@@ -3553,11 +3767,26 @@ const renderSearchResults = (query = "") => {
     .join("");
 };
 
+const renderSearchResults = (query = "") => {
+  const resultsContainer = document.querySelector("[data-site-search-results]");
+  if (!resultsContainer) return;
+
+  resultsContainer.innerHTML = getSearchResultsMarkup(query);
+};
+
+const renderSearchPageResults = (query = "") => {
+  const resultsContainer = document.querySelector("[data-search-page-results]");
+  if (!resultsContainer) return;
+
+  resultsContainer.innerHTML = getSearchResultsMarkup(query);
+};
+
 const showSiteSearchDialog = () => {
   const dialog = document.querySelector("[data-site-search-dialog]");
   const input = document.querySelector("[data-site-search-input]");
   if (!dialog || !input) return;
 
+  recordActivity("action", translate("activity.openSearch"));
   dialog.classList.remove("is-closing");
   dialog.hidden = false;
   input.value = "";
@@ -3596,6 +3825,183 @@ const setupSiteSearch = () => {
   });
 };
 
+const setupMobileQuickActions = () => {
+  const bar = document.querySelector("[data-mobile-quick-actions]");
+  if (!bar) return;
+
+  bar.addEventListener("click", (event) => {
+    const button = event.target.closest?.("[data-mobile-quick-action]");
+    if (!button) return;
+
+    const action = button.dataset.mobileQuickAction;
+    if (action === "search") {
+      showSiteSearchDialog();
+      return;
+    }
+
+    if (action === "share") {
+      showShareDialog();
+    }
+  });
+};
+
+const setupSearchPage = () => {
+  const input = document.querySelector("[data-search-page-input]");
+  const resultsContainer = document.querySelector("[data-search-page-results]");
+  if (!input || !resultsContainer) return;
+
+  const params = new URLSearchParams(window.location.search);
+  input.value = params.get("q") || "";
+  renderSearchPageResults(input.value);
+
+  input.addEventListener("input", () => {
+    renderSearchPageResults(input.value);
+  });
+
+  resultsContainer.addEventListener("click", (event) => {
+    const result = event.target.closest?.("[data-search-url]");
+    if (!result) return;
+    window.location.href = result.dataset.searchUrl;
+  });
+};
+
+const activityLogKey = "profile-activity-log";
+const maxActivityItems = 48;
+
+const getActivityLog = () => {
+  try {
+    const items = JSON.parse(localStorage.getItem(activityLogKey) || "[]");
+    return Array.isArray(items) ? items.filter((item) => item && item.createdAt) : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveActivityLog = (items) => {
+  localStorage.setItem(activityLogKey, JSON.stringify(items.slice(0, maxActivityItems)));
+};
+
+const getPageActivityLabel = () => {
+  const activeNavLabel = document.querySelector(".nav-links .is-active span")?.textContent?.trim();
+  const heading = document.querySelector("h1")?.textContent?.trim();
+  return activeNavLabel || heading || document.title.replace(/\s*[·|-].*$/, "") || "Page";
+};
+
+const recordActivity = (type, label, url = window.location.pathname) => {
+  const now = Date.now();
+  const normalizedType = type === "action" ? "action" : "visit";
+  const items = getActivityLog();
+  const previous = items[0];
+
+  if (
+    previous &&
+    previous.type === normalizedType &&
+    previous.label === label &&
+    previous.url === url &&
+    now - Number(previous.createdAt) < 30000
+  ) {
+    return;
+  }
+
+  saveActivityLog([
+    {
+      id: `${now}-${Math.random().toString(36).slice(2, 8)}`,
+      type: normalizedType,
+      label,
+      url,
+      createdAt: now,
+    },
+    ...items,
+  ]);
+};
+
+const formatActivityTime = (createdAt) => {
+  const formatter = new Intl.DateTimeFormat(currentLanguage === "ko" ? "ko-KR" : "en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  return formatter.format(new Date(createdAt));
+};
+
+const escapeActivityText = (value) =>
+  String(value ?? "").replace(/[&<>"']/g, (character) => {
+    const entities = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    };
+    return entities[character];
+  });
+
+const getSafeActivityUrl = (url) => {
+  const value = String(url || "/");
+  return value.startsWith("/") && !value.startsWith("//") ? value : "/";
+};
+
+const renderActivityPage = () => {
+  const list = document.querySelector("[data-activity-list]");
+  if (!list) return;
+
+  const items = getActivityLog();
+  const visits = items.filter((item) => item.type === "visit").length;
+  const actions = items.filter((item) => item.type === "action").length;
+  const latest = items[0]?.createdAt ? formatActivityTime(items[0].createdAt) : "--";
+
+  document.querySelectorAll("[data-activity-visits]").forEach((element) => {
+    element.textContent = String(visits);
+  });
+  document.querySelectorAll("[data-activity-actions]").forEach((element) => {
+    element.textContent = String(actions);
+  });
+  document.querySelectorAll("[data-activity-latest]").forEach((element) => {
+    element.textContent = latest;
+  });
+
+  if (!items.length) {
+    list.innerHTML = `
+      <article class="activity-empty">
+        <strong>${translate("activity.emptyTitle")}</strong>
+        <span>${translate("activity.emptyBody")}</span>
+      </article>
+    `;
+    return;
+  }
+
+  list.innerHTML = items
+    .map((item) => {
+      const typeLabel = item.type === "action" ? translate("activity.actions") : translate("activity.visits");
+      const href = getSafeActivityUrl(item.url);
+      return `
+        <article class="activity-item">
+          <span class="activity-dot" aria-hidden="true"></span>
+          <div>
+            <strong>${escapeActivityText(item.label)}</strong>
+            <span>${escapeActivityText(typeLabel)} · ${escapeActivityText(formatActivityTime(item.createdAt))}</span>
+          </div>
+          <a href="${escapeActivityText(href)}">${escapeActivityText(href)}</a>
+        </article>
+      `;
+    })
+    .join("");
+};
+
+const setupActivityPage = () => {
+  const clearButton = document.querySelector("[data-activity-clear]");
+  clearButton?.addEventListener("click", () => {
+    localStorage.removeItem(activityLogKey);
+    renderActivityPage();
+  });
+  renderActivityPage();
+};
+
+const recordPageActivity = () => {
+  recordActivity("visit", `${translate("activity.visit")}: ${getPageActivityLabel()}`);
+};
+
 const clearSiteCache = () => {
   closeClearCacheWarning();
 
@@ -3609,6 +4015,7 @@ const clearSiteCache = () => {
     "profile-setting-profile-public",
     "profile-setting-contact-visible",
     "profile-setting-payment-block",
+    "profile-setting-notifications",
     "profile-setting-sidebar-nav",
     "profile-sidebar-collapsed",
     "profile-setting-fast-render",
@@ -3618,6 +4025,7 @@ const clearSiteCache = () => {
     "profile-browser-usage-total-ms",
     "profile-browser-usage-used-ms",
     "profile-browser-usage-window-start-ms",
+    activityLogKey,
   ].forEach((key) => localStorage.removeItem(key));
   clearStorageConsent();
 
@@ -3636,7 +4044,7 @@ const clearSiteCache = () => {
   setKidMode("off");
 
   settingToggles.forEach((button) => {
-    const defaultOn = !["fast-render", "payment-block"].includes(button.dataset.toggleKey);
+    const defaultOn = !["fast-render", "payment-block", "notifications"].includes(button.dataset.toggleKey);
     localStorage.setItem(`profile-setting-${button.dataset.toggleKey}`, String(defaultOn));
     updateSettingToggle(button, defaultOn);
   });
@@ -4319,6 +4727,7 @@ const setupToggleRightTrack = () => {
 const showShareDialog = () => {
   if (!shareDialog) return;
 
+  recordActivity("action", translate("activity.openShare"));
   if (shareUrl) shareUrl.value = window.location.href;
   if (shareStatus) shareStatus.hidden = true;
   shareDialog.hidden = false;
@@ -4337,6 +4746,7 @@ const copyShareLink = async () => {
 
   shareLinkButton?.classList.add("is-copied");
   shareLinkButton?.setAttribute("aria-label", translate("share.copied"));
+  recordActivity("action", translate("activity.copyLink"));
   if (shareStatus) shareStatus.hidden = false;
   window.setTimeout(() => {
     shareLinkButton?.classList.remove("is-copied");
@@ -4674,8 +5084,11 @@ createSiteSearchDialog();
 createQrDialog();
 createSourceDialog();
 createPrintDialog();
+createMobileQuickActions();
 setupCookieNotice();
 setLanguage(currentLanguage);
+recordPageActivity();
+setupActivityPage();
 if (homeTabs.length) {
   const activeHomeTab =
     homeTabs.find((button) => button.classList.contains("is-active"))?.dataset.homeTab ||
@@ -4683,6 +5096,8 @@ if (homeTabs.length) {
   selectHomeTab(activeHomeTab);
 }
 setupSiteSearch();
+setupMobileQuickActions();
+setupSearchPage();
 setupOfflineRetry();
 setTheme(getInitialTheme());
 setupSettingToggles();

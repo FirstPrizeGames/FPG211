@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -13,7 +13,7 @@
     <meta property="og:title" content="Settings · Emergency Responder Profile" />
     <meta
       property="og:description"
-      content="Adjust theme, language, payment blocking, kid mode, performance, storage, and accent color settings."
+      content="Adjust theme, language, notifications, payment blocking, kid mode, performance, storage, and accent color settings."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Emergency Responder Profile" />
@@ -23,7 +23,7 @@
     <meta name="twitter:title" content="Settings · Emergency Responder Profile" />
     <meta
       name="twitter:description"
-      content="Adjust theme, language, payment blocking, kid mode, performance, storage, and accent color settings."
+      content="Adjust theme, language, notifications, payment blocking, kid mode, performance, storage, and accent color settings."
     />
     <meta name="twitter:image" content="https://firstprizegames211.app/assets/profile-hero.png" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -84,7 +84,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260610-settings-neutral-fix" />
+    <link rel="stylesheet" href="../styles.css?v=20260610-mobile-quick-actions" />
   </head>
   <body class="settings-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -170,6 +170,13 @@
               <path d="M8 11V7a4 4 0 0 1 8 0v4" />
             </svg>
             <span data-i18n="settings.privacyTab">Privacy</span>
+          </a>
+          <a href="#notifications">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 7h18s-3 0-3-7" />
+              <path d="M10 19a2 2 0 0 0 4 0" />
+            </svg>
+            <span data-i18n="settings.notificationsTab">Notifications</span>
           </a>
           <a href="#payments">
             <svg aria-hidden="true" viewBox="0 0 24 24">
@@ -285,6 +292,24 @@
               aria-pressed="true"
               data-toggle-key="contact-visible"
             ></button>
+          </article>
+
+          <article class="setting-card setting-card-notifications" id="notifications">
+            <div>
+              <p class="eyebrow" data-i18n="settings.notificationsTab">Notifications</p>
+              <h3 data-i18n="settings.notificationsTitle">알림</h3>
+              <p data-i18n="settings.notificationsBody">중요한 사이트 업데이트를 이 브라우저에서 알림으로 받을 수 있게 합니다.</p>
+            </div>
+            <div class="notification-control">
+              <span class="notification-status" data-notification-status data-i18n="settings.notificationsReady">준비됨</span>
+              <button
+                class="toggle"
+                type="button"
+                aria-label="알림 꺼짐"
+                aria-pressed="false"
+                data-toggle-key="notifications"
+              ></button>
+            </div>
           </article>
 
           <article class="setting-card" id="payments">
@@ -895,7 +920,7 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260610-settings-neutral-fix" defer></script>
+    <script src="../script.js?v=20260610-mobile-quick-actions" defer></script>
   </body>
 </html>
 

@@ -48,6 +48,8 @@ const createNavSearchButton = () => {
 const createMobileQuickActionButton = ({ type = "button", href, action, icon, labelKey, fallback }) => {
   const element = document.createElement(href ? "a" : "button");
   element.className = "mobile-quick-action";
+  element.dataset.i18nAriaLabel = labelKey;
+  element.setAttribute("aria-label", translate(labelKey));
   if (href) {
     element.href = href;
     if (normalizeNavPath(window.location.pathname) === normalizeNavPath(href)) {
@@ -58,7 +60,7 @@ const createMobileQuickActionButton = ({ type = "button", href, action, icon, la
     element.type = type;
     if (action) element.dataset.mobileQuickAction = action;
   }
-  element.innerHTML = `${icon}<span data-i18n="${labelKey}">${fallback}</span>`;
+  element.innerHTML = `${icon}<span class="sr-only" data-i18n="${labelKey}">${fallback}</span>`;
   return element;
 };
 

@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = "profile-offline-20260610-mobile-quick-actions";
+﻿const CACHE_NAME = "profile-offline-20260610-mobile-icons-actions";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

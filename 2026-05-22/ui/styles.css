@@ -10310,7 +10310,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
 @media (max-width: 760px) {
   body {
-    padding-bottom: calc(82px + env(safe-area-inset-bottom));
+    padding-bottom: calc(70px + env(safe-area-inset-bottom));
   }
 
   .mobile-quick-actions {
@@ -10330,29 +10330,26 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
   .mobile-quick-actions-inner {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 6px;
-    max-width: 520px;
+    grid-template-columns: repeat(4, 44px);
+    justify-content: space-around;
+    gap: 10px;
+    max-width: 360px;
     margin: 0 auto;
   }
 
   .mobile-quick-action {
     display: grid;
     place-items: center;
-    gap: 3px;
-    min-width: 0;
-    min-height: 56px;
-    padding: 7px 4px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    padding: 0;
     border: 1px solid transparent;
-    border-radius: 8px;
+    border-radius: 999px;
     background: transparent;
     color: var(--muted);
     cursor: pointer;
     font: inherit;
-    font-size: 11px;
-    font-weight: 850;
-    line-height: 1.1;
-    text-align: center;
     text-decoration: none;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
@@ -10363,16 +10360,9 @@ html[lang="ko"] .faq-feedback-strip h2 {
   }
 
   .mobile-quick-action .nav-icon {
-    width: 20px;
-    height: 20px;
+    width: 21px;
+    height: 21px;
     color: currentColor;
-  }
-
-  .mobile-quick-action span {
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   .mobile-quick-action:hover,
@@ -11331,7 +11321,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
   .scroll-actions {
     right: max(12px, env(safe-area-inset-right));
-    bottom: calc(86px + env(safe-area-inset-bottom));
+    bottom: calc(74px + env(safe-area-inset-bottom));
   }
 
   .scroll-actions button {

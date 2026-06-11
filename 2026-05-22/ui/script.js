@@ -490,6 +490,10 @@ const feedbackConfirm = document.querySelector("[data-feedback-confirm]");
 const feedbackFormUrl = "https://forms.gle/214q7yY6gbTUwK9u7";
 let pendingSubscribeUrl = "";
 let contextMenuCloseTimeoutId = 0;
+let copyToastTimeoutId = 0;
+let copyEventSuppressedUntil = 0;
+let lastNativeCopyToastKey = "";
+let lastNativeCopyToastAt = 0;
 let contextClipboardText = "";
 let contextClipboardCheckId = 0;
 let contextTargetElement = null;
@@ -555,6 +559,13 @@ const translations = {
     "context.creator": "Creator 열기",
     "context.feedback": "Feedback 열기",
     "context.settings": "설정 열기",
+    "toast.copyText": "텍스트가 복사되었습니다.",
+    "toast.copyLink": "링크가 복사되었습니다.",
+    "toast.copyTitle": "페이지 제목이 복사되었습니다.",
+    "toast.copySource": "소스가 복사되었습니다.",
+    "toast.copyImage": "이미지가 복사되었습니다.",
+    "toast.cutText": "선택한 텍스트를 잘라냈습니다.",
+    "toast.imageSaved": "이미지가 저장되었습니다.",
     "search.eyebrow": "Search",
     "search.title": "사이트 검색",
     "search.label": "검색어",
@@ -1698,6 +1709,13 @@ const translations = {
     "context.creator": "Open Creator",
     "context.feedback": "Open Feedback",
     "context.settings": "Open settings",
+    "toast.copyText": "Text copied.",
+    "toast.copyLink": "Link copied.",
+    "toast.copyTitle": "Page title copied.",
+    "toast.copySource": "Source copied.",
+    "toast.copyImage": "Image copied.",
+    "toast.cutText": "Selected text cut.",
+    "toast.imageSaved": "Image saved.",
     "search.eyebrow": "Search",
     "search.title": "Search site",
     "search.label": "Search query",
@@ -2838,6 +2856,84 @@ const getInitialLanguage = () => normalizeLanguage(localStorage.getItem("profile
 let currentLanguage = getInitialLanguage();
 
 const translate = (key) => translations[currentLanguage][key] || translations.ko[key] || key;
+
+const showCopyToast = (messageKey = "toast.copyText") => {
+  const message = translate(messageKey);
+  let toast = document.querySelector("[data-copy-toast]");
+
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.className = "copy-toast";
+    toast.dataset.copyToast = "";
+    toast.setAttribute("role", "status");
+    toast.setAttribute("aria-live", "polite");
+    document.body.appendChild(toast);
+  }
+
+  window.clearTimeout(copyToastTimeoutId);
+  toast.textContent = message;
+  toast.hidden = false;
+  toast.classList.remove("is-hiding");
+  toast.classList.add("is-visible");
+  copyToastTimeoutId = window.setTimeout(() => {
+    toast.classList.add("is-hiding");
+    toast.classList.remove("is-visible");
+    copyToastTimeoutId = window.setTimeout(() => {
+      toast.hidden = true;
+      toast.classList.remove("is-hiding");
+    }, 180);
+  }, 1700);
+};
+
+const selectionContainsImage = () => {
+  const selection = window.getSelection?.();
+  if (!selection || selection.rangeCount === 0) return false;
+
+  for (let index = 0; index < selection.rangeCount; index += 1) {
+    const fragment = selection.getRangeAt(index).cloneContents();
+    if (fragment.querySelector?.("img")) return true;
+  }
+
+  return false;
+};
+
+const getCurrentNativeCopyToastKey = (target = document.activeElement) => {
+  const selectedText = getEditableSelectionText(target) || window.getSelection?.().toString().trim() || "";
+  if (selectedText) return "toast.copyText";
+  if (selectionContainsImage()) return "toast.copyImage";
+  return "";
+};
+
+const rememberNativeCopyTarget = (target = document.activeElement) => {
+  const messageKey = getCurrentNativeCopyToastKey(target);
+  if (!messageKey) return;
+
+  lastNativeCopyToastKey = messageKey;
+  lastNativeCopyToastAt = Date.now();
+};
+
+const getNativeCopyToastKey = (event) => {
+  const selectedKey = getCurrentNativeCopyToastKey(event.target);
+  if (selectedKey) return selectedKey;
+
+  if (event.target?.closest?.("img:not(.brand-logo img)")) return "toast.copyImage";
+
+  const clipboardTypes = [...(event.clipboardData?.types || [])];
+  if (clipboardTypes.some((type) => type.startsWith("image/"))) return "toast.copyImage";
+  if (selectionContainsImage()) return "toast.copyImage";
+  if (Date.now() - lastNativeCopyToastAt < 12000) return lastNativeCopyToastKey;
+
+  return "";
+};
+
+const showNativeCopyToastSoon = (messageKey) => {
+  if (!messageKey || Date.now() < copyEventSuppressedUntil) return;
+
+  window.setTimeout(() => {
+    if (Date.now() < copyEventSuppressedUntil) return;
+    showCopyToast(messageKey);
+  }, 60);
+};
 
 const prices = {
   krw: {
@@ -4668,6 +4764,7 @@ const saveContextImage = () => {
   document.body.appendChild(link);
   link.click();
   link.remove();
+  showCopyToast("toast.imageSaved");
 };
 
 const readClipboardText = async () => {
@@ -4754,7 +4851,7 @@ const showContextMenu = (event) => {
   updateContextCastState();
 };
 
-const writeClipboardText = async (text) => {
+const writeClipboardText = async (text, messageKey = "toast.copyText") => {
   try {
     await navigator.clipboard.writeText(text);
   } catch {
@@ -4765,13 +4862,15 @@ const writeClipboardText = async (text) => {
     fallback.style.opacity = "0";
     document.body.appendChild(fallback);
     fallback.select();
+    copyEventSuppressedUntil = Date.now() + 500;
     document.execCommand?.("copy");
     fallback.remove();
   }
+  showCopyToast(messageKey);
 };
 
 const copyPageLink = async () => {
-  await writeClipboardText(window.location.href);
+  await writeClipboardText(window.location.href, "toast.copyLink");
 };
 
 const pasteClipboardText = async () => {
@@ -4802,7 +4901,7 @@ const cutSelectedText = async () => {
   const selectedText = currentValue.slice(start, end);
   if (!selectedText.trim()) return;
 
-  await writeClipboardText(selectedText);
+  await writeClipboardText(selectedText, "toast.cutText");
   contextTargetElement.focus?.();
   contextTargetElement.value = `${currentValue.slice(0, start)}${currentValue.slice(end)}`;
   contextTargetElement.setSelectionRange?.(start, start);
@@ -4839,7 +4938,7 @@ const handleContextMenuAction = async (action) => {
   }
 
   if (action === "copy-link") {
-    if (contextTargetLink) await writeClipboardText(contextTargetLink.href);
+    if (contextTargetLink) await writeClipboardText(contextTargetLink.href, "toast.copyLink");
     return;
   }
 
@@ -4849,7 +4948,7 @@ const handleContextMenuAction = async (action) => {
   }
 
   if (action === "copy-title") {
-    await writeClipboardText(document.title || window.location.href);
+    await writeClipboardText(document.title || window.location.href, "toast.copyTitle");
     return;
   }
 
@@ -5007,8 +5106,10 @@ const copyShareLink = async () => {
     await navigator.clipboard.writeText(url);
   } catch {
     shareUrl?.select();
+    copyEventSuppressedUntil = Date.now() + 500;
     document.execCommand?.("copy");
   }
+  showCopyToast("toast.copyLink");
 
   shareLinkButton?.classList.add("is-copied");
   shareLinkButton?.setAttribute("aria-label", translate("share.copied"));
@@ -5078,7 +5179,7 @@ const openQrImageInNewTab = () => {
 };
 
 const copyQrLink = async () => {
-  await writeClipboardText(qrUrl?.value || window.location.href);
+  await writeClipboardText(qrUrl?.value || window.location.href, "toast.copyLink");
   if (qrStatus) qrStatus.hidden = false;
 };
 
@@ -5113,7 +5214,7 @@ const copySourceCode = async () => {
   const source = sourceCode?.dataset.rawSource || sourceCode?.textContent || "";
   if (!source) return;
 
-  await writeClipboardText(source);
+  await writeClipboardText(source, "toast.copySource");
   if (!sourceStatus) return;
   sourceStatus.hidden = false;
   window.setTimeout(() => {
@@ -5700,6 +5801,36 @@ document.addEventListener("keydown", (event) => {
     scrollPageTo("bottom");
   }
 });
+
+document.addEventListener("copy", (event) => {
+  if (Date.now() < copyEventSuppressedUntil) return;
+
+  const messageKey = getNativeCopyToastKey(event);
+  showNativeCopyToastSoon(messageKey);
+});
+
+document.addEventListener("selectionchange", () => {
+  rememberNativeCopyTarget();
+});
+
+document.addEventListener("pointerup", (event) => {
+  rememberNativeCopyTarget(event.target);
+});
+
+document.addEventListener(
+  "keydown",
+  (event) => {
+    const key = event.key.toLowerCase();
+    const hasCopyModifier = event.ctrlKey || event.metaKey;
+    if (!hasCopyModifier || key !== "c" || event.altKey || event.defaultPrevented) return;
+    if (event.shiftKey) return;
+
+    rememberNativeCopyTarget(event.target);
+    const messageKey = getCurrentNativeCopyToastKey(event.target);
+    showNativeCopyToastSoon(messageKey);
+  },
+  true,
+);
 
 highlightTargets.forEach((target) => {
   target.addEventListener("pointerdown", addRipple);

@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = "profile-offline-20260610-beta-toggle-features";
+﻿const CACHE_NAME = "profile-offline-20260611-context-cut-cast";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
@@ -7,6 +7,7 @@ const PRECACHE_URLS = [
   "/updates",
   "/search",
   "/activity",
+  "/sitemap",
   "/terms",
   "/feedback",
   "/styles.css",

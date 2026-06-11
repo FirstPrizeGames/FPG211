@@ -332,7 +332,39 @@ const createContextMenuFallback = () => {
   return menu;
 };
 
-const ensureContextMenu = () => document.querySelector("[data-context-menu]") || createContextMenuFallback();
+const enhanceContextMenuActions = (menu) => {
+  if (!menu) return menu;
+
+  if (!menu.querySelector('[data-context-action="cut"]')) {
+    const copySelectionButton = menu.querySelector('[data-context-action="copy-selection"]');
+    copySelectionButton?.insertAdjacentHTML(
+      "afterend",
+      `
+      <button type="button" data-context-action="cut" hidden>
+        <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3" /><circle cx="6" cy="18" r="3" /><path d="M20 4 8.1 15.9" /><path d="M14.5 14.5 20 20" /></svg>
+        <span data-i18n="context.cut">잘라내기</span><kbd class="context-shortcut">Ctrl+X</kbd>
+      </button>
+    `,
+    );
+  }
+
+  if (!menu.querySelector('[data-context-action="cast"]')) {
+    const qrButton = menu.querySelector('[data-context-action="qr"]');
+    qrButton?.insertAdjacentHTML(
+      "afterend",
+      `
+      <button type="button" data-context-action="cast" disabled aria-disabled="true">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M5 16.5a3.5 3.5 0 0 1 3.5 3.5" /><path d="M5 13a7 7 0 0 1 7 7" /><path d="M5 19.5v.5" /></svg>
+        <span data-i18n="context.cast">Cast</span>
+      </button>
+    `,
+    );
+  }
+
+  return menu;
+};
+
+const ensureContextMenu = () => enhanceContextMenuActions(document.querySelector("[data-context-menu]") || createContextMenuFallback());
 
 const navLinks = [...document.querySelectorAll(".nav-links a")];
 const themeChoices = [...document.querySelectorAll("[data-theme-choice]")];
@@ -492,6 +524,7 @@ const translations = {
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
     "nav.accessibility": "Accessibility",
+    "nav.sitemap": "Sitemap",
     "usage.nav": "Usage",
     "nav.privacy": "Privacy Policy",
     "nav.license": "License",
@@ -503,6 +536,7 @@ const translations = {
     "context.close": "닫기",
     "context.copy": "페이지 링크 복사",
     "context.copySelection": "선택한 텍스트 복사",
+    "context.cut": "잘라내기",
     "context.openLink": "새 탭에서 링크 열기",
     "context.copyLink": "링크 주소 복사",
     "context.saveImage": "이미지 저장",
@@ -511,6 +545,7 @@ const translations = {
     "context.search": "사이트 검색",
     "context.share": "공유 열기",
     "context.qr": "QR 코드 만들기",
+    "context.cast": "Cast",
     "context.top": "맨 위로 이동",
     "context.refresh": "새로고침",
     "context.back": "뒤로 가기",
@@ -546,6 +581,17 @@ const translations = {
     "activity.openSearch": "검색 열기",
     "activity.openShare": "공유 열기",
     "activity.openSettings": "설정 열기",
+    "sitemap.eyebrow": "Sitemap",
+    "sitemap.title": "사이트맵",
+    "sitemap.lead": "공개 페이지, 설정, 법적 안내, 지원 경로를 한 화면에서 확인합니다.",
+    "sitemap.xmlLink": "검색엔진용 XML 열기",
+    "sitemap.profileGroup": "Profile",
+    "sitemap.toolsGroup": "Tools",
+    "sitemap.supportGroup": "Support",
+    "sitemap.policyGroup": "Policy",
+    "sitemap.settingsTitle": "사이트맵",
+    "sitemap.settingsBody": "사이트의 공개 페이지와 정책 문서를 한 화면에서 확인합니다.",
+    "sitemap.open": "Sitemap 열기",
     "cookie.eyebrow": "Privacy",
     "cookie.title": "브라우저 저장 안내",
     "cookie.body":
@@ -569,6 +615,8 @@ const translations = {
     "search.updatesBody": "최근 사이트 변경 사항과 다음에 손볼 항목을 확인합니다.",
     "search.activityTitle": "Activity",
     "search.activityBody": "이 브라우저에 저장된 최근 방문과 주요 동작을 확인하고 지웁니다.",
+    "search.sitemapTitle": "Sitemap",
+    "search.sitemapBody": "사이트의 주요 페이지, 도구, 정책 문서를 한 화면에서 확인합니다.",
     "search.settingsTitle": "Settings",
     "search.settingsBody": "테마, 언어, 강조 컬러, 우클릭 메뉴, 저장용량 설정을 관리합니다.",
     "search.accessibilityTitle": "Accessibility",
@@ -599,6 +647,8 @@ const translations = {
     "aria.activityMenu": "Activity 메뉴",
     "aria.activitySummary": "Activity 요약",
     "aria.activityTimeline": "Activity 목록",
+    "aria.sitemapMenu": "Sitemap menu",
+    "aria.sitemapLinks": "Sitemap links",
     "aria.accessibilityMenu": "접근성 메뉴",
     "aria.accessibilitySummary": "접근성 요약",
     "aria.accessibilityDetails": "접근성 세부 정보",
@@ -1617,6 +1667,7 @@ const translations = {
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
     "nav.accessibility": "Accessibility",
+    "nav.sitemap": "Sitemap",
     "usage.nav": "Usage",
     "nav.privacy": "Privacy Policy",
     "nav.license": "License",
@@ -1628,6 +1679,7 @@ const translations = {
     "context.close": "Close",
     "context.copy": "Copy page link",
     "context.copySelection": "Copy selected text",
+    "context.cut": "Cut",
     "context.openLink": "Open link in new tab",
     "context.copyLink": "Copy link address",
     "context.saveImage": "Save image as",
@@ -1636,6 +1688,7 @@ const translations = {
     "context.search": "Search site",
     "context.share": "Open share",
     "context.qr": "Create QR Code",
+    "context.cast": "Cast",
     "context.top": "Back to top",
     "context.refresh": "Refresh",
     "context.back": "Back",
@@ -1671,6 +1724,17 @@ const translations = {
     "activity.openSearch": "Opened search",
     "activity.openShare": "Opened share",
     "activity.openSettings": "Opened settings",
+    "sitemap.eyebrow": "Sitemap",
+    "sitemap.title": "Sitemap",
+    "sitemap.lead": "Browse public pages, settings, legal notes, and support routes from one screen.",
+    "sitemap.xmlLink": "Open search-engine XML",
+    "sitemap.profileGroup": "Profile",
+    "sitemap.toolsGroup": "Tools",
+    "sitemap.supportGroup": "Support",
+    "sitemap.policyGroup": "Policy",
+    "sitemap.settingsTitle": "Sitemap",
+    "sitemap.settingsBody": "Review public pages and policy documents from one screen.",
+    "sitemap.open": "Open Sitemap",
     "cookie.eyebrow": "Privacy",
     "cookie.title": "Browser storage notice",
     "cookie.body":
@@ -1694,6 +1758,8 @@ const translations = {
     "search.updatesBody": "Review recent site changes and the next polish items.",
     "search.activityTitle": "Activity",
     "search.activityBody": "Review and clear recent visits and key actions saved in this browser.",
+    "search.sitemapTitle": "Sitemap",
+    "search.sitemapBody": "Review main pages, tools, and policy documents from one screen.",
     "search.settingsTitle": "Settings",
     "search.settingsBody": "Manage theme, language, accent color, context menu, and storage settings.",
     "search.accessibilityTitle": "Accessibility",
@@ -1724,6 +1790,8 @@ const translations = {
     "aria.activityMenu": "Activity menu",
     "aria.activitySummary": "Activity summary",
     "aria.activityTimeline": "Activity timeline",
+    "aria.sitemapMenu": "Sitemap menu",
+    "aria.sitemapLinks": "Sitemap links",
     "aria.accessibilityMenu": "Accessibility menu",
     "aria.accessibilitySummary": "Accessibility summary",
     "aria.accessibilityDetails": "Accessibility details",
@@ -2857,6 +2925,15 @@ const siteSearchIndex = [
     keywords: {
       ko: "activity 활동 최근 방문 기록 타임라인 검색 공유 로컬 저장소 지우기",
       en: "activity recent visits actions timeline search share local storage clear",
+    },
+  },
+  {
+    titleKey: "search.sitemapTitle",
+    bodyKey: "search.sitemapBody",
+    url: "/sitemap",
+    keywords: {
+      ko: "sitemap 사이트맵 전체 페이지 링크 구조 검색엔진 xml 정책 설정 도구",
+      en: "sitemap site map all pages links structure search engine xml policy settings tools",
     },
   },
   {
@@ -4608,6 +4685,18 @@ const setPasteButtonState = (button, text) => {
   button.setAttribute("aria-disabled", String(text.length === 0));
 };
 
+const canCastPage = () =>
+  "PresentationRequest" in window && Boolean(navigator.presentation);
+
+const updateContextCastState = () => {
+  const castButton = contextMenu?.querySelector('[data-context-action="cast"]');
+  if (!castButton) return;
+
+  const canCast = canCastPage();
+  castButton.disabled = !canCast;
+  castButton.setAttribute("aria-disabled", String(!canCast));
+};
+
 const updateContextPasteState = async () => {
   const pasteButton = contextMenu?.querySelector('[data-context-action="paste"]');
   if (!pasteButton) return;
@@ -4639,8 +4728,11 @@ const showContextMenu = (event) => {
   contextMenu.hidden = false;
 
   const selectedText = getSelectedText();
+  const editableSelectionText = getEditableSelectionText(contextTargetElement);
   const copySelectionButton = contextMenu.querySelector('[data-context-action="copy-selection"]');
   if (copySelectionButton) copySelectionButton.hidden = selectedText.length === 0;
+  const cutButton = contextMenu.querySelector('[data-context-action="cut"]');
+  if (cutButton) cutButton.hidden = editableSelectionText.length === 0;
   const openLinkButton = contextMenu.querySelector('[data-context-action="open-link"]');
   const copyLinkButton = contextMenu.querySelector('[data-context-action="copy-link"]');
   const saveImageButton = contextMenu.querySelector('[data-context-action="save-image"]');
@@ -4659,6 +4751,7 @@ const showContextMenu = (event) => {
   contextMenu.style.left = `${Math.max(margin, x)}px`;
   contextMenu.style.top = `${Math.max(margin, y)}px`;
   updateContextPasteState();
+  updateContextCastState();
 };
 
 const writeClipboardText = async (text) => {
@@ -4696,6 +4789,32 @@ const pasteClipboardText = async () => {
   const cursor = start + text.length;
   contextTargetElement.setSelectionRange?.(cursor, cursor);
   contextTargetElement.dispatchEvent(new Event("input", { bubbles: true }));
+};
+
+const cutSelectedText = async () => {
+  if (!isEditableTextTarget(contextTargetElement) || typeof contextTargetElement.selectionStart !== "number") return;
+
+  const start = contextTargetElement.selectionStart;
+  const end = contextTargetElement.selectionEnd ?? start;
+  if (end <= start) return;
+
+  const currentValue = contextTargetElement.value ?? "";
+  const selectedText = currentValue.slice(start, end);
+  if (!selectedText.trim()) return;
+
+  await writeClipboardText(selectedText);
+  contextTargetElement.focus?.();
+  contextTargetElement.value = `${currentValue.slice(0, start)}${currentValue.slice(end)}`;
+  contextTargetElement.setSelectionRange?.(start, start);
+  contextTargetElement.dispatchEvent(new Event("input", { bubbles: true }));
+};
+
+const castCurrentPage = async () => {
+  if (!canCastPage()) return;
+
+  const request = new PresentationRequest([window.location.href]);
+  navigator.presentation.defaultRequest = request;
+  await request.start();
 };
 
 const handleContextMenuAction = async (action) => {
@@ -4739,6 +4858,11 @@ const handleContextMenuAction = async (action) => {
     return;
   }
 
+  if (action === "cut") {
+    await cutSelectedText();
+    return;
+  }
+
   if (action === "search") {
     showSiteSearchDialog();
     return;
@@ -4751,6 +4875,11 @@ const handleContextMenuAction = async (action) => {
 
   if (action === "qr") {
     showQrDialog();
+    return;
+  }
+
+  if (action === "cast") {
+    await castCurrentPage();
     return;
   }
 

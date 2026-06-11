@@ -9296,6 +9296,114 @@ html[lang="ko"] .faq-feedback-strip h2 {
   white-space: nowrap;
 }
 
+.sitemap-page {
+  display: grid;
+  gap: clamp(20px, 4vw, 34px);
+}
+
+.sitemap-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(18px, 4vw, 38px);
+  align-items: end;
+  padding: clamp(28px, 6vw, 64px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--panel-solid) 92%, transparent), transparent),
+    var(--card-bg);
+  box-shadow: var(--shadow);
+}
+
+.sitemap-copy {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+.sitemap-copy h1 {
+  font-size: clamp(42px, 7vw, 82px);
+  line-height: 0.96;
+}
+
+.sitemap-copy p:not(.eyebrow) {
+  max-width: 680px;
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(16px, 2vw, 20px);
+  line-height: 1.6;
+}
+
+.sitemap-xml-link {
+  display: inline-grid;
+  min-height: 44px;
+  place-items: center;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 5%, var(--panel-solid));
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 900;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.sitemap-xml-link:hover,
+.sitemap-xml-link:focus-visible {
+  border-color: color-mix(in srgb, var(--ink) 22%, var(--line));
+  background: color-mix(in srgb, var(--ink) 9%, var(--panel-solid));
+}
+
+.sitemap-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.sitemap-grid article {
+  display: grid;
+  gap: 10px;
+  padding: clamp(16px, 3vw, 24px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-solid);
+}
+
+.sitemap-grid h2 {
+  margin: 0 0 4px;
+  font-size: clamp(20px, 3vw, 28px);
+}
+
+.sitemap-grid a {
+  display: grid;
+  gap: 4px;
+  min-height: 76px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--ink) 3%, var(--panel-solid));
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.sitemap-grid a:hover,
+.sitemap-grid a:focus-visible {
+  border-color: color-mix(in srgb, var(--ink) 22%, var(--line));
+  background: color-mix(in srgb, var(--ink) 7%, var(--panel-solid));
+}
+
+.sitemap-grid strong {
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.sitemap-grid span {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 .share-socials {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
@@ -10736,6 +10844,8 @@ html[lang="ko"] .faq-feedback-strip h2 {
   .search-page-hero,
   .activity-hero,
   .activity-summary-grid,
+  .sitemap-hero,
+  .sitemap-grid,
   .pricing-hero,
   .error-page,
   .offline-page,
@@ -10754,8 +10864,17 @@ html[lang="ko"] .faq-feedback-strip h2 {
   }
 
   .search-page-hero,
-  .activity-hero {
+  .activity-hero,
+  .sitemap-hero {
     padding: 24px;
+  }
+
+  .sitemap-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sitemap-xml-link {
+    width: fit-content;
   }
 
   .activity-panel-head {
@@ -12625,6 +12744,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 .terms-body,
 .accessibility-body,
 .updates-body,
+.sitemap-body,
 .settings-body {
   --accent: #c7c0b4;
   --legal-accent: #c7c0b4;

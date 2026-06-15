@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://firstprizegames211.app/sitemap.xml
+Sitemap: https://firstprizegames.info/sitemap.xml

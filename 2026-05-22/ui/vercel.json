@@ -15,6 +15,10 @@
       "destination": "/usage/index.html"
     },
     {
+      "source": "/activity",
+      "destination": "/activity/index.html"
+    },
+    {
       "source": "/Creator",
       "destination": "/Creator/index.html"
     },
@@ -47,12 +51,36 @@
       "destination": "/privacy/index.html"
     },
     {
+      "source": "/search",
+      "destination": "/search/index.html"
+    },
+    {
       "source": "/license",
       "destination": "/license/index.html"
     },
     {
+      "source": "/sitemap",
+      "destination": "/sitemap/index.html"
+    },
+    {
+      "source": "/trust",
+      "destination": "/trust/index.html"
+    },
+    {
+      "source": "/status",
+      "destination": "/status/index.html"
+    },
+    {
+      "source": "/security",
+      "destination": "/security/index.html"
+    },
+    {
       "source": "/terms",
       "destination": "/terms/index.html"
+    },
+    {
+      "source": "/updates",
+      "destination": "/updates/index.html"
     },
     {
       "source": "/offline",

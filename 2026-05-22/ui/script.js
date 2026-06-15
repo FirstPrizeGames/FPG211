@@ -19,6 +19,12 @@ const navIconMarkup = {
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z" /><path d="M15 3v4h4" /><path d="M9 11h6" /><path d="M9 15h6" /><path d="M9 19h4" /></svg>',
   accessibility:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2" /><path d="M5 8h14" /><path d="M12 8v13" /><path d="M8 21l4-8 4 8" /></svg>',
+  trust:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="M8.5 12.5 11 15l4.5-5" /></svg>',
+  status:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 13h4l3-7 4 13 3-6h2" /><path d="M4 20h16" /></svg>',
+  security:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="6" y="10" width="12" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /><path d="M12 14v2" /></svg>',
 };
 
 const normalizeNavPath = (path) => {
@@ -124,6 +130,9 @@ const enhanceSidebarNavigation = () => {
     let updatesLink = nav.querySelector('a[href="/updates"]');
     let activityLink = nav.querySelector('a[href="/activity"]');
     let accessibilityLink = nav.querySelector('a[href="/accessibility"]');
+    let trustLink = nav.querySelector('a[href="/trust"]');
+    let statusLink = nav.querySelector('a[href="/status"]');
+    let securityLink = nav.querySelector('a[href="/security"]');
     let analyticsLink = nav.querySelector('a[href="/usage"]');
     let termsLink = nav.querySelector('a[href="/terms"]');
 
@@ -204,6 +213,48 @@ const enhanceSidebarNavigation = () => {
       settingsLink.after(accessibilityLink);
     }
 
+    if (!trustLink && accessibilityLink) {
+      trustLink = createNavAnchor({
+        href: "/trust",
+        icon: navIconMarkup.trust,
+        labelKey: "nav.trust",
+        fallback: "Trust Center",
+      });
+      accessibilityLink.after(trustLink);
+    }
+
+    if (accessibilityLink && trustLink && trustLink.previousElementSibling !== accessibilityLink) {
+      accessibilityLink.after(trustLink);
+    }
+
+    if (!statusLink && trustLink) {
+      statusLink = createNavAnchor({
+        href: "/status",
+        icon: navIconMarkup.status,
+        labelKey: "nav.status",
+        fallback: "Status",
+      });
+      trustLink.after(statusLink);
+    }
+
+    if (trustLink && statusLink && statusLink.previousElementSibling !== trustLink) {
+      trustLink.after(statusLink);
+    }
+
+    if (!securityLink && statusLink) {
+      securityLink = createNavAnchor({
+        href: "/security",
+        icon: navIconMarkup.security,
+        labelKey: "nav.security",
+        fallback: "Security",
+      });
+      statusLink.after(securityLink);
+    }
+
+    if (statusLink && securityLink && securityLink.previousElementSibling !== statusLink) {
+      statusLink.after(securityLink);
+    }
+
     if (!termsLink && licenseLink) {
       termsLink = createNavAnchor({
         href: "/terms",
@@ -224,6 +275,7 @@ const enhanceSidebarNavigation = () => {
       [searchButton, "COMMAND"],
       [pricingLink, "MANAGE"],
       [settingsLink, "ACCOUNT"],
+      [trustLink, "TRUST"],
     ].forEach(([link, label]) => {
       if (!link) return;
       const sectionLabel = document.createElement("span");
@@ -414,6 +466,10 @@ const betaRedesignStates = [...document.querySelectorAll("[data-beta-redesign-st
 const notificationStatuses = [...document.querySelectorAll("[data-notification-status]")];
 const notificationTestButtons = [...document.querySelectorAll("[data-notification-test]")];
 const shareLinkButton = document.querySelector("[data-share-link]");
+const homeSubscribeForm = document.querySelector("[data-home-subscribe-form]");
+const homeSubscribeEmail = document.querySelector("[data-home-subscribe-email]");
+const homeSubscribeTopics = [...document.querySelectorAll("[data-home-subscribe-topic]")];
+const homeSubscribeStatus = document.querySelector("[data-home-subscribe-status]");
 let shareDialog = document.querySelector("[data-share-dialog]");
 let shareClose = document.querySelector("[data-share-close]");
 let shareCopy = document.querySelector("[data-share-copy]");
@@ -494,6 +550,7 @@ let copyToastTimeoutId = 0;
 let copyEventSuppressedUntil = 0;
 let lastNativeCopyToastKey = "";
 let lastNativeCopyToastAt = 0;
+let contextMenuAudioContext = null;
 let contextClipboardText = "";
 let contextClipboardCheckId = 0;
 let contextTargetElement = null;
@@ -529,6 +586,12 @@ const translations = {
     "nav.settings": "Settings",
     "nav.accessibility": "Accessibility",
     "nav.sitemap": "Sitemap",
+    "nav.trust": "Trust Center",
+    "nav.status": "Status",
+    "nav.security": "Security",
+    "nav.trust": "Trust Center",
+    "nav.status": "Status",
+    "nav.security": "Security",
     "usage.nav": "Usage",
     "nav.privacy": "Privacy Policy",
     "nav.license": "License",
@@ -566,6 +629,10 @@ const translations = {
     "toast.copyImage": "이미지가 복사되었습니다.",
     "toast.cutText": "선택한 텍스트를 잘라냈습니다.",
     "toast.imageSaved": "이미지가 저장되었습니다.",
+    "toast.notificationsAllowed": "사이트 알림을 허용했습니다.",
+    "toast.notificationsBlocked": "사이트 알림을 거부했습니다.",
+    "toast.notificationsUnsupported": "이 브라우저는 사이트 알림을 지원하지 않습니다.",
+    "toast.notificationsDismissed": "알림 권한 요청이 완료되지 않았습니다.",
     "search.eyebrow": "Search",
     "search.title": "사이트 검색",
     "search.label": "검색어",
@@ -603,6 +670,62 @@ const translations = {
     "sitemap.settingsTitle": "사이트맵",
     "sitemap.settingsBody": "사이트의 공개 페이지와 정책 문서를 한 화면에서 확인합니다.",
     "sitemap.open": "Sitemap 열기",
+    "search.trustTitle": "Trust Center",
+    "search.trustBody": "개인정보, 보안, 접근성, 상태, 법적 안내를 한 곳에서 확인합니다.",
+    "search.statusTitle": "Status",
+    "search.statusBody": "주요 페이지와 알림, 저장소, 공유 메타의 현재 운영 상태를 확인합니다.",
+    "search.securityTitle": "Security",
+    "search.securityBody": "브라우저 저장소, 쿠키, 외부 결제, 알림 권한의 보안 경계를 확인합니다.",
+    "trust.eyebrow": "Trust Center",
+    "trust.title": "신뢰와 운영 정보를 한 곳에 모았습니다.",
+    "trust.lead": "개인정보, 보안, 접근성, 서비스 상태, 법적 안내를 기업 사이트처럼 빠르게 확인할 수 있습니다.",
+    "trust.summaryLabel": "Current posture",
+    "trust.summaryValue": "Local-first, transparent, monitored",
+    "trust.summaryBody": "로그인 추적 쿠키 없이 브라우저 설정 중심으로 동작하고, 결제와 피드백은 외부 서비스 경계를 명확히 둡니다.",
+    "trust.securityTitle": "보안 기준",
+    "trust.securityBody": "브라우저 저장소, 알림 권한, 결제 링크, 외부 서비스 경계를 확인합니다.",
+    "trust.statusTitle": "운영 상태",
+    "trust.statusBody": "주요 페이지, 알림, 오프라인 지원, 공유 메타 상태를 요약합니다.",
+    "trust.privacyTitle": "개인정보 처리",
+    "trust.privacyBody": "로컬 설정 저장, 쿠키 안내, 피드백 입력 범위를 정리합니다.",
+    "trust.accessTitle": "접근성",
+    "trust.accessBody": "키보드 이동, 대비, 표시 밀도, 움직임 감소 지원을 확인합니다.",
+    "trust.termsTitle": "이용 기준",
+    "trust.termsBody": "사이트 사용, 외부 결제, 피드백 제출 기준을 확인합니다.",
+    "trust.sitemapTitle": "전체 경로",
+    "trust.sitemapBody": "공개 페이지와 정책 문서로 바로 이동합니다.",
+    "status.eyebrow": "Status",
+    "status.title": "현재 사이트 상태를 간단히 확인합니다.",
+    "status.lead": "기업 사이트의 상태 페이지처럼 핵심 기능의 현재 운영 기준을 요약합니다.",
+    "status.overallLabel": "Overall status",
+    "status.overallValue": "All core pages available",
+    "status.updated": "마지막 내부 점검: 2026년 6월 15일",
+    "status.routesTitle": "Public routes",
+    "status.routesBody": "Home, Settings, Privacy, Updates, Search, Activity, Sitemap, Trust routes are expected to serve normally.",
+    "status.notificationsTitle": "Notifications",
+    "status.notificationsBody": "Browser notification support depends on user permission and browser platform rules.",
+    "status.storageTitle": "Local storage",
+    "status.storageBody": "Theme, language, consent, activity, and subscription preferences stay in this browser.",
+    "status.shareTitle": "Sharing metadata",
+    "status.shareBody": "Open Graph and Twitter card metadata are configured for public pages.",
+    "security.eyebrow": "Security",
+    "security.title": "보안 경계를 분명하게 설명합니다.",
+    "security.lead": "이 사이트가 브라우저에 저장하는 것, 외부 서비스로 넘기는 것, 사용자가 직접 제어하는 것을 나눠서 보여줍니다.",
+    "security.modelLabel": "Security model",
+    "security.modelValue": "Local-first controls",
+    "security.modelBody": "민감한 결제 정보는 사이트가 직접 저장하지 않고, 알림과 저장소 권한은 브라우저 권한을 따릅니다.",
+    "security.storageTitle": "Browser storage",
+    "security.storageBody": "테마, 언어, 활동 기록, 구독 입력값은 이 브라우저의 로컬 저장소에 머뭅니다.",
+    "security.cookiesTitle": "Cookies",
+    "security.cookiesBody": "필수 동작과 저장 안내 확인용 쿠키만 사용하며 광고/분석 쿠키는 현재 사용하지 않습니다.",
+    "security.checkoutTitle": "External checkout",
+    "security.checkoutBody": "결제 버튼은 Stripe가 호스팅하는 페이지로 이동하며 카드 번호와 인증 정보는 이 사이트가 직접 보관하지 않습니다.",
+    "security.notificationsTitle": "Notifications",
+    "security.notificationsBody": "사이트 알림은 사용자가 브라우저 권한 팝업에서 허용한 경우에만 표시됩니다.",
+    "security.feedbackTitle": "Feedback forms",
+    "security.feedbackBody": "피드백 양식은 외부 서비스 정책을 따르므로 민감한 개인정보는 입력하지 않는 것이 좋습니다.",
+    "security.reportTitle": "Report an issue",
+    "security.reportBody": "보안이나 개인정보 관련 문제가 보이면 Feedback 경로로 알려주세요.",
     "cookie.eyebrow": "Privacy",
     "cookie.title": "브라우저 저장 안내",
     "cookie.body":
@@ -822,6 +945,18 @@ const translations = {
     "home.feedbackTitle": "이 시스템을 더 좋게 만드는 신호.",
     "home.feedbackBody": "불편한 흐름, 번역 누락, 결제 접근성, 디자인 균형을 발견하면 바로 알려주세요.",
     "home.feedbackButton": "Feedback 보내기",
+    "home.subscribeKicker": "Subscribe",
+    "home.subscribeTitle": "새 소식을 이메일로 받기.",
+    "home.subscribeBody": "업데이트, 새로운 글, 뉴스성 안내를 이메일로 받을 수 있게 준비합니다. 지금 등록한 정보는 이 브라우저에 저장됩니다.",
+    "home.subscribeEmailLabel": "이메일",
+    "home.subscribeTopicsLabel": "받고 싶은 소식",
+    "home.subscribeTopicUpdates": "사이트 업데이트",
+    "home.subscribeTopicNews": "새로운 소식과 뉴스",
+    "home.subscribeTopicCreator": "Creator 기록",
+    "home.subscribeButton": "구독 저장",
+    "home.subscribeSaved": "구독 정보가 저장되었습니다. 실제 이메일 발송은 서버 연결 후 활성화됩니다.",
+    "home.subscribeInvalid": "올바른 이메일을 입력해 주세요.",
+    "home.subscribeNeedTopic": "받고 싶은 소식을 하나 이상 선택해 주세요.",
     "creator.eyebrow": "Creator",
     "creator.title": "첫 플레이 가능한 장면을 완성하는 제작실.",
     "creator.lead":
@@ -1716,6 +1851,10 @@ const translations = {
     "toast.copyImage": "Image copied.",
     "toast.cutText": "Selected text cut.",
     "toast.imageSaved": "Image saved.",
+    "toast.notificationsAllowed": "Site notifications allowed.",
+    "toast.notificationsBlocked": "Site notifications blocked.",
+    "toast.notificationsUnsupported": "This browser does not support site notifications.",
+    "toast.notificationsDismissed": "Notification permission was not completed.",
     "search.eyebrow": "Search",
     "search.title": "Search site",
     "search.label": "Search query",
@@ -1753,6 +1892,62 @@ const translations = {
     "sitemap.settingsTitle": "Sitemap",
     "sitemap.settingsBody": "Review public pages and policy documents from one screen.",
     "sitemap.open": "Open Sitemap",
+    "search.trustTitle": "Trust Center",
+    "search.trustBody": "Review privacy, security, accessibility, status, and legal notes from one place.",
+    "search.statusTitle": "Status",
+    "search.statusBody": "Review the current operating status for routes, notifications, storage, and sharing metadata.",
+    "search.securityTitle": "Security",
+    "search.securityBody": "Review security boundaries for browser storage, cookies, external checkout, and notification permissions.",
+    "trust.eyebrow": "Trust Center",
+    "trust.title": "Trust and operations information in one place.",
+    "trust.lead": "Review privacy, security, accessibility, service status, and legal information in a company-style hub.",
+    "trust.summaryLabel": "Current posture",
+    "trust.summaryValue": "Local-first, transparent, monitored",
+    "trust.summaryBody": "The site runs around browser preferences without login tracking cookies, and keeps payment and feedback service boundaries clear.",
+    "trust.securityTitle": "Security notes",
+    "trust.securityBody": "Review browser storage, notification permissions, payment links, and external service boundaries.",
+    "trust.statusTitle": "Operational status",
+    "trust.statusBody": "Summarize core pages, notifications, offline support, and sharing metadata.",
+    "trust.privacyTitle": "Privacy handling",
+    "trust.privacyBody": "Review local settings storage, cookie notice choices, and feedback input scope.",
+    "trust.accessTitle": "Accessibility",
+    "trust.accessBody": "Review keyboard movement, contrast, display density, and reduced motion support.",
+    "trust.termsTitle": "Use standards",
+    "trust.termsBody": "Review site use, external checkout, and feedback submission standards.",
+    "trust.sitemapTitle": "Route map",
+    "trust.sitemapBody": "Move directly to public pages and policy documents.",
+    "status.eyebrow": "Status",
+    "status.title": "Check the current site status.",
+    "status.lead": "Summarize the operating baseline for core features like a company status page.",
+    "status.overallLabel": "Overall status",
+    "status.overallValue": "All core pages available",
+    "status.updated": "Last internal check: June 15, 2026",
+    "status.routesTitle": "Public routes",
+    "status.routesBody": "Home, Settings, Privacy, Updates, Search, Activity, Sitemap, Trust routes are expected to serve normally.",
+    "status.notificationsTitle": "Notifications",
+    "status.notificationsBody": "Browser notification support depends on user permission and browser platform rules.",
+    "status.storageTitle": "Local storage",
+    "status.storageBody": "Theme, language, consent, activity, and subscription preferences stay in this browser.",
+    "status.shareTitle": "Sharing metadata",
+    "status.shareBody": "Open Graph and Twitter card metadata are configured for public pages.",
+    "security.eyebrow": "Security",
+    "security.title": "Security boundaries are explained clearly.",
+    "security.lead": "See what this site stores in the browser, what opens through external services, and what visitors control directly.",
+    "security.modelLabel": "Security model",
+    "security.modelValue": "Local-first controls",
+    "security.modelBody": "Sensitive payment data is not stored directly by this site, and notifications and storage follow browser permissions.",
+    "security.storageTitle": "Browser storage",
+    "security.storageBody": "Theme, language, activity history, and subscription inputs stay in this browser's local storage.",
+    "security.cookiesTitle": "Cookies",
+    "security.cookiesBody": "Only required behavior and storage-notice acknowledgement cookies are used; advertising and analytics cookies are not currently used.",
+    "security.checkoutTitle": "External checkout",
+    "security.checkoutBody": "Payment buttons open Stripe-hosted pages, and this site does not directly keep card numbers or authentication details.",
+    "security.notificationsTitle": "Notifications",
+    "security.notificationsBody": "Site notifications appear only when the visitor allows them in the browser permission prompt.",
+    "security.feedbackTitle": "Feedback forms",
+    "security.feedbackBody": "Feedback forms follow the external service policy, so visitors should avoid entering sensitive personal data.",
+    "security.reportTitle": "Report an issue",
+    "security.reportBody": "Use the Feedback route if you notice a security or privacy concern.",
     "cookie.eyebrow": "Privacy",
     "cookie.title": "Browser storage notice",
     "cookie.body":
@@ -1972,6 +2167,18 @@ const translations = {
     "home.feedbackTitle": "The signal that improves the system.",
     "home.feedbackBody": "Report awkward flows, missing translation, payment access issues, or design balance problems.",
     "home.feedbackButton": "Send Feedback",
+    "home.subscribeKicker": "Subscribe",
+    "home.subscribeTitle": "Get updates by email.",
+    "home.subscribeBody": "Prepare to receive site updates, new writing, and news-style notes by email. For now, this registration is stored in this browser.",
+    "home.subscribeEmailLabel": "Email",
+    "home.subscribeTopicsLabel": "What to receive",
+    "home.subscribeTopicUpdates": "Site updates",
+    "home.subscribeTopicNews": "News and announcements",
+    "home.subscribeTopicCreator": "Creator notes",
+    "home.subscribeButton": "Save subscription",
+    "home.subscribeSaved": "Subscription details saved. Real email delivery will activate after a server connection is added.",
+    "home.subscribeInvalid": "Enter a valid email address.",
+    "home.subscribeNeedTopic": "Choose at least one update type.",
     "creator.eyebrow": "Creator",
     "creator.title": "Build the first playable scene.",
     "creator.lead":
@@ -2935,6 +3142,44 @@ const showNativeCopyToastSoon = (messageKey) => {
   }, 60);
 };
 
+const getContextMenuAudioContext = () => {
+  const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextConstructor) return null;
+
+  if (!contextMenuAudioContext) {
+    contextMenuAudioContext = new AudioContextConstructor();
+  }
+
+  return contextMenuAudioContext;
+};
+
+const playContextMenuClickSound = () => {
+  try {
+    const audioContext = getContextMenuAudioContext();
+    if (!audioContext) return;
+
+    audioContext.resume?.().catch(() => {});
+
+    const start = audioContext.currentTime;
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    oscillator.type = "triangle";
+    oscillator.frequency.setValueAtTime(720, start);
+    oscillator.frequency.exponentialRampToValueAtTime(1040, start + 0.045);
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(0.055, start + 0.008);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.07);
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+    oscillator.start(start);
+    oscillator.stop(start + 0.075);
+  } catch {
+    contextMenuAudioContext = null;
+  }
+};
+
 const prices = {
   krw: {
     free: "₩0",
@@ -3030,6 +3275,33 @@ const siteSearchIndex = [
     keywords: {
       ko: "sitemap 사이트맵 전체 페이지 링크 구조 검색엔진 xml 정책 설정 도구",
       en: "sitemap site map all pages links structure search engine xml policy settings tools",
+    },
+  },
+  {
+    titleKey: "search.trustTitle",
+    bodyKey: "search.trustBody",
+    url: "/trust",
+    keywords: {
+      ko: "trust center 신뢰 센터 보안 개인정보 접근성 상태 법적 안내 기업 사이트",
+      en: "trust center security privacy accessibility status legal company site",
+    },
+  },
+  {
+    titleKey: "search.statusTitle",
+    bodyKey: "search.statusBody",
+    url: "/status",
+    keywords: {
+      ko: "status 상태 운영 라우트 알림 저장소 공유 메타 점검 operational",
+      en: "status operational routes notifications storage sharing metadata health check",
+    },
+  },
+  {
+    titleKey: "search.securityTitle",
+    bodyKey: "search.securityBody",
+    url: "/security",
+    keywords: {
+      ko: "security 보안 쿠키 로컬 저장소 결제 알림 권한 외부 서비스",
+      en: "security cookies local storage checkout notifications permissions external services",
     },
   },
   {
@@ -3314,8 +3586,30 @@ const resolveNotificationToggle = async (nextValue) => {
   }
 };
 
+const showNotificationPermissionMessage = (permission, enabled, requestedEnable = enabled) => {
+  if (!("Notification" in window)) {
+    showCopyToast("toast.notificationsUnsupported");
+    return;
+  }
+
+  if (permission === "granted" && enabled) {
+    showCopyToast("toast.notificationsAllowed");
+    return;
+  }
+
+  if (permission === "denied") {
+    showCopyToast("toast.notificationsBlocked");
+    return;
+  }
+
+  if (requestedEnable) {
+    showCopyToast("toast.notificationsDismissed");
+  }
+};
+
 const showTestNotification = async () => {
   const enabled = await resolveNotificationToggle(true);
+  showNotificationPermissionMessage(getNotificationPermissionState(), enabled, true);
   localStorage.setItem("profile-setting-notifications", String(enabled));
 
   const notificationToggle = document.querySelector('[data-toggle-key="notifications"]');
@@ -3349,9 +3643,11 @@ const setupSettingToggles = () => {
       let nextValue = !button.classList.contains("is-on");
 
       if (button.dataset.toggleKey === "notifications") {
+        const requestedEnable = nextValue;
         button.disabled = true;
         nextValue = await resolveNotificationToggle(nextValue);
         button.disabled = false;
+        showNotificationPermissionMessage(getNotificationPermissionState(), nextValue, requestedEnable);
       }
 
       localStorage.setItem(storageKey, String(nextValue));
@@ -4174,7 +4470,68 @@ const setupSearchPage = () => {
 };
 
 const activityLogKey = "profile-activity-log";
+const homeSubscriptionKey = "profile-home-email-subscription";
 const maxActivityItems = 48;
+
+const getStoredHomeSubscription = () => {
+  try {
+    const value = JSON.parse(localStorage.getItem(homeSubscriptionKey) || "null");
+    return value && typeof value.email === "string" ? value : null;
+  } catch {
+    localStorage.removeItem(homeSubscriptionKey);
+    return null;
+  }
+};
+
+const setHomeSubscribeStatus = (key, type = "info") => {
+  if (!homeSubscribeStatus) return;
+  homeSubscribeStatus.textContent = translate(key);
+  homeSubscribeStatus.dataset.statusType = type;
+};
+
+const setupHomeSubscribeForm = () => {
+  if (!homeSubscribeForm || !homeSubscribeEmail) return;
+
+  const saved = getStoredHomeSubscription();
+  if (saved) {
+    homeSubscribeEmail.value = saved.email;
+    const selectedTopics = new Set(saved.topics || []);
+    homeSubscribeTopics.forEach((input) => {
+      input.checked = selectedTopics.has(input.value);
+    });
+    setHomeSubscribeStatus("home.subscribeSaved", "success");
+  }
+
+  homeSubscribeForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const email = homeSubscribeEmail.value.trim();
+    const topics = homeSubscribeTopics.filter((input) => input.checked).map((input) => input.value);
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if (!isValidEmail) {
+      setHomeSubscribeStatus("home.subscribeInvalid", "error");
+      homeSubscribeEmail.focus();
+      return;
+    }
+
+    if (topics.length === 0) {
+      setHomeSubscribeStatus("home.subscribeNeedTopic", "error");
+      return;
+    }
+
+    localStorage.setItem(
+      homeSubscriptionKey,
+      JSON.stringify({
+        email,
+        topics,
+        createdAt: new Date().toISOString(),
+      }),
+    );
+    setHomeSubscribeStatus("home.subscribeSaved", "success");
+    recordActivity("action", "Email subscription saved");
+  });
+};
 
 const getActivityLog = () => {
   try {
@@ -4336,6 +4693,7 @@ const clearSiteCache = () => {
     "profile-browser-usage-used-ms",
     "profile-browser-usage-window-start-ms",
     activityLogKey,
+    homeSubscriptionKey,
   ].forEach((key) => localStorage.removeItem(key));
   clearStorageConsent();
 
@@ -5465,6 +5823,7 @@ if (homeTabs.length) {
 setupSiteSearch();
 setupMobileQuickActions();
 setupSearchPage();
+setupHomeSubscribeForm();
 setupOfflineRetry();
 setTheme(getInitialTheme());
 setupSettingToggles();
@@ -5690,6 +6049,9 @@ actionButtons.forEach((button) => {
 });
 contextMenuActions.forEach((button) => {
   button.addEventListener("click", () => {
+    if (!button.disabled && button.getAttribute("aria-disabled") !== "true") {
+      playContextMenuClickSound();
+    }
     handleContextMenuAction(button.dataset.contextAction).catch(() => {});
   });
 });

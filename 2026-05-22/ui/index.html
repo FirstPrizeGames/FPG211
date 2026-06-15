@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -9,7 +9,7 @@
       content="A modern personal profile for an emergency responder, with bio, FAQ, pricing, feedback, and accessible display settings."
     />
     <meta name="theme-color" content="#050706" />
-    <link rel="canonical" href="https://firstprizegames211.app/" />
+    <link rel="canonical" href="https://firstprizegames.info/" />
     <meta property="og:title" content="Emergency Responder Profile" />
     <meta
       property="og:description"
@@ -17,15 +17,15 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Emergency Responder Profile" />
-    <meta property="og:url" content="https://firstprizegames211.app/" />
-    <meta property="og:image" content="https://firstprizegames211.app/assets/home-us-ambulance-hero.png" />
+    <meta property="og:url" content="https://firstprizegames.info/" />
+    <meta property="og:image" content="https://firstprizegames.info/assets/home-us-ambulance-hero.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Emergency Responder Profile" />
     <meta
       name="twitter:description"
       content="A calm, modern profile site for emergency response work, bio details, FAQ, and feedback."
     />
-    <meta name="twitter:image" content="https://firstprizegames211.app/assets/home-us-ambulance-hero.png" />
+    <meta name="twitter:image" content="https://firstprizegames.info/assets/home-us-ambulance-hero.png" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png" />
@@ -42,23 +42,23 @@
         "@graph": [
           {
             "@type": "WebSite",
-            "@id": "https://firstprizegames211.app/#website",
+            "@id": "https://firstprizegames.info/#website",
             "name": "Emergency Responder Profile",
-            "url": "https://firstprizegames211.app/",
+            "url": "https://firstprizegames.info/",
             "inLanguage": ["ko", "en"],
             "potentialAction": {
               "@type": "SearchAction",
-              "target": "https://firstprizegames211.app/?q={search_term_string}",
+              "target": "https://firstprizegames.info/?q={search_term_string}",
               "query-input": "required name=search_term_string"
             }
           },
           {
             "@type": "Person",
-            "@id": "https://firstprizegames211.app/#profile",
+            "@id": "https://firstprizegames.info/#profile",
             "name": "Emergency Responder Profile",
             "jobTitle": "Emergency responder",
-            "url": "https://firstprizegames211.app/",
-            "image": "https://firstprizegames211.app/assets/profile-hero.png",
+            "url": "https://firstprizegames.info/",
+            "image": "https://firstprizegames.info/assets/profile-hero.png",
             "knowsAbout": ["Emergency response", "Game UI", "Roblox systems", "Unity development"]
           }
         ]
@@ -113,7 +113,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260611-copy-toast-deploy-fix" />
+    <link rel="stylesheet" href="styles.css?v=20260615-trust-center" />
   </head>
   <body class="home-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -316,6 +316,48 @@
         </a>
       </section>
 
+      <section class="home-subscribe" aria-labelledby="home-subscribe-title">
+        <div class="home-section-copy">
+          <p class="home-section-kicker" data-i18n="home.subscribeKicker">Subscribe</p>
+          <h2 id="home-subscribe-title" data-i18n="home.subscribeTitle">새 소식을 이메일로 받기.</h2>
+          <p data-i18n="home.subscribeBody">
+            업데이트, 새로운 글, 뉴스성 안내를 이메일로 받을 수 있게 준비합니다. 지금 등록한 정보는 이 브라우저에 저장됩니다.
+          </p>
+        </div>
+        <form class="home-subscribe-form" data-home-subscribe-form>
+          <label class="home-subscribe-field">
+            <span data-i18n="home.subscribeEmailLabel">이메일</span>
+            <input
+              type="email"
+              autocomplete="email"
+              inputmode="email"
+              placeholder="you@example.com"
+              data-home-subscribe-email
+              required
+            />
+          </label>
+          <fieldset class="home-subscribe-topics">
+            <legend data-i18n="home.subscribeTopicsLabel">받고 싶은 소식</legend>
+            <label>
+              <input type="checkbox" value="updates" data-home-subscribe-topic checked />
+              <span data-i18n="home.subscribeTopicUpdates">사이트 업데이트</span>
+            </label>
+            <label>
+              <input type="checkbox" value="news" data-home-subscribe-topic checked />
+              <span data-i18n="home.subscribeTopicNews">새로운 소식과 뉴스</span>
+            </label>
+            <label>
+              <input type="checkbox" value="creator" data-home-subscribe-topic />
+              <span data-i18n="home.subscribeTopicCreator">Creator 기록</span>
+            </label>
+          </fieldset>
+          <div class="home-subscribe-actions">
+            <button class="button primary" type="submit" data-i18n="home.subscribeButton">구독 저장</button>
+            <p class="home-subscribe-status" data-home-subscribe-status role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </section>
+
       <div class="cache-dialog share-dialog" data-share-dialog hidden>
         <div class="cache-dialog-panel share-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="share-dialog-title">
           <p class="eyebrow" data-i18n="share.eyebrow">Share</p>
@@ -447,7 +489,7 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="script.js?v=20260611-copy-toast-deploy-fix" defer></script>
+    <script src="script.js?v=20260615-trust-center" defer></script>
   </body>
 </html>
 

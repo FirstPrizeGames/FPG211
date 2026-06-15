@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trust Center · Emergency Responder Profile</title>
+    <meta
+      name="description"
+      content="A trust center collecting privacy, security, accessibility, status, and legal information for the site."
+    />
+    <meta name="theme-color" content="#151514" />
+    <link rel="canonical" href="https://firstprizegames.info/trust" />
+    <meta property="og:title" content="Trust Center · Emergency Responder Profile" />
+    <meta property="og:description" content="Review privacy, security, accessibility, status, and legal information from one place." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Emergency Responder Profile" />
+    <meta property="og:url" content="https://firstprizegames.info/trust" />
+    <meta property="og:image" content="https://firstprizegames.info/assets/privacy-vault-hero.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Trust Center · Emergency Responder Profile" />
+    <meta name="twitter:description" content="Review privacy, security, accessibility, status, and legal information from one place." />
+    <meta name="twitter:image" content="https://firstprizegames.info/assets/privacy-vault-hero.jpg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <script>
+      (() => {
+        const normalizeTheme = (theme) => ["dark", "lights-off"].includes(theme) ? theme : "dark";
+        const normalizeBoolean = (value, fallback = false) => {
+          if ([true, "true", "1", "on"].includes(value)) return true;
+          if ([false, "false", "0", "off"].includes(value)) return false;
+          return fallback;
+        };
+        const normalizeKidMode = (mode) => mode === "true" ? "strong" : ["soft", "strong"].includes(mode) ? mode : "off";
+        const normalizeAccent = (accent) => ["blue", "green", "rose", "orange", "purple"].includes(accent) ? accent : "neutral";
+        document.documentElement.dataset.theme = normalizeTheme(localStorage.getItem("profile-theme"));
+        document.documentElement.lang = ["ko", "en"].includes(localStorage.getItem("profile-language")) ? localStorage.getItem("profile-language") : "en";
+        document.documentElement.dataset.accent = normalizeAccent(localStorage.getItem("profile-accent"));
+        document.documentElement.dataset.density = ["compact", "comfortable", "spacious"].includes(localStorage.getItem("profile-density")) ? localStorage.getItem("profile-density") : "comfortable";
+        document.documentElement.dataset.fastRender = normalizeBoolean(localStorage.getItem("profile-setting-fast-render") || localStorage.getItem("profile-fast-render"), false) ? "true" : "false";
+        document.documentElement.dataset.kidMode = normalizeKidMode(localStorage.getItem("profile-setting-kid-mode"));
+        const sidebarNavEnabled = normalizeBoolean(localStorage.getItem("profile-setting-sidebar-nav"), true);
+        document.documentElement.dataset.navLayout = sidebarNavEnabled ? "sidebar" : "top";
+        document.documentElement.dataset.sidebarCollapsed = sidebarNavEnabled && normalizeBoolean(localStorage.getItem("profile-sidebar-collapsed"), false) ? "true" : "false";
+      })();
+    </script>
+    <link rel="stylesheet" href="../styles.css?v=20260615-trust-center" />
+  </head>
+  <body class="trust-body">
+    <div class="loading-bar" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
+    <main class="shell trust-page" id="main-content" tabindex="-1">
+      <nav class="topbar" aria-label="Trust Center menu">
+        <a class="brand-logo" href="/" aria-label="Home">
+          <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
+          <span>FP</span>
+        </a>
+        <button class="mobile-menu-button" type="button" aria-expanded="false" data-mobile-menu-toggle>
+          <span data-i18n="nav.menu">Menu</span>
+          <svg class="mobile-menu-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>
+        </button>
+        <div class="nav-links" data-mobile-menu>
+          <a href="/"><span data-i18n="nav.home">Home</span></a>
+          <a href="/about"><span data-i18n="nav.aboutUs">About us</span></a>
+          <a href="/settings"><span data-i18n="nav.settings">Settings</span></a>
+          <a href="/privacy"><span data-i18n="nav.privacy">Privacy Policy</span></a>
+          <a href="/feedback"><span data-i18n="nav.feedback">Feedback</span></a>
+        </div>
+      </nav>
+
+      <section class="trust-hero" aria-labelledby="trust-title">
+        <div>
+          <p class="eyebrow" data-i18n="trust.eyebrow">Trust Center</p>
+          <h1 id="trust-title" data-i18n="trust.title">신뢰와 운영 정보를 한 곳에 모았습니다.</h1>
+          <p data-i18n="trust.lead">개인정보, 보안, 접근성, 서비스 상태, 법적 안내를 기업 사이트처럼 빠르게 확인할 수 있습니다.</p>
+        </div>
+        <div class="trust-status-card" aria-label="Trust summary">
+          <span data-i18n="trust.summaryLabel">Current posture</span>
+          <strong data-i18n="trust.summaryValue">Local-first, transparent, monitored</strong>
+          <p data-i18n="trust.summaryBody">로그인 추적 쿠키 없이 브라우저 설정 중심으로 동작하고, 결제와 피드백은 외부 서비스 경계를 명확히 둡니다.</p>
+        </div>
+      </section>
+
+      <section class="trust-grid" aria-label="Trust documents">
+        <a href="/security">
+          <span data-i18n="nav.security">Security</span>
+          <strong data-i18n="trust.securityTitle">보안 기준</strong>
+          <p data-i18n="trust.securityBody">브라우저 저장소, 알림 권한, 결제 링크, 외부 서비스 경계를 확인합니다.</p>
+        </a>
+        <a href="/status">
+          <span data-i18n="nav.status">Status</span>
+          <strong data-i18n="trust.statusTitle">운영 상태</strong>
+          <p data-i18n="trust.statusBody">주요 페이지, 알림, 오프라인 지원, 공유 메타 상태를 요약합니다.</p>
+        </a>
+        <a href="/privacy">
+          <span data-i18n="nav.privacy">Privacy Policy</span>
+          <strong data-i18n="trust.privacyTitle">개인정보 처리</strong>
+          <p data-i18n="trust.privacyBody">로컬 설정 저장, 쿠키 안내, 피드백 입력 범위를 정리합니다.</p>
+        </a>
+        <a href="/accessibility">
+          <span data-i18n="nav.accessibility">Accessibility</span>
+          <strong data-i18n="trust.accessTitle">접근성</strong>
+          <p data-i18n="trust.accessBody">키보드 이동, 대비, 표시 밀도, 움직임 감소 지원을 확인합니다.</p>
+        </a>
+        <a href="/terms">
+          <span data-i18n="nav.terms">Terms</span>
+          <strong data-i18n="trust.termsTitle">이용 기준</strong>
+          <p data-i18n="trust.termsBody">사이트 사용, 외부 결제, 피드백 제출 기준을 확인합니다.</p>
+        </a>
+        <a href="/sitemap">
+          <span data-i18n="nav.sitemap">Sitemap</span>
+          <strong data-i18n="trust.sitemapTitle">전체 경로</strong>
+          <p data-i18n="trust.sitemapBody">공개 페이지와 정책 문서로 바로 이동합니다.</p>
+        </a>
+      </section>
+    </main>
+    <script src="../script.js?v=20260615-trust-center" defer></script>
+  </body>
+</html>

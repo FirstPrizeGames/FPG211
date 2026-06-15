@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = "profile-offline-20260611-copy-toast-deploy-fix";
+const CACHE_NAME = "profile-offline-20260615-trust-center";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

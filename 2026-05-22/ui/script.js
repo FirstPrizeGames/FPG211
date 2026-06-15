@@ -170,28 +170,99 @@ const enhanceSidebarNavigation = () => {
   document.querySelectorAll(".nav-links").forEach((nav) => {
     nav.replaceChildren();
 
-    navGroups.forEach((group) => {
+    navGroups.forEach((group, index) => {
+      const groupElement = document.createElement("div");
+      groupElement.className = "nav-menu-group";
+      groupElement.dataset.navMenuGroup = group.label.toLowerCase();
+      const triggerId = `nav-group-${group.label.toLowerCase()}-${index}`;
+
+      const trigger = document.createElement("button");
+      trigger.className = "nav-group-trigger";
+      trigger.type = "button";
+      trigger.id = triggerId;
+      trigger.setAttribute("aria-expanded", "false");
+      trigger.innerHTML = `<span>${group.label}</span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>`;
+
+      const menu = document.createElement("div");
+      menu.className = "nav-group-menu";
+      menu.setAttribute("aria-labelledby", triggerId);
+
       const sectionLabel = document.createElement("span");
       sectionLabel.className = "nav-section-label";
       sectionLabel.textContent = group.label;
       sectionLabel.setAttribute("aria-hidden", "true");
-      nav.append(sectionLabel);
+      menu.append(sectionLabel);
 
       group.items.forEach((item) => {
         if (item.type === "search") {
-          nav.append(createNavSearchButton());
+          menu.append(createNavSearchButton());
           return;
         }
 
         const anchor = createNavAnchor(item);
         if (item.className) anchor.classList.add(item.className);
-        nav.append(anchor);
+        menu.append(anchor);
       });
+
+      if (menu.querySelector(".is-active")) groupElement.classList.add("has-active-item");
+      groupElement.append(trigger, menu);
+      nav.append(groupElement);
     });
   });
 };
 
 enhanceSidebarNavigation();
+
+const createStandardFooter = () => {
+  if (document.querySelector("[data-site-footer]")) return;
+
+  const footer = document.createElement("footer");
+  footer.className = "site-footer";
+  footer.dataset.siteFooter = "";
+  footer.innerHTML = `
+    <div class="site-footer-brand">
+      <strong data-i18n="footer.brand">Emergency Responder Profile</strong>
+      <span data-i18n="footer.tagline">Trust, status, privacy, and support links in one place.</span>
+    </div>
+    <nav class="site-footer-links" aria-label="Footer links" data-i18n-aria-label="aria.footerLinks">
+      <a href="/trust" data-i18n="nav.trust">Trust Center</a>
+      <a href="/status" data-i18n="nav.status">Status</a>
+      <a href="/security" data-i18n="nav.security">Security</a>
+      <a href="/privacy" data-i18n="nav.privacy">Privacy Policy</a>
+      <a href="/terms" data-i18n="nav.terms">Terms</a>
+      <a href="/accessibility" data-i18n="nav.accessibility">Accessibility</a>
+      <a href="/sitemap" data-i18n="nav.sitemap">Sitemap</a>
+    </nav>
+  `;
+
+  document.body.append(footer);
+};
+
+createStandardFooter();
+
+document.addEventListener("click", (event) => {
+  const trigger = event.target.closest?.(".nav-group-trigger");
+  if (event.target.closest?.(".nav-group-menu")) return;
+  document.querySelectorAll(".nav-menu-group.is-open").forEach((group) => {
+    if (!trigger || group !== trigger.closest(".nav-menu-group")) {
+      group.classList.remove("is-open");
+      group.querySelector(".nav-group-trigger")?.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  if (!trigger) return;
+  const group = trigger.closest(".nav-menu-group");
+  const isOpen = group.classList.toggle("is-open");
+  trigger.setAttribute("aria-expanded", String(isOpen));
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  document.querySelectorAll(".nav-menu-group.is-open").forEach((group) => {
+    group.classList.remove("is-open");
+    group.querySelector(".nav-group-trigger")?.setAttribute("aria-expanded", "false");
+  });
+});
 
 const createContextMenuFallback = () => {
   const menu = document.createElement("div");
@@ -493,6 +564,8 @@ const translations = {
     "nav.trust": "Trust Center",
     "nav.status": "Status",
     "nav.security": "Security",
+    "footer.brand": "Emergency Responder Profile",
+    "footer.tagline": "신뢰, 상태, 개인정보, 지원 링크를 한 곳에 모았습니다.",
     "usage.nav": "Usage",
     "nav.privacy": "Privacy Policy",
     "nav.license": "License",
@@ -684,6 +757,7 @@ const translations = {
     "aria.activityTimeline": "Activity 목록",
     "aria.sitemapMenu": "Sitemap menu",
     "aria.sitemapLinks": "Sitemap links",
+    "aria.footerLinks": "푸터 링크",
     "aria.accessibilityMenu": "접근성 메뉴",
     "aria.accessibilitySummary": "접근성 요약",
     "aria.accessibilityDetails": "접근성 세부 정보",
@@ -1719,6 +1793,8 @@ const translations = {
     "nav.trust": "Trust Center",
     "nav.status": "Status",
     "nav.security": "Security",
+    "footer.brand": "Emergency Responder Profile",
+    "footer.tagline": "Trust, status, privacy, and support links in one place.",
     "usage.nav": "Usage",
     "nav.privacy": "Privacy Policy",
     "nav.license": "License",
@@ -1910,6 +1986,7 @@ const translations = {
     "aria.activityTimeline": "Activity timeline",
     "aria.sitemapMenu": "Sitemap menu",
     "aria.sitemapLinks": "Sitemap links",
+    "aria.footerLinks": "Footer links",
     "aria.accessibilityMenu": "Accessibility menu",
     "aria.accessibilitySummary": "Accessibility summary",
     "aria.accessibilityDetails": "Accessibility details",

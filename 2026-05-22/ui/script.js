@@ -3,6 +3,16 @@ const navIconMarkup = {
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m16 16 5 5" /></svg>',
   home:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg>',
+  creator:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z" /><path d="m3 14 9 5 9-5" /><path d="m3 11 9 5 9-5" /></svg>',
+  bio:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0" /><circle cx="12" cy="7" r="4" /></svg>',
+  about:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>',
+  faq:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 1 1 5.8 1c-.5.9-1.4 1.3-2.1 1.9-.6.5-.8.9-.8 2.1" /><path d="M12 17h.01" /></svg>',
+  pricing:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 10h18" /><path d="M7 15h4" /></svg>',
   share:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.6 10.8 6.8-4.1" /><path d="m8.6 13.2 6.8 4.1" /></svg>',
   settings:
@@ -19,6 +29,10 @@ const navIconMarkup = {
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z" /><path d="M15 3v4h4" /><path d="M9 11h6" /><path d="M9 15h6" /><path d="M9 19h4" /></svg>',
   accessibility:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2" /><path d="M5 8h14" /><path d="M12 8v13" /><path d="M8 21l4-8 4 8" /></svg>',
+  privacy:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-5" /></svg>',
+  license:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z" /><path d="M14 3v6h5" /><path d="M9 14h6" /><path d="M9 18h4" /><path d="M5 7v14" /></svg>',
   trust:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="M8.5 12.5 11 15l4.5-5" /></svg>',
   status:
@@ -110,179 +124,69 @@ const createMobileQuickActions = () => {
   document.body.append(bar);
 };
 
-const normalizeAnalyticsLink = (link) => {
-  if (!link) return null;
-  link.innerHTML = `${navIconMarkup.analytics}<span data-i18n="nav.analytics">Analytics</span>`;
-  if (normalizeNavPath(window.location.pathname) === normalizeNavPath(link.getAttribute("href") || "")) {
-    link.classList.add("is-active");
-  }
-  return link;
-};
-
 const enhanceSidebarNavigation = () => {
+  const navGroups = [
+    {
+      label: "COMMAND",
+      items: [
+        { type: "search" },
+        { href: "/updates", icon: navIconMarkup.updates, labelKey: "nav.updates", fallback: "Latest updates" },
+        { href: "/activity", icon: navIconMarkup.activity, labelKey: "nav.activity", fallback: "Activity" },
+        { href: "/", icon: navIconMarkup.home, labelKey: "nav.home", fallback: "Home" },
+        { href: "/Creator", icon: navIconMarkup.creator, labelKey: "nav.creator", fallback: "Creator" },
+        { href: "/Bio", icon: navIconMarkup.bio, labelKey: "nav.bio", fallback: "Bio" },
+        { href: "/about", icon: navIconMarkup.about, labelKey: "nav.aboutUs", fallback: "About us" },
+        { href: "/FAQ", icon: navIconMarkup.faq, labelKey: "nav.faq", fallback: "FAQ" },
+      ],
+    },
+    {
+      label: "MANAGE",
+      items: [
+        { href: "/Pricing", icon: navIconMarkup.pricing, labelKey: "nav.pricing", fallback: "Pricing" },
+        { href: "/feedback", icon: navIconMarkup.support, labelKey: "nav.support", fallback: "Support", className: "nav-support-link" },
+        { href: "/usage", icon: navIconMarkup.analytics, labelKey: "nav.analytics", fallback: "Analytics" },
+      ],
+    },
+    {
+      label: "ACCOUNT",
+      items: [
+        { href: "/settings", icon: navIconMarkup.settings, labelKey: "nav.settings", fallback: "Settings" },
+        { href: "/accessibility", icon: navIconMarkup.accessibility, labelKey: "nav.accessibility", fallback: "Accessibility" },
+      ],
+    },
+    {
+      label: "TRUST",
+      items: [
+        { href: "/trust", icon: navIconMarkup.trust, labelKey: "nav.trust", fallback: "Trust Center" },
+        { href: "/status", icon: navIconMarkup.status, labelKey: "nav.status", fallback: "Status" },
+        { href: "/security", icon: navIconMarkup.security, labelKey: "nav.security", fallback: "Security" },
+        { href: "/privacy", icon: navIconMarkup.privacy, labelKey: "nav.privacy", fallback: "Privacy Policy" },
+        { href: "/license", icon: navIconMarkup.license, labelKey: "nav.license", fallback: "License" },
+        { href: "/terms", icon: navIconMarkup.terms, labelKey: "nav.terms", fallback: "Terms" },
+      ],
+    },
+  ];
+
   document.querySelectorAll(".nav-links").forEach((nav) => {
-    const homeLink = nav.querySelector('a[href="/"]');
-    const pricingLink = nav.querySelector('a[href="/Pricing"]');
-    const settingsLink = nav.querySelector('a[href="/settings"]');
-    const licenseLink = nav.querySelector('a[href="/license"]');
-    const feedbackLink = nav.querySelector('a[href="/feedback"]');
-    let searchButton = nav.querySelector("[data-site-search-open]");
-    let updatesLink = nav.querySelector('a[href="/updates"]');
-    let activityLink = nav.querySelector('a[href="/activity"]');
-    let accessibilityLink = nav.querySelector('a[href="/accessibility"]');
-    let trustLink = nav.querySelector('a[href="/trust"]');
-    let statusLink = nav.querySelector('a[href="/status"]');
-    let securityLink = nav.querySelector('a[href="/security"]');
-    let analyticsLink = nav.querySelector('a[href="/usage"]');
-    let termsLink = nav.querySelector('a[href="/terms"]');
+    nav.replaceChildren();
 
-    if (!searchButton) {
-      searchButton = createNavSearchButton();
-      if (homeLink) {
-        homeLink.before(searchButton);
-      } else {
-        nav.prepend(searchButton);
-      }
-    }
-
-    if (!updatesLink) {
-      updatesLink = createNavAnchor({
-        href: "/updates",
-        icon: navIconMarkup.updates,
-        labelKey: "nav.updates",
-        fallback: "Latest updates",
-      });
-      searchButton?.after(updatesLink);
-    }
-
-    if (searchButton && updatesLink && updatesLink.previousElementSibling !== searchButton) {
-      searchButton.after(updatesLink);
-    }
-
-    if (!activityLink) {
-      activityLink = createNavAnchor({
-        href: "/activity",
-        icon: navIconMarkup.activity,
-        labelKey: "nav.activity",
-        fallback: "Activity",
-      });
-      updatesLink?.after(activityLink);
-    }
-
-    if (updatesLink && activityLink && activityLink.previousElementSibling !== updatesLink) {
-      updatesLink.after(activityLink);
-    }
-
-    if (feedbackLink) {
-      feedbackLink.classList.remove("nav-feedback-link");
-      feedbackLink.classList.add("nav-support-link");
-      feedbackLink.removeAttribute("data-i18n");
-      feedbackLink.innerHTML = `${navIconMarkup.support}<span data-i18n="nav.support">Support</span>`;
-      if (pricingLink && feedbackLink.previousElementSibling !== pricingLink) {
-        pricingLink.after(feedbackLink);
-      }
-    }
-
-    if (!analyticsLink && feedbackLink) {
-      analyticsLink = createNavAnchor({
-          href: "/usage",
-          icon: navIconMarkup.analytics,
-          labelKey: "nav.analytics",
-          fallback: "Analytics",
-        });
-      feedbackLink.after(analyticsLink);
-    } else {
-      normalizeAnalyticsLink(analyticsLink);
-    }
-
-    if (feedbackLink && analyticsLink && analyticsLink.previousElementSibling !== feedbackLink) {
-      feedbackLink.after(analyticsLink);
-    }
-
-    if (!accessibilityLink && settingsLink) {
-      accessibilityLink = createNavAnchor({
-        href: "/accessibility",
-        icon: navIconMarkup.accessibility,
-        labelKey: "nav.accessibility",
-        fallback: "Accessibility",
-      });
-      settingsLink.after(accessibilityLink);
-    }
-
-    if (settingsLink && accessibilityLink && accessibilityLink.previousElementSibling !== settingsLink) {
-      settingsLink.after(accessibilityLink);
-    }
-
-    if (!trustLink && accessibilityLink) {
-      trustLink = createNavAnchor({
-        href: "/trust",
-        icon: navIconMarkup.trust,
-        labelKey: "nav.trust",
-        fallback: "Trust Center",
-      });
-      accessibilityLink.after(trustLink);
-    }
-
-    if (accessibilityLink && trustLink && trustLink.previousElementSibling !== accessibilityLink) {
-      accessibilityLink.after(trustLink);
-    }
-
-    if (!statusLink && trustLink) {
-      statusLink = createNavAnchor({
-        href: "/status",
-        icon: navIconMarkup.status,
-        labelKey: "nav.status",
-        fallback: "Status",
-      });
-      trustLink.after(statusLink);
-    }
-
-    if (trustLink && statusLink && statusLink.previousElementSibling !== trustLink) {
-      trustLink.after(statusLink);
-    }
-
-    if (!securityLink && statusLink) {
-      securityLink = createNavAnchor({
-        href: "/security",
-        icon: navIconMarkup.security,
-        labelKey: "nav.security",
-        fallback: "Security",
-      });
-      statusLink.after(securityLink);
-    }
-
-    if (statusLink && securityLink && securityLink.previousElementSibling !== statusLink) {
-      statusLink.after(securityLink);
-    }
-
-    if (!termsLink && licenseLink) {
-      termsLink = createNavAnchor({
-        href: "/terms",
-        icon: navIconMarkup.terms,
-        labelKey: "nav.terms",
-        fallback: "Terms",
-      });
-      licenseLink.after(termsLink);
-    }
-
-    if (licenseLink && termsLink && termsLink.previousElementSibling !== licenseLink) {
-      licenseLink.after(termsLink);
-    }
-
-    nav.querySelectorAll(".nav-section-label").forEach((label) => label.remove());
-
-    [
-      [searchButton, "COMMAND"],
-      [pricingLink, "MANAGE"],
-      [settingsLink, "ACCOUNT"],
-      [trustLink, "TRUST"],
-    ].forEach(([link, label]) => {
-      if (!link) return;
+    navGroups.forEach((group) => {
       const sectionLabel = document.createElement("span");
       sectionLabel.className = "nav-section-label";
-      sectionLabel.textContent = label;
+      sectionLabel.textContent = group.label;
       sectionLabel.setAttribute("aria-hidden", "true");
-      link.before(sectionLabel);
+      nav.append(sectionLabel);
+
+      group.items.forEach((item) => {
+        if (item.type === "search") {
+          nav.append(createNavSearchButton());
+          return;
+        }
+
+        const anchor = createNavAnchor(item);
+        if (item.className) anchor.classList.add(item.className);
+        nav.append(anchor);
+      });
     });
   });
 };
@@ -586,9 +490,6 @@ const translations = {
     "nav.settings": "Settings",
     "nav.accessibility": "Accessibility",
     "nav.sitemap": "Sitemap",
-    "nav.trust": "Trust Center",
-    "nav.status": "Status",
-    "nav.security": "Security",
     "nav.trust": "Trust Center",
     "nav.status": "Status",
     "nav.security": "Security",
@@ -1809,11 +1710,15 @@ const translations = {
     "nav.support": "Support",
     "nav.analytics": "Analytics",
     "nav.updates": "Latest updates",
+    "nav.activity": "Activity",
     "nav.bio": "Bio",
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
     "nav.accessibility": "Accessibility",
     "nav.sitemap": "Sitemap",
+    "nav.trust": "Trust Center",
+    "nav.status": "Status",
+    "nav.security": "Security",
     "usage.nav": "Usage",
     "nav.privacy": "Privacy Policy",
     "nav.license": "License",

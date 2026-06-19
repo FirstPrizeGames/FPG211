@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260619-clipboard-warning-modal";
+const CACHE_NAME = "profile-offline-20260619-usage-smooth-progress";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

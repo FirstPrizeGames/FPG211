@@ -19,6 +19,10 @@
       "destination": "/activity/index.html"
     },
     {
+      "source": "/500",
+      "destination": "/500/index.html"
+    },
+    {
       "source": "/Creator",
       "destination": "/Creator/index.html"
     },
@@ -81,6 +85,14 @@
     {
       "source": "/updates",
       "destination": "/updates/index.html"
+    },
+    {
+      "source": "/coming-soon",
+      "destination": "/coming-soon/index.html"
+    },
+    {
+      "source": "/maintenance",
+      "destination": "/maintenance/index.html"
     },
     {
       "source": "/offline",

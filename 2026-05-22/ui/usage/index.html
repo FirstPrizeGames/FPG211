@@ -78,7 +78,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260619-clipboard-warning-modal" />
+    <link rel="stylesheet" href="../styles.css?v=20260619-usage-smooth-progress" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -118,85 +118,77 @@
         </div>
       </nav>
 
-      <section class="usage-hero">
-        <div>
-          <p class="eyebrow" data-i18n="usage.nav">Usage</p>
-          <h1 data-i18n="usage.title">사용량 콘솔</h1>
-          <p data-i18n="usage.lead">브라우저에 저장된 사이트 데이터와 현재 브라우저 사용료 카운터를 분리해서 확인합니다.</p>
+      <section class="usage-console" aria-label="일반 사용 한도" data-i18n-aria-label="usage.limitsTitle">
+        <h1 data-i18n="usage.limitsTitle">일반 사용 한도</h1>
+        <div class="usage-limit-console">
+          <article class="usage-limit-row">
+            <div class="usage-limit-copy">
+              <strong data-i18n="usage.dailyLimitTitle">5시간 사용 한도</strong>
+              <span data-browser-daily-reset>-- 초기화</span>
+            </div>
+            <div class="usage-limit-state">
+              <div class="usage-limit-bar" aria-hidden="true">
+                <span data-browser-daily-bar></span>
+              </div>
+              <strong data-browser-daily-remaining>100% 남음</strong>
+            </div>
+          </article>
+          <article class="usage-limit-row">
+            <div class="usage-limit-copy">
+              <strong data-i18n="usage.weeklyLimitTitle">주간 사용 한도</strong>
+              <span data-browser-weekly-reset>-- 초기화</span>
+            </div>
+            <div class="usage-limit-state">
+              <div class="usage-limit-bar" aria-hidden="true">
+                <span data-browser-weekly-bar></span>
+              </div>
+              <strong data-browser-weekly-remaining>100% 남음</strong>
+            </div>
+          </article>
         </div>
-        <div class="usage-rate-card">
-          <span data-i18n="usage.rate">요율</span>
-          <strong data-browser-rate data-i18n="usage.rateValue">분당 ₩1</strong>
-        </div>
+        <button class="usage-learn-button" type="button" data-usage-learn-open>
+          <span data-i18n="usage.learnMore">Learn more about usage limits</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M5 12h14" />
+            <path d="m13 6 6 6-6 6" />
+          </svg>
+        </button>
       </section>
 
-      <section class="usage-grid" aria-label="브라우저 사용량" data-i18n-aria-label="aria.usageSummary">
-        <article class="usage-card usage-card-wide">
-          <span data-i18n="usage.feeTitle">브라우저 사용료</span>
-          <h2 data-browser-fee>₩0</h2>
-          <p data-i18n="usage.feeBody">이 카운터는 페이지가 열려 있는 시간을 기준으로 브라우저 안에서만 증가하는 로컬 추정값입니다.</p>
-          <div class="usage-metrics">
-            <div>
-              <span data-i18n="usage.session">이번 세션</span>
-              <strong data-browser-session>0m 00s</strong>
-            </div>
-            <div>
-              <span data-i18n="usage.total">5시간 한도</span>
-              <strong data-browser-total>0m 00s</strong>
-            </div>
-          </div>
-          <div class="usage-limit-meter" data-browser-limit-meter>
-            <div class="usage-limit-header">
-              <span data-i18n="usage.freeLimit">무료 한도</span>
-              <strong data-browser-limit-text>0 / 850</strong>
-            </div>
-            <div class="usage-limit-track" aria-hidden="true">
-              <span data-browser-limit-bar></span>
-            </div>
-          </div>
-          <p class="cache-note" data-browser-status></p>
-        </article>
-
-        <article class="usage-card">
-          <span data-i18n="usage.storageTitle">브라우저 저장용량</span>
-          <h2 data-storage-percent>--</h2>
-          <p data-i18n="usage.storageBody">테마, 언어, 강조 컬러, 표시 설정처럼 이 사이트가 브라우저에 저장한 데이터를 확인합니다.</p>
-          <div class="storage-meter" data-storage-meter>
-            <div class="storage-meter-header">
-              <span data-i18n="settings.storageUsageTitle">저장용량</span>
-              <strong data-storage-percent>--</strong>
-            </div>
-            <div class="storage-meter-track" aria-hidden="true">
-              <span data-storage-bar></span>
-            </div>
-            <p data-storage-usage data-i18n="settings.storageUsageLoading">저장용량을 확인하는 중입니다.</p>
-          </div>
-        </article>
-
-        <article class="usage-card">
-          <span data-i18n="usage.cacheTitle">사이트 데이터 정리</span>
-          <h2 data-i18n="settings.clearCacheTitle">브라우저 캐시 정리</h2>
-          <p data-i18n="usage.cacheBody">설정과 사용량 기록을 지우고 기본값으로 되돌립니다.</p>
-          <button class="button cache-button" type="button" data-clear-cache data-i18n="settings.clearCacheButton">캐시 정리</button>
-          <p class="cache-note" data-clear-cache-note data-i18n="settings.clearCacheDone" hidden>저장된 설정을 정리했습니다.</p>
-        </article>
+      <section class="usage-upgrade-panel" aria-label="더 많은 한도" data-i18n-aria-label="usage.upgradeTitle">
+        <h2 data-i18n="usage.upgradeTitle">Get more limits?</h2>
+        <a class="usage-upgrade-button" href="/Pricing" data-i18n="usage.upgradeButton">Upgrade to plan</a>
       </section>
 
-      <div class="cache-dialog" data-clear-cache-warning hidden>
-        <div class="cache-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="cache-dialog-title">
-          <button class="dialog-close-button" type="button" data-clear-cache-cancel aria-label="닫기" data-i18n-aria-label="share.close">
+      <div class="cache-dialog usage-learn-dialog" data-usage-learn-dialog hidden>
+        <div class="cache-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="usage-learn-title">
+          <button class="dialog-close-button" type="button" data-usage-learn-close aria-label="닫기" data-i18n-aria-label="share.close">
             <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
           </button>
           <p class="eyebrow" data-i18n="usage.nav">Usage</p>
-          <h2 id="cache-dialog-title" data-i18n="settings.clearCacheTitle">브라우저 캐시 정리</h2>
-          <p data-i18n="settings.clearCacheWarning">저장된 테마, 언어, 표시 설정이 모두 삭제됩니다. 계속하시겠습니까?</p>
-          <div class="cache-dialog-actions">
-            <button class="button cache-confirm-button" type="button" data-clear-cache-confirm data-i18n="settings.clearCacheConfirm">정리하기</button>
+          <h2 id="usage-learn-title" data-i18n="usage.learnDialogTitle">사용 한도 작동 방식</h2>
+          <p data-i18n="usage.learnDialogBody">
+            이 한도는 서버 계정이 아니라 현재 브라우저에서만 계산됩니다. 처음 접속한 순간부터 5시간 한도와 7일 주간 한도가 시작되고, 기간이 지나면 자동으로 새 한도로 초기화됩니다.
+          </p>
+          <div class="usage-learn-points" aria-label="사용 한도 설명" data-i18n-aria-label="usage.learnDialogTitle">
+            <div>
+              <strong data-i18n="usage.learnPointLocalTitle">브라우저 기준</strong>
+              <span data-i18n="usage.learnPointLocalBody">기록은 이 기기의 브라우저 저장소에만 남습니다.</span>
+            </div>
+            <div>
+              <strong data-i18n="usage.learnPointResetTitle">자동 초기화</strong>
+              <span data-i18n="usage.learnPointResetBody">5시간 또는 7일 창이 지나면 다음 접속 시 새 창이 시작됩니다.</span>
+            </div>
+            <div>
+              <strong data-i18n="usage.learnPointPrivateTitle">서버 저장 없음</strong>
+              <span data-i18n="usage.learnPointPrivateBody">로그인 계정이나 결제 기록과 연결되지 않습니다.</span>
+            </div>
           </div>
         </div>
       </div>
+
     </main>
-    <script src="../script.js?v=20260619-clipboard-warning-modal" defer></script>
+    <script src="../script.js?v=20260619-usage-smooth-progress" defer></script>
   </body>
 </html>
 

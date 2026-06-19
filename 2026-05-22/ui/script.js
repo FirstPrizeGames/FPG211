@@ -522,13 +522,15 @@ const cookieSettingsCloseButtons = [...document.querySelectorAll("[data-cookie-s
 const cookiePreferenceToggle = document.querySelector("[data-cookie-preference-toggle]");
 const cookieSettingsStatus = document.querySelector("[data-cookie-settings-status]");
 const fastRenderSwipe = document.querySelector("[data-fast-render-swipe]");
-const browserUsageSession = document.querySelector("[data-browser-session]");
-const browserUsageTotal = document.querySelector("[data-browser-total]");
-const browserUsageFee = document.querySelector("[data-browser-fee]");
-const browserUsageRate = document.querySelector("[data-browser-rate]");
-const browserUsageStatus = document.querySelector("[data-browser-status]");
-const browserUsageLimitText = document.querySelector("[data-browser-limit-text]");
-const browserUsageLimitBar = document.querySelector("[data-browser-limit-bar]");
+const browserUsageDailyReset = document.querySelector("[data-browser-daily-reset]");
+const browserUsageDailyRemaining = document.querySelector("[data-browser-daily-remaining]");
+const browserUsageDailyBar = document.querySelector("[data-browser-daily-bar]");
+const browserUsageWeeklyReset = document.querySelector("[data-browser-weekly-reset]");
+const browserUsageWeeklyRemaining = document.querySelector("[data-browser-weekly-remaining]");
+const browserUsageWeeklyBar = document.querySelector("[data-browser-weekly-bar]");
+const usageLearnOpen = document.querySelector("[data-usage-learn-open]");
+const usageLearnDialog = document.querySelector("[data-usage-learn-dialog]");
+const usageLearnCloseButtons = [...document.querySelectorAll("[data-usage-learn-close]")];
 const homeTabs = [...document.querySelectorAll("[data-home-tab]")];
 const homePanels = [...document.querySelectorAll("[data-home-panel]")];
 const infoTabs = [...document.querySelectorAll("[data-info-tab]")];
@@ -1489,26 +1491,27 @@ const translations = {
     "settings.storageUsageTitle": "저장용량",
     "settings.storageUsageLoading": "저장용량을 확인하는 중입니다.",
     "settings.storageUsageUnsupported": "이 브라우저에서는 저장용량 표시를 지원하지 않습니다.",
-    "usage.title": "사용량 콘솔",
-    "usage.lead": "브라우저에 저장된 사이트 데이터와 현재 브라우저 사용료 카운터를 분리해서 확인합니다.",
+    "usage.limitsTitle": "일반 사용 한도",
+    "usage.dailyLimitTitle": "5시간 사용 한도",
+    "usage.weeklyLimitTitle": "주간 사용 한도",
+    "usage.remainingPercent": "{percent}% 남음",
+    "usage.resetAt": "{time} 초기화",
+    "usage.resetOn": "{date} 초기화",
+    "usage.learnMore": "Learn more about usage limits",
+    "usage.learnDialogTitle": "사용 한도 작동 방식",
+    "usage.learnDialogBody": "이 한도는 서버 계정이 아니라 현재 브라우저에서만 계산됩니다. 처음 접속한 순간부터 5시간 한도와 7일 주간 한도가 시작되고, 기간이 지나면 자동으로 새 한도로 초기화됩니다.",
+    "usage.learnPointLocalTitle": "브라우저 기준",
+    "usage.learnPointLocalBody": "기록은 이 기기의 브라우저 저장소에만 남습니다.",
+    "usage.learnPointResetTitle": "자동 초기화",
+    "usage.learnPointResetBody": "5시간 또는 7일 창이 지나면 다음 접속 시 새 창이 시작됩니다.",
+    "usage.learnPointPrivateTitle": "서버 저장 없음",
+    "usage.learnPointPrivateBody": "로그인 계정이나 결제 기록과 연결되지 않습니다.",
+    "usage.upgradeTitle": "더 많은 한도를 원하시나요?",
+    "usage.upgradeButton": "요금제 업그레이드",
     "usage.settingsTitle": "사용량 페이지",
-    "usage.settingsBody": "저장용량, 브라우저 사용 시간, 사용료 카운터는 Usage 페이지에서 확인하고 정리합니다.",
+    "usage.settingsBody": "5시간 한도와 주간 한도를 Usage 페이지에서 확인합니다.",
     "usage.open": "Usage 열기",
     "usage.summaryValue": "페이지 이동",
-    "usage.storageTitle": "브라우저 저장용량",
-    "usage.storageBody": "테마, 언어, 강조 컬러, 표시 설정처럼 이 사이트가 브라우저에 저장한 데이터를 확인합니다.",
-    "usage.feeTitle": "브라우저 사용료",
-    "usage.feeBody": "이 카운터는 브라우저의 언어, 지역, 시간대를 기준으로 KRW 또는 USD를 고르고, 5시간 사용 한도를 로컬에서 추적합니다.",
-    "usage.session": "이번 세션",
-    "usage.total": "5시간 한도",
-    "usage.fee": "예상 사용료",
-    "usage.rate": "요율",
-    "usage.rateValue": "자동 통화",
-    "usage.freeLimit": "무료 한도",
-    "usage.limitStatus": "{used} / {limit} 사용 · {remaining} 남음 · {reset} 후 자동 초기화",
-    "usage.limitRedirect": "사용 한도를 모두 소모했습니다. 구독 페이지로 이동합니다.",
-    "usage.cacheTitle": "사이트 데이터 정리",
-    "usage.cacheBody": "설정과 사용량 기록을 지우고 기본값으로 되돌립니다.",
     "settings.accentTitle": "강조 컬러",
     "settings.accentBody": "버튼, 진행 바, 포커스 표시, 지원되는 페이지의 링크 색상에 사용할 포인트 컬러를 선택합니다.",
     "settings.accentScopeLabel": "적용 범위",
@@ -2820,26 +2823,27 @@ const translations = {
     "settings.storageUsageTitle": "Storage usage",
     "settings.storageUsageLoading": "Checking storage usage.",
     "settings.storageUsageUnsupported": "This browser does not support storage usage details.",
-    "usage.title": "Usage console",
-    "usage.lead": "Review browser-stored site data and a separate browser usage fee counter.",
+    "usage.limitsTitle": "General usage limits",
+    "usage.dailyLimitTitle": "5-hour usage limit",
+    "usage.weeklyLimitTitle": "Weekly usage limit",
+    "usage.remainingPercent": "{percent}% left",
+    "usage.resetAt": "Resets at {time}",
+    "usage.resetOn": "Resets on {date}",
+    "usage.learnMore": "Learn more about usage limits",
+    "usage.learnDialogTitle": "How usage limits work",
+    "usage.learnDialogBody": "These limits are calculated only in the current browser, not on a server account. The 5-hour limit and 7-day weekly limit start from the moment you first visit, then reset automatically after each window expires.",
+    "usage.learnPointLocalTitle": "Browser based",
+    "usage.learnPointLocalBody": "The record stays in this device's browser storage.",
+    "usage.learnPointResetTitle": "Automatic reset",
+    "usage.learnPointResetBody": "A new window starts on the next visit after 5 hours or 7 days pass.",
+    "usage.learnPointPrivateTitle": "No server storage",
+    "usage.learnPointPrivateBody": "It is not connected to a login account or payment history.",
+    "usage.upgradeTitle": "Get more limits?",
+    "usage.upgradeButton": "Upgrade to plan",
     "usage.settingsTitle": "Usage page",
-    "usage.settingsBody": "Storage usage, browser time, and the usage fee counter now live on the Usage page.",
+    "usage.settingsBody": "Review the 5-hour and weekly usage limits on the Usage page.",
     "usage.open": "Open Usage",
     "usage.summaryValue": "Open page",
-    "usage.storageTitle": "Browser storage",
-    "usage.storageBody": "Review data this site keeps in the browser, such as theme, language, accent color, and display preferences.",
-    "usage.feeTitle": "Browser usage fee",
-    "usage.feeBody": "This counter chooses KRW or USD from browser language, region, and time zone, then tracks a local 5-hour usage limit.",
-    "usage.session": "This session",
-    "usage.total": "5-hour limit",
-    "usage.fee": "Estimated fee",
-    "usage.rate": "Rate",
-    "usage.rateValue": "Auto currency",
-    "usage.freeLimit": "Free limit",
-    "usage.limitStatus": "{used} / {limit} used · {remaining} left · resets in {reset}",
-    "usage.limitRedirect": "Usage limit reached. Opening the subscription page.",
-    "usage.cacheTitle": "Clear site data",
-    "usage.cacheBody": "Clear settings and usage records, then return to defaults.",
     "settings.accentTitle": "Accent color",
     "settings.accentBody": "Choose the point color used for buttons, progress bars, focus states, and supported page links.",
     "settings.accentScopeLabel": "Applies to",
@@ -5319,57 +5323,65 @@ const formatBytes = (bytes) => {
 };
 
 const browserUsageLimitMs = 5 * 60 * 60 * 1000;
-const browserUsageRateUnitsPerMinute = 3;
-const browserUsageFreeLimitUnits = 850;
+const browserUsageWeeklyLimitMs = 7 * browserUsageLimitMs;
+const browserUsageWeekMs = 7 * 24 * 60 * 60 * 1000;
 const browserUsageStartedAt = Date.now();
 let browserUsageWindowStart = Number.parseInt(localStorage.getItem("profile-browser-usage-window-start-ms") || "0", 10);
 let browserUsageBaseMs = Number.parseInt(
   localStorage.getItem("profile-browser-usage-used-ms") || localStorage.getItem("profile-browser-usage-total-ms") || "0",
   10,
 );
+let browserUsageWeeklyWindowStart = Number.parseInt(localStorage.getItem("profile-browser-usage-week-start-ms") || "0", 10);
+let browserUsageWeeklyBaseMs = Number.parseInt(localStorage.getItem("profile-browser-usage-week-used-ms") || "0", 10);
 let browserUsageRedirected = false;
-if (!Number.isFinite(browserUsageWindowStart) || browserUsageWindowStart <= 0) browserUsageWindowStart = browserUsageStartedAt;
-if (!Number.isFinite(browserUsageBaseMs) || browserUsageBaseMs < 0) browserUsageBaseMs = 0;
+let browserUsageWindowStateChanged = false;
+let browserUsageWeeklyWindowStateChanged = false;
+if (!Number.isFinite(browserUsageWindowStart) || browserUsageWindowStart <= 0) {
+  browserUsageWindowStart = browserUsageStartedAt;
+  browserUsageWindowStateChanged = true;
+}
+if (!Number.isFinite(browserUsageBaseMs) || browserUsageBaseMs < 0) {
+  browserUsageBaseMs = 0;
+  browserUsageWindowStateChanged = true;
+}
+if (!Number.isFinite(browserUsageWeeklyWindowStart) || browserUsageWeeklyWindowStart <= 0) {
+  browserUsageWeeklyWindowStart = browserUsageStartedAt;
+  browserUsageWeeklyWindowStateChanged = true;
+}
+if (!Number.isFinite(browserUsageWeeklyBaseMs) || browserUsageWeeklyBaseMs < 0) {
+  browserUsageWeeklyBaseMs = 0;
+  browserUsageWeeklyWindowStateChanged = true;
+}
+if (browserUsageWindowStateChanged) {
+  localStorage.setItem("profile-browser-usage-window-start-ms", String(browserUsageWindowStart));
+  localStorage.setItem("profile-browser-usage-used-ms", String(browserUsageBaseMs));
+  localStorage.removeItem("profile-browser-usage-total-ms");
+}
+if (browserUsageWeeklyWindowStateChanged) {
+  localStorage.setItem("profile-browser-usage-week-start-ms", String(browserUsageWeeklyWindowStart));
+  localStorage.setItem("profile-browser-usage-week-used-ms", String(browserUsageWeeklyBaseMs));
+}
 
-const detectUsageCurrency = () => {
-  const languages = navigator.languages?.length ? navigator.languages : [navigator.language].filter(Boolean);
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
-  const region = languages
-    .map((language) => {
-      try {
-        return new Intl.Locale(language).region;
-      } catch {
-        return "";
-      }
-    })
-    .find(Boolean);
-  const languageText = languages.join(" ").toLowerCase();
+const formatUsageResetTime = (timestamp) => {
+  const date = new Date(timestamp);
+  const locale = currentLanguage === "ko" ? "ko-KR" : "en-US";
+  const timeText = new Intl.DateTimeFormat(locale, {
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date);
 
-  return region === "KR" || languageText.includes("ko") || timeZone === "Asia/Seoul" ? "krw" : "usd";
+  return translate("usage.resetAt").replace("{time}", timeText);
 };
 
-const usageCurrency = detectUsageCurrency();
-const browserUsageRates = {
-  krw: { amount: 3, currency: "KRW", locale: "ko-KR" },
-  usd: { amount: 0.03, currency: "USD", locale: "en-US" },
-};
-const usageRate = browserUsageRates[usageCurrency] || browserUsageRates.usd;
+const formatUsageResetDate = (timestamp) => {
+  const date = new Date(timestamp);
+  const locale = currentLanguage === "ko" ? "ko-KR" : "en-US";
+  const dateText = new Intl.DateTimeFormat(locale, {
+    month: "long",
+    day: "numeric",
+  }).format(date);
 
-const formatUsageMoney = (amount) =>
-  new Intl.NumberFormat(usageRate.locale, {
-    style: "currency",
-    currency: usageRate.currency,
-    maximumFractionDigits: usageRate.currency === "KRW" ? 0 : 2,
-  }).format(amount);
-
-const formatDuration = (milliseconds) => {
-  const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-
-  if (hours > 0) return `${hours}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`;
-  return `${minutes}m ${String(seconds).padStart(2, "0")}s`;
+  return translate("usage.resetOn").replace("{date}", dateText);
 };
 
 const refreshBrowserUsageWindow = () => {
@@ -5384,51 +5396,67 @@ const refreshBrowserUsageWindow = () => {
   localStorage.removeItem("profile-browser-usage-total-ms");
 };
 
+const refreshBrowserUsageWeeklyWindow = () => {
+  const now = Date.now();
+  if (now - browserUsageWeeklyWindowStart < browserUsageWeekMs) return;
+
+  browserUsageWeeklyWindowStart = now;
+  browserUsageWeeklyBaseMs = 0;
+  localStorage.setItem("profile-browser-usage-week-start-ms", String(browserUsageWeeklyWindowStart));
+  localStorage.setItem("profile-browser-usage-week-used-ms", "0");
+};
+
 refreshBrowserUsageWindow();
+refreshBrowserUsageWeeklyWindow();
 
 const getCurrentBrowserUsageMs = () => {
   refreshBrowserUsageWindow();
   return browserUsageBaseMs + (Date.now() - Math.max(browserUsageStartedAt, browserUsageWindowStart));
 };
 
+const getCurrentWeeklyUsageMs = () => {
+  refreshBrowserUsageWeeklyWindow();
+  return browserUsageWeeklyBaseMs + (Date.now() - Math.max(browserUsageStartedAt, browserUsageWeeklyWindowStart));
+};
+
 const persistBrowserUsage = () => {
   refreshBrowserUsageWindow();
+  refreshBrowserUsageWeeklyWindow();
   localStorage.setItem("profile-browser-usage-window-start-ms", String(browserUsageWindowStart));
   localStorage.setItem("profile-browser-usage-used-ms", String(Math.min(getCurrentBrowserUsageMs(), browserUsageLimitMs)));
+  localStorage.setItem("profile-browser-usage-week-start-ms", String(browserUsageWeeklyWindowStart));
+  localStorage.setItem("profile-browser-usage-week-used-ms", String(Math.min(getCurrentWeeklyUsageMs(), browserUsageWeeklyLimitMs)));
   localStorage.removeItem("profile-browser-usage-total-ms");
 };
 
 const updateBrowserUsage = () => {
   refreshBrowserUsageWindow();
-  if (!browserUsageSession && !browserUsageTotal && !browserUsageFee && !browserUsageRate) return;
+  refreshBrowserUsageWeeklyWindow();
+  if (
+    !browserUsageDailyRemaining &&
+    !browserUsageWeeklyRemaining
+  ) return;
 
-  const sessionMs = Date.now() - browserUsageStartedAt;
   const totalMs = Math.min(getCurrentBrowserUsageMs(), browserUsageLimitMs);
-  const usedUnits = Math.min(Math.floor((totalMs / 60000) * browserUsageRateUnitsPerMinute), browserUsageFreeLimitUnits);
-  const remainingUnits = Math.max(browserUsageFreeLimitUnits - usedUnits, 0);
-  const usagePercent = browserUsageFreeLimitUnits > 0 ? Math.min((usedUnits / browserUsageFreeLimitUnits) * 100, 100) : 0;
-  const resetMs = Math.max(browserUsageLimitMs - (Date.now() - browserUsageWindowStart), 0);
-  const fee = (totalMs / 60000) * usageRate.amount;
+  const weeklyMs = Math.min(getCurrentWeeklyUsageMs(), browserUsageWeeklyLimitMs);
+  const dailyRemainingRatio = Math.max(1 - totalMs / browserUsageLimitMs, 0);
+  const weeklyRemainingRatio = Math.max(1 - weeklyMs / browserUsageWeeklyLimitMs, 0);
+  const dailyRemainingPercent = Math.ceil(dailyRemainingRatio * 100);
+  const weeklyRemainingPercent = Math.ceil(weeklyRemainingRatio * 100);
 
-  if (browserUsageSession) browserUsageSession.textContent = formatDuration(sessionMs);
-  if (browserUsageTotal) browserUsageTotal.textContent = `${formatDuration(totalMs)} / 5h 00m 00s`;
-  if (browserUsageFee) browserUsageFee.textContent = formatUsageMoney(fee);
-  if (browserUsageRate) browserUsageRate.textContent = `${browserUsageRateUnitsPerMinute} units/min · ${formatUsageMoney(usageRate.amount)}/min`;
-  if (browserUsageLimitText) browserUsageLimitText.textContent = `${usedUnits.toLocaleString()} / ${browserUsageFreeLimitUnits.toLocaleString()}`;
-  if (browserUsageLimitBar) browserUsageLimitBar.style.transform = `scaleX(${usagePercent / 100})`;
-  if (browserUsageStatus) {
-    browserUsageStatus.hidden = false;
-    browserUsageStatus.textContent = translate("usage.limitStatus")
-      .replace("{used}", usedUnits.toLocaleString())
-      .replace("{limit}", browserUsageFreeLimitUnits.toLocaleString())
-      .replace("{remaining}", remainingUnits.toLocaleString())
-      .replace("{reset}", formatDuration(resetMs));
+  if (browserUsageDailyReset) browserUsageDailyReset.textContent = formatUsageResetTime(browserUsageWindowStart + browserUsageLimitMs);
+  if (browserUsageDailyRemaining) {
+    browserUsageDailyRemaining.textContent = translate("usage.remainingPercent").replace("{percent}", String(dailyRemainingPercent));
   }
-
-  if ((usedUnits >= browserUsageFreeLimitUnits || totalMs >= browserUsageLimitMs) && !browserUsageRedirected) {
+  if (browserUsageDailyBar) browserUsageDailyBar.style.transform = `scaleX(${dailyRemainingRatio})`;
+  if (browserUsageWeeklyReset) browserUsageWeeklyReset.textContent = formatUsageResetDate(browserUsageWeeklyWindowStart + browserUsageWeekMs);
+  if (browserUsageWeeklyRemaining) {
+    browserUsageWeeklyRemaining.textContent = translate("usage.remainingPercent").replace("{percent}", String(weeklyRemainingPercent));
+  }
+  if (browserUsageWeeklyBar) browserUsageWeeklyBar.style.transform = `scaleX(${weeklyRemainingRatio})`;
+  if (totalMs >= browserUsageLimitMs && !browserUsageRedirected) {
     browserUsageRedirected = true;
     persistBrowserUsage();
-    if (browserUsageStatus) browserUsageStatus.textContent = translate("usage.limitRedirect");
     window.setTimeout(() => {
       window.location.href = "/Pricing";
     }, 650);
@@ -5507,6 +5535,12 @@ const showSubscribeWarning = (button) => {
   }
 
   subscribeWarning.hidden = false;
+};
+
+const showUsageLearnDialog = () => {
+  if (!usageLearnDialog) return;
+
+  usageLearnDialog.hidden = false;
 };
 
 const openFeedbackForm = () => {
@@ -5590,6 +5624,16 @@ const closeSubscribeWarning = () => {
     if (body) body.textContent = translate("pricing.subscribeWarningBody");
     if (subscribeConfirm) subscribeConfirm.hidden = false;
     if (subscribeCancel) subscribeCancel.textContent = translate("pricing.subscribeCancel");
+  }, 170);
+};
+
+const closeUsageLearnDialog = () => {
+  if (!usageLearnDialog || usageLearnDialog.hidden) return;
+
+  usageLearnDialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    usageLearnDialog.hidden = true;
+    usageLearnDialog.classList.remove("is-closing");
   }, 170);
 };
 
@@ -6652,6 +6696,7 @@ document.addEventListener("click", (event) => {
 document.addEventListener("keydown", (event) => {
   if (event.key !== "Escape") return;
   setMobileMenuOpen(false);
+  closeUsageLearnDialog();
 });
 
 mobileMenu?.querySelectorAll("a, .nav-search-button").forEach((link) => {
@@ -6683,6 +6728,13 @@ subscribeCancel?.addEventListener("click", closeSubscribeWarning);
 subscribeConfirm?.addEventListener("click", openSubscriptionCheckout);
 subscribeWarning?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === subscribeWarning) closeSubscribeWarning();
+});
+usageLearnOpen?.addEventListener("click", showUsageLearnDialog);
+usageLearnCloseButtons.forEach((button) => {
+  button.addEventListener("click", closeUsageLearnDialog);
+});
+usageLearnDialog?.addEventListener("click", (event) => {
+  if (event.button === 0 && event.target === usageLearnDialog) closeUsageLearnDialog();
 });
 shareLinkButton?.addEventListener("click", showShareDialog);
 shareClose?.addEventListener("click", closeShareDialog);

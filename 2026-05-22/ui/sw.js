@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260615-corporate-footer";
+const CACHE_NAME = "profile-offline-20260619-clipboard-warning-modal";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
@@ -8,6 +8,9 @@ const PRECACHE_URLS = [
   "/search",
   "/activity",
   "/sitemap",
+  "/500",
+  "/maintenance",
+  "/coming-soon",
   "/terms",
   "/feedback",
   "/styles.css",

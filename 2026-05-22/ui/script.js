@@ -114,7 +114,7 @@ const createMobileQuickActions = () => {
       fallback: "Share",
     },
     {
-      href: "/settings",
+      action: "quick-settings",
       icon: navIconMarkup.settings,
       labelKey: "quickActions.settings",
       fallback: "Settings",
@@ -150,7 +150,7 @@ const enhanceSidebarNavigation = () => {
     {
       label: "ACCOUNT",
       items: [
-        { href: "/settings", icon: navIconMarkup.settings, labelKey: "nav.settings", fallback: "Settings" },
+        { href: "/settings", icon: navIconMarkup.settings, labelKey: "nav.settings", fallback: "Settings", quickSettings: true },
         { href: "/accessibility", icon: navIconMarkup.accessibility, labelKey: "nav.accessibility", fallback: "Accessibility" },
       ],
     },
@@ -200,6 +200,7 @@ const enhanceSidebarNavigation = () => {
         }
 
         const anchor = createNavAnchor(item);
+        if (item.quickSettings) anchor.dataset.quickSettingsOpen = "";
         if (item.className) anchor.classList.add(item.className);
         menu.append(anchor);
       });
@@ -388,6 +389,19 @@ const enhanceContextMenuActions = (menu) => {
     );
   }
 
+  if (!menu.querySelector('[data-context-action="clipboard"]')) {
+    const copyTitleButton = menu.querySelector('[data-context-action="copy-title"]');
+    copyTitleButton?.insertAdjacentHTML(
+      "afterend",
+      `
+      <button type="button" data-context-action="clipboard">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 4h6" /><path d="M10 2h4v4h-4z" /><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2" /><path d="M8 13h8" /><path d="M8 17h5" /></svg>
+        <span data-i18n="context.clipboard">Clipboard Center</span>
+      </button>
+    `,
+    );
+  }
+
   return menu;
 };
 
@@ -467,6 +481,22 @@ let sourceStatus = document.querySelector("[data-source-status]");
 let printDialog = document.querySelector("[data-print-dialog]");
 let printClose = document.querySelector("[data-print-close]");
 let printConfirm = document.querySelector("[data-print-confirm]");
+let clipboardDialog = document.querySelector("[data-clipboard-dialog]");
+let clipboardCloseButtons = [...document.querySelectorAll("[data-clipboard-close]")];
+let clipboardList = document.querySelector("[data-clipboard-list]");
+let clipboardStatus = document.querySelector("[data-clipboard-status]");
+let clipboardClear = document.querySelector("[data-clipboard-clear]");
+let clipboardWarningDialog = document.querySelector("[data-clipboard-warning-dialog]");
+let clipboardWarningCloseButtons = [...document.querySelectorAll("[data-clipboard-warning-close]")];
+let clipboardWarningContinue = document.querySelector("[data-clipboard-warning-continue]");
+let quickSettingsDialog = document.querySelector("[data-quick-settings-dialog]");
+let quickSettingsCloseButtons = [...document.querySelectorAll("[data-quick-settings-close]")];
+let quickSettingsOpenButtons = [...document.querySelectorAll("[data-quick-settings-open]")];
+let quickSettingsThemeButtons = [...document.querySelectorAll("[data-quick-theme]")];
+let quickSettingsLanguageButtons = [...document.querySelectorAll("[data-quick-language]")];
+let quickSettingsNotificationToggle = document.querySelector("[data-quick-notifications]");
+let quickSettingsFastRenderToggle = document.querySelector("[data-quick-fast-render]");
+let quickSettingsStatus = document.querySelector("[data-quick-settings-status]");
 const adblockBait = document.querySelector(".adblock-bait");
 const adblockNotice = document.querySelector("[data-adblock-notice]");
 const adblockDismiss = document.querySelector("[data-adblock-dismiss]");
@@ -587,6 +617,7 @@ const translations = {
     "context.share": "공유 열기",
     "context.qr": "QR 코드 만들기",
     "context.cast": "Cast",
+    "context.clipboard": "Clipboard Center",
     "context.top": "맨 위로 이동",
     "context.refresh": "새로고침",
     "context.back": "뒤로 가기",
@@ -603,6 +634,8 @@ const translations = {
     "toast.copyImage": "이미지가 복사되었습니다.",
     "toast.cutText": "선택한 텍스트를 잘라냈습니다.",
     "toast.imageSaved": "이미지가 저장되었습니다.",
+    "toast.clipboardSaved": "Clipboard Center에 저장했습니다.",
+    "toast.clipboardCleared": "Clipboard Center를 비웠습니다.",
     "toast.notificationsAllowed": "사이트 알림을 허용했습니다.",
     "toast.notificationsBlocked": "사이트 알림을 거부했습니다.",
     "toast.notificationsUnsupported": "이 브라우저는 사이트 알림을 지원하지 않습니다.",
@@ -610,6 +643,26 @@ const translations = {
     "search.eyebrow": "Search",
     "search.title": "사이트 검색",
     "search.label": "검색어",
+    "clipboard.eyebrow": "Clipboard",
+    "clipboard.title": "Clipboard Center",
+    "clipboard.body": "이 사이트에서 복사한 링크, 제목, 텍스트만 이 브라우저에 임시로 저장합니다.",
+    "clipboard.warning": "비밀번호, 토큰, 결제 정보 같은 민감한 내용은 Clipboard Center에 남기지 마세요.",
+    "clipboard.warningTitle": "민감정보 주의",
+    "clipboard.warningBody": "Clipboard Center는 이 브라우저의 로컬 저장소에 복사 기록을 남깁니다. 비밀번호, API 토큰, 결제 정보, 개인정보는 저장하지 않는 것이 좋습니다.",
+    "clipboard.warningContinue": "계속 열기",
+    "clipboard.empty": "아직 저장된 복사 항목이 없습니다.",
+    "clipboard.close": "닫기",
+    "clipboard.clear": "전체 삭제",
+    "clipboard.copyAgain": "다시 복사",
+    "clipboard.latest": "최근 복사",
+    "clipboard.itemText": "텍스트",
+    "clipboard.itemLink": "링크",
+    "clipboard.itemTitle": "제목",
+    "clipboard.itemSource": "소스",
+    "clipboard.itemSelection": "선택 텍스트",
+    "clipboard.itemQr": "QR 링크",
+    "clipboard.itemShare": "공유 링크",
+    "clipboard.itemManual": "직접 복사",
     "search.placeholder": "Unity, 요금제, FAQ처럼 입력하세요",
     "search.empty": "검색어를 입력하면 관련 페이지가 표시됩니다.",
     "search.noResults": "일치하는 결과가 없습니다.",
@@ -725,6 +778,66 @@ const translations = {
     "search.activityBody": "이 브라우저에 저장된 최근 방문과 주요 동작을 확인하고 지웁니다.",
     "search.sitemapTitle": "Sitemap",
     "search.sitemapBody": "사이트의 주요 페이지, 도구, 정책 문서를 한 화면에서 확인합니다.",
+    "sitemap.operationsGroup": "Operations",
+    "search.serverErrorTitle": "500 Server Error",
+    "search.serverErrorBody": "일시적인 서버 오류가 발생했을 때 복구 경로와 상태 확인 링크를 제공합니다.",
+    "search.maintenanceTitle": "Maintenance",
+    "search.maintenanceBody": "점검 중일 때 상태 확인, 재방문 안내, 데이터 보호 기준을 확인합니다.",
+    "search.comingSoonTitle": "Coming Soon",
+    "search.comingSoonBody": "아직 공개 전인 기능과 준비 중인 페이지를 미리 확인합니다.",
+    "serverError.code": "500_SERVER_ERROR",
+    "serverError.title": "일시적인 서버 오류입니다.",
+    "serverError.body": "요청을 처리하는 중 문제가 발생했습니다. 잠시 후 다시 시도하거나 상태 페이지에서 서비스 상태를 확인해 주세요.",
+    "serverError.home": "다시 홈으로 이동",
+    "serverError.status": "Status 확인",
+    "serverError.feedback": "문제 알리기",
+    "serverError.recoveryLabel": "서버 복구 상태",
+    "serverError.consoleLabel": "Service recovery",
+    "serverError.lastCheck": "Last check",
+    "serverError.statusValue": "Temporary service issue",
+    "serverError.routesLabel": "서버 오류 복구 경로",
+    "serverError.routeHomeLabel": "Return",
+    "serverError.routeHomeBody": "문제가 없는 기본 화면으로 돌아갑니다.",
+    "serverError.routeStatusLabel": "Health",
+    "serverError.routeStatusBody": "서비스 상태와 최근 점검 여부를 확인합니다.",
+    "serverError.routeFeedbackLabel": "Report",
+    "serverError.routeFeedbackBody": "같은 문제가 반복되면 상황을 알려주세요.",
+    "maintenance.eyebrow": "Maintenance",
+    "maintenance.code": "SERVICE_MAINTENANCE",
+    "maintenance.title": "서비스를 정비하는 중입니다.",
+    "maintenance.body": "더 안정적인 경험을 위해 일부 기능을 잠시 점검하고 있습니다. 잠시 후 다시 접속하거나 상태 페이지를 확인해 주세요.",
+    "maintenance.status": "Status 확인",
+    "maintenance.home": "홈으로 돌아가기",
+    "maintenance.panelLabel": "점검 상태",
+    "maintenance.windowLabel": "Maintenance window",
+    "maintenance.windowValue": "Updating service",
+    "maintenance.windowHint": "점검이 끝나면 별도 조치 없이 다시 이용할 수 있습니다.",
+    "maintenance.tipsLabel": "점검 안내",
+    "maintenance.tipOneTitle": "잠시 후 다시 시도",
+    "maintenance.tipOneBody": "점검 중에는 일부 페이지나 기능이 일시적으로 느리거나 열리지 않을 수 있습니다.",
+    "maintenance.tipTwoTitle": "Status 확인",
+    "maintenance.tipTwoBody": "서비스 상태 페이지에서 현재 점검 또는 장애 안내를 확인할 수 있습니다.",
+    "maintenance.tipThreeTitle": "데이터 보호",
+    "maintenance.tipThreeBody": "점검 페이지는 입력을 요구하지 않으며, 결제나 개인정보를 요청하지 않습니다.",
+    "comingSoon.menuLabel": "Coming Soon 페이지 메뉴",
+    "comingSoon.eyebrow": "Coming Soon",
+    "comingSoon.code": "FEATURE_PREVIEW",
+    "comingSoon.title": "새 기능을 준비하고 있습니다.",
+    "comingSoon.body": "아직 공개 전인 기능과 페이지를 이곳에서 안내합니다. 최신 업데이트를 확인하거나 필요한 기능을 피드백으로 남겨주세요.",
+    "comingSoon.updates": "Latest updates",
+    "comingSoon.feedback": "Feedback 보내기",
+    "comingSoon.home": "홈으로 돌아가기",
+    "comingSoon.panelLabel": "준비 상태",
+    "comingSoon.panelKicker": "Feature pipeline",
+    "comingSoon.panelValue": "Preparing launch",
+    "comingSoon.panelHint": "공개 준비가 끝나면 실제 기능 페이지로 연결됩니다.",
+    "comingSoon.stagesLabel": "준비 중인 기능 단계",
+    "comingSoon.planTitle": "In planning",
+    "comingSoon.planBody": "새 기능의 범위, 연결 위치, 필요한 안내 문구를 정리합니다.",
+    "comingSoon.designTitle": "In design",
+    "comingSoon.designBody": "사이트의 무채색 톤과 모바일 흐름에 맞춰 화면을 다듬습니다.",
+    "comingSoon.testTitle": "In testing",
+    "comingSoon.testBody": "공개 전에 링크, 번역, 모바일 레이아웃, 접근성을 확인합니다.",
     "search.settingsTitle": "Settings",
     "search.settingsBody": "테마, 언어, 강조 컬러, 우클릭 메뉴, 저장용량 설정을 관리합니다.",
     "search.accessibilityTitle": "Accessibility",
@@ -1352,6 +1465,20 @@ const translations = {
     "settings.cookieStatusOn": "설정 저장 쿠키가 켜져 있습니다.",
     "settings.cookieStatusOff": "설정 저장 쿠키가 꺼져 있습니다.",
     "settings.cookieLearnMore": "자세히 알아보기",
+    "quickSettings.eyebrow": "Quick settings",
+    "quickSettings.title": "빠른 설정",
+    "quickSettings.body": "자주 쓰는 표시 설정만 빠르게 조정합니다. 자세한 항목은 전체 설정에서 관리합니다.",
+    "quickSettings.general": "General",
+    "quickSettings.controls": "Controls",
+    "quickSettings.themeHint": "차분한 표시 테마를 선택합니다.",
+    "quickSettings.languageHint": "사이트 표시 언어를 전환합니다.",
+    "quickSettings.notificationsHint": "이 브라우저의 사이트 알림 권한을 요청합니다.",
+    "quickSettings.fastRenderHint": "블러, 그림자, 애니메이션을 줄입니다.",
+    "quickSettings.fullSettings": "전체 설정 열기",
+    "quickSettings.statusReady": "빠른 설정이 준비되었습니다.",
+    "quickSettings.statusSaved": "설정이 저장되었습니다.",
+    "quickSettings.statusNotificationsOn": "알림 설정이 켜졌습니다.",
+    "quickSettings.statusNotificationsOff": "알림 설정이 꺼졌습니다.",
     "settings.clearCacheTitle": "브라우저 캐시 정리",
     "settings.clearCacheBody": "이 사이트에 저장된 테마, 언어, 표시 설정을 삭제하고 기본값으로 되돌립니다.",
     "settings.clearCacheButton": "캐시 정리",
@@ -1816,6 +1943,7 @@ const translations = {
     "context.share": "Open share",
     "context.qr": "Create QR Code",
     "context.cast": "Cast",
+    "context.clipboard": "Clipboard Center",
     "context.top": "Back to top",
     "context.refresh": "Refresh",
     "context.back": "Back",
@@ -1832,6 +1960,8 @@ const translations = {
     "toast.copyImage": "Image copied.",
     "toast.cutText": "Selected text cut.",
     "toast.imageSaved": "Image saved.",
+    "toast.clipboardSaved": "Saved to Clipboard Center.",
+    "toast.clipboardCleared": "Clipboard Center cleared.",
     "toast.notificationsAllowed": "Site notifications allowed.",
     "toast.notificationsBlocked": "Site notifications blocked.",
     "toast.notificationsUnsupported": "This browser does not support site notifications.",
@@ -1839,6 +1969,26 @@ const translations = {
     "search.eyebrow": "Search",
     "search.title": "Search site",
     "search.label": "Search query",
+    "clipboard.eyebrow": "Clipboard",
+    "clipboard.title": "Clipboard Center",
+    "clipboard.body": "Only links, titles, and text copied from this site are temporarily saved in this browser.",
+    "clipboard.warning": "Do not leave passwords, tokens, payment details, or other sensitive information in Clipboard Center.",
+    "clipboard.warningTitle": "Sensitive information warning",
+    "clipboard.warningBody": "Clipboard Center saves copied items in this browser's local storage. Avoid saving passwords, API tokens, payment details, or personal information.",
+    "clipboard.warningContinue": "Continue",
+    "clipboard.empty": "No copied items saved yet.",
+    "clipboard.close": "Close",
+    "clipboard.clear": "Clear all",
+    "clipboard.copyAgain": "Copy again",
+    "clipboard.latest": "Latest copy",
+    "clipboard.itemText": "Text",
+    "clipboard.itemLink": "Link",
+    "clipboard.itemTitle": "Title",
+    "clipboard.itemSource": "Source",
+    "clipboard.itemSelection": "Selected text",
+    "clipboard.itemQr": "QR link",
+    "clipboard.itemShare": "Share link",
+    "clipboard.itemManual": "Manual copy",
     "search.placeholder": "Try Unity, pricing, or FAQ",
     "search.empty": "Type a query to show related pages.",
     "search.noResults": "No matching results.",
@@ -1954,6 +2104,66 @@ const translations = {
     "search.activityBody": "Review and clear recent visits and key actions saved in this browser.",
     "search.sitemapTitle": "Sitemap",
     "search.sitemapBody": "Review main pages, tools, and policy documents from one screen.",
+    "sitemap.operationsGroup": "Operations",
+    "search.serverErrorTitle": "500 Server Error",
+    "search.serverErrorBody": "Use recovery links and status guidance when a temporary server error appears.",
+    "search.maintenanceTitle": "Maintenance",
+    "search.maintenanceBody": "Review status guidance, return paths, and data-safety notes during planned maintenance.",
+    "search.comingSoonTitle": "Coming Soon",
+    "search.comingSoonBody": "Preview planned features and pages before they are publicly released.",
+    "serverError.code": "500_SERVER_ERROR",
+    "serverError.title": "Temporary server error.",
+    "serverError.body": "Something went wrong while processing the request. Try again shortly or check the status page for service health.",
+    "serverError.home": "Return home",
+    "serverError.status": "Check Status",
+    "serverError.feedback": "Report issue",
+    "serverError.recoveryLabel": "Server recovery status",
+    "serverError.consoleLabel": "Service recovery",
+    "serverError.lastCheck": "Last check",
+    "serverError.statusValue": "Temporary service issue",
+    "serverError.routesLabel": "Server error recovery routes",
+    "serverError.routeHomeLabel": "Return",
+    "serverError.routeHomeBody": "Return to the main page while this issue clears.",
+    "serverError.routeStatusLabel": "Health",
+    "serverError.routeStatusBody": "Review service status and recent maintenance notes.",
+    "serverError.routeFeedbackLabel": "Report",
+    "serverError.routeFeedbackBody": "Send details if the same issue keeps happening.",
+    "maintenance.eyebrow": "Maintenance",
+    "maintenance.code": "SERVICE_MAINTENANCE",
+    "maintenance.title": "Service maintenance is in progress.",
+    "maintenance.body": "Some features are temporarily being maintained for a more reliable experience. Check status or return shortly.",
+    "maintenance.status": "Check Status",
+    "maintenance.home": "Return home",
+    "maintenance.panelLabel": "Maintenance status",
+    "maintenance.windowLabel": "Maintenance window",
+    "maintenance.windowValue": "Updating service",
+    "maintenance.windowHint": "When maintenance ends, the site will work again without any extra action.",
+    "maintenance.tipsLabel": "Maintenance guidance",
+    "maintenance.tipOneTitle": "Try again shortly",
+    "maintenance.tipOneBody": "During maintenance, some pages or features may be temporarily slow or unavailable.",
+    "maintenance.tipTwoTitle": "Check Status",
+    "maintenance.tipTwoBody": "Use the status page to review current maintenance or incident notes.",
+    "maintenance.tipThreeTitle": "Data protection",
+    "maintenance.tipThreeBody": "This maintenance page does not ask for input, payment, or personal information.",
+    "comingSoon.menuLabel": "Coming Soon page menu",
+    "comingSoon.eyebrow": "Coming Soon",
+    "comingSoon.code": "FEATURE_PREVIEW",
+    "comingSoon.title": "New features are being prepared.",
+    "comingSoon.body": "This page previews unreleased features and upcoming pages. Check the latest updates or send feedback for features you need.",
+    "comingSoon.updates": "Latest updates",
+    "comingSoon.feedback": "Send feedback",
+    "comingSoon.home": "Return home",
+    "comingSoon.panelLabel": "Preparation status",
+    "comingSoon.panelKicker": "Feature pipeline",
+    "comingSoon.panelValue": "Preparing launch",
+    "comingSoon.panelHint": "When preparation is complete, this page can point to the real feature.",
+    "comingSoon.stagesLabel": "Upcoming feature stages",
+    "comingSoon.planTitle": "In planning",
+    "comingSoon.planBody": "Define the feature scope, route placement, and supporting copy.",
+    "comingSoon.designTitle": "In design",
+    "comingSoon.designBody": "Fit the page into the site's neutral style and mobile flow.",
+    "comingSoon.testTitle": "In testing",
+    "comingSoon.testBody": "Check links, translations, mobile layout, and accessibility before release.",
     "search.settingsTitle": "Settings",
     "search.settingsBody": "Manage theme, language, accent color, context menu, and storage settings.",
     "search.accessibilityTitle": "Accessibility",
@@ -2584,6 +2794,20 @@ const translations = {
     "settings.cookieStatusOn": "Preference cookie is on.",
     "settings.cookieStatusOff": "Preference cookie is off.",
     "settings.cookieLearnMore": "Learn more",
+    "quickSettings.eyebrow": "Quick settings",
+    "quickSettings.title": "Quick settings",
+    "quickSettings.body": "Adjust only the most common display settings here. Detailed controls stay on the full Settings page.",
+    "quickSettings.general": "General",
+    "quickSettings.controls": "Controls",
+    "quickSettings.themeHint": "Choose a quiet display theme.",
+    "quickSettings.languageHint": "Switch the interface language.",
+    "quickSettings.notificationsHint": "Ask this browser for site notification permission.",
+    "quickSettings.fastRenderHint": "Reduce blur, shadows, and animation.",
+    "quickSettings.fullSettings": "Open full settings",
+    "quickSettings.statusReady": "Quick settings are ready.",
+    "quickSettings.statusSaved": "Setting saved.",
+    "quickSettings.statusNotificationsOn": "Notifications are on.",
+    "quickSettings.statusNotificationsOff": "Notifications are off.",
     "settings.clearCacheTitle": "Clear browser cache",
     "settings.clearCacheBody":
       "Removes this site's saved theme, language, and display preferences and restores defaults.",
@@ -3046,6 +3270,97 @@ let currentLanguage = getInitialLanguage();
 
 const translate = (key) => translations[currentLanguage][key] || translations.ko[key] || key;
 
+const CLIPBOARD_HISTORY_KEY = "profile-clipboard-history";
+const MAX_CLIPBOARD_ITEMS = 8;
+
+const getClipboardHistory = () => {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(CLIPBOARD_HISTORY_KEY) || "[]");
+    return Array.isArray(parsed) ? parsed.filter((item) => item?.text).slice(0, MAX_CLIPBOARD_ITEMS) : [];
+  } catch {
+    return [];
+  }
+};
+
+const getClipboardKindLabel = (kind = "text") =>
+  translate(
+    {
+      link: "clipboard.itemLink",
+      title: "clipboard.itemTitle",
+      source: "clipboard.itemSource",
+      selection: "clipboard.itemSelection",
+      qr: "clipboard.itemQr",
+      share: "clipboard.itemShare",
+      manual: "clipboard.itemManual",
+    }[kind] || "clipboard.itemText",
+  );
+
+const formatClipboardTime = (timestamp) => {
+  try {
+    return new Intl.DateTimeFormat(currentLanguage === "ko" ? "ko-KR" : "en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(new Date(timestamp));
+  } catch {
+    return "";
+  }
+};
+
+const saveClipboardHistory = (items) => {
+  localStorage.setItem(CLIPBOARD_HISTORY_KEY, JSON.stringify(items.slice(0, MAX_CLIPBOARD_ITEMS)));
+};
+
+const renderClipboardCenter = () => {
+  if (!clipboardList || !clipboardStatus || !clipboardClear) return;
+
+  const items = getClipboardHistory();
+  clipboardList.innerHTML = "";
+  clipboardClear.disabled = items.length === 0;
+  clipboardStatus.textContent = items.length
+    ? `${translate("clipboard.latest")} · ${formatClipboardTime(items[0].createdAt)}`
+    : translate("clipboard.empty");
+
+  if (!items.length) {
+    const empty = document.createElement("p");
+    empty.className = "clipboard-empty";
+    empty.textContent = translate("clipboard.empty");
+    clipboardList.appendChild(empty);
+    return;
+  }
+
+  items.forEach((item) => {
+    const row = document.createElement("article");
+    row.className = "clipboard-item";
+    row.innerHTML = `
+      <div>
+        <span>${getClipboardKindLabel(item.kind)}</span>
+        <strong></strong>
+        <small>${formatClipboardTime(item.createdAt)}</small>
+      </div>
+      <button type="button" class="button cache-confirm-button" data-clipboard-copy="${item.id}" data-i18n="clipboard.copyAgain">${translate("clipboard.copyAgain")}</button>
+    `;
+    row.querySelector("strong").textContent = item.text;
+    clipboardList.appendChild(row);
+  });
+};
+
+const rememberClipboardItem = (text, kind = "text") => {
+  const cleaned = String(text || "").trim();
+  if (!cleaned) return;
+
+  const compact = cleaned.length > 500 ? `${cleaned.slice(0, 500)}...` : cleaned;
+  const items = getClipboardHistory().filter((item) => item.text !== compact);
+  items.unshift({
+    id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    text: compact,
+    kind,
+    createdAt: Date.now(),
+    path: window.location.pathname || "/",
+  });
+  saveClipboardHistory(items);
+  renderClipboardCenter();
+};
+
 const showCopyToast = (messageKey = "toast.copyText") => {
   const message = translate(messageKey);
   let toast = document.querySelector("[data-copy-toast]");
@@ -3260,6 +3575,33 @@ const siteSearchIndex = [
     },
   },
   {
+    titleKey: "search.serverErrorTitle",
+    bodyKey: "search.serverErrorBody",
+    url: "/500",
+    keywords: {
+      ko: "500 서버 오류 server error 장애 복구 상태 status 피드백",
+      en: "500 server error outage recovery status feedback",
+    },
+  },
+  {
+    titleKey: "search.maintenanceTitle",
+    bodyKey: "search.maintenanceBody",
+    url: "/maintenance",
+    keywords: {
+      ko: "maintenance 점검 서비스 정비 업데이트 상태 status 기업 안내",
+      en: "maintenance planned service update status company notice",
+    },
+  },
+  {
+    titleKey: "search.comingSoonTitle",
+    bodyKey: "search.comingSoonBody",
+    url: "/coming-soon",
+    keywords: {
+      ko: "coming soon 준비 중 새 기능 베타 업데이트 출시 예정 미리보기",
+      en: "coming soon planned feature beta updates upcoming preview",
+    },
+  },
+  {
     titleKey: "search.trustTitle",
     bodyKey: "search.trustBody",
     url: "/trust",
@@ -3363,6 +3705,7 @@ const setTheme = (theme) => {
     status.textContent = translate(themeLabelKeys[resolvedTheme] || "settings.themeDark");
     status.dataset.themeState = resolvedTheme;
   });
+  syncQuickSettingsControls();
 };
 
 const setLanguage = (language) => {
@@ -3396,6 +3739,8 @@ const setLanguage = (language) => {
     element.setAttribute("placeholder", translate(element.dataset.i18nPlaceholder));
   });
 
+  if (clipboardDialog && !clipboardDialog.hidden) renderClipboardCenter();
+
   languageChoices.forEach((button) => {
     const isActive = button.dataset.languageChoice === resolvedLanguage;
     button.classList.toggle("is-active", isActive);
@@ -3422,6 +3767,7 @@ const setLanguage = (language) => {
   updateNotificationStatus(localStorage.getItem("profile-setting-notifications") === "true");
   updateStorageEstimate();
   renderActivityPage();
+  syncQuickSettingsControls();
 };
 
 const getToggleLabelKey = (key, isOn) => {
@@ -3512,6 +3858,110 @@ const updateNotificationStatus = (isOn) => {
   });
 };
 
+const syncQuickSettingsControls = () => {
+  const theme = document.documentElement.dataset.theme || getInitialTheme();
+  const language = currentLanguage || getInitialLanguage();
+  const notificationsOn = localStorage.getItem("profile-setting-notifications") === "true";
+  const fastRenderOn = document.documentElement.dataset.fastRender === "true";
+
+  quickSettingsThemeButtons.forEach((button) => {
+    const isActive = button.dataset.quickTheme === theme;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+
+  quickSettingsLanguageButtons.forEach((button) => {
+    const isActive = button.dataset.quickLanguage === language;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+
+  if (quickSettingsNotificationToggle) {
+    quickSettingsNotificationToggle.classList.toggle("is-on", notificationsOn);
+    quickSettingsNotificationToggle.setAttribute("aria-pressed", String(notificationsOn));
+    quickSettingsNotificationToggle.disabled = getNotificationPermissionState() === "unsupported";
+  }
+
+  if (quickSettingsFastRenderToggle) {
+    quickSettingsFastRenderToggle.classList.toggle("is-on", fastRenderOn);
+    quickSettingsFastRenderToggle.setAttribute("aria-pressed", String(fastRenderOn));
+  }
+};
+
+const setQuickSettingsStatus = (key) => {
+  if (!quickSettingsStatus) return;
+  quickSettingsStatus.textContent = translate(key);
+};
+
+const openQuickSettingsDialog = () => {
+  if (!quickSettingsDialog) return;
+  syncQuickSettingsControls();
+  setQuickSettingsStatus("quickSettings.statusReady");
+  quickSettingsDialog.classList.remove("is-closing");
+  quickSettingsDialog.hidden = false;
+};
+
+const closeQuickSettingsDialog = () => {
+  if (!quickSettingsDialog || quickSettingsDialog.hidden) return;
+  quickSettingsDialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    quickSettingsDialog.hidden = true;
+    quickSettingsDialog.classList.remove("is-closing");
+  }, 180);
+};
+
+const setupQuickSettingsDialog = () => {
+  quickSettingsOpenButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      openQuickSettingsDialog();
+    });
+  });
+
+  quickSettingsCloseButtons.forEach((button) => button.addEventListener("click", closeQuickSettingsDialog));
+  quickSettingsDialog?.addEventListener("click", (event) => {
+    if (event.button === 0 && event.target === quickSettingsDialog) closeQuickSettingsDialog();
+  });
+
+  quickSettingsThemeButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      setTheme(button.dataset.quickTheme);
+      setQuickSettingsStatus("quickSettings.statusSaved");
+      syncQuickSettingsControls();
+    });
+  });
+
+  quickSettingsLanguageButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      setLanguage(button.dataset.quickLanguage);
+      setQuickSettingsStatus("quickSettings.statusSaved");
+      syncQuickSettingsControls();
+    });
+  });
+
+  quickSettingsNotificationToggle?.addEventListener("click", async () => {
+    const requestedEnable = !quickSettingsNotificationToggle.classList.contains("is-on");
+    quickSettingsNotificationToggle.disabled = true;
+    const enabled = await resolveNotificationToggle(requestedEnable);
+    quickSettingsNotificationToggle.disabled = false;
+    localStorage.setItem("profile-setting-notifications", String(enabled));
+    const notificationToggle = document.querySelector('[data-toggle-key="notifications"]');
+    if (notificationToggle) updateSettingToggle(notificationToggle, enabled);
+    updateNotificationStatus(enabled);
+    showNotificationPermissionMessage(getNotificationPermissionState(), enabled, requestedEnable);
+    setQuickSettingsStatus(enabled ? "quickSettings.statusNotificationsOn" : "quickSettings.statusNotificationsOff");
+    syncQuickSettingsControls();
+  });
+
+  quickSettingsFastRenderToggle?.addEventListener("click", () => {
+    setFastRender(!quickSettingsFastRenderToggle.classList.contains("is-on"));
+    const fastRenderToggle = document.querySelector('[data-toggle-key="fast-render"]');
+    if (fastRenderToggle) updateSettingToggle(fastRenderToggle, document.documentElement.dataset.fastRender === "true");
+    setQuickSettingsStatus("quickSettings.statusSaved");
+    syncQuickSettingsControls();
+  });
+};
+
 const updatePaymentBlockSummary = (isBlocked) => {
   paymentBlockStatuses.forEach((status) => {
     status.textContent = translate(
@@ -3552,6 +4002,7 @@ const updateSettingToggle = (button, isOn) => {
   const labelKey = getToggleLabelKey(button.dataset.toggleKey, isOn);
   if (labelKey) button.setAttribute("aria-label", translate(labelKey));
 
+  syncQuickSettingsControls();
 };
 
 const resolveNotificationToggle = async (nextValue) => {
@@ -3790,6 +4241,7 @@ const setFastRender = (isOn) => {
     "aria-label",
     translate(nextValue ? "settings.fastRenderOn" : "settings.fastRenderOff"),
   );
+  syncQuickSettingsControls();
 };
 
 const setupFastRenderSwipe = () => {
@@ -4143,6 +4595,143 @@ const createPrintDialog = () => {
   printConfirm = document.querySelector("[data-print-confirm]");
 };
 
+const createClipboardDialog = () => {
+  if (!document.querySelector("[data-clipboard-dialog]")) {
+    const dialog = document.createElement("div");
+    dialog.className = "cache-dialog clipboard-dialog";
+    dialog.dataset.clipboardDialog = "";
+    dialog.hidden = true;
+    dialog.innerHTML = `
+      <div class="cache-dialog-panel clipboard-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="clipboard-dialog-title">
+        <button class="dialog-close-button" type="button" data-clipboard-close aria-label="닫기" data-i18n-aria-label="clipboard.close">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+        </button>
+        <p class="eyebrow" data-i18n="clipboard.eyebrow">Clipboard</p>
+        <h2 id="clipboard-dialog-title" data-i18n="clipboard.title">Clipboard Center</h2>
+        <p data-i18n="clipboard.body">이 사이트에서 복사한 링크, 제목, 텍스트만 이 브라우저에 임시로 저장합니다.</p>
+        <p class="clipboard-status" data-clipboard-status></p>
+        <div class="clipboard-list" data-clipboard-list></div>
+        <div class="cache-warning-actions">
+          <button class="button cache-cancel-button" type="button" data-clipboard-close data-i18n="clipboard.close">닫기</button>
+          <button class="button cache-confirm-button" type="button" data-clipboard-clear data-i18n="clipboard.clear">전체 삭제</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(dialog);
+  }
+
+  clipboardDialog = document.querySelector("[data-clipboard-dialog]");
+  clipboardCloseButtons = [...document.querySelectorAll("[data-clipboard-close]")];
+  clipboardList = document.querySelector("[data-clipboard-list]");
+  clipboardStatus = document.querySelector("[data-clipboard-status]");
+  clipboardClear = document.querySelector("[data-clipboard-clear]");
+};
+
+const createClipboardWarningDialog = () => {
+  if (!document.querySelector("[data-clipboard-warning-dialog]")) {
+    const dialog = document.createElement("div");
+    dialog.className = "cache-dialog clipboard-warning-dialog";
+    dialog.dataset.clipboardWarningDialog = "";
+    dialog.hidden = true;
+    dialog.innerHTML = `
+      <div class="cache-dialog-panel clipboard-warning-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="clipboard-warning-title">
+        <button class="dialog-close-button" type="button" data-clipboard-warning-close aria-label="닫기" data-i18n-aria-label="clipboard.close">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+        </button>
+        <p class="eyebrow" data-i18n="clipboard.eyebrow">Clipboard</p>
+        <h2 id="clipboard-warning-title" data-i18n="clipboard.warningTitle">민감정보 주의</h2>
+        <p class="clipboard-warning" role="note" data-i18n="clipboard.warningBody">Clipboard Center는 이 브라우저의 로컬 저장소에 복사 기록을 남깁니다. 비밀번호, API 토큰, 결제 정보, 개인정보는 저장하지 않는 것이 좋습니다.</p>
+        <div class="cache-warning-actions">
+          <button class="button cache-cancel-button" type="button" data-clipboard-warning-close data-i18n="clipboard.close">닫기</button>
+          <button class="button cache-confirm-button" type="button" data-clipboard-warning-continue data-i18n="clipboard.warningContinue">계속 열기</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(dialog);
+  }
+
+  clipboardWarningDialog = document.querySelector("[data-clipboard-warning-dialog]");
+  clipboardWarningCloseButtons = [...document.querySelectorAll("[data-clipboard-warning-close]")];
+  clipboardWarningContinue = document.querySelector("[data-clipboard-warning-continue]");
+};
+
+const createQuickSettingsDialog = () => {
+  if (!document.querySelector("[data-quick-settings-dialog]")) {
+    const dialog = document.createElement("div");
+    dialog.className = "cache-dialog quick-settings-dialog";
+    dialog.dataset.quickSettingsDialog = "";
+    dialog.hidden = true;
+    dialog.innerHTML = `
+      <div class="cache-dialog-panel quick-settings-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="quick-settings-title">
+        <button class="dialog-close-button" type="button" data-quick-settings-close aria-label="닫기" data-i18n-aria-label="share.close">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+        </button>
+        <p class="eyebrow" data-i18n="quickSettings.eyebrow">Quick settings</p>
+        <h2 id="quick-settings-title" data-i18n="quickSettings.title">빠른 설정</h2>
+        <p data-i18n="quickSettings.body">자주 쓰는 표시 설정만 빠르게 조정합니다. 자세한 항목은 전체 설정에서 관리합니다.</p>
+        <div class="quick-settings-grid">
+          <section class="quick-settings-section" aria-labelledby="quick-settings-general-title">
+            <h3 id="quick-settings-general-title" data-i18n="quickSettings.general">General</h3>
+            <div class="quick-settings-row">
+              <div>
+                <strong data-i18n="settings.themeTitle">Theme mode</strong>
+                <span data-i18n="quickSettings.themeHint">Choose a quiet display theme.</span>
+              </div>
+              <div class="quick-settings-segment" role="group" aria-label="Theme mode" data-i18n-aria-label="aria.themeMode">
+                <button type="button" data-quick-theme="dark" data-i18n="settings.themeDark">다크</button>
+                <button type="button" data-quick-theme="lights-off" data-i18n="settings.lightsOff">Lights Off</button>
+              </div>
+            </div>
+            <div class="quick-settings-row">
+              <div>
+                <strong data-i18n="settings.languageTitle">Language</strong>
+                <span data-i18n="quickSettings.languageHint">Switch the interface language.</span>
+              </div>
+              <div class="quick-settings-segment" role="group" aria-label="Language" data-i18n-aria-label="aria.language">
+                <button type="button" data-quick-language="ko" data-i18n="settings.languageKorean">한국어</button>
+                <button type="button" data-quick-language="en" data-i18n="settings.languageEnglish">English</button>
+              </div>
+            </div>
+          </section>
+          <section class="quick-settings-section" aria-labelledby="quick-settings-controls-title">
+            <h3 id="quick-settings-controls-title" data-i18n="quickSettings.controls">Controls</h3>
+            <button class="quick-settings-toggle" type="button" data-quick-notifications aria-pressed="false">
+              <span>
+                <strong data-i18n="settings.notificationsTitle">Notifications</strong>
+                <small data-i18n="quickSettings.notificationsHint">Ask this browser for site notification permission.</small>
+              </span>
+              <i aria-hidden="true"></i>
+            </button>
+            <button class="quick-settings-toggle" type="button" data-quick-fast-render aria-pressed="false">
+              <span>
+                <strong data-i18n="settings.fastRenderTitle">Fast rendering</strong>
+                <small data-i18n="quickSettings.fastRenderHint">Reduce blur, shadows, and animation.</small>
+              </span>
+              <i aria-hidden="true"></i>
+            </button>
+          </section>
+        </div>
+        <p class="quick-settings-status" data-quick-settings-status role="status" aria-live="polite"></p>
+        <div class="quick-settings-actions">
+          <a class="button secondary-button" href="/settings#storage" data-i18n="settings.cookieSettingsButton">쿠키 설정</a>
+          <a class="button secondary-button" href="/accessibility" data-i18n="settings.accessibilityOpen">Accessibility 열기</a>
+          <a class="button cache-confirm-button" href="/settings" data-i18n="quickSettings.fullSettings">전체 설정 열기</a>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(dialog);
+  }
+
+  quickSettingsDialog = document.querySelector("[data-quick-settings-dialog]");
+  quickSettingsCloseButtons = [...document.querySelectorAll("[data-quick-settings-close]")];
+  quickSettingsOpenButtons = [...document.querySelectorAll("[data-quick-settings-open]")];
+  quickSettingsThemeButtons = [...document.querySelectorAll("[data-quick-theme]")];
+  quickSettingsLanguageButtons = [...document.querySelectorAll("[data-quick-language]")];
+  quickSettingsNotificationToggle = document.querySelector("[data-quick-notifications]");
+  quickSettingsFastRenderToggle = document.querySelector("[data-quick-fast-render]");
+  quickSettingsStatus = document.querySelector("[data-quick-settings-status]");
+};
+
 const storageConsentKey = "profile-storage-consent";
 const storageConsentCookieName = "profile_storage_consent";
 const cookiePreferenceKey = "profile-cookie-preferences";
@@ -4427,6 +5016,11 @@ const setupMobileQuickActions = () => {
 
     if (action === "share") {
       showShareDialog();
+      return;
+    }
+
+    if (action === "quick-settings") {
+      openQuickSettingsDialog();
     }
   });
 };
@@ -5039,6 +5633,62 @@ const closePrintDialog = () => {
   }, 170);
 };
 
+const showClipboardDialog = () => {
+  if (!clipboardDialog) return;
+
+  renderClipboardCenter();
+  clipboardDialog.classList.remove("is-closing");
+  clipboardDialog.hidden = false;
+};
+
+const showClipboardWarningDialog = () => {
+  if (!clipboardWarningDialog) {
+    showClipboardDialog();
+    return;
+  }
+
+  clipboardWarningDialog.classList.remove("is-closing");
+  clipboardWarningDialog.hidden = false;
+};
+
+const closeClipboardDialog = () => {
+  if (!clipboardDialog || clipboardDialog.hidden) return;
+
+  clipboardDialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    clipboardDialog.hidden = true;
+    clipboardDialog.classList.remove("is-closing");
+  }, 170);
+};
+
+const closeClipboardWarningDialog = () => {
+  if (!clipboardWarningDialog || clipboardWarningDialog.hidden) return;
+
+  clipboardWarningDialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    clipboardWarningDialog.hidden = true;
+    clipboardWarningDialog.classList.remove("is-closing");
+  }, 170);
+};
+
+const continueToClipboardCenter = () => {
+  closeClipboardWarningDialog();
+  window.setTimeout(showClipboardDialog, 180);
+};
+
+const copyClipboardHistoryItem = async (itemId) => {
+  const item = getClipboardHistory().find((entry) => entry.id === itemId);
+  if (!item) return;
+
+  await writeClipboardText(item.text, item.kind === "title" ? "toast.copyTitle" : "toast.copyText", item.kind);
+};
+
+const clearClipboardHistory = () => {
+  localStorage.removeItem(CLIPBOARD_HISTORY_KEY);
+  renderClipboardCenter();
+  showCopyToast("toast.clipboardCleared");
+};
+
 const closeContextMenu = () => {
   if (!contextMenu || contextMenu.hidden) return;
   window.clearTimeout(contextMenuCloseTimeoutId);
@@ -5116,10 +5766,37 @@ const readClipboardText = async () => {
   }
 };
 
+const updateContextMenuSeparators = () => {
+  if (!contextMenu) return;
+
+  let hasVisibleActionBefore = false;
+  let pendingSeparator = null;
+
+  Array.from(contextMenu.children).forEach((item) => {
+    if (item.classList?.contains("context-menu-separator")) {
+      item.hidden = true;
+      pendingSeparator = item;
+      return;
+    }
+
+    const isVisibleAction = item.matches?.("button") && !item.hidden;
+    if (!isVisibleAction) return;
+
+    if (pendingSeparator && hasVisibleActionBefore) {
+      pendingSeparator.hidden = false;
+    }
+
+    pendingSeparator = null;
+    hasVisibleActionBefore = true;
+  });
+};
+
 const setPasteButtonState = (button, text) => {
   contextClipboardText = text;
+  button.hidden = text.length === 0;
   button.disabled = text.length === 0;
   button.setAttribute("aria-disabled", String(text.length === 0));
+  updateContextMenuSeparators();
 };
 
 const canCastPage = () =>
@@ -5130,8 +5807,10 @@ const updateContextCastState = () => {
   if (!castButton) return;
 
   const canCast = canCastPage();
+  castButton.hidden = !canCast;
   castButton.disabled = !canCast;
   castButton.setAttribute("aria-disabled", String(!canCast));
+  updateContextMenuSeparators();
 };
 
 const updateContextPasteState = async () => {
@@ -5176,9 +5855,11 @@ const showContextMenu = (event) => {
   if (openLinkButton) openLinkButton.hidden = !contextTargetLink;
   if (copyLinkButton) copyLinkButton.hidden = !contextTargetLink;
   if (saveImageButton) {
+    saveImageButton.hidden = !contextTargetImage;
     saveImageButton.disabled = !contextTargetImage;
     saveImageButton.setAttribute("aria-disabled", String(!contextTargetImage));
   }
+  updateContextMenuSeparators();
 
   const menuRect = contextMenu.getBoundingClientRect();
   const margin = 10;
@@ -5191,7 +5872,7 @@ const showContextMenu = (event) => {
   updateContextCastState();
 };
 
-const writeClipboardText = async (text, messageKey = "toast.copyText") => {
+const writeClipboardText = async (text, messageKey = "toast.copyText", clipboardKind = "text") => {
   try {
     await navigator.clipboard.writeText(text);
   } catch {
@@ -5206,11 +5887,12 @@ const writeClipboardText = async (text, messageKey = "toast.copyText") => {
     document.execCommand?.("copy");
     fallback.remove();
   }
+  rememberClipboardItem(text, clipboardKind);
   showCopyToast(messageKey);
 };
 
 const copyPageLink = async () => {
-  await writeClipboardText(window.location.href, "toast.copyLink");
+  await writeClipboardText(window.location.href, "toast.copyLink", "link");
 };
 
 const pasteClipboardText = async () => {
@@ -5241,7 +5923,7 @@ const cutSelectedText = async () => {
   const selectedText = currentValue.slice(start, end);
   if (!selectedText.trim()) return;
 
-  await writeClipboardText(selectedText, "toast.cutText");
+  await writeClipboardText(selectedText, "toast.cutText", "selection");
   contextTargetElement.focus?.();
   contextTargetElement.value = `${currentValue.slice(0, start)}${currentValue.slice(end)}`;
   contextTargetElement.setSelectionRange?.(start, start);
@@ -5268,7 +5950,7 @@ const handleContextMenuAction = async (action) => {
 
   if (action === "copy-selection") {
     const selectedText = getSelectedText();
-    if (selectedText) await writeClipboardText(selectedText);
+    if (selectedText) await writeClipboardText(selectedText, "toast.copyText", "selection");
     return;
   }
 
@@ -5278,7 +5960,7 @@ const handleContextMenuAction = async (action) => {
   }
 
   if (action === "copy-link") {
-    if (contextTargetLink) await writeClipboardText(contextTargetLink.href, "toast.copyLink");
+    if (contextTargetLink) await writeClipboardText(contextTargetLink.href, "toast.copyLink", "link");
     return;
   }
 
@@ -5288,7 +5970,12 @@ const handleContextMenuAction = async (action) => {
   }
 
   if (action === "copy-title") {
-    await writeClipboardText(document.title || window.location.href, "toast.copyTitle");
+    await writeClipboardText(document.title || window.location.href, "toast.copyTitle", "title");
+    return;
+  }
+
+  if (action === "clipboard") {
+    showClipboardWarningDialog();
     return;
   }
 
@@ -5363,7 +6050,7 @@ const handleContextMenuAction = async (action) => {
   }
 
   if (action === "settings") {
-    window.location.href = "/settings";
+    openQuickSettingsDialog();
   }
 };
 
@@ -5449,6 +6136,7 @@ const copyShareLink = async () => {
     copyEventSuppressedUntil = Date.now() + 500;
     document.execCommand?.("copy");
   }
+  rememberClipboardItem(url, "share");
   showCopyToast("toast.copyLink");
 
   shareLinkButton?.classList.add("is-copied");
@@ -5519,7 +6207,7 @@ const openQrImageInNewTab = () => {
 };
 
 const copyQrLink = async () => {
-  await writeClipboardText(qrUrl?.value || window.location.href, "toast.copyLink");
+  await writeClipboardText(qrUrl?.value || window.location.href, "toast.copyLink", "qr");
   if (qrStatus) qrStatus.hidden = false;
 };
 
@@ -5554,7 +6242,7 @@ const copySourceCode = async () => {
   const source = sourceCode?.dataset.rawSource || sourceCode?.textContent || "";
   if (!source) return;
 
-  await writeClipboardText(source, "toast.copySource");
+  await writeClipboardText(source, "toast.copySource", "source");
   if (!sourceStatus) return;
   sourceStatus.hidden = false;
   window.setTimeout(() => {
@@ -5791,6 +6479,9 @@ createSiteSearchDialog();
 createQrDialog();
 createSourceDialog();
 createPrintDialog();
+createClipboardDialog();
+createClipboardWarningDialog();
+createQuickSettingsDialog();
 createMobileQuickActions();
 setupCookieNotice();
 setLanguage(currentLanguage);
@@ -5814,6 +6505,7 @@ setupNotificationTest();
 setupNavLayoutDialog();
 setupContextMenuModeDialog();
 setupCookieSettingsDialog();
+setupQuickSettingsDialog();
 setupFastRenderSwipe();
 setupToggleRightTrack();
 setupBrandLogo();
@@ -6023,6 +6715,25 @@ printConfirm?.addEventListener("click", runPrintFlow);
 printDialog?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === printDialog) closePrintDialog();
 });
+clipboardCloseButtons.forEach((button) => {
+  button.addEventListener("click", closeClipboardDialog);
+});
+clipboardClear?.addEventListener("click", clearClipboardHistory);
+clipboardList?.addEventListener("click", (event) => {
+  const button = event.target.closest?.("[data-clipboard-copy]");
+  if (!button) return;
+  copyClipboardHistoryItem(button.dataset.clipboardCopy).catch(() => {});
+});
+clipboardDialog?.addEventListener("click", (event) => {
+  if (event.button === 0 && event.target === clipboardDialog) closeClipboardDialog();
+});
+clipboardWarningCloseButtons.forEach((button) => {
+  button.addEventListener("click", closeClipboardWarningDialog);
+});
+clipboardWarningContinue?.addEventListener("click", continueToClipboardCenter);
+clipboardWarningDialog?.addEventListener("click", (event) => {
+  if (event.button === 0 && event.target === clipboardWarningDialog) closeClipboardWarningDialog();
+});
 scrollActionButtons.forEach((button) => {
   button.addEventListener("click", () => scrollPageTo(button.dataset.scrollTo));
 });
@@ -6086,9 +6797,12 @@ document.addEventListener("keydown", (event) => {
     closeQrDialog();
     closeSourceDialog();
     closePrintDialog();
+    closeClipboardDialog();
+    closeClipboardWarningDialog();
     closeNavLayoutDialog();
     closeContextMenuModeDialog();
     closeCookieSettingsDialog();
+    closeQuickSettingsDialog();
     closeClearCacheWarning();
     closeFeedbackWarning();
     closeSubscribeWarning();
@@ -6150,6 +6864,8 @@ document.addEventListener("copy", (event) => {
   if (Date.now() < copyEventSuppressedUntil) return;
 
   const messageKey = getNativeCopyToastKey(event);
+  const selectedText = getEditableSelectionText(event.target) || window.getSelection?.().toString().trim() || "";
+  if (selectedText) rememberClipboardItem(selectedText, "manual");
   showNativeCopyToastSoon(messageKey);
 });
 

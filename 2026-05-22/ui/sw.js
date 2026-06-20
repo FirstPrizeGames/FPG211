@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260620-sidebar-enterprise-layout";
+const CACHE_NAME = "profile-offline-20260620-usage-limit-notice";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

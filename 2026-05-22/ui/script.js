@@ -1613,6 +1613,9 @@ const translations = {
     "usage.learnPointPrivateBody": "로그인 계정이나 결제 기록과 연결되지 않습니다.",
     "usage.upgradeTitle": "더 많은 한도를 원하시나요?",
     "usage.upgradeButton": "요금제 업그레이드",
+    "usage.limitNoticeTitle": "사용 한도를 모두 사용했습니다",
+    "usage.limitNoticeBody": "한도가 초기화될 때까지 이 알림은 닫을 수 없습니다. 더 많은 한도가 필요하면 요금제를 업그레이드하세요.",
+    "usage.limitNoticeButton": "요금제 보기",
     "usage.settingsTitle": "사용량 페이지",
     "usage.settingsBody": "5시간 한도와 주간 한도를 Usage 페이지에서 확인합니다.",
     "usage.open": "Usage 열기",
@@ -2951,6 +2954,9 @@ const translations = {
     "usage.learnPointPrivateBody": "It is not connected to a login account or payment history.",
     "usage.upgradeTitle": "Get more limits?",
     "usage.upgradeButton": "Upgrade to plan",
+    "usage.limitNoticeTitle": "Usage limit reached",
+    "usage.limitNoticeBody": "This notice cannot be dismissed until the limit resets. Upgrade if you need more limits.",
+    "usage.limitNoticeButton": "View plans",
     "usage.settingsTitle": "Usage page",
     "usage.settingsBody": "Review the 5-hour and weekly usage limits on the Usage page.",
     "usage.open": "Open Usage",
@@ -5447,6 +5453,7 @@ let browserUsageWeeklyBaseMs = Number.parseInt(localStorage.getItem("profile-bro
 let browserUsageRedirected = false;
 let browserUsageWindowStateChanged = false;
 let browserUsageWeeklyWindowStateChanged = false;
+let usageLimitNotice = null;
 if (!Number.isFinite(browserUsageWindowStart) || browserUsageWindowStart <= 0) {
   browserUsageWindowStart = browserUsageStartedAt;
   browserUsageWindowStateChanged = true;
@@ -5495,6 +5502,33 @@ const formatUsageResetDate = (timestamp) => {
   return translate("usage.resetOn").replace("{date}", dateText);
 };
 
+const getUsageLimitNotice = () => {
+  if (usageLimitNotice) return usageLimitNotice;
+
+  usageLimitNotice = document.querySelector("[data-usage-limit-notice]");
+  if (usageLimitNotice) return usageLimitNotice;
+
+  usageLimitNotice = document.createElement("aside");
+  usageLimitNotice.className = "usage-limit-notice";
+  usageLimitNotice.dataset.usageLimitNotice = "";
+  usageLimitNotice.hidden = true;
+  usageLimitNotice.setAttribute("role", "alert");
+  usageLimitNotice.setAttribute("aria-live", "assertive");
+  usageLimitNotice.innerHTML = `
+    <strong data-i18n="usage.limitNoticeTitle">${translate("usage.limitNoticeTitle")}</strong>
+    <span data-i18n="usage.limitNoticeBody">${translate("usage.limitNoticeBody")}</span>
+    <a href="/Pricing" data-i18n="usage.limitNoticeButton">${translate("usage.limitNoticeButton")}</a>
+  `;
+  document.body.appendChild(usageLimitNotice);
+  return usageLimitNotice;
+};
+
+const setUsageLimitNoticeVisible = (isVisible) => {
+  const notice = getUsageLimitNotice();
+  notice.hidden = !isVisible;
+  notice.classList.toggle("is-visible", isVisible);
+};
+
 const refreshBrowserUsageWindow = () => {
   const now = Date.now();
   if (now - browserUsageWindowStart < browserUsageLimitMs) return;
@@ -5502,6 +5536,7 @@ const refreshBrowserUsageWindow = () => {
   browserUsageWindowStart = now;
   browserUsageBaseMs = 0;
   browserUsageRedirected = false;
+  setUsageLimitNoticeVisible(false);
   localStorage.setItem("profile-browser-usage-window-start-ms", String(browserUsageWindowStart));
   localStorage.setItem("profile-browser-usage-used-ms", "0");
   localStorage.removeItem("profile-browser-usage-total-ms");
@@ -5543,10 +5578,6 @@ const persistBrowserUsage = () => {
 const updateBrowserUsage = () => {
   refreshBrowserUsageWindow();
   refreshBrowserUsageWeeklyWindow();
-  if (
-    !browserUsageDailyRemaining &&
-    !browserUsageWeeklyRemaining
-  ) return;
 
   const totalMs = Math.min(getCurrentBrowserUsageMs(), browserUsageLimitMs);
   const weeklyMs = Math.min(getCurrentWeeklyUsageMs(), browserUsageWeeklyLimitMs);
@@ -5554,6 +5585,14 @@ const updateBrowserUsage = () => {
   const weeklyRemainingRatio = Math.max(1 - weeklyMs / browserUsageWeeklyLimitMs, 0);
   const dailyRemainingPercent = Math.ceil(dailyRemainingRatio * 100);
   const weeklyRemainingPercent = Math.ceil(weeklyRemainingRatio * 100);
+  const hasReachedLimit = totalMs >= browserUsageLimitMs || weeklyMs >= browserUsageWeeklyLimitMs;
+
+  setUsageLimitNoticeVisible(hasReachedLimit);
+
+  if (
+    !browserUsageDailyRemaining &&
+    !browserUsageWeeklyRemaining
+  ) return;
 
   if (browserUsageDailyReset) browserUsageDailyReset.textContent = formatUsageResetTime(browserUsageWindowStart + browserUsageLimitMs);
   if (browserUsageDailyRemaining) {
@@ -5565,12 +5604,9 @@ const updateBrowserUsage = () => {
     browserUsageWeeklyRemaining.textContent = translate("usage.remainingPercent").replace("{percent}", String(weeklyRemainingPercent));
   }
   if (browserUsageWeeklyBar) browserUsageWeeklyBar.style.transform = `scaleX(${weeklyRemainingRatio})`;
-  if (totalMs >= browserUsageLimitMs && !browserUsageRedirected) {
+  if (hasReachedLimit && !browserUsageRedirected) {
     browserUsageRedirected = true;
     persistBrowserUsage();
-    window.setTimeout(() => {
-      window.location.href = "/Pricing";
-    }, 650);
   }
 };
 

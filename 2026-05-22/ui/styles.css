@@ -412,6 +412,48 @@ body {
   --loading-progress: 1;
 }
 
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 240;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: color-mix(in srgb, var(--page-bg) 72%, rgba(0, 0, 0, 0.38));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+}
+
+.page-loader.is-visible {
+  opacity: 1;
+}
+
+.page-loader.is-hidden,
+.page-loader[hidden] {
+  display: none;
+}
+
+.page-loader-panel {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--panel-bg) 92%, var(--page-bg));
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
+}
+
+.page-loader-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  border-top-color: var(--ink);
+  border-radius: 999px;
+  animation: pageLoaderSpin 780ms linear infinite;
+}
+
 .scroll-progress {
   width: 100%;
   background: var(--accent);
@@ -552,6 +594,20 @@ body {
 
   100% {
     transform: translateX(100%);
+  }
+}
+
+@keyframes pageLoaderSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-loader,
+  .page-loader-spinner {
+    transition: none;
+    animation: none;
   }
 }
 
@@ -8052,9 +8108,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
   min-height: 44px;
   padding-inline: 18px;
   border-radius: 8px;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, #ffffff 28%, transparent), transparent),
-    var(--panel-solid);
+  background: var(--panel-solid);
   color: var(--ink);
   justify-self: end;
 }
@@ -8501,9 +8555,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
 .cache-button {
   border-color: var(--line);
-  background:
-    linear-gradient(180deg, color-mix(in srgb, #ffffff 24%, transparent), transparent),
-    var(--panel-solid);
+  background: var(--panel-solid);
   color: var(--ink);
   min-width: 172px;
   min-height: 44px;
@@ -8751,9 +8803,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 [data-theme="lights-off"] .setting-select-trigger,
 [data-theme="lights-off"] .accent-trigger,
 [data-theme="lights-off"] .cache-button {
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--line) 14%, transparent), transparent),
-    var(--panel-solid);
+  background: var(--panel-solid);
 }
 
 .cache-dialog[hidden] {
@@ -10295,12 +10345,14 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 .context-menu [data-context-action="close"] {
-  --accent: var(--ink);
+  background: color-mix(in srgb, var(--ink) 7%, transparent);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 10%, transparent);
 }
 
 .context-menu [data-context-action="close"]:hover,
 .context-menu [data-context-action="close"]:focus-visible {
-  background: color-mix(in srgb, var(--ink) 8%, transparent);
+  background: color-mix(in srgb, var(--ink) 11%, transparent);
   color: var(--ink);
 }
 
@@ -12987,9 +13039,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 .settings-body .swipe-control,
 .settings-body .cache-button {
   border-color: var(--settings-line);
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--settings-surface-strong) 58%, transparent), transparent),
-    color-mix(in srgb, var(--settings-rail) 70%, transparent);
+  background: color-mix(in srgb, var(--settings-rail) 70%, transparent);
   color: var(--settings-text);
   box-shadow: none;
 }
@@ -13345,9 +13395,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 .home-action-grid button {
   border-color: var(--action-border);
   border-radius: 10px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent),
-    var(--action-muted-bg);
+  background: var(--action-muted-bg);
   color: var(--ink);
   box-shadow: none;
 }
@@ -13458,9 +13506,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 .settings-body .swipe-control,
 .settings-body .cache-button {
   border-color: var(--settings-line);
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--settings-surface-strong) 68%, transparent), transparent),
-    var(--settings-surface);
+  background: var(--settings-surface);
   color: var(--settings-text);
 }
 
@@ -13554,16 +13600,6 @@ html[lang="ko"] .faq-feedback-strip h2 {
   border-color: rgba(244, 244, 244, 0.28);
   background: rgba(255, 255, 255, 0.14);
   color: #ffffff;
-}
-
-.context-menu [data-context-action="close"] {
-  --accent: var(--ink);
-}
-
-.context-menu [data-context-action="close"]:hover,
-.context-menu [data-context-action="close"]:focus-visible {
-  background: color-mix(in srgb, var(--ink) 8%, transparent);
-  color: var(--ink);
 }
 
 [data-accent="blue"],
@@ -14565,6 +14601,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
   .mobile-quick-actions,
   .scroll-actions,
   .loading-bar,
+  .page-loader,
   .scroll-progress,
   .context-menu,
   .cache-dialog,

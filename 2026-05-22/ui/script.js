@@ -29,6 +29,8 @@ const navIconMarkup = {
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z" /><path d="M15 3v4h4" /><path d="M9 11h6" /><path d="M9 15h6" /><path d="M9 19h4" /></svg>',
   accessibility:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2" /><path d="M5 8h14" /><path d="M12 8v13" /><path d="M8 21l4-8 4 8" /></svg>',
+  translate:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5h9" /><path d="M9 3v2" /><path d="M7 5c.5 2.8 2.2 5.2 5 7" /><path d="M11 5c-.5 2.7-2.2 5.1-5 7" /><path d="M13 19l4-9 4 9" /><path d="m15 15h4" /></svg>',
   privacy:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-5" /></svg>',
   license:
@@ -40,6 +42,28 @@ const navIconMarkup = {
   security:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="6" y="10" width="12" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /><path d="M12 14v2" /></svg>',
 };
+
+const createPageLoader = () => {
+  if (document.querySelector("[data-page-loader]")) {
+    return document.querySelector("[data-page-loader]");
+  }
+
+  const loader = document.createElement("div");
+  loader.className = "page-loader";
+  loader.dataset.pageLoader = "";
+  loader.setAttribute("role", "status");
+  loader.setAttribute("aria-live", "polite");
+  loader.innerHTML = `
+    <div class="page-loader-panel">
+      <span class="page-loader-spinner" aria-hidden="true"></span>
+      <span class="sr-only">Loading page</span>
+    </div>
+  `;
+  document.body.append(loader);
+  return loader;
+};
+
+const pageLoader = createPageLoader();
 
 const normalizeNavPath = (path) => {
   const normalized = path.replace(/\/index\.html$/i, "").replace(/\/+$/, "");
@@ -128,6 +152,7 @@ const enhanceSidebarNavigation = () => {
   const navGroups = [
     {
       label: "COMMAND",
+      labelKey: "nav.groupCommand",
       items: [
         { type: "search" },
         { href: "/updates", icon: navIconMarkup.updates, labelKey: "nav.updates", fallback: "Latest updates" },
@@ -141,6 +166,7 @@ const enhanceSidebarNavigation = () => {
     },
     {
       label: "MANAGE",
+      labelKey: "nav.groupManage",
       items: [
         { href: "/Pricing", icon: navIconMarkup.pricing, labelKey: "nav.pricing", fallback: "Pricing" },
         { href: "/feedback", icon: navIconMarkup.support, labelKey: "nav.support", fallback: "Support", className: "nav-support-link" },
@@ -149,13 +175,16 @@ const enhanceSidebarNavigation = () => {
     },
     {
       label: "ACCOUNT",
+      labelKey: "nav.groupAccount",
       items: [
         { href: "/settings", icon: navIconMarkup.settings, labelKey: "nav.settings", fallback: "Settings", quickSettings: true },
+        { href: "/settings", icon: navIconMarkup.translate, labelKey: "nav.translate", fallback: "Translate", quickSettings: true },
         { href: "/accessibility", icon: navIconMarkup.accessibility, labelKey: "nav.accessibility", fallback: "Accessibility" },
       ],
     },
     {
       label: "TRUST",
+      labelKey: "nav.groupTrust",
       items: [
         { href: "/trust", icon: navIconMarkup.trust, labelKey: "nav.trust", fallback: "Trust Center" },
         { href: "/status", icon: navIconMarkup.status, labelKey: "nav.status", fallback: "Status" },
@@ -181,7 +210,7 @@ const enhanceSidebarNavigation = () => {
       trigger.type = "button";
       trigger.id = triggerId;
       trigger.setAttribute("aria-expanded", "false");
-      trigger.innerHTML = `<span>${group.label}</span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>`;
+      trigger.innerHTML = `<span data-i18n="${group.labelKey}">${group.label}</span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>`;
 
       const menu = document.createElement("div");
       menu.className = "nav-group-menu";
@@ -190,6 +219,7 @@ const enhanceSidebarNavigation = () => {
       const sectionLabel = document.createElement("span");
       sectionLabel.className = "nav-section-label";
       sectionLabel.textContent = group.label;
+      sectionLabel.dataset.i18n = group.labelKey;
       sectionLabel.setAttribute("aria-hidden", "true");
       menu.append(sectionLabel);
 
@@ -376,6 +406,19 @@ const enhanceContextMenuActions = (menu) => {
     );
   }
 
+  if (!menu.querySelector('[data-context-action="select-all"]')) {
+    const copySelectionButton = menu.querySelector('[data-context-action="copy-selection"]');
+    copySelectionButton?.insertAdjacentHTML(
+      "beforebegin",
+      `
+      <button type="button" data-context-action="select-all">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" /><path d="M8 9h8" /><path d="M8 13h8" /><path d="M8 17h5" /></svg>
+        <span data-i18n="context.selectAll">모두 선택</span><kbd class="context-shortcut">Ctrl+A</kbd>
+      </button>
+    `,
+    );
+  }
+
   if (!menu.querySelector('[data-context-action="cast"]')) {
     const qrButton = menu.querySelector('[data-context-action="qr"]');
     qrButton?.insertAdjacentHTML(
@@ -401,6 +444,65 @@ const enhanceContextMenuActions = (menu) => {
     `,
     );
   }
+
+  if (!menu.querySelector('[data-context-action="text-copy"]')) {
+    const copyButton = menu.querySelector('[data-context-action="copy"]');
+    copyButton?.insertAdjacentHTML(
+      "afterend",
+      `
+      <button type="button" data-context-action="text-copy">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 4h14" /><path d="M7 8h10" /><path d="M7 12h10" /><path d="M7 16h7" /><path d="M5 20h9" /></svg>
+        <span data-i18n="context.textCopy">Text copy</span>
+      </button>
+    `,
+    );
+  }
+
+  const sortLabels = {
+    back: "Back",
+    cast: "Cast",
+    clipboard: "Clipboard Center",
+    close: "Close",
+    "copy-link": "Copy link address",
+    copy: "Copy page link",
+    "copy-title": "Copy page title",
+    "copy-selection": "Copy selected text",
+    creator: "Creator",
+    cut: "Cut",
+    feedback: "Feedback",
+    forward: "Forward",
+    "open-link": "Open link in new tab",
+    paste: "Paste",
+    print: "Print",
+    qr: "QR Code",
+    refresh: "Refresh",
+    "save-image": "Save image",
+    search: "Search",
+    "select-all": "Select all",
+    settings: "Settings",
+    source: "Source",
+    "text-copy": "Text copy",
+    top: "Top",
+  };
+  const closeButton = menu.querySelector('[data-context-action="close"]');
+  const sortedButtons = [...menu.querySelectorAll("[data-context-action]")]
+    .filter((button) => button !== closeButton)
+    .sort((first, second) => {
+    const firstLabel = sortLabels[first.dataset.contextAction] || first.dataset.contextAction || "";
+    const secondLabel = sortLabels[second.dataset.contextAction] || second.dataset.contextAction || "";
+    return firstLabel.localeCompare(secondLabel, "en", { sensitivity: "base" });
+  });
+
+  menu.querySelectorAll(".context-menu-separator").forEach((separator) => separator.remove());
+  if (closeButton) {
+    menu.append(closeButton);
+    const separator = document.createElement("div");
+    separator.className = "context-menu-separator";
+    separator.setAttribute("role", "separator");
+    separator.setAttribute("aria-hidden", "true");
+    menu.append(separator);
+  }
+  sortedButtons.forEach((button) => menu.append(button));
 
   return menu;
 };
@@ -576,38 +678,45 @@ const sections = navLinks
 const translations = {
   ko: {
     "accessibility.skip": "본문으로 바로 이동",
-    "nav.search": "Search",
-    "nav.home": "Home",
-    "nav.creator": "Creator",
-    "nav.about": "About",
-    "nav.aboutUs": "About us",
-    "nav.work": "Work",
-    "nav.contact": "Contact",
-    "nav.pricing": "Pricing",
-    "nav.support": "Support",
-    "nav.analytics": "Analytics",
+    "nav.search": "검색",
+    "nav.groupCommand": "명령",
+    "nav.groupManage": "관리",
+    "nav.groupAccount": "계정",
+    "nav.groupTrust": "신뢰",
+    "nav.home": "홈",
+    "nav.creator": "제작자",
+    "nav.about": "소개",
+    "nav.aboutUs": "소개",
+    "nav.work": "작업",
+    "nav.contact": "연락처",
+    "nav.pricing": "요금제",
+    "nav.support": "지원",
+    "nav.analytics": "사용량",
     "nav.updates": "최신 업데이트",
-    "nav.activity": "Activity",
-    "nav.bio": "Bio",
+    "nav.activity": "활동",
+    "nav.bio": "프로필",
     "nav.faq": "FAQ",
-    "nav.settings": "Settings",
-    "nav.accessibility": "Accessibility",
-    "nav.sitemap": "Sitemap",
-    "nav.trust": "Trust Center",
-    "nav.status": "Status",
-    "nav.security": "Security",
+    "nav.settings": "설정",
+    "nav.translate": "번역",
+    "nav.accessibility": "접근성",
+    "nav.sitemap": "사이트맵",
+    "nav.trust": "신뢰 센터",
+    "nav.status": "상태",
+    "nav.security": "보안",
     "footer.brand": "Emergency Responder Profile",
     "footer.tagline": "신뢰, 상태, 개인정보, 지원 링크를 한 곳에 모았습니다.",
     "usage.nav": "Usage",
-    "nav.privacy": "Privacy Policy",
-    "nav.license": "License",
-    "nav.terms": "Terms",
-    "nav.feedback": "Feedback",
+    "nav.privacy": "개인정보 처리방침",
+    "nav.license": "라이선스",
+    "nav.terms": "이용약관",
+    "nav.feedback": "피드백",
     "nav.menu": "메뉴",
     "nav.collapseSidebar": "사이드바 접기",
     "nav.expandSidebar": "사이드바 펼치기",
     "context.close": "닫기",
     "context.copy": "페이지 링크 복사",
+    "context.textCopy": "텍스트 복사",
+    "context.selectAll": "모두 선택",
     "context.copySelection": "선택한 텍스트 복사",
     "context.cut": "잘라내기",
     "context.openLink": "새 탭에서 링크 열기",
@@ -1904,6 +2013,10 @@ const translations = {
   en: {
     "accessibility.skip": "Skip to main content",
     "nav.search": "Search",
+    "nav.groupCommand": "Command",
+    "nav.groupManage": "Manage",
+    "nav.groupAccount": "Account",
+    "nav.groupTrust": "Trust",
     "nav.home": "Home",
     "nav.creator": "Creator",
     "nav.about": "About",
@@ -1918,6 +2031,7 @@ const translations = {
     "nav.bio": "Bio",
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
+    "nav.translate": "Translate",
     "nav.accessibility": "Accessibility",
     "nav.sitemap": "Sitemap",
     "nav.trust": "Trust Center",
@@ -1935,6 +2049,8 @@ const translations = {
     "nav.expandSidebar": "Expand sidebar",
     "context.close": "Close",
     "context.copy": "Copy page link",
+    "context.textCopy": "Text copy",
+    "context.selectAll": "Select all",
     "context.copySelection": "Copy selected text",
     "context.cut": "Cut",
     "context.openLink": "Open link in new tab",
@@ -5935,6 +6051,19 @@ const writeClipboardText = async (text, messageKey = "toast.copyText", clipboard
   showCopyToast(messageKey);
 };
 
+const getPageTextForCopy = () => {
+  const contentRoot = document.querySelector("main") || document.body;
+  const textSelectors = "h1, h2, h3, h4, p, li, dt, dd, blockquote, figcaption, th, td";
+  const textItems = [...contentRoot.querySelectorAll(textSelectors)]
+    .filter((element) => !element.closest("nav, form, dialog, .cache-dialog, .context-menu, .mobile-quick-actions"))
+    .map((element) => element.innerText.trim().replace(/\s+/g, " "))
+    .filter(Boolean);
+  const title = document.querySelector("h1")?.innerText?.trim() || document.title;
+  const uniqueItems = textItems.filter((item, index) => textItems.indexOf(item) === index);
+
+  return [title, ...uniqueItems.filter((item) => item !== title)].filter(Boolean).join("\n");
+};
+
 const copyPageLink = async () => {
   await writeClipboardText(window.location.href, "toast.copyLink", "link");
 };
@@ -5954,6 +6083,28 @@ const pasteClipboardText = async () => {
   const cursor = start + text.length;
   contextTargetElement.setSelectionRange?.(cursor, cursor);
   contextTargetElement.dispatchEvent(new Event("input", { bubbles: true }));
+};
+
+const selectAllContextText = () => {
+  if (isEditableTextTarget(contextTargetElement)) {
+    contextTargetElement.focus?.();
+    if (typeof contextTargetElement.select === "function") {
+      contextTargetElement.select();
+      return;
+    }
+    const length = contextTargetElement.value?.length ?? contextTargetElement.textContent?.length ?? 0;
+    contextTargetElement.setSelectionRange?.(0, length);
+    return;
+  }
+
+  const targetRoot = document.querySelector("main") || document.body;
+  const selection = window.getSelection?.();
+  if (!selection || !targetRoot) return;
+
+  const range = document.createRange();
+  range.selectNodeContents(targetRoot);
+  selection.removeAllRanges();
+  selection.addRange(range);
 };
 
 const cutSelectedText = async () => {
@@ -5995,6 +6146,17 @@ const handleContextMenuAction = async (action) => {
   if (action === "copy-selection") {
     const selectedText = getSelectedText();
     if (selectedText) await writeClipboardText(selectedText, "toast.copyText", "selection");
+    return;
+  }
+
+  if (action === "text-copy") {
+    const pageText = getPageTextForCopy();
+    if (pageText) await writeClipboardText(pageText, "toast.copyText", "text");
+    return;
+  }
+
+  if (action === "select-all") {
+    selectAllContextText();
     return;
   }
 
@@ -6450,21 +6612,47 @@ const setLoadingProgress = (progress) => {
   loadingBar?.style.setProperty("--loading-progress", String(progress));
 };
 
+const showPageLoader = () => {
+  if (!pageLoader) return;
+
+  pageLoader.hidden = false;
+  pageLoader.classList.remove("is-hidden", "is-leaving");
+  window.requestAnimationFrame(() => pageLoader.classList.add("is-visible"));
+};
+
+const finishPageLoader = () => {
+  if (!pageLoader || pageLoader.classList.contains("is-hidden")) return;
+
+  pageLoader.classList.remove("is-visible");
+  pageLoader.classList.add("is-leaving");
+  window.setTimeout(() => {
+    pageLoader.classList.add("is-hidden");
+    pageLoader.hidden = true;
+  }, 260);
+};
+
 const showLoadingBar = () => {
   if (!loadingBar) return;
 
+  showPageLoader();
   loadingBar.classList.remove("is-hidden", "is-complete");
   setLoadingProgress(0.2);
   window.requestAnimationFrame(() => setLoadingProgress(0.72));
 };
 
 const finishLoadingBar = () => {
-  if (!loadingBar) return;
+  if (!loadingBar) {
+    finishPageLoader();
+    return;
+  }
 
   setLoadingProgress(0.94);
   window.setTimeout(() => {
     loadingBar.classList.add("is-complete");
-    window.setTimeout(() => loadingBar.classList.add("is-hidden"), 260);
+    window.setTimeout(() => {
+      loadingBar.classList.add("is-hidden");
+      finishPageLoader();
+    }, 260);
   }, 140);
 };
 
@@ -6517,6 +6705,7 @@ window.addEventListener("load", finishLoadingBar);
 window.addEventListener("pageshow", (event) => {
   if (event.persisted) finishLoadingBar();
 });
+window.setTimeout(finishLoadingBar, 2600);
 
 createShareDialog();
 createSiteSearchDialog();

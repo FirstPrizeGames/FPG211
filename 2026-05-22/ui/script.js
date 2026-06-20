@@ -149,13 +149,13 @@ const createMobileQuickActions = () => {
 const enhanceSidebarNavigation = () => {
   const navGroups = [
     {
-      label: "COMMAND",
-      labelKey: "nav.groupCommand",
+      label: "MAIN",
+      labelKey: "nav.groupMain",
       items: [
         { type: "search" },
+        { href: "/", icon: navIconMarkup.home, labelKey: "nav.home", fallback: "Home" },
         { href: "/updates", icon: navIconMarkup.updates, labelKey: "nav.updates", fallback: "Latest updates" },
         { href: "/activity", icon: navIconMarkup.activity, labelKey: "nav.activity", fallback: "Activity" },
-        { href: "/", icon: navIconMarkup.home, labelKey: "nav.home", fallback: "Home" },
         { href: "/Creator", icon: navIconMarkup.creator, labelKey: "nav.creator", fallback: "Creator" },
         { href: "/Bio", icon: navIconMarkup.bio, labelKey: "nav.bio", fallback: "Bio" },
         { href: "/about", icon: navIconMarkup.about, labelKey: "nav.aboutUs", fallback: "About us" },
@@ -172,23 +172,23 @@ const enhanceSidebarNavigation = () => {
       ],
     },
     {
-      label: "ACCOUNT",
-      labelKey: "nav.groupAccount",
-      items: [
-        { href: "/settings", icon: navIconMarkup.settings, labelKey: "nav.settings", fallback: "Settings", quickSettings: true },
-        { href: "/accessibility", icon: navIconMarkup.accessibility, labelKey: "nav.accessibility", fallback: "Accessibility" },
-      ],
-    },
-    {
       label: "TRUST",
       labelKey: "nav.groupTrust",
       items: [
+        { href: "/accessibility", icon: navIconMarkup.accessibility, labelKey: "nav.accessibility", fallback: "Accessibility" },
         { href: "/trust", icon: navIconMarkup.trust, labelKey: "nav.trust", fallback: "Trust Center" },
         { href: "/status", icon: navIconMarkup.status, labelKey: "nav.status", fallback: "Status" },
         { href: "/security", icon: navIconMarkup.security, labelKey: "nav.security", fallback: "Security" },
         { href: "/privacy", icon: navIconMarkup.privacy, labelKey: "nav.privacy", fallback: "Privacy Policy" },
         { href: "/license", icon: navIconMarkup.license, labelKey: "nav.license", fallback: "License" },
         { href: "/terms", icon: navIconMarkup.terms, labelKey: "nav.terms", fallback: "Terms" },
+      ],
+    },
+    {
+      label: "UTILITY",
+      labelKey: "nav.groupUtility",
+      items: [
+        { href: "/settings", icon: navIconMarkup.settings, labelKey: "nav.settings", fallback: "Settings", quickSettings: true },
       ],
     },
   ];
@@ -676,10 +676,10 @@ const translations = {
   ko: {
     "accessibility.skip": "본문으로 바로 이동",
     "nav.search": "검색",
-    "nav.groupCommand": "명령",
+    "nav.groupMain": "메인",
     "nav.groupManage": "관리",
-    "nav.groupAccount": "계정",
     "nav.groupTrust": "신뢰",
+    "nav.groupUtility": "유틸리티",
     "nav.home": "홈",
     "nav.creator": "제작자",
     "nav.about": "소개",
@@ -2009,10 +2009,10 @@ const translations = {
   en: {
     "accessibility.skip": "Skip to main content",
     "nav.search": "Search",
-    "nav.groupCommand": "Command",
+    "nav.groupMain": "Main",
     "nav.groupManage": "Manage",
-    "nav.groupAccount": "Account",
     "nav.groupTrust": "Trust",
+    "nav.groupUtility": "Utility",
     "nav.home": "Home",
     "nav.creator": "Creator",
     "nav.about": "About",

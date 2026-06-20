@@ -1123,6 +1123,8 @@ summary {
 
   [data-nav-layout="sidebar"] .nav-links {
     flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
     gap: 0;
     padding: 14px 0 0;
     border: 0;
@@ -1130,6 +1132,16 @@ summary {
     background: transparent;
     box-shadow: none;
     scrollbar-color: rgba(130, 152, 174, 0.36) transparent;
+  }
+
+  [data-nav-layout="sidebar"] .nav-menu-group[data-nav-menu-group="utility"] {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid rgba(218, 218, 218, 0.12);
+  }
+
+  [data-nav-layout="sidebar"] .nav-menu-group[data-nav-menu-group="utility"] .nav-section-label {
+    margin-top: 0;
   }
 
   [data-nav-layout="sidebar"] .nav-section-label {
@@ -1328,6 +1340,10 @@ summary {
 
   [data-nav-layout="sidebar"][data-sidebar-collapsed="true"] .nav-section-label {
     display: none;
+  }
+
+  [data-nav-layout="sidebar"][data-sidebar-collapsed="true"] .nav-menu-group[data-nav-menu-group="utility"] {
+    padding-top: 10px;
   }
 
   [data-nav-layout="sidebar"][data-sidebar-collapsed="true"] .nav-links a {

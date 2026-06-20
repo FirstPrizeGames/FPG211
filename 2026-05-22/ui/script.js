@@ -29,8 +29,6 @@ const navIconMarkup = {
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z" /><path d="M15 3v4h4" /><path d="M9 11h6" /><path d="M9 15h6" /><path d="M9 19h4" /></svg>',
   accessibility:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2" /><path d="M5 8h14" /><path d="M12 8v13" /><path d="M8 21l4-8 4 8" /></svg>',
-  translate:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5h9" /><path d="M9 3v2" /><path d="M7 5c.5 2.8 2.2 5.2 5 7" /><path d="M11 5c-.5 2.7-2.2 5.1-5 7" /><path d="M13 19l4-9 4 9" /><path d="m15 15h4" /></svg>',
   privacy:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-5" /></svg>',
   license:
@@ -178,7 +176,6 @@ const enhanceSidebarNavigation = () => {
       labelKey: "nav.groupAccount",
       items: [
         { href: "/settings", icon: navIconMarkup.settings, labelKey: "nav.settings", fallback: "Settings", quickSettings: true },
-        { href: "/settings", icon: navIconMarkup.translate, labelKey: "nav.translate", fallback: "Translate", quickSettings: true },
         { href: "/accessibility", icon: navIconMarkup.accessibility, labelKey: "nav.accessibility", fallback: "Accessibility" },
       ],
     },
@@ -697,7 +694,6 @@ const translations = {
     "nav.bio": "프로필",
     "nav.faq": "FAQ",
     "nav.settings": "설정",
-    "nav.translate": "번역",
     "nav.accessibility": "접근성",
     "nav.sitemap": "사이트맵",
     "nav.trust": "신뢰 센터",
@@ -2031,7 +2027,6 @@ const translations = {
     "nav.bio": "Bio",
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
-    "nav.translate": "Translate",
     "nav.accessibility": "Accessibility",
     "nav.sitemap": "Sitemap",
     "nav.trust": "Trust Center",

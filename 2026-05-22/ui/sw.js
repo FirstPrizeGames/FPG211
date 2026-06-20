@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260620-button-solid-pass";
+const CACHE_NAME = "profile-offline-20260620-cookie-ui-refresh";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

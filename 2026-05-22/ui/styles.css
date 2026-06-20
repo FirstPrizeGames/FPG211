@@ -8573,16 +8573,15 @@ html[lang="ko"] .faq-feedback-strip h2 {
   bottom: max(18px, env(safe-area-inset-bottom));
   z-index: 95;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 18px;
-  align-items: end;
-  width: min(680px, calc(100vw - 36px));
-  padding: 18px 18px 16px;
-  border: 1px solid color-mix(in srgb, var(--line) 88%, transparent);
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  width: min(560px, calc(100vw - 36px));
+  padding: 20px;
+  border: 1px solid color-mix(in srgb, var(--ink) 12%, var(--line));
   border-radius: 8px;
   background: color-mix(in srgb, var(--panel-solid) 98%, transparent);
   color: var(--ink);
-  box-shadow: 0 22px 62px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.26);
   backdrop-filter: blur(18px);
   animation: cookieNoticeIn 260ms cubic-bezier(0.2, 0, 0, 1);
 }
@@ -8593,7 +8592,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
 .cookie-notice-copy {
   display: grid;
-  gap: 6px;
+  gap: 8px;
 }
 
 .cookie-notice h2,
@@ -8602,7 +8601,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 .cookie-notice h2 {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 880;
   letter-spacing: 0;
   line-height: 1.15;
@@ -8610,18 +8609,20 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
 .cookie-notice .eyebrow {
   font-size: 11px;
+  color: color-mix(in srgb, var(--ink) 62%, var(--muted));
 }
 
 .cookie-notice-copy p:not(.eyebrow) {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 650;
-  line-height: 1.55;
+  line-height: 1.62;
 }
 
 .cookie-notice-actions {
   display: flex;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 10px;
   align-items: center;
   justify-content: flex-end;
 }
@@ -8631,36 +8632,52 @@ html[lang="ko"] .faq-feedback-strip h2 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 40px;
-  padding: 0 14px;
+  min-height: 42px;
+  padding: 0 16px;
   border: 1px solid var(--line);
   border-radius: 6px;
   cursor: pointer;
   font: inherit;
   font-size: 13px;
-  font-weight: 780;
+  font-weight: 820;
   line-height: 1;
   text-decoration: none;
   white-space: nowrap;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease;
 }
 
 .cookie-notice-actions a {
-  background: var(--panel);
+  background: color-mix(in srgb, var(--ink) 5%, transparent);
   color: var(--ink);
+}
+
+.cookie-notice-actions a:first-child {
+  min-height: auto;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
 }
 
 .cookie-notice-actions button {
   border-color: var(--ink);
   background: var(--ink);
-  color: #ffffff;
+  color: var(--panel-solid);
 }
 
 .cookie-notice-actions a:hover,
 .cookie-notice-actions a:focus-visible,
 .cookie-notice-actions button:hover,
 .cookie-notice-actions button:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--accent) 42%, transparent);
+  outline: 2px solid color-mix(in srgb, var(--ink) 24%, transparent);
   outline-offset: 2px;
+  transform: translateY(-1px);
+}
+
+.cookie-notice-actions a:first-child:hover,
+.cookie-notice-actions a:first-child:focus-visible {
+  color: var(--ink);
+  transform: none;
 }
 
 .updates-page {
@@ -12263,6 +12280,12 @@ html[lang="ko"] .faq-feedback-strip h2 {
     white-space: normal;
   }
 
+  .cookie-notice-actions a:first-child {
+    min-height: 34px;
+    justify-self: center;
+    width: auto;
+  }
+
   .cache-dialog {
     padding: 12px;
     place-items: center;
@@ -13989,7 +14012,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 .cache-dialog .notification-test-button {
   border-radius: 6px;
   box-shadow: none;
-  font-weight: 780;
+  font-weight: 820;
 }
 
 .cookie-notice-actions button,
@@ -14004,8 +14027,14 @@ html[lang="ko"] .faq-feedback-strip h2 {
 .cache-dialog .cache-cancel-button,
 .cache-dialog .share-socials button {
   border-color: color-mix(in srgb, var(--line) 90%, transparent);
-  background: color-mix(in srgb, var(--panel-solid) 88%, transparent);
+  background: color-mix(in srgb, var(--ink) 5%, transparent);
   color: var(--ink);
+}
+
+.cookie-notice-actions a:first-child {
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
 }
 
 .cookie-notice-actions button:hover,
@@ -14027,6 +14056,13 @@ html[lang="ko"] .faq-feedback-strip h2 {
 .cache-dialog .share-socials button:focus-visible {
   border-color: color-mix(in srgb, var(--ink) 32%, var(--line));
   background: color-mix(in srgb, var(--ink) 7%, var(--panel-solid));
+  color: var(--ink);
+}
+
+.cookie-notice-actions a:first-child:hover,
+.cookie-notice-actions a:first-child:focus-visible {
+  border-color: transparent;
+  background: transparent;
   color: var(--ink);
 }
 

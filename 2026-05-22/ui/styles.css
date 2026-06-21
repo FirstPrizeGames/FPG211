@@ -137,6 +137,26 @@
   --accent: #0b7285;
 }
 
+[data-accent="blue"],
+[data-accent="green"],
+[data-accent="rose"],
+[data-accent="orange"],
+[data-accent="purple"],
+[data-accent="pro-gold"],
+[data-accent="team-cyan"] {
+  --highlight-faint: color-mix(in srgb, var(--accent) 5%, transparent);
+  --highlight-subtle: color-mix(in srgb, var(--accent) 7%, transparent);
+  --highlight-soft: color-mix(in srgb, var(--accent) 11%, transparent);
+  --highlight-hover: color-mix(in srgb, var(--accent) 14%, transparent);
+  --highlight-selected: color-mix(in srgb, var(--accent) 18%, transparent);
+  --highlight-strong: color-mix(in srgb, var(--accent) 22%, transparent);
+  --highlight-stronger: color-mix(in srgb, var(--accent) 26%, transparent);
+  --highlight-border: color-mix(in srgb, var(--accent) 34%, transparent);
+  --highlight-focus: color-mix(in srgb, var(--accent) 48%, transparent);
+  --action-border: color-mix(in srgb, var(--accent) 38%, transparent);
+  --action-muted-bg: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
 [data-accent="blue"] .privacy-body,
 [data-accent="green"] .privacy-body,
 [data-accent="rose"] .privacy-body,
@@ -14882,16 +14902,6 @@ html[lang="ko"] .faq-feedback-strip h2 {
   color: #ffffff;
 }
 
-[data-accent="blue"],
-[data-accent="green"],
-[data-accent="rose"],
-[data-accent="orange"],
-[data-accent="purple"],
-[data-accent="pro-gold"],
-[data-accent="team-cyan"] {
-  --accent: #c7c0b4;
-}
-
 .home-body,
 .about-body,
 .bio-body,
@@ -14907,9 +14917,8 @@ html[lang="ko"] .faq-feedback-strip h2 {
 .status-body,
 .security-body,
 .settings-body {
-  --accent: #c7c0b4;
-  --legal-accent: #c7c0b4;
-  --settings-accent: #c7c0b4;
+  --legal-accent: var(--accent);
+  --settings-accent: var(--accent);
   --settings-caution: #d8d5cc;
 }
 

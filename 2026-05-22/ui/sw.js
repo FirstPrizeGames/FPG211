@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260620-usage-limit-notice";
+const CACHE_NAME = "profile-offline-20260621-account-icon-clean";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
@@ -23,6 +23,7 @@ const PRECACHE_URLS = [
   "/assets/apple-touch-icon.png",
   "/assets/icon-192.png",
   "/assets/icon-512.png",
+  "/assets/well.png",
   "/assets/logo.png",
   "/assets/accessibility-firetruck-hero.png",
   "/assets/profile-hero-1280.jpg",

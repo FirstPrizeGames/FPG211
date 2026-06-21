@@ -18,14 +18,14 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Emergency Responder Profile" />
     <meta property="og:url" content="https://firstprizegames.info/privacy" />
-    <meta property="og:image" content="https://firstprizegames.info/assets/privacy-vault-hero.jpg" />
+    <meta property="og:image" content="https://firstprizegames.info/assets/about-system-hero.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Privacy Policy · Emergency Responder Profile" />
     <meta
       name="twitter:description"
       content="Review how this profile site handles local preferences, feedback links, Stripe checkout, and external services."
     />
-    <meta name="twitter:image" content="https://firstprizegames.info/assets/privacy-vault-hero.jpg" />
+    <meta name="twitter:image" content="https://firstprizegames.info/assets/about-system-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png" />
@@ -84,7 +84,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260620-usage-limit-notice" />
+    <link rel="stylesheet" href="../styles.css?v=20260621-account-icon-clean" />
   </head>
   <body class="privacy-body legal-document-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -123,27 +123,26 @@
         </div>
       </nav>
 
-      <section class="policy-hero">
+      <section class="policy-hero privacy-official-hero">
         <div class="policy-hero-copy">
-          <h1 data-i18n="privacy.title">개인정보를 읽기 쉽게 정리했습니다.</h1>
+          <p class="eyebrow" data-i18n="privacy.eyebrow">Privacy Policy</p>
+          <h1 data-i18n="privacy.title">개인정보 처리 기준</h1>
           <p class="policy-lead" data-i18n="privacy.lead">
-            이 사이트는 계정을 만들지 않고, 결제 정보도 직접 보관하지 않습니다. 브라우저 설정은 기기 안에 저장되고, 외부 서비스는 각 서비스의 정책을 따릅니다.
+            FirstPrizeGames는 계정 생성 없이 읽을 수 있는 사이트이며, 결제 정보와 외부 양식 데이터는 해당 서비스에서 처리됩니다.
           </p>
           <p class="policy-updated" data-i18n="privacy.updated">마지막 업데이트: 2026년 6월 3일</p>
         </div>
-        <figure class="policy-hero-media">
-          <img src="../assets/privacy-vault-hero.jpg" alt="" width="1800" height="1000" loading="eager" decoding="async" />
-          <figcaption>
-            <span data-i18n="privacy.mediaLabel">Privacy model</span>
-            <strong data-i18n="privacy.mediaValue">Local settings, external checkout</strong>
-          </figcaption>
-        </figure>
+        <aside class="privacy-scope-panel" aria-label="개인정보 처리 범위" data-i18n-aria-label="aria.privacySummary">
+          <span data-i18n="privacy.mediaLabel">Processing model</span>
+          <strong data-i18n="privacy.mediaValue">Local-first, external services</strong>
+          <p data-i18n="privacy.scopeBody">테마와 표시 설정은 브라우저에 저장되고, 결제와 피드백은 Stripe 및 외부 양식의 정책을 따릅니다.</p>
+        </aside>
       </section>
 
       <section class="policy-ledger" aria-label="개인정보 요약" data-i18n-aria-label="aria.privacySummary">
         <div>
           <span data-i18n="privacy.summaryStorage">Storage</span>
-          <strong data-i18n="privacy.summaryStorageValue">Local only</strong>
+          <strong data-i18n="privacy.summaryStorageValue">Browser only</strong>
         </div>
         <div>
           <span data-i18n="privacy.summaryAccount">Accounts</span>
@@ -151,32 +150,32 @@
         </div>
         <div>
           <span data-i18n="privacy.summaryPayments">Payments</span>
-          <strong data-i18n="privacy.summaryPaymentsValue">Stripe checkout</strong>
+          <strong data-i18n="privacy.summaryPaymentsValue">External checkout</strong>
         </div>
         <div>
           <span data-i18n="privacy.summaryControl">Control</span>
-          <strong data-i18n="privacy.summaryControlValue">Clear anytime</strong>
+          <strong data-i18n="privacy.summaryControlValue">User controlled</strong>
         </div>
       </section>
 
       <section class="policy-dossier" aria-label="개인정보 세부 정보" data-i18n-aria-label="aria.privacyDetails">
         <article id="cookies">
           <span>01</span>
-          <h2 data-i18n="privacy.localTitle">쿠키와 브라우저 저장소</h2>
+          <h2 data-i18n="privacy.localTitle">쿠키와 브라우저 저장소는 최소한으로 사용합니다.</h2>
           <p data-i18n="privacy.localBody">
-            이 사이트는 로그인 추적용 쿠키나 광고 쿠키를 사용하지 않습니다. 테마, 언어, 화면 밀도, 사이드바 상태 같은 보기 설정은 이 브라우저의 localStorage에 저장되고, 쿠키 안내를 확인했다는 선택만 profile_storage_consent 쿠키로 저장됩니다.
+            이 사이트는 로그인 추적 쿠키나 광고 쿠키를 사용하지 않습니다. 테마, 언어, 화면 밀도, 사이드바 상태 같은 보기 설정은 이 브라우저의 저장소에 남고, 쿠키 안내 확인 여부만 필요한 경우 쿠키로 저장합니다.
           </p>
           <ul class="privacy-cookie-list">
             <li>
-              <strong data-i18n="privacy.cookieEssentialTitle">필수 쿠키</strong>
-              <span data-i18n="privacy.cookieEssentialBody">보안과 기본 동작을 위한 항목이며 끌 수 없습니다.</span>
+              <strong data-i18n="privacy.cookieEssentialTitle">필수 항목</strong>
+              <span data-i18n="privacy.cookieEssentialBody">사이트 로딩, 보안, 기본 동작에 필요한 항목이며 끌 수 없습니다.</span>
             </li>
             <li>
-              <strong data-i18n="privacy.cookiePreferenceTitle">설정 저장 쿠키</strong>
-              <span data-i18n="privacy.cookiePreferenceBody">쿠키 안내 확인 여부를 저장하며 Settings의 쿠키 설정 팝업에서 켜거나 끌 수 있습니다.</span>
+              <strong data-i18n="privacy.cookiePreferenceTitle">설정 저장</strong>
+              <span data-i18n="privacy.cookiePreferenceBody">쿠키 안내 확인 여부와 보기 설정을 저장하며 Settings의 쿠키 설정 팝업에서 관리할 수 있습니다.</span>
             </li>
             <li>
-              <strong data-i18n="privacy.cookieAdsTitle">광고/분석 쿠키</strong>
+              <strong data-i18n="privacy.cookieAdsTitle">광고 및 분석</strong>
               <span data-i18n="privacy.cookieAdsBody">현재 사용하지 않습니다.</span>
             </li>
           </ul>
@@ -303,7 +302,7 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260620-usage-limit-notice" defer></script>
+    <script src="../script.js?v=20260621-account-icon-clean" defer></script>
   </body>
 </html>
 

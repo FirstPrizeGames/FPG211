@@ -1,6 +1,10 @@
 const navIconMarkup = {
   search:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m16 16 5 5" /></svg>',
+  chevron:
+    '<svg class="nav-flyout-chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6" /></svg>',
+  help:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M9.2 9a3 3 0 1 1 5.6 1.5c-.6.8-1.5 1.1-2.1 1.8-.5.5-.7.9-.7 1.7" /><path d="M12 17h.01" /></svg>',
   home:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg>',
   creator:
@@ -17,6 +21,12 @@ const navIconMarkup = {
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.6 10.8 6.8-4.1" /><path d="m8.6 13.2 6.8 4.1" /></svg>',
   settings:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3h.1A1.7 1.7 0 0 0 10 3.1V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1A1.7 1.7 0 0 0 20.9 10h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" /></svg>',
+  personalization:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v4" /><path d="M12 17v4" /><path d="M3 12h4" /><path d="M17 12h4" /><circle cx="12" cy="12" r="4" /><path d="m5.6 5.6 2.8 2.8" /><path d="m15.6 15.6 2.8 2.8" /><path d="m18.4 5.6-2.8 2.8" /><path d="m8.4 15.6-2.8 2.8" /></svg>',
+  logout:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M10 17l5-5-5-5" /><path d="M15 12H3" /><path d="M13 4h5a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-5" /></svg>',
+  store:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 10h16" /><path d="M5 10l1-5h12l1 5" /><path d="M6 10v9h12v-9" /><path d="M9 14h6" /><path d="M9 19v-5" /><path d="M15 19v-5" /></svg>',
   support:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="M9.8 12.2 11.4 14l3.2-4" /></svg>',
   analytics:
@@ -87,6 +97,221 @@ const createNavSearchButton = () => {
   return button;
 };
 
+let navFlyoutId = 0;
+
+const createNavFlyout = ({ icon, labelKey, fallback, items = [] }) => {
+  const wrapper = document.createElement("div");
+  const flyoutId = `nav-flyout-${navFlyoutId++}`;
+  wrapper.className = "nav-flyout";
+
+  const trigger = document.createElement("button");
+  trigger.className = "nav-flyout-trigger";
+  trigger.type = "button";
+  trigger.dataset.navFlyoutTrigger = "";
+  trigger.setAttribute("aria-expanded", "false");
+  trigger.setAttribute("aria-haspopup", "menu");
+  trigger.setAttribute("aria-controls", flyoutId);
+  trigger.innerHTML = `${icon}<span data-i18n="${labelKey}">${fallback}</span>${navIconMarkup.chevron}`;
+
+  const panel = document.createElement("div");
+  panel.className = "nav-flyout-panel";
+  panel.id = flyoutId;
+  panel.hidden = true;
+  panel.setAttribute("role", "menu");
+
+  items.forEach((item) => {
+    const anchor = createNavAnchor(item);
+    anchor.setAttribute("role", "menuitem");
+    if (item.className) anchor.classList.add(item.className);
+    panel.append(anchor);
+  });
+
+  if (panel.querySelector(".is-active")) wrapper.classList.add("has-active-item");
+  wrapper.append(trigger, panel);
+  return wrapper;
+};
+
+const createTopSearchButton = () => {
+  if (document.querySelector("[data-top-search]")) return;
+
+  const button = document.createElement("button");
+  button.className = "top-search-button";
+  button.type = "button";
+  button.dataset.topSearch = "";
+  button.dataset.siteSearchOpen = "";
+  button.innerHTML = `${navIconMarkup.search}<span data-i18n="nav.search">Search</span><kbd>Ctrl+K</kbd>`;
+  document.body.append(button);
+};
+
+const createSidebarAccountItem = ({ href, action, icon, labelKey, fallback, className }) => {
+  const item = document.createElement(href ? "a" : "button");
+  item.className = "sidebar-account-item";
+  if (className) item.classList.add(className);
+  if (href) {
+    item.href = href;
+    if (normalizeNavPath(window.location.pathname) === normalizeNavPath(href)) item.classList.add("is-active");
+  } else {
+    item.type = "button";
+    if (action) item.dataset.sidebarAccountAction = action;
+  }
+  item.innerHTML = `${icon}<span data-i18n="${labelKey}">${fallback}</span>`;
+  return item;
+};
+
+const createSidebarHelpMenu = () => {
+  const wrapper = document.createElement("div");
+  wrapper.className = "sidebar-help-menu";
+
+  const trigger = document.createElement("button");
+  trigger.className = "sidebar-account-item sidebar-help-trigger";
+  trigger.type = "button";
+  trigger.dataset.sidebarHelpTrigger = "";
+  trigger.setAttribute("aria-expanded", "false");
+  trigger.setAttribute("aria-haspopup", "menu");
+  trigger.innerHTML = `${navIconMarkup.help}<span data-i18n="nav.help">Help</span>${navIconMarkup.chevron}`;
+
+  const panel = document.createElement("div");
+  panel.className = "sidebar-help-panel";
+  panel.hidden = true;
+  panel.setAttribute("role", "menu");
+
+  [
+    { href: "/FAQ", icon: navIconMarkup.faq, labelKey: "nav.faq", fallback: "FAQ" },
+    { href: "/feedback", icon: navIconMarkup.support, labelKey: "nav.support", fallback: "Support" },
+    { href: "/status", icon: navIconMarkup.status, labelKey: "nav.status", fallback: "Status" },
+    { href: "/trust", icon: navIconMarkup.trust, labelKey: "nav.trustCenter", fallback: "Trust Center" },
+    { href: "/terms", icon: navIconMarkup.terms, labelKey: "nav.terms", fallback: "Terms" },
+    { href: "/security", icon: navIconMarkup.security, labelKey: "nav.security", fallback: "Security" },
+    { href: "/privacy", icon: navIconMarkup.privacy, labelKey: "nav.privacy", fallback: "Privacy Policy" },
+  ].forEach((item) => {
+    const anchor = createNavAnchor(item);
+    anchor.classList.add("sidebar-help-link");
+    anchor.setAttribute("role", "menuitem");
+    panel.append(anchor);
+  });
+
+  if (panel.querySelector(".is-active")) wrapper.classList.add("has-active-item");
+  wrapper.append(trigger, panel);
+  return wrapper;
+};
+
+const createSidebarAccountMenu = () => {
+  if (document.querySelector("[data-sidebar-account]")) return;
+
+  document.querySelectorAll(".topbar").forEach((topbar, index) => {
+    const menuId = `sidebar-account-menu-${index}`;
+    const account = document.createElement("div");
+    account.className = "sidebar-account";
+    account.dataset.sidebarAccount = "";
+
+    const panel = document.createElement("div");
+    panel.className = "sidebar-account-panel";
+    panel.id = menuId;
+    panel.hidden = true;
+    panel.setAttribute("role", "menu");
+
+    [
+      { href: "/Pricing", icon: navIconMarkup.pricing, labelKey: "sidebar.upgrade", fallback: "Upgrade plan" },
+      { action: "profile", icon: navIconMarkup.bio, labelKey: "sidebar.profile", fallback: "Profile" },
+      { href: "/settings", icon: navIconMarkup.settings, labelKey: "nav.settings", fallback: "Settings" },
+    ].forEach((item) => panel.append(createSidebarAccountItem(item)));
+
+    panel.append(createSidebarHelpMenu());
+
+    const secondDivider = document.createElement("span");
+    secondDivider.className = "sidebar-account-divider";
+    secondDivider.setAttribute("aria-hidden", "true");
+    panel.append(secondDivider);
+    panel.append(createSidebarAccountItem({
+      action: "logout",
+      icon: navIconMarkup.logout,
+      labelKey: "sidebar.logout",
+      fallback: "Log out",
+      className: "is-muted-action",
+    }));
+
+    const trigger = document.createElement("button");
+    trigger.className = "sidebar-account-trigger";
+    trigger.type = "button";
+    trigger.dataset.sidebarAccountTrigger = "";
+    trigger.setAttribute("aria-expanded", "false");
+    trigger.setAttribute("aria-haspopup", "menu");
+    trigger.setAttribute("aria-controls", menuId);
+    trigger.innerHTML = `
+      <img class="sidebar-account-avatar" src="/assets/well.png" alt="" />
+      <span class="sidebar-account-copy">
+        <strong data-profile-name>My name</strong>
+        <small data-profile-plan>Free</small>
+      </span>
+    `;
+
+    account.append(panel, trigger);
+    topbar.append(account);
+  });
+};
+
+const createUserProfileDialog = () => {
+  if (document.querySelector("[data-user-profile-dialog]")) return;
+
+  const dialog = document.createElement("section");
+  dialog.className = "user-profile-dialog";
+  dialog.dataset.userProfileDialog = "";
+  dialog.hidden = true;
+  dialog.setAttribute("role", "dialog");
+  dialog.setAttribute("aria-modal", "true");
+  dialog.setAttribute("aria-labelledby", "user-profile-title");
+  dialog.innerHTML = `
+    <div class="user-profile-panel">
+      <button class="user-profile-close" type="button" data-user-profile-close aria-label="Close">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+      </button>
+      <div class="user-profile-head">
+        <img class="user-profile-avatar" src="/assets/well.png" alt="" data-profile-avatar-preview />
+        <div>
+          <p class="eyebrow" data-i18n="profileDialog.eyebrow">Profile</p>
+          <h2 id="user-profile-title" data-profile-name>My name</h2>
+          <p data-i18n="profileDialog.body">Customize the account surface used by this site.</p>
+        </div>
+      </div>
+      <div class="user-profile-controls">
+        <label class="user-profile-control">
+          <span data-i18n="profileDialog.nameControl">User name</span>
+          <input type="text" value="My name" maxlength="40" data-profile-name-input />
+        </label>
+        <label class="user-profile-upload">
+          <span data-i18n="profileDialog.photoControl">Add profile photo</span>
+          <input type="file" accept="image/png,image/jpeg,image/webp" data-profile-avatar-input />
+        </label>
+      </div>
+      <div class="user-profile-grid">
+        <div class="user-profile-field">
+          <span data-i18n="profileDialog.displayName">Display name</span>
+          <strong data-profile-name>My name</strong>
+        </div>
+        <div class="user-profile-field">
+          <span data-i18n="profileDialog.plan">Plan</span>
+          <strong data-profile-plan>Free</strong>
+        </div>
+        <div class="user-profile-field">
+          <span data-i18n="profileDialog.avatar">Avatar</span>
+          <strong data-profile-avatar-status data-i18n="profileDialog.avatarDefault">Ambulance image</strong>
+        </div>
+        <div class="user-profile-field">
+          <span data-i18n="profileDialog.storage">Storage</span>
+          <strong data-i18n="profileDialog.storageValue">Local browser</strong>
+        </div>
+      </div>
+      <div class="user-profile-actions">
+        <a class="button" href="/settings" data-i18n="profileDialog.openSettings">Open settings</a>
+        <button class="button primary" type="button" data-profile-save data-i18n="profileDialog.save">Save</button>
+        <button class="button" type="button" data-profile-reset data-i18n="profileDialog.reset">Reset</button>
+        <button class="button" type="button" data-user-profile-close data-i18n="profileDialog.done">Done</button>
+      </div>
+    </div>
+  `;
+  document.body.append(dialog);
+};
+
 const createMobileQuickActionButton = ({ type = "button", href, action, icon, labelKey, fallback }) => {
   const element = document.createElement(href ? "a" : "button");
   element.className = "mobile-quick-action";
@@ -152,14 +377,12 @@ const enhanceSidebarNavigation = () => {
       label: "MAIN",
       labelKey: "nav.groupMain",
       items: [
-        { type: "search" },
         { href: "/", icon: navIconMarkup.home, labelKey: "nav.home", fallback: "Home" },
         { href: "/updates", icon: navIconMarkup.updates, labelKey: "nav.updates", fallback: "Latest updates" },
         { href: "/activity", icon: navIconMarkup.activity, labelKey: "nav.activity", fallback: "Activity" },
         { href: "/Creator", icon: navIconMarkup.creator, labelKey: "nav.creator", fallback: "Creator" },
         { href: "/Bio", icon: navIconMarkup.bio, labelKey: "nav.bio", fallback: "Bio" },
         { href: "/about", icon: navIconMarkup.about, labelKey: "nav.aboutUs", fallback: "About us" },
-        { href: "/FAQ", icon: navIconMarkup.faq, labelKey: "nav.faq", fallback: "FAQ" },
       ],
     },
     {
@@ -167,8 +390,7 @@ const enhanceSidebarNavigation = () => {
       labelKey: "nav.groupManage",
       items: [
         { href: "/Pricing", icon: navIconMarkup.pricing, labelKey: "nav.pricing", fallback: "Pricing" },
-        { href: "/feedback", icon: navIconMarkup.support, labelKey: "nav.support", fallback: "Support", className: "nav-support-link" },
-        { href: "/usage", icon: navIconMarkup.analytics, labelKey: "nav.analytics", fallback: "Analytics" },
+        { href: "/usage", icon: navIconMarkup.analytics, labelKey: "usage.nav", fallback: "Usage" },
       ],
     },
     {
@@ -176,19 +398,6 @@ const enhanceSidebarNavigation = () => {
       labelKey: "nav.groupTrust",
       items: [
         { href: "/accessibility", icon: navIconMarkup.accessibility, labelKey: "nav.accessibility", fallback: "Accessibility" },
-        { href: "/trust", icon: navIconMarkup.trust, labelKey: "nav.trust", fallback: "Trust Center" },
-        { href: "/status", icon: navIconMarkup.status, labelKey: "nav.status", fallback: "Status" },
-        { href: "/security", icon: navIconMarkup.security, labelKey: "nav.security", fallback: "Security" },
-        { href: "/privacy", icon: navIconMarkup.privacy, labelKey: "nav.privacy", fallback: "Privacy Policy" },
-        { href: "/license", icon: navIconMarkup.license, labelKey: "nav.license", fallback: "License" },
-        { href: "/terms", icon: navIconMarkup.terms, labelKey: "nav.terms", fallback: "Terms" },
-      ],
-    },
-    {
-      label: "UTILITY",
-      labelKey: "nav.groupUtility",
-      items: [
-        { href: "/settings", icon: navIconMarkup.settings, labelKey: "nav.settings", fallback: "Settings", quickSettings: true },
       ],
     },
   ];
@@ -225,6 +434,10 @@ const enhanceSidebarNavigation = () => {
           menu.append(createNavSearchButton());
           return;
         }
+        if (item.type === "flyout") {
+          menu.append(createNavFlyout(item));
+          return;
+        }
 
         const anchor = createNavAnchor(item);
         if (item.quickSettings) anchor.dataset.quickSettingsOpen = "";
@@ -240,6 +453,9 @@ const enhanceSidebarNavigation = () => {
 };
 
 enhanceSidebarNavigation();
+createTopSearchButton();
+createSidebarAccountMenu();
+createUserProfileDialog();
 
 const createStandardFooter = () => {
   if (document.querySelector("[data-site-footer]")) return;
@@ -253,7 +469,7 @@ const createStandardFooter = () => {
       <span data-i18n="footer.tagline">Trust, status, privacy, and support links in one place.</span>
     </div>
     <nav class="site-footer-links" aria-label="Footer links" data-i18n-aria-label="aria.footerLinks">
-      <a href="/trust" data-i18n="nav.trust">Trust Center</a>
+      <a href="/trust" data-i18n="nav.trustCenter">Trust Center</a>
       <a href="/status" data-i18n="nav.status">Status</a>
       <a href="/security" data-i18n="nav.security">Security</a>
       <a href="/privacy" data-i18n="nav.privacy">Privacy Policy</a>
@@ -268,7 +484,137 @@ const createStandardFooter = () => {
 
 createStandardFooter();
 
+const setNavFlyoutOpen = (flyout, isOpen) => {
+  if (!(flyout instanceof HTMLElement)) return;
+  const trigger = flyout.querySelector("[data-nav-flyout-trigger]");
+  const panel = flyout.querySelector(".nav-flyout-panel");
+
+  flyout.classList.toggle("is-open", isOpen);
+  trigger?.setAttribute("aria-expanded", String(isOpen));
+  if (panel instanceof HTMLElement) panel.hidden = !isOpen;
+};
+
+const closeNavFlyouts = (exceptFlyout = null) => {
+  document.querySelectorAll(".nav-flyout.is-open").forEach((flyout) => {
+    if (flyout !== exceptFlyout) setNavFlyoutOpen(flyout, false);
+  });
+};
+
+const setSidebarAccountOpen = (account, isOpen) => {
+  if (!(account instanceof HTMLElement)) return;
+  if (!isOpen) account.querySelectorAll(".sidebar-help-menu.is-open").forEach((menu) => setSidebarHelpOpen(menu, false));
+  const trigger = account.querySelector("[data-sidebar-account-trigger]");
+  const panel = account.querySelector(".sidebar-account-panel");
+  account.classList.toggle("is-open", isOpen);
+  trigger?.setAttribute("aria-expanded", String(isOpen));
+  if (panel instanceof HTMLElement) panel.hidden = !isOpen;
+};
+
+const closeSidebarAccountMenus = (exceptAccount = null) => {
+  document.querySelectorAll(".sidebar-account.is-open").forEach((account) => {
+    if (account !== exceptAccount) setSidebarAccountOpen(account, false);
+  });
+};
+
+const setSidebarHelpOpen = (menu, isOpen) => {
+  if (!(menu instanceof HTMLElement)) return;
+  const trigger = menu.querySelector("[data-sidebar-help-trigger]");
+  const panel = menu.querySelector(".sidebar-help-panel");
+  menu.classList.toggle("is-open", isOpen);
+  trigger?.setAttribute("aria-expanded", String(isOpen));
+  if (panel instanceof HTMLElement) panel.hidden = !isOpen;
+};
+
+const closeSidebarHelpMenus = (exceptMenu = null) => {
+  document.querySelectorAll(".sidebar-help-menu.is-open").forEach((menu) => {
+    if (menu !== exceptMenu) setSidebarHelpOpen(menu, false);
+  });
+};
+
+const openUserProfileDialog = () => {
+  const dialog = document.querySelector("[data-user-profile-dialog]");
+  if (!dialog) return;
+  dialog.classList.remove("is-closing");
+  dialog.hidden = false;
+};
+
+const closeUserProfileDialog = () => {
+  const dialog = document.querySelector("[data-user-profile-dialog]");
+  if (!dialog || dialog.hidden) return;
+  dialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    dialog.hidden = true;
+    dialog.classList.remove("is-closing");
+  }, 140);
+};
+
 document.addEventListener("click", (event) => {
+  const accountTrigger = event.target.closest?.("[data-sidebar-account-trigger]");
+  const account = event.target.closest?.(".sidebar-account");
+
+  if (accountTrigger) {
+    const activeAccount = accountTrigger.closest(".sidebar-account");
+    const willOpen = !activeAccount?.classList.contains("is-open");
+    closeSidebarAccountMenus(activeAccount);
+    closeNavFlyouts();
+    setSidebarAccountOpen(activeAccount, willOpen);
+    return;
+  }
+
+  const helpTrigger = event.target.closest?.("[data-sidebar-help-trigger]");
+  if (helpTrigger) {
+    const activeHelpMenu = helpTrigger.closest(".sidebar-help-menu");
+    const willOpen = !activeHelpMenu?.classList.contains("is-open");
+    closeSidebarHelpMenus(activeHelpMenu);
+    closeNavFlyouts();
+    setSidebarHelpOpen(activeHelpMenu, willOpen);
+    return;
+  }
+
+  if (!account) {
+    closeSidebarHelpMenus();
+    closeSidebarAccountMenus();
+  }
+  if (event.target.closest?.(".sidebar-account-panel a")) closeSidebarAccountMenus();
+
+  const accountAction = event.target.closest?.("[data-sidebar-account-action]");
+  if (accountAction?.dataset.sidebarAccountAction === "profile") {
+    closeSidebarAccountMenus();
+    openUserProfileDialog();
+    return;
+  }
+
+  if (accountAction?.dataset.sidebarAccountAction === "logout") {
+    closeSidebarAccountMenus();
+    showCopyToast("toast.accountLogoutUnavailable");
+    return;
+  }
+
+  if (event.target.closest?.("[data-user-profile-close]")) {
+    closeUserProfileDialog();
+    return;
+  }
+
+  const profileDialog = event.target.closest?.("[data-user-profile-dialog]");
+  if (profileDialog && event.target === profileDialog) {
+    closeUserProfileDialog();
+    return;
+  }
+
+  const flyoutTrigger = event.target.closest?.("[data-nav-flyout-trigger]");
+  const flyout = event.target.closest?.(".nav-flyout");
+
+  if (flyoutTrigger) {
+    const activeFlyout = flyoutTrigger.closest(".nav-flyout");
+    const willOpen = !activeFlyout?.classList.contains("is-open");
+    closeNavFlyouts(activeFlyout);
+    setNavFlyoutOpen(activeFlyout, willOpen);
+    return;
+  }
+
+  if (!flyout) closeNavFlyouts();
+  if (event.target.closest?.(".nav-flyout-panel a")) closeNavFlyouts();
+
   const trigger = event.target.closest?.(".nav-group-trigger");
   if (event.target.closest?.(".nav-group-menu")) return;
   document.querySelectorAll(".nav-menu-group.is-open").forEach((group) => {
@@ -284,8 +630,23 @@ document.addEventListener("click", (event) => {
   trigger.setAttribute("aria-expanded", String(isOpen));
 });
 
+document.addEventListener("contextmenu", (event) => {
+  const helpTrigger = event.target.closest?.("[data-sidebar-help-trigger]");
+  if (!helpTrigger) return;
+
+  event.preventDefault();
+  closeContextMenu();
+  const activeHelpMenu = helpTrigger.closest(".sidebar-help-menu");
+  closeSidebarHelpMenus(activeHelpMenu);
+  setSidebarHelpOpen(activeHelpMenu, true);
+});
+
 document.addEventListener("keydown", (event) => {
   if (event.key !== "Escape") return;
+  closeUserProfileDialog();
+  closeSidebarHelpMenus();
+  closeSidebarAccountMenus();
+  closeNavFlyouts();
   document.querySelectorAll(".nav-menu-group.is-open").forEach((group) => {
     group.classList.remove("is-open");
     group.querySelector(".nav-group-trigger")?.setAttribute("aria-expanded", "false");
@@ -664,7 +1025,7 @@ let contextTargetLink = null;
 let contextTargetImage = null;
 const highlightTargets = [
   ...document.querySelectorAll(
-    ".mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .currency-switch button, .setting-select-trigger, .setting-select-menu button, .accent-trigger, .accent-menu button, .share-socials button, .scroll-actions button, .context-menu button, .nav-search-button",
+    ".mobile-menu-button, .button, .feedback-cta, .contact-links a, .icon-button, .adblock-notice button, .settings-sidebar a, .currency-switch button, .setting-select-trigger, .setting-select-menu button, .accent-trigger, .accent-menu button, .share-socials button, .scroll-actions button, .context-menu button, .nav-search-button, .top-search-button, .nav-flyout-trigger, .nav-flyout-panel a",
   ),
 ];
 const sections = navLinks
@@ -679,7 +1040,6 @@ const translations = {
     "nav.groupMain": "메인",
     "nav.groupManage": "관리",
     "nav.groupTrust": "신뢰",
-    "nav.groupUtility": "유틸리티",
     "nav.home": "홈",
     "nav.creator": "제작자",
     "nav.about": "소개",
@@ -688,6 +1048,7 @@ const translations = {
     "nav.contact": "연락처",
     "nav.pricing": "요금제",
     "nav.support": "지원",
+    "nav.help": "도움말",
     "nav.analytics": "사용량",
     "nav.updates": "최신 업데이트",
     "nav.activity": "활동",
@@ -696,9 +1057,35 @@ const translations = {
     "nav.settings": "설정",
     "nav.accessibility": "접근성",
     "nav.sitemap": "사이트맵",
-    "nav.trust": "신뢰 센터",
+    "nav.trust": "신뢰",
+    "nav.trustCenter": "신뢰 센터",
     "nav.status": "상태",
     "nav.security": "보안",
+    "sidebar.accountName": "My name",
+    "sidebar.accountPlan": "Free",
+    "sidebar.upgrade": "요금제 업그레이드",
+    "sidebar.profile": "프로필",
+    "sidebar.logout": "로그아웃",
+    "profileDialog.eyebrow": "Profile",
+    "profileDialog.title": "My name",
+    "profileDialog.body": "이 사이트에서 사용하는 계정 표시 화면을 확인하고 관리합니다.",
+    "profileDialog.nameControl": "사용자 이름 변경",
+    "profileDialog.photoControl": "프로필 사진 추가",
+    "profileDialog.displayName": "표시 이름",
+    "profileDialog.plan": "플랜",
+    "profileDialog.avatar": "아바타",
+    "profileDialog.avatarDefault": "구급차 이미지",
+    "profileDialog.avatarCustom": "사용자 이미지",
+    "profileDialog.storage": "저장 위치",
+    "profileDialog.storageValue": "브라우저 로컬",
+    "profileDialog.openSettings": "설정 열기",
+    "profileDialog.save": "저장",
+    "profileDialog.reset": "초기화",
+    "profileDialog.done": "완료",
+    "profileDialog.saved": "프로필 이름이 저장되었습니다.",
+    "profileDialog.resetSaved": "프로필이 기본값으로 돌아갔습니다.",
+    "profileDialog.photoSaved": "프로필 사진이 저장되었습니다.",
+    "profileDialog.photoTooLarge": "이미지가 너무 커서 저장하지 못했습니다.",
     "footer.brand": "Emergency Responder Profile",
     "footer.tagline": "신뢰, 상태, 개인정보, 지원 링크를 한 곳에 모았습니다.",
     "usage.nav": "Usage",
@@ -747,6 +1134,7 @@ const translations = {
     "toast.notificationsBlocked": "사이트 알림을 거부했습니다.",
     "toast.notificationsUnsupported": "이 브라우저는 사이트 알림을 지원하지 않습니다.",
     "toast.notificationsDismissed": "알림 권한 요청이 완료되지 않았습니다.",
+    "toast.accountLogoutUnavailable": "현재 사이트에는 로그인 세션이 없습니다.",
     "search.eyebrow": "Search",
     "search.title": "사이트 검색",
     "search.label": "검색어",
@@ -1314,27 +1702,28 @@ const translations = {
     "accessibility.feedbackLink": "Support로 문제 알리기",
     "accessibility.updated": "마지막 업데이트: 2026년 6월 9일",
     "privacy.eyebrow": "Privacy Policy",
-    "privacy.title": "개인정보를 읽기 쉽게 정리했습니다.",
+    "privacy.title": "개인정보 처리 기준",
     "privacy.lead":
-      "이 사이트는 계정을 만들지 않고, 결제 정보도 직접 보관하지 않습니다. 브라우저 설정은 기기 안에 저장되고, 외부 서비스는 각 서비스의 정책을 따릅니다.",
-    "privacy.mediaLabel": "Privacy model",
-    "privacy.mediaValue": "로컬 설정, 외부 결제",
+      "FirstPrizeGames는 계정 생성 없이 읽을 수 있는 사이트이며, 결제 정보와 외부 양식 데이터는 해당 서비스에서 처리됩니다.",
+    "privacy.mediaLabel": "Processing model",
+    "privacy.mediaValue": "Local-first, external services",
+    "privacy.scopeBody": "테마와 표시 설정은 브라우저에 저장되고, 결제와 피드백은 Stripe 및 외부 양식의 정책을 따릅니다.",
     "privacy.summaryStorage": "Storage",
-    "privacy.summaryStorageValue": "Local only",
+    "privacy.summaryStorageValue": "Browser only",
     "privacy.summaryAccount": "Accounts",
     "privacy.summaryAccountValue": "Not required",
     "privacy.summaryPayments": "Payments",
-    "privacy.summaryPaymentsValue": "Stripe checkout",
+    "privacy.summaryPaymentsValue": "External checkout",
     "privacy.summaryControl": "Control",
-    "privacy.summaryControlValue": "Clear anytime",
-    "privacy.localTitle": "쿠키와 브라우저 저장소",
+    "privacy.summaryControlValue": "User controlled",
+    "privacy.localTitle": "쿠키와 브라우저 저장소는 최소한으로 사용합니다.",
     "privacy.localBody":
-      "이 사이트는 로그인 추적용 쿠키나 광고 쿠키를 사용하지 않습니다. 테마, 언어, 화면 밀도, 사이드바 상태 같은 보기 설정은 이 브라우저의 localStorage에 저장되고, 쿠키 안내를 확인했다는 선택만 profile_storage_consent 쿠키로 저장됩니다.",
-    "privacy.cookieEssentialTitle": "필수 쿠키",
-    "privacy.cookieEssentialBody": "보안과 기본 동작을 위한 항목이며 끌 수 없습니다.",
-    "privacy.cookiePreferenceTitle": "설정 저장 쿠키",
-    "privacy.cookiePreferenceBody": "쿠키 안내 확인 여부를 저장하며 Settings의 쿠키 설정 팝업에서 켜거나 끌 수 있습니다.",
-    "privacy.cookieAdsTitle": "광고/분석 쿠키",
+      "이 사이트는 로그인 추적 쿠키나 광고 쿠키를 사용하지 않습니다. 테마, 언어, 화면 밀도, 사이드바 상태 같은 보기 설정은 이 브라우저의 저장소에 남고, 쿠키 안내 확인 여부만 필요한 경우 쿠키로 저장합니다.",
+    "privacy.cookieEssentialTitle": "필수 항목",
+    "privacy.cookieEssentialBody": "사이트 로딩, 보안, 기본 동작에 필요한 항목이며 끌 수 없습니다.",
+    "privacy.cookiePreferenceTitle": "설정 저장",
+    "privacy.cookiePreferenceBody": "쿠키 안내 확인 여부와 보기 설정을 저장하며 Settings의 쿠키 설정 팝업에서 관리할 수 있습니다.",
+    "privacy.cookieAdsTitle": "광고 및 분석",
     "privacy.cookieAdsBody": "현재 사용하지 않습니다.",
     "privacy.noAccountTitle": "계정 없이 읽는 사이트",
     "privacy.noAccountBody":
@@ -1350,64 +1739,67 @@ const translations = {
     "privacy.clearBody":
       "저장된 사이트 설정은 Settings 페이지의 정리 기능이나 브라우저의 사이트 데이터 삭제 메뉴에서 지울 수 있습니다. 삭제하면 테마와 표시 설정이 기본값으로 돌아갑니다.",
     "privacy.updated": "마지막 업데이트: 2026년 6월 3일",
-    "license.eyebrow": "Open Source License",
-    "license.title": "라이선스를 쉽게 읽을 수 있게 정리했습니다.",
+    "license.eyebrow": "License",
+    "license.title": "라이선스 및 사용 기준",
     "license.lead":
-      "사이트의 코드, 이미지, 로고, 글꼴을 어떤 기준으로 사용할 수 있는지 구분합니다. 코드는 재사용하기 쉽게, 개인 자산은 보호되게 정리했습니다.",
-    "license.mediaLabel": "License registry",
-    "license.mediaValue": "코드는 공개, 자산은 보호",
+      "이 페이지는 FirstPrizeGames 사이트의 코드, 브랜드 자산, 이미지, 문구를 어떤 기준으로 사용할 수 있는지 공식적으로 정리합니다.",
+    "license.mediaLabel": "Document status",
+    "license.mediaValue": "Public reference",
+    "license.scopeBody": "코드는 재사용 가능 범위와 조건을 따르고, 로고와 브랜드 자산은 별도 허가가 필요합니다.",
     "license.summaryCode": "Code",
-    "license.summaryCodeValue": "HTML/CSS/JS",
+    "license.summaryCodeValue": "Reusable with notice",
     "license.summaryAssets": "Assets",
-    "license.summaryAssetsValue": "Owner reserved",
+    "license.summaryAssetsValue": "Permission required",
     "license.summaryFonts": "Fonts",
-    "license.summaryFontsValue": "System license",
+    "license.summaryFontsValue": "Device terms",
     "license.summaryNotice": "Notice",
-    "license.summaryNoticeValue": "Keep attribution",
-    "license.mitTitle": "코드는 재사용할 수 있습니다.",
+    "license.summaryNoticeValue": "Required on copies",
+    "license.mitTitle": "사이트 코드는 고지와 함께 재사용할 수 있습니다.",
     "license.mitBody":
-      "이 사이트의 기본 HTML, CSS, JavaScript 구조는 MIT 스타일의 오픈소스 라이선스로 공개할 수 있는 부분입니다. 복사, 수정, 학습, 배포에 활용할 수 있도록 단순한 정적 구조를 유지합니다.",
-    "license.assetsTitle": "이미지와 로고는 별도 자산입니다.",
+      "기본 HTML, CSS, JavaScript 구조는 학습, 수정, 배포에 활용할 수 있는 재사용 가능 영역입니다. 공개 또는 수정 배포 시에는 원 저작권 고지와 이 라이선스 안내를 함께 유지해야 합니다.",
+    "license.assetsTitle": "브랜드와 미디어 자산은 소유자에게 권리가 있습니다.",
     "license.assetsBody":
-      "로고, 생성 이미지, 프로필 이미지, 브랜드 이름, 개인 문구는 사이트 소유자의 자산으로 봅니다. 코드를 재사용하더라도 이 자산들은 그대로 복제하거나 재배포하지 않는 것이 기준입니다.",
-    "license.fontsTitle": "글꼴은 운영체제 기준을 따릅니다.",
+      "로고, 사이트 이름, 프로필 이미지, 생성 이미지, 브랜드 문구, 결제 문구는 FirstPrizeGames 또는 각 권리자에게 귀속됩니다. 코드를 재사용하더라도 해당 자산을 그대로 복제, 재배포, 상업적으로 사용할 수 없습니다.",
+    "license.fontsTitle": "시스템 글꼴은 각 플랫폼의 조건을 따릅니다.",
     "license.fontsBody":
-      "이 사이트는 외부 웹폰트를 포함하지 않고 운영체제의 시스템 글꼴을 사용합니다. 따라서 글꼴 사용 조건은 각 운영체제와 기기에서 제공하는 라이선스를 따릅니다.",
-    "license.noticeTitle": "저작권 고지는 남겨 주세요.",
+      "이 사이트는 외부 웹폰트 파일을 배포하지 않고 기기에서 제공하는 시스템 글꼴을 사용합니다. 글꼴 사용 권한은 Windows, macOS, Android, iOS 등 각 플랫폼의 라이선스 조건을 따릅니다.",
+    "license.noticeTitle": "고지와 출처는 제거하지 마세요.",
     "license.noticeBody":
-      "코드를 공개하거나 수정해 배포할 때는 원 저작권 고지와 라이선스 안내를 함께 유지하는 것을 권장합니다. 이렇게 하면 출처와 사용 조건이 분명하게 남습니다.",
-    "license.permissionTitle": "개인 자산은 먼저 허가를 요청하세요.",
-    "license.permissionBody": "사이트 이름, 로고, 이미지, 결제 문구, 개인 소개 문장처럼 소유자 식별과 연결되는 자료를 쓰고 싶다면 먼저 허가를 요청해 주세요.",
+      "사이트 코드를 공개, 수정, 배포하거나 일부를 재사용하는 경우 원 저작권 표시, 라이선스 안내, 주요 변경 사항을 함께 남겨야 합니다. 이는 사용자와 기여자가 사용 조건을 확인할 수 있게 하기 위한 기준입니다.",
+    "license.permissionTitle": "허가가 필요한 사용은 사전에 문의하세요.",
+    "license.permissionBody": "로고, 이미지, 이름, 소개 문구, 결제 안내, 홍보용 문구처럼 소유자 식별과 연결되는 자료를 사용하려면 먼저 허가를 받아야 합니다. 명확하지 않은 경우에는 사용 전에 문의하는 것을 원칙으로 합니다.",
     "license.updated": "마지막 업데이트: 2026년 6월 3일",
-    "terms.title": "사이트 이용 조건을 짧고 분명하게 정리했습니다.",
+    "terms.eyebrow": "Terms of Use",
+    "terms.title": "사이트 이용 약관",
     "terms.lead":
-      "이 페이지는 프로필 사이트를 읽고, 설정을 저장하고, 피드백과 결제 링크를 여는 방식에 대한 기본 기준을 설명합니다.",
-    "terms.mediaLabel": "Terms registry",
-    "terms.mediaValue": "읽기, 지원, 제보",
+      "FirstPrizeGames 사이트를 이용할 때 적용되는 기본 조건, 외부 서비스 경계, 사용자 책임, 변경 기준을 안내합니다.",
+    "terms.mediaLabel": "Document scope",
+    "terms.mediaValue": "Site access and linked services",
+    "terms.scopeBody": "사이트 콘텐츠, 브라우저 설정, 피드백, 결제 링크 이용에 적용되며 외부 서비스는 각 서비스의 약관을 따릅니다.",
     "terms.summaryUse": "Use",
-    "terms.summaryUseValue": "Public reading",
+    "terms.summaryUseValue": "Public access",
     "terms.summarySupport": "Support",
-    "terms.summarySupportValue": "External checkout",
+    "terms.summarySupportValue": "Linked services",
     "terms.summaryData": "Data",
-    "terms.summaryDataValue": "Local settings",
+    "terms.summaryDataValue": "Browser settings",
     "terms.summaryChanges": "Changes",
-    "terms.summaryChangesValue": "Updated here",
-    "terms.acceptTitle": "사이트를 계속 이용하면 이 기준에 동의한 것으로 봅니다.",
+    "terms.summaryChangesValue": "Posted updates",
+    "terms.acceptTitle": "사이트를 이용하면 이 약관에 동의한 것으로 봅니다.",
     "terms.acceptBody":
-      "이 사이트는 공개 프로필, 창작 기록, 가격 안내, 설정, 개인정보 안내를 제공하는 정적 웹사이트입니다. 내용을 읽거나 링크를 열면 이 약관과 개인정보 처리방침을 기준으로 이용하는 것으로 봅니다.",
-    "terms.contentTitle": "정보는 안내 목적입니다.",
+      "이 사이트는 공개 프로필, 창작 기록, 가격 안내, 설정, 개인정보 안내를 제공하는 정적 웹사이트입니다. 페이지를 읽거나 링크를 열면 이 약관과 개인정보 처리방침을 기준으로 이용하는 것으로 간주합니다.",
+    "terms.contentTitle": "사이트 정보는 일반 안내 목적으로 제공됩니다.",
     "terms.contentBody":
       "응급 대응, 개발, 가격, 지원 관련 문구는 사이트 소개와 안내를 위한 것입니다. 전문 의료, 법률, 재정 조언으로 해석하지 말고 중요한 결정에는 공식 기관이나 서비스 제공자의 최신 정보를 확인해 주세요.",
-    "terms.checkoutTitle": "결제와 외부 양식은 외부 서비스에서 처리됩니다.",
+    "terms.checkoutTitle": "결제, 피드백, 공유는 연결된 외부 서비스에서 처리됩니다.",
     "terms.checkoutBody":
       "Stripe Checkout, Google Forms, 공유 서비스처럼 외부 화면으로 이동하는 기능은 해당 서비스의 약관과 개인정보 기준을 따릅니다. 이 사이트는 카드 번호나 외부 양식 응답을 직접 처리하지 않습니다.",
-    "terms.localTitle": "설정은 브라우저 안에서 관리됩니다.",
+    "terms.localTitle": "사용자 설정은 브라우저 기준으로 관리됩니다.",
     "terms.localBody":
       "테마, 언어, 표시 밀도, 결제 차단 같은 설정은 같은 브라우저의 localStorage에 저장됩니다. Settings 또는 Usage 페이지에서 사이트 데이터를 정리할 수 있습니다.",
-    "terms.fairUseTitle": "공정한 사용을 부탁드립니다.",
+    "terms.fairUseTitle": "사이트를 방해하거나 자산을 무단 사용하지 마세요.",
     "terms.fairUseBody":
       "사이트를 방해하거나, 자동 요청으로 과도한 부하를 만들거나, 이미지와 로고 같은 개인 자산을 허가 없이 복제하지 말아 주세요. 코드와 자산의 재사용 기준은 License 페이지에서 확인할 수 있습니다.",
-    "terms.contactTitle": "문제가 있으면 Support로 알려주세요.",
+    "terms.contactTitle": "문의와 변경 요청은 Support로 접수할 수 있습니다.",
     "terms.contactBody":
       "깨진 링크, 잘못된 문구, 결제 접근 문제, 개인정보 관련 요청은 Support 페이지에서 피드백으로 남길 수 있습니다. 필요한 경우 이 약관은 더 명확하게 업데이트될 수 있습니다.",
     "terms.updated": "마지막 업데이트: 2026년 6월 7일",
@@ -1662,6 +2054,37 @@ const translations = {
     "pricing.title": "프로필 활용 방식에 맞게 선택하세요.",
     "pricing.lead":
       "Free는 첫 접속 기준 5시간 한도와 주간 한도를 제공합니다. 한도 이후에는 필요한 경우 유료 checkout을 선택할 수 있습니다.",
+    "pricing.simpleTitle": "필요한 만큼만 선택하세요.",
+    "pricing.simpleLead": "Free로 시작하고, 더 많은 한도나 우선 처리가 필요할 때 Pro 또는 Ultra로 올리면 됩니다.",
+    "pricing.simpleStart": "Start",
+    "pricing.simpleMost": "Most users",
+    "pricing.simplePriority": "Priority",
+    "pricing.simpleFreePill": "Start",
+    "pricing.simpleProPill": "Upgrade",
+    "pricing.simpleUltraPill": "Priority",
+    "pricing.simpleFreeBody": "개인용으로 사이트를 둘러보고 기본 기능을 쓰기에 충분합니다.",
+    "pricing.simpleFreeOne": "기본 프로필과 공유 기능",
+    "pricing.simpleFreeTwo": "테마, 언어, 접근성 설정",
+    "pricing.simpleFreeThree": "5시간 및 주간 사용 한도",
+    "pricing.simpleProBody": "한도 이후에도 계속 쓰고, 프로필을 더 정돈해서 보여주고 싶을 때 적합합니다.",
+    "pricing.simpleProOne": "한도 이후 checkout 경로",
+    "pricing.simpleProTwo": "교육/자격 정보 확장",
+    "pricing.simpleProThree": "Pro 전용 강조 컬러",
+    "pricing.simpleUltraBody": "가장 높은 우선 처리와 더 적극적인 개선 요청이 필요한 경우에 맞습니다.",
+    "pricing.simpleUltraOne": "최우선 요청 처리",
+    "pricing.simpleUltraTwo": "공동 기획 참여",
+    "pricing.simpleUltraThree": "미공개 업데이트 접근",
+    "pricing.teamStripTitle": "팀 단위 프로필이 필요하세요?",
+    "pricing.teamStripBody": "구성원별 역할, 공동 활동, 기관 소개가 필요하면 Team 플랜으로 확장할 수 있습니다.",
+    "pricing.simpleCompareTitle": "간단 비교",
+    "pricing.compareFreeTitle": "처음 써보기",
+    "pricing.compareFreeBodySimple": "기본 프로필, 공유, 설정, 로컬 사용량 확인.",
+    "pricing.compareProTitle": "대부분의 개인 사용자",
+    "pricing.compareProBodySimple": "한도 이후 checkout, 자격/활동 정보 확장, Pro 색상.",
+    "pricing.compareTeamTitle": "여러 사람 또는 기관",
+    "pricing.compareTeamBodySimple": "팀 소개, 구성원 역할, 공동 활동 정리.",
+    "pricing.compareUltraTitle": "우선 처리",
+    "pricing.compareUltraBodySimple": "최우선 요청, 공동 기획, 미공개 업데이트.",
     "pricing.adaptiveNote": "사용 한도는 현재 브라우저에서만 계산되며, 유료 금액은 Stripe에서 확인됩니다.",
     "pricing.summaryCheckout": "Checkout",
     "pricing.summaryCheckoutValue": "Stripe 테스트 링크",
@@ -2015,7 +2438,6 @@ const translations = {
     "nav.groupMain": "Main",
     "nav.groupManage": "Manage",
     "nav.groupTrust": "Trust",
-    "nav.groupUtility": "Utility",
     "nav.home": "Home",
     "nav.creator": "Creator",
     "nav.about": "About",
@@ -2024,6 +2446,7 @@ const translations = {
     "nav.contact": "Contact",
     "nav.pricing": "Pricing",
     "nav.support": "Support",
+    "nav.help": "Help",
     "nav.analytics": "Analytics",
     "nav.updates": "Latest updates",
     "nav.activity": "Activity",
@@ -2032,9 +2455,35 @@ const translations = {
     "nav.settings": "Settings",
     "nav.accessibility": "Accessibility",
     "nav.sitemap": "Sitemap",
-    "nav.trust": "Trust Center",
+    "nav.trust": "Trust",
+    "nav.trustCenter": "Trust Center",
     "nav.status": "Status",
     "nav.security": "Security",
+    "sidebar.accountName": "My name",
+    "sidebar.accountPlan": "Free",
+    "sidebar.upgrade": "Upgrade plan",
+    "sidebar.profile": "Profile",
+    "sidebar.logout": "Log out",
+    "profileDialog.eyebrow": "Profile",
+    "profileDialog.title": "My name",
+    "profileDialog.body": "Review and manage the account surface used by this site.",
+    "profileDialog.nameControl": "Change user name",
+    "profileDialog.photoControl": "Add profile photo",
+    "profileDialog.displayName": "Display name",
+    "profileDialog.plan": "Plan",
+    "profileDialog.avatar": "Avatar",
+    "profileDialog.avatarDefault": "Ambulance image",
+    "profileDialog.avatarCustom": "Custom image",
+    "profileDialog.storage": "Storage",
+    "profileDialog.storageValue": "Local browser",
+    "profileDialog.openSettings": "Open settings",
+    "profileDialog.save": "Save",
+    "profileDialog.reset": "Reset",
+    "profileDialog.done": "Done",
+    "profileDialog.saved": "Profile name saved.",
+    "profileDialog.resetSaved": "Profile reset to defaults.",
+    "profileDialog.photoSaved": "Profile photo saved.",
+    "profileDialog.photoTooLarge": "The image is too large to save.",
     "footer.brand": "Emergency Responder Profile",
     "footer.tagline": "Trust, status, privacy, and support links in one place.",
     "usage.nav": "Usage",
@@ -2083,6 +2532,7 @@ const translations = {
     "toast.notificationsBlocked": "Site notifications blocked.",
     "toast.notificationsUnsupported": "This browser does not support site notifications.",
     "toast.notificationsDismissed": "Notification permission was not completed.",
+    "toast.accountLogoutUnavailable": "There is no active sign-in session on this site.",
     "search.eyebrow": "Search",
     "search.title": "Search site",
     "search.label": "Search query",
@@ -2650,27 +3100,28 @@ const translations = {
     "accessibility.feedbackLink": "Report issue to Support",
     "accessibility.updated": "Last updated: June 9, 2026",
     "privacy.eyebrow": "Privacy Policy",
-    "privacy.title": "Privacy, made readable.",
+    "privacy.title": "Privacy processing terms",
     "privacy.lead":
-      "This site does not create accounts or store payment details directly. Display preferences stay on your device, and external services follow their own policies.",
-    "privacy.mediaLabel": "Privacy model",
-    "privacy.mediaValue": "Local settings, external checkout",
+      "FirstPrizeGames can be read without creating an account, and payment or external form data is handled by the relevant service.",
+    "privacy.mediaLabel": "Processing model",
+    "privacy.mediaValue": "Local-first, external services",
+    "privacy.scopeBody": "Theme and display preferences are stored in the browser. Payments and feedback follow Stripe and external form policies.",
     "privacy.summaryStorage": "Storage",
-    "privacy.summaryStorageValue": "Local only",
+    "privacy.summaryStorageValue": "Browser only",
     "privacy.summaryAccount": "Accounts",
     "privacy.summaryAccountValue": "Not required",
     "privacy.summaryPayments": "Payments",
-    "privacy.summaryPaymentsValue": "Stripe checkout",
+    "privacy.summaryPaymentsValue": "External checkout",
     "privacy.summaryControl": "Control",
-    "privacy.summaryControlValue": "Clear anytime",
-    "privacy.localTitle": "Cookies and browser storage",
+    "privacy.summaryControlValue": "User controlled",
+    "privacy.localTitle": "Cookies and browser storage are kept minimal.",
     "privacy.localBody":
-      "This site does not use login tracking cookies or advertising cookies. Display preferences such as theme, language, density, and sidebar state are stored in this browser's localStorage, and only the choice that you acknowledged the cookie notice is stored as the profile_storage_consent cookie.",
-    "privacy.cookieEssentialTitle": "Required cookies",
-    "privacy.cookieEssentialBody": "Needed for security and basic behavior, and cannot be turned off.",
-    "privacy.cookiePreferenceTitle": "Preference cookie",
-    "privacy.cookiePreferenceBody": "Stores whether you acknowledged the cookie notice, and can be turned on or off from the Cookie settings popup in Settings.",
-    "privacy.cookieAdsTitle": "Advertising and analytics cookies",
+      "This site does not use login tracking cookies or advertising cookies. Display preferences such as theme, language, density, and sidebar state stay in this browser's storage, and cookie notice acknowledgement may be stored as a cookie when needed.",
+    "privacy.cookieEssentialTitle": "Required items",
+    "privacy.cookieEssentialBody": "Needed for site loading, security, and basic behavior, and cannot be turned off.",
+    "privacy.cookiePreferenceTitle": "Preference storage",
+    "privacy.cookiePreferenceBody": "Stores cookie notice acknowledgement and display preferences, and can be managed from the Cookie settings popup in Settings.",
+    "privacy.cookieAdsTitle": "Advertising and analytics",
     "privacy.cookieAdsBody": "Not currently used.",
     "privacy.noAccountTitle": "A site you can read without an account",
     "privacy.noAccountBody":
@@ -2686,65 +3137,68 @@ const translations = {
     "privacy.clearBody":
       "Stored site preferences can be removed from the Settings page cleanup tools or your browser's site data menu. After clearing them, theme and display preferences return to defaults.",
     "privacy.updated": "Last updated: June 3, 2026",
-    "license.eyebrow": "Open Source License",
-    "license.title": "License, written plainly.",
+    "license.eyebrow": "License",
+    "license.title": "License and usage terms",
     "license.lead":
-      "This page separates what can be reused from what remains owner-controlled: site code, images, logo, copy, and system fonts.",
-    "license.mediaLabel": "License registry",
-    "license.mediaValue": "Code open, assets reserved",
+      "This page formally defines how FirstPrizeGames site code, brand assets, images, and copy may be used.",
+    "license.mediaLabel": "Document status",
+    "license.mediaValue": "Public reference",
+    "license.scopeBody": "Code may be reused within the stated scope and conditions; logos and brand assets require separate permission.",
     "license.summaryCode": "Code",
-    "license.summaryCodeValue": "HTML/CSS/JS",
+    "license.summaryCodeValue": "Reusable with notice",
     "license.summaryAssets": "Assets",
-    "license.summaryAssetsValue": "Owner reserved",
+    "license.summaryAssetsValue": "Permission required",
     "license.summaryFonts": "Fonts",
-    "license.summaryFontsValue": "System license",
+    "license.summaryFontsValue": "Device terms",
     "license.summaryNotice": "Notice",
-    "license.summaryNoticeValue": "Keep attribution",
-    "license.mitTitle": "The code can be reused.",
+    "license.summaryNoticeValue": "Required on copies",
+    "license.mitTitle": "Site code may be reused with notice.",
     "license.mitBody":
-      "The base HTML, CSS, and JavaScript structure of this site is the reusable part that can be published under an MIT-style open source license. It stays intentionally static so it can be copied, studied, modified, and deployed easily.",
-    "license.assetsTitle": "Images and logos are separate assets.",
+      "The base HTML, CSS, and JavaScript structure is reusable for learning, modification, and deployment. Published or modified copies must retain the original copyright notice and this license guidance.",
+    "license.assetsTitle": "Brand and media assets remain owner-controlled.",
     "license.assetsBody":
-      "The logo, generated images, profile images, brand name, and personal copy are treated as owner assets. Reusing the code does not mean those assets should be copied or redistributed as-is.",
-    "license.fontsTitle": "Fonts follow the operating system license.",
+      "The logo, site name, profile images, generated images, brand copy, and payment copy belong to FirstPrizeGames or their respective rights holders. Reusing the code does not grant permission to copy, redistribute, or commercially use those assets as-is.",
+    "license.fontsTitle": "System fonts follow each platform's terms.",
     "license.fontsBody":
-      "This site does not bundle external webfont files. It uses system fonts provided by each device, so font usage follows the license terms of the operating system or device.",
-    "license.noticeTitle": "Keep the copyright notice.",
+      "This site does not distribute external webfont files. It uses fonts provided by each device, so font usage follows the license terms of Windows, macOS, Android, iOS, and other platforms.",
+    "license.noticeTitle": "Do not remove notices or attribution.",
     "license.noticeBody":
-      "When publishing modified copies of the code, keeping the original copyright notice and license guidance is recommended so attribution and usage terms remain clear.",
-    "license.permissionTitle": "Ask first for personal assets.",
+      "If you publish, modify, distribute, or reuse part of the site code, keep the copyright notice, license guidance, and significant change notes visible so users and contributors can understand the applicable terms.",
+    "license.permissionTitle": "Ask before uses that require permission.",
     "license.permissionBody":
-      "Please ask permission before using material tied to the owner, such as the site name, logo, images, payment copy, or personal introduction text.",
+      "Ask for permission before using owner-identifying materials such as logos, images, names, introduction copy, payment guidance, or promotional copy. When the scope is unclear, ask before using it.",
     "license.updated": "Last updated: June 3, 2026",
-    "terms.title": "Terms of use, kept short and clear.",
+    "terms.eyebrow": "Terms of Use",
+    "terms.title": "Terms of use",
     "terms.lead":
-      "This page explains the basic rules for reading the profile site, saving display settings, sending feedback, and opening payment links.",
-    "terms.mediaLabel": "Terms registry",
-    "terms.mediaValue": "Read, support, report",
+      "This page explains the basic conditions, external service boundaries, user responsibilities, and update rules for using FirstPrizeGames.",
+    "terms.mediaLabel": "Document scope",
+    "terms.mediaValue": "Site access and linked services",
+    "terms.scopeBody": "These terms apply to site content, browser settings, feedback, and payment links. External services follow their own terms.",
     "terms.summaryUse": "Use",
-    "terms.summaryUseValue": "Public reading",
+    "terms.summaryUseValue": "Public access",
     "terms.summarySupport": "Support",
-    "terms.summarySupportValue": "External checkout",
+    "terms.summarySupportValue": "Linked services",
     "terms.summaryData": "Data",
-    "terms.summaryDataValue": "Local settings",
+    "terms.summaryDataValue": "Browser settings",
     "terms.summaryChanges": "Changes",
-    "terms.summaryChangesValue": "Updated here",
-    "terms.acceptTitle": "Continuing to use the site means you accept these terms.",
+    "terms.summaryChangesValue": "Posted updates",
+    "terms.acceptTitle": "Using the site means you accept these terms.",
     "terms.acceptBody":
-      "This is a static website for a public profile, creation notes, pricing guidance, settings, and privacy information. Reading content or opening links means using the site under these terms and the Privacy Policy.",
-    "terms.contentTitle": "Information is for guidance.",
+      "This is a static website for a public profile, creation notes, pricing guidance, settings, and privacy information. Reading pages or opening links means using the site under these terms and the Privacy Policy.",
+    "terms.contentTitle": "Site information is provided for general guidance.",
     "terms.contentBody":
       "Emergency response, development, pricing, and support copy is provided for site introduction and guidance. Do not treat it as professional medical, legal, or financial advice, and verify important decisions with official organizations or providers.",
-    "terms.checkoutTitle": "Payments and external forms are handled by outside services.",
+    "terms.checkoutTitle": "Payments, feedback, and sharing are handled by linked services.",
     "terms.checkoutBody":
       "Features that open Stripe Checkout, Google Forms, or sharing services follow those services' terms and privacy rules. This site does not directly process card numbers or external form responses.",
-    "terms.localTitle": "Settings are managed in the browser.",
+    "terms.localTitle": "User settings are managed per browser.",
     "terms.localBody":
       "Theme, language, density, and payment-blocking preferences are stored in localStorage for the same browser. You can clear site data from Settings or Usage.",
-    "terms.fairUseTitle": "Please use the site fairly.",
+    "terms.fairUseTitle": "Do not disrupt the site or use assets without permission.",
     "terms.fairUseBody":
       "Do not disrupt the site, create excessive automated requests, or copy personal assets such as images and logos without permission. Reuse rules for code and assets are explained on the License page.",
-    "terms.contactTitle": "Tell Support when something is wrong.",
+    "terms.contactTitle": "Questions and change requests can be sent through Support.",
     "terms.contactBody":
       "Broken links, incorrect copy, checkout access issues, and privacy requests can be sent through Support feedback. These terms may be updated to make the rules clearer.",
     "terms.updated": "Last updated: June 7, 2026",
@@ -3003,6 +3457,37 @@ const translations = {
     "pricing.title": "Choose the setup that fits your profile.",
     "pricing.lead":
       "Free includes a 5-hour limit and a weekly limit starting from the first visit. Paid checkout remains optional after the limit.",
+    "pricing.simpleTitle": "Choose only what you need.",
+    "pricing.simpleLead": "Start with Free, then move to Pro or Ultra when you need more limits or priority handling.",
+    "pricing.simpleStart": "Start",
+    "pricing.simpleMost": "Most users",
+    "pricing.simplePriority": "Priority",
+    "pricing.simpleFreePill": "Start",
+    "pricing.simpleProPill": "Upgrade",
+    "pricing.simpleUltraPill": "Priority",
+    "pricing.simpleFreeBody": "Enough for personal use, browsing the site, and using the basic features.",
+    "pricing.simpleFreeOne": "Basic profile and sharing",
+    "pricing.simpleFreeTwo": "Theme, language, and accessibility settings",
+    "pricing.simpleFreeThree": "5-hour and weekly usage limits",
+    "pricing.simpleProBody": "Best when you want to keep using the site after limits and present a cleaner profile.",
+    "pricing.simpleProOne": "Checkout path after limits",
+    "pricing.simpleProTwo": "Expanded training and credential details",
+    "pricing.simpleProThree": "Pro-only accent color",
+    "pricing.simpleUltraBody": "For the highest priority handling and more active improvement requests.",
+    "pricing.simpleUltraOne": "Top-priority request handling",
+    "pricing.simpleUltraTwo": "Joint planning participation",
+    "pricing.simpleUltraThree": "Unreleased update access",
+    "pricing.teamStripTitle": "Need a team profile?",
+    "pricing.teamStripBody": "Use Team when you need member roles, shared activity, and organization information.",
+    "pricing.simpleCompareTitle": "Simple comparison",
+    "pricing.compareFreeTitle": "Try it first",
+    "pricing.compareFreeBodySimple": "Basic profile, sharing, settings, and local usage checks.",
+    "pricing.compareProTitle": "Most personal users",
+    "pricing.compareProBodySimple": "Checkout after limits, expanded credentials and activity, Pro color.",
+    "pricing.compareTeamTitle": "Teams or organizations",
+    "pricing.compareTeamBodySimple": "Team intro, member roles, and shared activity.",
+    "pricing.compareUltraTitle": "Priority handling",
+    "pricing.compareUltraBodySimple": "Top-priority requests, joint planning, and unreleased updates.",
     "pricing.adaptiveNote": "Usage limits are calculated only in this browser. Stripe confirms paid prices.",
     "pricing.summaryCheckout": "Checkout",
     "pricing.summaryCheckoutValue": "Stripe test links",
@@ -3390,6 +3875,74 @@ const getInitialLanguage = () => normalizeLanguage(localStorage.getItem("profile
 let currentLanguage = getInitialLanguage();
 
 const translate = (key) => translations[currentLanguage][key] || translations.ko[key] || key;
+
+const USER_PROFILE_NAME_KEY = "profile-user-name";
+const USER_PROFILE_AVATAR_KEY = "profile-user-avatar";
+const DEFAULT_USER_PROFILE_NAME = "My name";
+const DEFAULT_USER_PROFILE_AVATAR = "/assets/well.png";
+const USER_PROFILE_PLAN = "Free";
+
+const getUserProfileName = () => {
+  const value = localStorage.getItem(USER_PROFILE_NAME_KEY)?.trim();
+  return value || DEFAULT_USER_PROFILE_NAME;
+};
+
+const getUserProfileAvatar = () => localStorage.getItem(USER_PROFILE_AVATAR_KEY) || DEFAULT_USER_PROFILE_AVATAR;
+
+const syncUserProfileUI = () => {
+  const name = getUserProfileName();
+  const avatar = getUserProfileAvatar();
+  const hasCustomAvatar = avatar !== DEFAULT_USER_PROFILE_AVATAR;
+
+  document.querySelectorAll("[data-profile-name]").forEach((element) => {
+    element.textContent = name;
+  });
+  document.querySelectorAll("[data-profile-plan]").forEach((element) => {
+    element.textContent = USER_PROFILE_PLAN;
+  });
+  document.querySelectorAll(".sidebar-account-avatar, [data-profile-avatar-preview]").forEach((image) => {
+    image.src = avatar;
+  });
+
+  const nameInput = document.querySelector("[data-profile-name-input]");
+  if (nameInput) nameInput.value = name;
+
+  document.querySelectorAll("[data-profile-avatar-status]").forEach((element) => {
+    element.textContent = translate(hasCustomAvatar ? "profileDialog.avatarCustom" : "profileDialog.avatarDefault");
+  });
+};
+
+const saveUserProfileName = () => {
+  const input = document.querySelector("[data-profile-name-input]");
+  const nextName = input?.value.trim() || DEFAULT_USER_PROFILE_NAME;
+  localStorage.setItem(USER_PROFILE_NAME_KEY, nextName);
+  syncUserProfileUI();
+  showCopyToast("profileDialog.saved");
+};
+
+const resetUserProfile = () => {
+  localStorage.setItem(USER_PROFILE_NAME_KEY, DEFAULT_USER_PROFILE_NAME);
+  localStorage.removeItem(USER_PROFILE_AVATAR_KEY);
+  const avatarInput = document.querySelector("[data-profile-avatar-input]");
+  if (avatarInput) avatarInput.value = "";
+  syncUserProfileUI();
+  showCopyToast("profileDialog.resetSaved");
+};
+
+const readUserProfileAvatar = (file) => {
+  if (!file?.type?.startsWith("image/")) return;
+  const reader = new FileReader();
+  reader.addEventListener("load", () => {
+    try {
+      localStorage.setItem(USER_PROFILE_AVATAR_KEY, String(reader.result || ""));
+      syncUserProfileUI();
+      showCopyToast("profileDialog.photoSaved");
+    } catch {
+      showCopyToast("profileDialog.photoTooLarge");
+    }
+  });
+  reader.readAsDataURL(file);
+};
 
 const CLIPBOARD_HISTORY_KEY = "profile-clipboard-history";
 const MAX_CLIPBOARD_ITEMS = 8;
@@ -3889,6 +4442,7 @@ const setLanguage = (language) => {
   updateStorageEstimate();
   renderActivityPage();
   syncQuickSettingsControls();
+  syncUserProfileUI();
 };
 
 const getToggleLabelKey = (key, isOn) => {
@@ -4363,6 +4917,19 @@ const setFastRender = (isOn) => {
     translate(nextValue ? "settings.fastRenderOn" : "settings.fastRenderOff"),
   );
   syncQuickSettingsControls();
+};
+
+const setupUserProfileDialog = () => {
+  syncUserProfileUI();
+
+  document.querySelector("[data-profile-save]")?.addEventListener("click", saveUserProfileName);
+  document.querySelector("[data-profile-reset]")?.addEventListener("click", resetUserProfile);
+  document.querySelector("[data-profile-name-input]")?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") saveUserProfileName();
+  });
+  document.querySelector("[data-profile-avatar-input]")?.addEventListener("change", (event) => {
+    readUserProfileAvatar(event.target.files?.[0]);
+  });
 };
 
 const setupFastRenderSwipe = () => {
@@ -6019,6 +6586,7 @@ const updateContextPasteState = async () => {
 const showContextMenu = (event) => {
   if (
     !contextMenu ||
+    event.defaultPrevented ||
     shouldUseNativeContextMenu() ||
     !normalizeBooleanSetting(localStorage.getItem("profile-setting-custom-context-menu"), true) ||
     isNativeContextTarget(event.target)
@@ -6770,6 +7338,7 @@ setupNavLayoutDialog();
 setupContextMenuModeDialog();
 setupCookieSettingsDialog();
 setupQuickSettingsDialog();
+setupUserProfileDialog();
 setupFastRenderSwipe();
 setupToggleRightTrack();
 setupBrandLogo();
@@ -6919,7 +7488,7 @@ document.addEventListener("keydown", (event) => {
   closeUsageLearnDialog();
 });
 
-mobileMenu?.querySelectorAll("a, .nav-search-button").forEach((link) => {
+mobileMenu?.querySelectorAll("a, .nav-search-button, .nav-flyout-panel a").forEach((link) => {
   link.addEventListener("click", () => setMobileMenuOpen(false));
 });
 

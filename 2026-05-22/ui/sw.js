@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260621-accent-restored";
+const CACHE_NAME = "profile-offline-20260621-polish-audit";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

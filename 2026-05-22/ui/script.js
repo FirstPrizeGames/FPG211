@@ -1065,6 +1065,18 @@ const translations = {
     "profileDialog.resetSaved": "프로필이 기본값으로 돌아갔습니다.",
     "profileDialog.photoSaved": "프로필 사진이 저장되었습니다.",
     "profileDialog.photoTooLarge": "이미지가 너무 커서 저장하지 못했습니다.",
+    "welcome.eyebrow": "Welcome",
+    "welcome.title": "First Prize Games에 오신 것을 환영합니다",
+    "welcome.body": "처음 방문했다면 여기서 주요 페이지와 설정을 빠르게 둘러볼 수 있습니다.",
+    "welcome.highlightsLabel": "환영 안내 주요 항목",
+    "welcome.updatesTitle": "최신 업데이트",
+    "welcome.updatesBody": "새로 바뀐 기능과 공지 내용을 확인합니다.",
+    "welcome.settingsTitle": "개인화 설정",
+    "welcome.settingsBody": "테마, 언어, 알림, 접근성 옵션을 관리합니다.",
+    "welcome.trustTitle": "신뢰 정보",
+    "welcome.trustBody": "개인정보, 보안, 상태 정보를 한곳에서 확인합니다.",
+    "welcome.dismiss": "나중에 보기",
+    "welcome.primary": "둘러보기",
     "footer.brand": "Emergency Responder Profile",
     "footer.tagline": "신뢰, 상태, 개인정보, 지원 링크를 한 곳에 모았습니다.",
     "usage.nav": "Usage",
@@ -2461,6 +2473,18 @@ const translations = {
     "profileDialog.resetSaved": "Profile reset to defaults.",
     "profileDialog.photoSaved": "Profile photo saved.",
     "profileDialog.photoTooLarge": "The image is too large to save.",
+    "welcome.eyebrow": "Welcome",
+    "welcome.title": "Welcome to First Prize Games",
+    "welcome.body": "Start with the main pages, settings, and trust information in one quick view.",
+    "welcome.highlightsLabel": "Welcome highlights",
+    "welcome.updatesTitle": "Latest updates",
+    "welcome.updatesBody": "See recent changes, release notes, and new features.",
+    "welcome.settingsTitle": "Personal settings",
+    "welcome.settingsBody": "Manage theme, language, notifications, and accessibility.",
+    "welcome.trustTitle": "Trust information",
+    "welcome.trustBody": "Review privacy, security, and current site status.",
+    "welcome.dismiss": "Maybe later",
+    "welcome.primary": "Take a look",
     "footer.brand": "Emergency Responder Profile",
     "footer.tagline": "Trust, status, privacy, and support links in one place.",
     "usage.nav": "Usage",
@@ -5396,6 +5420,86 @@ const createQuickSettingsDialog = () => {
   quickSettingsStatus = document.querySelector("[data-quick-settings-status]");
 };
 
+const createWelcomeDialog = () => {
+  if (document.querySelector("[data-welcome-dialog]")) return;
+
+  const dialog = document.createElement("div");
+  dialog.className = "cache-dialog welcome-dialog";
+  dialog.dataset.welcomeDialog = "";
+  dialog.hidden = true;
+  dialog.innerHTML = `
+    <div class="cache-dialog-panel welcome-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="welcome-dialog-title">
+      <button class="dialog-close-button" type="button" data-welcome-close aria-label="닫기" data-i18n-aria-label="share.close">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+      </button>
+      <p class="eyebrow" data-i18n="welcome.eyebrow">Welcome</p>
+      <h2 id="welcome-dialog-title" data-i18n="welcome.title">First Prize Games에 오신 것을 환영합니다</h2>
+      <p data-i18n="welcome.body">처음 방문했다면 여기서 주요 페이지와 설정을 빠르게 둘러볼 수 있습니다.</p>
+      <div class="welcome-feature-list" aria-label="Welcome highlights" data-i18n-aria-label="welcome.highlightsLabel">
+        <article>
+          ${navIconMarkup.updates}
+          <div>
+            <strong data-i18n="welcome.updatesTitle">최신 업데이트</strong>
+            <span data-i18n="welcome.updatesBody">최근 변경 사항과 새 기능을 확인합니다.</span>
+          </div>
+        </article>
+        <article>
+          ${navIconMarkup.settings}
+          <div>
+            <strong data-i18n="welcome.settingsTitle">개인화 설정</strong>
+            <span data-i18n="welcome.settingsBody">테마, 언어, 알림, 접근성 옵션을 조정합니다.</span>
+          </div>
+        </article>
+        <article>
+          ${navIconMarkup.trust}
+          <div>
+            <strong data-i18n="welcome.trustTitle">신뢰 정보</strong>
+            <span data-i18n="welcome.trustBody">개인정보, 보안, 상태 페이지로 바로 이동합니다.</span>
+          </div>
+        </article>
+      </div>
+      <div class="cache-warning-actions welcome-actions">
+        <button class="button cache-cancel-button" type="button" data-welcome-close data-i18n="welcome.dismiss">나중에 보기</button>
+        <a class="button cache-confirm-button" href="/updates" data-welcome-primary data-i18n="welcome.primary">둘러보기</a>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(dialog);
+};
+
+const setupWelcomeDialog = () => {
+  const welcomeSeenKey = "profile-welcome-seen";
+  const dialog = document.querySelector("[data-welcome-dialog]");
+  if (!dialog || localStorage.getItem(welcomeSeenKey) === "true") return;
+
+  const closeWelcome = () => {
+    localStorage.setItem(welcomeSeenKey, "true");
+    dialog.classList.add("is-closing");
+    window.setTimeout(() => {
+      dialog.hidden = true;
+      dialog.classList.remove("is-closing");
+    }, 180);
+  };
+
+  dialog.querySelectorAll("[data-welcome-close]").forEach((button) => {
+    button.addEventListener("click", closeWelcome);
+  });
+
+  dialog.querySelector("[data-welcome-primary]")?.addEventListener("click", () => {
+    localStorage.setItem(welcomeSeenKey, "true");
+  });
+
+  dialog.addEventListener("click", (event) => {
+    if (event.button === 0 && event.target === dialog) closeWelcome();
+  });
+
+  window.setTimeout(() => {
+    if (localStorage.getItem(welcomeSeenKey) === "true") return;
+    dialog.hidden = false;
+    dialog.querySelector("[data-welcome-close]")?.focus({ preventScroll: true });
+  }, 900);
+};
+
 const storageConsentKey = "profile-storage-consent";
 const storageConsentCookieName = "profile_storage_consent";
 const cookiePreferenceKey = "profile-cookie-preferences";
@@ -5928,6 +6032,7 @@ const clearSiteCache = () => {
     "profile-setting-fast-render",
     "profile-setting-kid-mode",
     "profile-setting-custom-context-menu",
+    "profile-welcome-seen",
     "profile-cookie-preferences",
     "profile-browser-usage-total-ms",
     "profile-browser-usage-used-ms",
@@ -7290,9 +7395,11 @@ createPrintDialog();
 createClipboardDialog();
 createClipboardWarningDialog();
 createQuickSettingsDialog();
+createWelcomeDialog();
 createMobileQuickActions();
 setupCookieNotice();
 setLanguage(currentLanguage);
+setupWelcomeDialog();
 recordPageActivity();
 setupActivityPage();
 if (homeTabs.length) {

@@ -10,7 +10,16 @@
   --card-bg-strong: rgba(38, 38, 35, 0.78);
   --pill-bg: rgba(35, 35, 32, 0.84);
   --segment-bg: rgba(37, 37, 32, 0.88);
-  --panel-border: rgba(255, 255, 255, 0.1);
+  --panel-border: var(--highlight-hover);
+  --highlight-faint: rgba(255, 255, 255, 0.045);
+  --highlight-subtle: rgba(255, 255, 255, 0.055);
+  --highlight-soft: rgba(255, 255, 255, 0.08);
+  --highlight-hover: rgba(255, 255, 255, 0.1);
+  --highlight-selected: rgba(255, 255, 255, 0.13);
+  --highlight-strong: rgba(255, 255, 255, 0.14);
+  --highlight-stronger: rgba(255, 255, 255, 0.15);
+  --highlight-border: rgba(255, 255, 255, 0.18);
+  --highlight-focus: rgba(255, 255, 255, 0.28);
   --toggle-border: #56534c;
   --toggle-knob-off: #c9c4b8;
   --toggle-knob-on: #242421;
@@ -44,7 +53,7 @@
   --card-bg-strong: rgba(38, 38, 35, 0.78);
   --pill-bg: rgba(35, 35, 32, 0.84);
   --segment-bg: rgba(37, 37, 32, 0.88);
-  --panel-border: rgba(255, 255, 255, 0.1);
+  --panel-border: var(--highlight-hover);
   --toggle-border: #56534c;
   --toggle-knob-off: #c9c4b8;
   --toggle-knob-on: #242421;
@@ -78,7 +87,7 @@
   --card-bg-strong: rgba(18, 18, 16, 0.84);
   --pill-bg: rgba(16, 16, 15, 0.9);
   --segment-bg: rgba(20, 20, 18, 0.92);
-  --panel-border: rgba(255, 255, 255, 0.08);
+  --panel-border: var(--highlight-soft);
   --toggle-border: #444139;
   --toggle-knob-off: #b8b2a5;
   --toggle-knob-on: #10100f;
@@ -1293,13 +1302,13 @@ summary {
   [data-nav-layout="sidebar"] .nav-flyout-trigger:hover,
   [data-nav-layout="sidebar"] .nav-flyout.is-open .nav-flyout-trigger,
   [data-nav-layout="sidebar"] .nav-flyout.has-active-item .nav-flyout-trigger {
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--highlight-soft);
     color: #ffffff;
     box-shadow: none;
   }
 
   [data-nav-layout="sidebar"] .nav-flyout.has-active-item .nav-flyout-trigger {
-    background: rgba(255, 255, 255, 0.13);
+    background: var(--highlight-selected);
   }
 
   [data-nav-layout="sidebar"] .nav-flyout-trigger .nav-icon,
@@ -1349,7 +1358,7 @@ summary {
 
   [data-nav-layout="sidebar"] .nav-flyout-panel a:hover,
   [data-nav-layout="sidebar"] .nav-flyout-panel a.is-active {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--highlight-hover);
     color: #ffffff;
     box-shadow: none;
   }
@@ -1406,7 +1415,7 @@ summary {
   [data-nav-layout="sidebar"] .sidebar-account-item:hover,
   [data-nav-layout="sidebar"] .sidebar-account .nav-flyout-trigger:hover,
   [data-nav-layout="sidebar"] .sidebar-account .nav-flyout.is-open .nav-flyout-trigger {
-    background: rgba(255, 255, 255, 0.13);
+    background: var(--highlight-selected);
     color: #ffffff;
   }
 
@@ -1428,7 +1437,7 @@ summary {
     border-radius: 14px;
     background: rgba(30, 30, 30, 0.99);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      inset 0 1px 0 var(--highlight-soft),
       0 28px 70px rgba(0, 0, 0, 0.46);
   }
 
@@ -1475,7 +1484,7 @@ summary {
     display: block;
     height: 1px;
     margin: 5px 4px;
-    background: rgba(255, 255, 255, 0.18);
+    background: var(--highlight-border);
   }
 
   [data-nav-layout="sidebar"] .sidebar-account .nav-icon,
@@ -1517,7 +1526,7 @@ summary {
     border-radius: 14px;
     background: rgba(30, 30, 30, 0.99);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      inset 0 1px 0 var(--highlight-soft),
       0 28px 70px rgba(0, 0, 0, 0.46);
     transform: translateY(-50%);
   }
@@ -1554,7 +1563,7 @@ summary {
 
   [data-nav-layout="sidebar"] .sidebar-help-link:hover,
   [data-nav-layout="sidebar"] .sidebar-help-link.is-active {
-    background: rgba(255, 255, 255, 0.14);
+    background: var(--highlight-strong);
     color: #ffffff;
     box-shadow: none;
   }
@@ -1637,7 +1646,7 @@ summary {
 
   [data-nav-layout="sidebar"] .nav-links .nav-search-button:hover {
     border-color: rgba(242, 242, 242, 0.28);
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--highlight-hover);
     color: #ffffff;
   }
 
@@ -1695,7 +1704,7 @@ summary {
   }
 
   [data-nav-layout="sidebar"] .nav-links a:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--highlight-soft);
     color: #ffffff;
   }
 
@@ -1704,7 +1713,7 @@ summary {
   }
 
   [data-nav-layout="sidebar"] .nav-links a.is-active {
-    background: rgba(255, 255, 255, 0.13);
+    background: var(--highlight-selected);
     color: #ffffff;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.05),
@@ -1726,13 +1735,13 @@ summary {
 
   [data-nav-layout="sidebar"] .nav-links a.nav-feedback-link {
     border-color: rgba(220, 220, 220, 0.18);
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--highlight-soft);
     color: rgba(242, 242, 242, 0.88);
   }
 
   [data-nav-layout="sidebar"] .nav-links a.nav-feedback-link:hover,
   [data-nav-layout="sidebar"] .nav-links a.nav-feedback-link.is-active {
-    background: rgba(255, 255, 255, 0.14);
+    background: var(--highlight-strong);
     color: #ffffff;
   }
 
@@ -1755,7 +1764,7 @@ summary {
     background: rgba(16, 16, 16, 0.92);
     color: rgba(242, 242, 242, 0.84);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      inset 0 1px 0 var(--highlight-soft),
       0 16px 44px rgba(0, 0, 0, 0.22);
     cursor: pointer;
     font: inherit;
@@ -2333,7 +2342,7 @@ h3 {
 
 .profile-panel .button.ghost {
   border-color: rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--highlight-soft);
   color: #ffffff;
 }
 
@@ -2386,7 +2395,7 @@ h3 {
 }
 
 .hero-button-work {
-  border-color: rgba(255, 255, 255, 0.28);
+  border-color: var(--highlight-focus);
   background: rgba(255, 255, 255, 0.12);
   color: #ffffff;
   backdrop-filter: blur(14px);
@@ -2394,13 +2403,13 @@ h3 {
 
 .hero-button-work .hero-button-icon {
   border: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--highlight-hover);
   color: #ffffff;
 }
 
 .hero-button-work:hover {
   border-color: rgba(255, 255, 255, 0.55);
-  background: rgba(255, 255, 255, 0.18);
+  background: var(--highlight-border);
 }
 
 .hero-note {
@@ -3516,12 +3525,12 @@ html[lang="ko"] .home-subscribe h2 {
   border: 1px solid var(--line);
   border-radius: 8px;
   background:
-    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(var(--highlight-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--highlight-faint) 1px, transparent 1px),
     linear-gradient(150deg, color-mix(in srgb, var(--accent) 16%, transparent), transparent 45%),
     var(--card-bg-strong);
   background-size: 34px 34px, 34px 34px, auto, auto;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 var(--highlight-soft);
 }
 
 .feedback-panel::after {
@@ -3563,7 +3572,7 @@ html[lang="ko"] .home-subscribe h2 {
   border-radius: 8px;
   background: #10110f;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 var(--highlight-soft),
     0 22px 50px rgba(0, 0, 0, 0.24);
 }
 
@@ -4423,7 +4432,7 @@ html[lang="ko"] .about-next-direction h2 {
   background:
     radial-gradient(circle at 16% 18%, rgba(72, 215, 255, 0.18), transparent 28vw),
     radial-gradient(circle at 84% 8%, rgba(184, 219, 255, 0.12), transparent 26vw),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px) 0 0 / 68px 68px,
+    linear-gradient(90deg, var(--highlight-faint) 1px, transparent 1px) 0 0 / 68px 68px,
     linear-gradient(180deg, #02070b 0%, #06131a 52%, #03080d 100%);
   color: var(--legal-ink);
 }
@@ -5774,12 +5783,12 @@ html[lang="ko"] .about-next-direction h2 {
   border: 1px solid color-mix(in srgb, var(--line) 86%, transparent);
   border-radius: 8px;
   background:
-    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(var(--highlight-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--highlight-faint) 1px, transparent 1px),
     linear-gradient(150deg, color-mix(in srgb, var(--accent) 18%, transparent), transparent 44%),
     color-mix(in srgb, var(--panel-solid) 90%, #000 10%);
   background-size: 34px 34px, 34px 34px, auto, auto;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 var(--highlight-soft);
   animation: errorConsoleIn 760ms cubic-bezier(0.2, 0, 0, 1) both;
 }
 
@@ -6088,8 +6097,8 @@ html[lang="ko"] .about-next-direction h2 {
   inset: 0;
   z-index: -2;
   background:
-    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    linear-gradient(var(--highlight-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--highlight-faint) 1px, transparent 1px);
   background-size: 72px 72px;
   mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.95), transparent 88%);
 }
@@ -6186,7 +6195,7 @@ html[lang="ko"] .about-next-direction h2 {
   height: 620px;
   margin: 0;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid var(--highlight-border);
   border-radius: 8px;
   background: #11100f;
   box-shadow: 0 28px 74px rgba(0, 0, 0, 0.42);
@@ -6243,10 +6252,10 @@ html[lang="ko"] .about-next-direction h2 {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   margin-top: -1px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--highlight-stronger);
   border-radius: 8px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.055), transparent),
+    linear-gradient(180deg, var(--highlight-subtle), transparent),
     #070706;
   color: #f8f5ef;
 }
@@ -6256,7 +6265,7 @@ html[lang="ko"] .about-next-direction h2 {
   gap: 10px;
   min-height: 154px;
   padding: clamp(20px, 3vw, 30px);
-  border-right: 1px solid rgba(255, 255, 255, 0.14);
+  border-right: 1px solid var(--highlight-strong);
 }
 
 .bio-dossier div:last-child {
@@ -6291,7 +6300,7 @@ html[lang="ko"] .about-next-direction h2 {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(340px, 0.75fr);
   margin-top: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--highlight-stronger);
   border-radius: 8px;
   overflow: hidden;
   background: #070706;
@@ -6303,10 +6312,10 @@ html[lang="ko"] .about-next-direction h2 {
   gap: 18px;
   min-height: 320px;
   padding: clamp(26px, 5vw, 48px);
-  border-right: 1px solid rgba(255, 255, 255, 0.14);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  border-right: 1px solid var(--highlight-strong);
+  border-bottom: 1px solid var(--highlight-strong);
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.045), transparent 54%),
+    linear-gradient(135deg, var(--highlight-faint), transparent 54%),
     transparent;
 }
 
@@ -6444,7 +6453,7 @@ html[lang="ko"] .about-next-direction h2 {
 .bio-interests .likes-list span {
   min-height: 54px;
   padding: 14px 16px;
-  border-color: rgba(255, 255, 255, 0.18);
+  border-color: var(--highlight-border);
   background: rgba(255, 255, 255, 0.035);
   color: #ffffff;
   font-size: 13px;
@@ -9770,7 +9779,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
   background: rgba(24, 24, 24, 0.98);
   color: #f7f7f7;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 var(--highlight-soft),
     0 32px 90px rgba(0, 0, 0, 0.48);
   animation: dialogPanelIn 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -9879,7 +9888,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 .user-profile-control input:focus {
-  border-color: rgba(255, 255, 255, 0.28);
+  border-color: var(--highlight-focus);
   outline: none;
 }
 
@@ -9892,14 +9901,14 @@ html[lang="ko"] .faq-feedback-strip h2 {
   padding: 0 12px;
   border: 1px solid rgba(238, 238, 238, 0.14);
   border-radius: 9px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--highlight-soft);
   color: #ffffff;
   cursor: pointer;
 }
 
 .user-profile-upload:hover,
 .user-profile-upload:focus-within {
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--highlight-strong);
 }
 
 .user-profile-upload input {
@@ -9923,7 +9932,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
   padding: 14px;
   border: 1px solid rgba(238, 238, 238, 0.12);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.055);
+  background: var(--highlight-subtle);
 }
 
 .user-profile-field span {
@@ -10097,7 +10106,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
   min-height: 86px;
   padding: 16px clamp(20px, 4vw, 34px);
   border: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--highlight-hover);
   background: transparent;
   color: #f4f4f4;
 }
@@ -10151,7 +10160,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 .quick-settings-segment button:hover,
 .quick-settings-segment button:focus-visible,
 .quick-settings-segment button.is-active {
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--highlight-strong);
   color: #ffffff;
 }
 
@@ -10164,7 +10173,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
 .quick-settings-toggle:hover,
 .quick-settings-toggle:focus-visible {
-  background: rgba(255, 255, 255, 0.055);
+  background: var(--highlight-subtle);
 }
 
 .quick-settings-toggle i {
@@ -12395,7 +12404,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
   }
 
   .bio-dossier div:nth-child(-n + 2) {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    border-bottom: 1px solid var(--highlight-strong);
   }
 
   .bio-editorial-grid {
@@ -12406,7 +12415,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
   .bio-editorial-grid article:nth-child(2n),
   .bio-editorial-grid article:nth-last-child(-n + 2) {
     border-right: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    border-bottom: 1px solid var(--highlight-strong);
   }
 
   .bio-editorial-grid article:last-child {
@@ -13416,7 +13425,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
   .bio-dossier div:nth-child(2n),
   .bio-dossier div:nth-child(-n + 2) {
     border-right: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    border-bottom: 1px solid var(--highlight-strong);
   }
 
   .bio-dossier div:last-child {
@@ -14541,12 +14550,12 @@ html[lang="ko"] .faq-feedback-strip h2 {
   }
 
   [data-nav-layout="sidebar"] .settings-body .nav-links a:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--highlight-soft);
     color: #ffffff;
   }
 
   [data-nav-layout="sidebar"] .settings-body .nav-links a.is-active {
-    background: rgba(255, 255, 255, 0.13);
+    background: var(--highlight-selected);
     color: #ffffff;
   }
 }
@@ -14560,15 +14569,15 @@ html[lang="ko"] .faq-feedback-strip h2 {
     --sidebar-label: rgba(214, 214, 214, 0.68);
     --sidebar-link: rgba(235, 235, 235, 0.82);
     --sidebar-link-muted: rgba(198, 198, 198, 0.76);
-    --sidebar-link-hover: rgba(255, 255, 255, 0.08);
-    --sidebar-link-active: rgba(255, 255, 255, 0.13);
+    --sidebar-link-hover: var(--highlight-soft);
+    --sidebar-link-active: var(--highlight-selected);
     --sidebar-active-icon: #f4f4f4;
     --sidebar-button-bg: rgba(30, 30, 30, 0.92);
     --sidebar-button-line: rgba(218, 218, 218, 0.24);
     border-right: 1px solid var(--sidebar-rail-line);
     background: #101010;
     box-shadow:
-      inset -1px 0 0 rgba(255, 255, 255, 0.08),
+      inset -1px 0 0 var(--highlight-soft),
       18px 0 52px rgba(0, 0, 0, 0.28);
     color: var(--sidebar-link);
   }
@@ -14582,8 +14591,8 @@ html[lang="ko"] .faq-feedback-strip h2 {
     --sidebar-label: rgba(220, 220, 220, 0.74);
     --sidebar-link: rgba(242, 242, 242, 0.86);
     --sidebar-link-muted: rgba(204, 204, 204, 0.82);
-    --sidebar-link-hover: rgba(255, 255, 255, 0.09);
-    --sidebar-link-active: rgba(255, 255, 255, 0.15);
+    --sidebar-link-hover: var(--highlight-soft);
+    --sidebar-link-active: var(--highlight-strong);
     --sidebar-active-icon: #ffffff;
     --sidebar-button-bg: rgba(24, 24, 24, 0.96);
     --sidebar-button-line: rgba(230, 230, 230, 0.28);
@@ -14619,7 +14628,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
     background: var(--sidebar-link-active);
     color: #ffffff;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 1px 0 var(--highlight-hover),
       0 13px 30px rgba(0, 0, 0, 0.24);
   }
 
@@ -14859,7 +14868,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 .nav-links a.nav-feedback-link,
 [data-nav-layout="sidebar"] .nav-links a.nav-feedback-link {
   border-color: rgba(226, 226, 226, 0.18);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--highlight-soft);
   color: rgba(242, 242, 242, 0.88);
   box-shadow: none;
 }
@@ -14869,7 +14878,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 [data-nav-layout="sidebar"] .nav-links a.nav-feedback-link:hover,
 [data-nav-layout="sidebar"] .nav-links a.nav-feedback-link.is-active {
   border-color: rgba(244, 244, 244, 0.28);
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--highlight-strong);
   color: #ffffff;
 }
 
@@ -15756,8 +15765,8 @@ html[lang="ko"] .faq-feedback-strip h2 {
     --sidebar-label: rgba(188, 188, 188, 0.62);
     --sidebar-link: rgba(226, 226, 226, 0.76);
     --sidebar-link-muted: rgba(194, 194, 194, 0.7);
-    --sidebar-link-hover: rgba(255, 255, 255, 0.045);
-    --sidebar-link-active: rgba(255, 255, 255, 0.075);
+    --sidebar-link-hover: var(--highlight-subtle);
+    --sidebar-link-active: var(--highlight-soft);
     --sidebar-active-icon: rgba(232, 232, 232, 0.9);
     border-right-color: var(--sidebar-rail-line);
   }
@@ -15837,7 +15846,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
   [data-nav-layout="sidebar"] .nav-links .nav-search-button {
     border-color: rgba(218, 218, 218, 0.16);
-    background: rgba(255, 255, 255, 0.045);
+    background: var(--highlight-faint);
     color: var(--sidebar-link);
   }
 

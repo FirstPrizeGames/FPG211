@@ -23,8 +23,6 @@ const navIconMarkup = {
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3h.1A1.7 1.7 0 0 0 10 3.1V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1A1.7 1.7 0 0 0 20.9 10h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" /></svg>',
   personalization:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v4" /><path d="M12 17v4" /><path d="M3 12h4" /><path d="M17 12h4" /><circle cx="12" cy="12" r="4" /><path d="m5.6 5.6 2.8 2.8" /><path d="m15.6 15.6 2.8 2.8" /><path d="m18.4 5.6-2.8 2.8" /><path d="m8.4 15.6-2.8 2.8" /></svg>',
-  logout:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M10 17l5-5-5-5" /><path d="M15 12H3" /><path d="M13 4h5a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-5" /></svg>',
   store:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 10h16" /><path d="M5 10l1-5h12l1 5" /><path d="M6 10v9h12v-9" /><path d="M9 14h6" /><path d="M9 19v-5" /><path d="M15 19v-5" /></svg>',
   support:
@@ -217,18 +215,6 @@ const createSidebarAccountMenu = () => {
     ].forEach((item) => panel.append(createSidebarAccountItem(item)));
 
     panel.append(createSidebarHelpMenu());
-
-    const secondDivider = document.createElement("span");
-    secondDivider.className = "sidebar-account-divider";
-    secondDivider.setAttribute("aria-hidden", "true");
-    panel.append(secondDivider);
-    panel.append(createSidebarAccountItem({
-      action: "logout",
-      icon: navIconMarkup.logout,
-      labelKey: "sidebar.logout",
-      fallback: "Log out",
-      className: "is-muted-action",
-    }));
 
     const trigger = document.createElement("button");
     trigger.className = "sidebar-account-trigger";
@@ -581,12 +567,6 @@ document.addEventListener("click", (event) => {
   if (accountAction?.dataset.sidebarAccountAction === "profile") {
     closeSidebarAccountMenus();
     openUserProfileDialog();
-    return;
-  }
-
-  if (accountAction?.dataset.sidebarAccountAction === "logout") {
-    closeSidebarAccountMenus();
-    showCopyToast("toast.accountLogoutUnavailable");
     return;
   }
 
@@ -1065,7 +1045,6 @@ const translations = {
     "sidebar.accountPlan": "Free",
     "sidebar.upgrade": "요금제 업그레이드",
     "sidebar.profile": "프로필",
-    "sidebar.logout": "로그아웃",
     "profileDialog.eyebrow": "Profile",
     "profileDialog.title": "My name",
     "profileDialog.body": "이 사이트에서 사용하는 계정 표시 화면을 확인하고 관리합니다.",
@@ -1134,7 +1113,6 @@ const translations = {
     "toast.notificationsBlocked": "사이트 알림을 거부했습니다.",
     "toast.notificationsUnsupported": "이 브라우저는 사이트 알림을 지원하지 않습니다.",
     "toast.notificationsDismissed": "알림 권한 요청이 완료되지 않았습니다.",
-    "toast.accountLogoutUnavailable": "현재 사이트에는 로그인 세션이 없습니다.",
     "search.eyebrow": "Search",
     "search.title": "사이트 검색",
     "search.label": "검색어",
@@ -2463,7 +2441,6 @@ const translations = {
     "sidebar.accountPlan": "Free",
     "sidebar.upgrade": "Upgrade plan",
     "sidebar.profile": "Profile",
-    "sidebar.logout": "Log out",
     "profileDialog.eyebrow": "Profile",
     "profileDialog.title": "My name",
     "profileDialog.body": "Review and manage the account surface used by this site.",
@@ -2532,7 +2509,6 @@ const translations = {
     "toast.notificationsBlocked": "Site notifications blocked.",
     "toast.notificationsUnsupported": "This browser does not support site notifications.",
     "toast.notificationsDismissed": "Notification permission was not completed.",
-    "toast.accountLogoutUnavailable": "There is no active sign-in session on this site.",
     "search.eyebrow": "Search",
     "search.title": "Search site",
     "search.label": "Search query",

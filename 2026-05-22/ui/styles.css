@@ -1606,10 +1606,6 @@ summary {
     text-overflow: ellipsis;
   }
 
-  [data-nav-layout="sidebar"] .sidebar-account-item.is-muted-action {
-    color: rgba(242, 242, 242, 0.82);
-  }
-
   [data-nav-layout="sidebar"] .nav-links .nav-search-button {
     position: relative;
     box-sizing: border-box;

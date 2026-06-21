@@ -9886,7 +9886,9 @@ html[lang="ko"] .faq-feedback-strip h2 {
 .user-profile-upload {
   position: relative;
   min-height: 42px;
+  place-items: center;
   justify-content: center;
+  text-align: center;
   padding: 0 12px;
   border: 1px solid rgba(238, 238, 238, 0.14);
   border-radius: 9px;

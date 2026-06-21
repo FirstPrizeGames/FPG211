@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260621-account-no-logout";
+const CACHE_NAME = "profile-offline-20260621-profile-photo-center";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

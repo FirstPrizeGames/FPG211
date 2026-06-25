@@ -451,7 +451,7 @@ const createStandardFooter = () => {
   footer.dataset.siteFooter = "";
   footer.innerHTML = `
     <div class="site-footer-brand">
-      <strong data-i18n="footer.brand">Emergency Responder Profile</strong>
+      <strong data-i18n="footer.brand">First Prize Games</strong>
       <span data-i18n="footer.tagline">Trust, status, privacy, and support links in one place.</span>
     </div>
     <nav class="site-footer-links" aria-label="Footer links" data-i18n-aria-label="aria.footerLinks">
@@ -1077,7 +1077,7 @@ const translations = {
     "welcome.trustBody": "개인정보, 보안, 상태 정보를 한곳에서 확인합니다.",
     "welcome.dismiss": "나중에 보기",
     "welcome.primary": "둘러보기",
-    "footer.brand": "Emergency Responder Profile",
+    "footer.brand": "First Prize Games",
     "footer.tagline": "신뢰, 상태, 개인정보, 지원 링크를 한 곳에 모았습니다.",
     "usage.nav": "Usage",
     "nav.privacy": "개인정보 처리방침",
@@ -1694,7 +1694,7 @@ const translations = {
     "privacy.eyebrow": "Privacy Policy",
     "privacy.title": "개인정보 처리 기준",
     "privacy.lead":
-      "FirstPrizeGames는 계정 생성 없이 읽을 수 있는 사이트이며, 결제 정보와 외부 양식 데이터는 해당 서비스에서 처리됩니다.",
+      "First Prize Games는 계정 생성 없이 읽을 수 있는 사이트이며, 결제 정보와 외부 양식 데이터는 해당 서비스에서 처리됩니다.",
     "privacy.mediaLabel": "Processing model",
     "privacy.mediaValue": "Local-first, external services",
     "privacy.scopeBody": "테마와 표시 설정은 브라우저에 저장되고, 결제와 피드백은 Stripe 및 외부 양식의 정책을 따릅니다.",
@@ -1732,7 +1732,7 @@ const translations = {
     "license.eyebrow": "License",
     "license.title": "라이선스 및 사용 기준",
     "license.lead":
-      "이 페이지는 FirstPrizeGames 사이트의 코드, 브랜드 자산, 이미지, 문구를 어떤 기준으로 사용할 수 있는지 공식적으로 정리합니다.",
+      "이 페이지는 First Prize Games 사이트의 코드, 브랜드 자산, 이미지, 문구를 어떤 기준으로 사용할 수 있는지 공식적으로 정리합니다.",
     "license.mediaLabel": "Document status",
     "license.mediaValue": "Public reference",
     "license.scopeBody": "코드는 재사용 가능 범위와 조건을 따르고, 로고와 브랜드 자산은 별도 허가가 필요합니다.",
@@ -1749,7 +1749,7 @@ const translations = {
       "기본 HTML, CSS, JavaScript 구조는 학습, 수정, 배포에 활용할 수 있는 재사용 가능 영역입니다. 공개 또는 수정 배포 시에는 원 저작권 고지와 이 라이선스 안내를 함께 유지해야 합니다.",
     "license.assetsTitle": "브랜드와 미디어 자산은 소유자에게 권리가 있습니다.",
     "license.assetsBody":
-      "로고, 사이트 이름, 프로필 이미지, 생성 이미지, 브랜드 문구, 결제 문구는 FirstPrizeGames 또는 각 권리자에게 귀속됩니다. 코드를 재사용하더라도 해당 자산을 그대로 복제, 재배포, 상업적으로 사용할 수 없습니다.",
+      "로고, 사이트 이름, 프로필 이미지, 생성 이미지, 브랜드 문구, 결제 문구는 First Prize Games 또는 각 권리자에게 귀속됩니다. 코드를 재사용하더라도 해당 자산을 그대로 복제, 재배포, 상업적으로 사용할 수 없습니다.",
     "license.fontsTitle": "시스템 글꼴은 각 플랫폼의 조건을 따릅니다.",
     "license.fontsBody":
       "이 사이트는 외부 웹폰트 파일을 배포하지 않고 기기에서 제공하는 시스템 글꼴을 사용합니다. 글꼴 사용 권한은 Windows, macOS, Android, iOS 등 각 플랫폼의 라이선스 조건을 따릅니다.",
@@ -1762,7 +1762,7 @@ const translations = {
     "terms.eyebrow": "Terms of Use",
     "terms.title": "사이트 이용 약관",
     "terms.lead":
-      "FirstPrizeGames 사이트를 이용할 때 적용되는 기본 조건, 외부 서비스 경계, 사용자 책임, 변경 기준을 안내합니다.",
+      "First Prize Games 사이트를 이용할 때 적용되는 기본 조건, 외부 서비스 경계, 사용자 책임, 변경 기준을 안내합니다.",
     "terms.mediaLabel": "Document scope",
     "terms.mediaValue": "Site access and linked services",
     "terms.scopeBody": "사이트 콘텐츠, 브라우저 설정, 피드백, 결제 링크 이용에 적용되며 외부 서비스는 각 서비스의 약관을 따릅니다.",
@@ -2028,7 +2028,7 @@ const translations = {
     "info.privacyBody":
       "이 사이트는 별도의 서버 저장 없이 브라우저의 로컬 저장소를 사용해 테마, 언어, 설정 상태만 보관합니다.",
     "info.copyrightBody":
-      "© 2026 Profile Site. 모든 프로필 문구, 이미지, 구성 요소의 권리는 해당 소유자에게 있습니다.",
+      "© 2026 First Prize Games. 모든 프로필 문구, 이미지, 구성 요소의 권리는 해당 소유자에게 있습니다.",
     "plans.free": "Free",
     "plans.freePrice": "₩0",
     "plans.pro": "Pro",
@@ -2485,7 +2485,7 @@ const translations = {
     "welcome.trustBody": "Review privacy, security, and current site status.",
     "welcome.dismiss": "Maybe later",
     "welcome.primary": "Take a look",
-    "footer.brand": "Emergency Responder Profile",
+    "footer.brand": "First Prize Games",
     "footer.tagline": "Trust, status, privacy, and support links in one place.",
     "usage.nav": "Usage",
     "nav.privacy": "Privacy Policy",
@@ -3102,7 +3102,7 @@ const translations = {
     "privacy.eyebrow": "Privacy Policy",
     "privacy.title": "Privacy processing terms",
     "privacy.lead":
-      "FirstPrizeGames can be read without creating an account, and payment or external form data is handled by the relevant service.",
+      "First Prize Games can be read without creating an account, and payment or external form data is handled by the relevant service.",
     "privacy.mediaLabel": "Processing model",
     "privacy.mediaValue": "Local-first, external services",
     "privacy.scopeBody": "Theme and display preferences are stored in the browser. Payments and feedback follow Stripe and external form policies.",
@@ -3140,7 +3140,7 @@ const translations = {
     "license.eyebrow": "License",
     "license.title": "License and usage terms",
     "license.lead":
-      "This page formally defines how FirstPrizeGames site code, brand assets, images, and copy may be used.",
+      "This page formally defines how First Prize Games site code, brand assets, images, and copy may be used.",
     "license.mediaLabel": "Document status",
     "license.mediaValue": "Public reference",
     "license.scopeBody": "Code may be reused within the stated scope and conditions; logos and brand assets require separate permission.",
@@ -3157,7 +3157,7 @@ const translations = {
       "The base HTML, CSS, and JavaScript structure is reusable for learning, modification, and deployment. Published or modified copies must retain the original copyright notice and this license guidance.",
     "license.assetsTitle": "Brand and media assets remain owner-controlled.",
     "license.assetsBody":
-      "The logo, site name, profile images, generated images, brand copy, and payment copy belong to FirstPrizeGames or their respective rights holders. Reusing the code does not grant permission to copy, redistribute, or commercially use those assets as-is.",
+      "The logo, site name, profile images, generated images, brand copy, and payment copy belong to First Prize Games or their respective rights holders. Reusing the code does not grant permission to copy, redistribute, or commercially use those assets as-is.",
     "license.fontsTitle": "System fonts follow each platform's terms.",
     "license.fontsBody":
       "This site does not distribute external webfont files. It uses fonts provided by each device, so font usage follows the license terms of Windows, macOS, Android, iOS, and other platforms.",
@@ -3171,7 +3171,7 @@ const translations = {
     "terms.eyebrow": "Terms of Use",
     "terms.title": "Terms of use",
     "terms.lead":
-      "This page explains the basic conditions, external service boundaries, user responsibilities, and update rules for using FirstPrizeGames.",
+      "This page explains the basic conditions, external service boundaries, user responsibilities, and update rules for using First Prize Games.",
     "terms.mediaLabel": "Document scope",
     "terms.mediaValue": "Site access and linked services",
     "terms.scopeBody": "These terms apply to site content, browser settings, feedback, and payment links. External services follow their own terms.",
@@ -3441,7 +3441,7 @@ const translations = {
     "info.privacyBody":
       "This site stores only theme, language, and setting preferences in your browser local storage. No separate server-side profile data is collected.",
     "info.copyrightBody":
-      "© 2026 Profile Site. All profile copy, images, and interface components belong to their respective owners.",
+      "© 2026 First Prize Games. All profile copy, images, and interface components belong to their respective owners.",
     "plans.free": "Free",
     "plans.freePrice": "$0",
     "plans.pro": "Pro",
@@ -5438,21 +5438,21 @@ const createWelcomeDialog = () => {
       <div class="welcome-feature-list" aria-label="Welcome highlights" data-i18n-aria-label="welcome.highlightsLabel">
         <article>
           ${navIconMarkup.updates}
-          <div>
+          <div class="welcome-feature-copy">
             <strong data-i18n="welcome.updatesTitle">최신 업데이트</strong>
             <span data-i18n="welcome.updatesBody">최근 변경 사항과 새 기능을 확인합니다.</span>
           </div>
         </article>
         <article>
           ${navIconMarkup.settings}
-          <div>
+          <div class="welcome-feature-copy">
             <strong data-i18n="welcome.settingsTitle">개인화 설정</strong>
             <span data-i18n="welcome.settingsBody">테마, 언어, 알림, 접근성 옵션을 조정합니다.</span>
           </div>
         </article>
         <article>
           ${navIconMarkup.trust}
-          <div>
+          <div class="welcome-feature-copy">
             <strong data-i18n="welcome.trustTitle">신뢰 정보</strong>
             <span data-i18n="welcome.trustBody">개인정보, 보안, 상태 페이지로 바로 이동합니다.</span>
           </div>
@@ -7037,7 +7037,7 @@ const copyShareLink = async () => {
 
 const shareToExternalTarget = async (target) => {
   const url = shareUrl?.value || window.location.href;
-  const title = document.title || "Emergency Responder Profile";
+  const title = document.title || "First Prize Games";
 
   if (target === "native") {
     if (navigator.share) {

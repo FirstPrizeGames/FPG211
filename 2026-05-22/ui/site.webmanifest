@@ -1,7 +1,7 @@
 {
-  "name": "Emergency Responder Profile",
-  "short_name": "Profile",
-  "description": "A modern personal profile with bio, FAQ, pricing, feedback, and display settings.",
+  "name": "First Prize Games",
+  "short_name": "FPG",
+  "description": "A modern First Prize Games profile site with bio, FAQ, pricing, feedback, and display settings.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

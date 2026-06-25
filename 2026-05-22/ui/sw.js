@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260621-polish-audit";
+const CACHE_NAME = "profile-offline-20260625-image-mobile-check";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
@@ -7,6 +7,18 @@ const PRECACHE_URLS = [
   "/updates",
   "/search",
   "/activity",
+  "/Creator",
+  "/Pricing",
+  "/Bio",
+  "/about",
+  "/FAQ",
+  "/settings",
+  "/usage",
+  "/privacy",
+  "/license",
+  "/trust",
+  "/status",
+  "/security",
   "/sitemap",
   "/500",
   "/maintenance",
@@ -25,8 +37,8 @@ const PRECACHE_URLS = [
   "/assets/icon-512.png",
   "/assets/well.png",
   "/assets/logo.png",
-  "/assets/accessibility-firetruck-hero.png",
-  "/assets/profile-hero-1280.jpg",
+  "/assets/accessibility-firetruck-hero.jpg",
+  "/assets/profile-hero.jpg",
 ];
 
 self.addEventListener("install", (event) => {

@@ -2170,7 +2170,7 @@ summary {
   inset: 0;
   background:
     var(--hero-tint),
-    url("assets/profile-hero-1280.jpg") center / cover;
+    url("assets/profile-hero.jpg") center / cover;
   transform: scale(1.01);
   z-index: -2;
 }
@@ -12868,7 +12868,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
   .hero-media {
     background:
       var(--hero-tint-mobile),
-      url("assets/profile-hero-1280.jpg") center / cover;
+      url("assets/profile-hero.jpg") center / cover;
   }
 
   .profile-panel {
@@ -15390,12 +15390,15 @@ html[lang="ko"] .faq-feedback-strip h2 {
   background: var(--highlight-faint);
 }
 
-.welcome-feature-list article > div {
+.welcome-feature-copy {
   min-width: 0;
   width: 100%;
 }
 
 .welcome-feature-list .nav-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 20px;
   height: 20px;
   justify-self: center;
@@ -15485,7 +15488,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
   .welcome-dialog-panel {
     width: calc(100vw - 16px);
-    min-height: min(720px, calc(100dvh - 16px));
+    min-height: min(620px, calc(100dvh - 40px));
     padding: 28px;
   }
 
@@ -15499,6 +15502,10 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
   .welcome-feature-list article {
     min-height: 112px;
+  }
+
+  .welcome-feature-copy {
+    max-width: 100%;
   }
 
   .welcome-actions {

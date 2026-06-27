@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260625-image-mobile-check";
+const CACHE_NAME = "profile-offline-20260627-usage-reset-limit";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

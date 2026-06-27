@@ -80,7 +80,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260625-image-mobile-check" />
+    <link rel="stylesheet" href="../styles.css?v=20260627-usage-reset-limit" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -147,6 +147,30 @@
               <strong data-browser-weekly-remaining>100% 남음</strong>
             </div>
           </article>
+          <article class="usage-limit-row">
+            <div class="usage-limit-copy">
+              <strong data-i18n="usage.monthlyLimitTitle">월간 사용 한도</strong>
+              <span data-browser-monthly-reset>-- 초기화</span>
+            </div>
+            <div class="usage-limit-state">
+              <div class="usage-limit-bar" aria-hidden="true">
+                <span data-browser-monthly-bar></span>
+              </div>
+              <strong data-browser-monthly-remaining>100% 남음</strong>
+            </div>
+          </article>
+          <article class="usage-limit-row">
+            <div class="usage-limit-copy">
+              <strong data-i18n="usage.yearlyLimitTitle">연간 사용 한도</strong>
+              <span data-browser-yearly-reset>-- 초기화</span>
+            </div>
+            <div class="usage-limit-state">
+              <div class="usage-limit-bar" aria-hidden="true">
+                <span data-browser-yearly-bar></span>
+              </div>
+              <strong data-browser-yearly-remaining>100% 남음</strong>
+            </div>
+          </article>
         </div>
         <button class="usage-learn-button" type="button" data-usage-learn-open>
           <span data-i18n="usage.learnMore">Learn more about usage limits</span>
@@ -154,6 +178,16 @@
             <path d="M5 12h14" />
             <path d="m13 6 6 6-6 6" />
           </svg>
+        </button>
+      </section>
+
+      <section class="usage-reset-panel" aria-label="한도 초기화" data-i18n-aria-label="usage.resetPanelTitle">
+        <div>
+          <h2 data-i18n="usage.resetPanelTitle">한도 초기화</h2>
+          <p data-usage-reset-status data-i18n="usage.resetStatusLoading">초기화 가능 횟수를 확인하는 중입니다.</p>
+        </div>
+        <button class="usage-reset-button" type="button" data-usage-reset-button>
+          <span data-i18n="usage.resetButton">한도 초기화</span>
         </button>
       </section>
 
@@ -170,7 +204,7 @@
           <p class="eyebrow" data-i18n="usage.nav">Usage</p>
           <h2 id="usage-learn-title" data-i18n="usage.learnDialogTitle">사용 한도 작동 방식</h2>
           <p data-i18n="usage.learnDialogBody">
-            이 한도는 서버 계정이 아니라 현재 브라우저에서만 계산됩니다. 처음 접속한 순간부터 5시간 한도와 7일 주간 한도가 시작되고, 기간이 지나면 자동으로 새 한도로 초기화됩니다.
+            이 한도는 서버 계정이 아니라 현재 브라우저에서만 계산됩니다. 처음 접속한 순간부터 5시간, 주간, 월간, 연간 한도가 시작되고, 기간이 지나면 자동으로 새 한도로 초기화됩니다.
           </p>
           <div class="usage-learn-points" aria-label="사용 한도 설명" data-i18n-aria-label="usage.learnDialogTitle">
             <div>
@@ -179,7 +213,7 @@
             </div>
             <div>
               <strong data-i18n="usage.learnPointResetTitle">자동 초기화</strong>
-              <span data-i18n="usage.learnPointResetBody">5시간 또는 7일 창이 지나면 다음 접속 시 새 창이 시작됩니다.</span>
+              <span data-i18n="usage.learnPointResetBody">각 한도 기간이 지나면 다음 접속 시 새 창이 시작됩니다.</span>
             </div>
             <div>
               <strong data-i18n="usage.learnPointPrivateTitle">서버 저장 없음</strong>
@@ -190,7 +224,7 @@
       </div>
 
     </main>
-    <script src="../script.js?v=20260625-image-mobile-check" defer></script>
+    <script src="../script.js?v=20260627-usage-reset-limit" defer></script>
   </body>
 </html>
 

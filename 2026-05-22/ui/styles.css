@@ -11976,6 +11976,82 @@ html[lang="ko"] .faq-feedback-strip h2 {
   line-height: 1.45;
 }
 
+.usage-reset-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid #242424;
+  border-radius: 8px;
+  background: #0b0b0b;
+}
+
+.usage-reset-panel div {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.usage-reset-panel h2,
+.usage-reset-panel p {
+  margin: 0;
+}
+
+.usage-reset-panel h2 {
+  color: #eeeeee;
+  font-size: clamp(15px, 2vw, 17px);
+  font-weight: 820;
+  line-height: 1.2;
+}
+
+.usage-reset-panel p {
+  color: #a8a8a8;
+  font-size: 13px;
+  font-weight: 680;
+  line-height: 1.45;
+}
+
+.usage-reset-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 13px;
+  border: 1px solid #3b3b3b;
+  border-radius: 8px;
+  background: #1a1a1a;
+  color: #f1f1f1;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 850;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.usage-reset-button:hover,
+.usage-reset-button:focus-visible {
+  border-color: #5a5a5a;
+  background: #242424;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.usage-reset-button:disabled {
+  border-color: #252525;
+  background: #141414;
+  color: #6f6f6f;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .usage-upgrade-panel {
   display: flex;
   align-items: center;
@@ -12057,11 +12133,13 @@ html[lang="ko"] .faq-feedback-strip h2 {
     width: 100%;
   }
 
+  .usage-reset-panel,
   .usage-upgrade-panel {
     align-items: stretch;
     flex-direction: column;
   }
 
+  .usage-reset-button,
   .usage-upgrade-button {
     width: 100%;
   }

@@ -269,6 +269,7 @@ const createUserProfileDialog = () => {
           <span data-i18n="profileDialog.photoControl">Add profile photo</span>
           <input type="file" accept="image/png,image/jpeg,image/webp" data-profile-avatar-input />
         </label>
+        <button class="user-profile-mini-button" type="button" data-profile-avatar-reset data-i18n="profileDialog.photoReset">Reset photo</button>
       </div>
       <div class="user-profile-grid">
         <div class="user-profile-field">
@@ -286,6 +287,12 @@ const createUserProfileDialog = () => {
         <div class="user-profile-field">
           <span data-i18n="profileDialog.storage">Storage</span>
           <strong data-i18n="profileDialog.storageValue">Local browser</strong>
+        </div>
+        <div class="user-profile-field user-profile-visibility-field">
+          <span data-i18n="profileDialog.visibility">Profile visibility</span>
+          <button class="user-profile-toggle" type="button" data-profile-visibility-toggle aria-pressed="true">
+            <strong data-profile-visibility-status data-i18n="profileDialog.visibilityOn">Visible</strong>
+          </button>
         </div>
       </div>
       <div class="user-profile-actions">
@@ -1122,6 +1129,10 @@ const translations = {
     "profileDialog.avatar": "아바타",
     "profileDialog.avatarDefault": "구급차 이미지",
     "profileDialog.avatarCustom": "사용자 이미지",
+    "profileDialog.photoReset": "사진 초기화",
+    "profileDialog.visibility": "프로필 표시",
+    "profileDialog.visibilityOn": "표시 중",
+    "profileDialog.visibilityOff": "숨김",
     "profileDialog.storage": "저장 위치",
     "profileDialog.storageValue": "브라우저 로컬",
     "profileDialog.openSettings": "설정 열기",
@@ -1131,7 +1142,10 @@ const translations = {
     "profileDialog.saved": "프로필 이름이 저장되었습니다.",
     "profileDialog.resetSaved": "프로필이 기본값으로 돌아갔습니다.",
     "profileDialog.photoSaved": "프로필 사진이 저장되었습니다.",
+    "profileDialog.photoResetSaved": "프로필 사진이 기본값으로 돌아갔습니다.",
     "profileDialog.photoTooLarge": "이미지가 너무 커서 저장하지 못했습니다.",
+    "profileDialog.visibilitySavedOn": "프로필 표시가 켜졌습니다.",
+    "profileDialog.visibilitySavedOff": "프로필 표시가 꺼졌습니다.",
     "welcome.eyebrow": "Welcome",
     "welcome.title": "First Prize Games에 오신 것을 환영합니다",
     "welcome.body": "처음 방문했다면 여기서 주요 페이지와 설정을 빠르게 둘러볼 수 있습니다.",
@@ -2541,6 +2555,10 @@ const translations = {
     "profileDialog.avatar": "Avatar",
     "profileDialog.avatarDefault": "Ambulance image",
     "profileDialog.avatarCustom": "Custom image",
+    "profileDialog.photoReset": "Reset photo",
+    "profileDialog.visibility": "Profile visibility",
+    "profileDialog.visibilityOn": "Visible",
+    "profileDialog.visibilityOff": "Hidden",
     "profileDialog.storage": "Storage",
     "profileDialog.storageValue": "Local browser",
     "profileDialog.openSettings": "Open settings",
@@ -2550,7 +2568,10 @@ const translations = {
     "profileDialog.saved": "Profile name saved.",
     "profileDialog.resetSaved": "Profile reset to defaults.",
     "profileDialog.photoSaved": "Profile photo saved.",
+    "profileDialog.photoResetSaved": "Profile photo reset to the default.",
     "profileDialog.photoTooLarge": "The image is too large to save.",
+    "profileDialog.visibilitySavedOn": "Profile visibility is on.",
+    "profileDialog.visibilitySavedOff": "Profile visibility is off.",
     "welcome.eyebrow": "Welcome",
     "welcome.title": "Welcome to First Prize Games",
     "welcome.body": "Start with the main pages, settings, and trust information in one quick view.",
@@ -3967,6 +3988,7 @@ const translate = (key) => translations[currentLanguage][key] || translations.ko
 
 const USER_PROFILE_NAME_KEY = "profile-user-name";
 const USER_PROFILE_AVATAR_KEY = "profile-user-avatar";
+const USER_PROFILE_VISIBILITY_KEY = "profile-setting-profile-public";
 const DEFAULT_USER_PROFILE_NAME = "My name";
 const DEFAULT_USER_PROFILE_AVATAR = "/assets/well.png";
 const USER_PROFILE_PLAN = "Free";
@@ -3977,11 +3999,13 @@ const getUserProfileName = () => {
 };
 
 const getUserProfileAvatar = () => localStorage.getItem(USER_PROFILE_AVATAR_KEY) || DEFAULT_USER_PROFILE_AVATAR;
+const getUserProfileVisibility = () => normalizeBooleanSetting(localStorage.getItem(USER_PROFILE_VISIBILITY_KEY), true);
 
 const syncUserProfileUI = () => {
   const name = getUserProfileName();
   const avatar = getUserProfileAvatar();
   const hasCustomAvatar = avatar !== DEFAULT_USER_PROFILE_AVATAR;
+  const isVisible = getUserProfileVisibility();
 
   document.querySelectorAll("[data-profile-name]").forEach((element) => {
     element.textContent = name;
@@ -3999,6 +4023,12 @@ const syncUserProfileUI = () => {
   document.querySelectorAll("[data-profile-avatar-status]").forEach((element) => {
     element.textContent = translate(hasCustomAvatar ? "profileDialog.avatarCustom" : "profileDialog.avatarDefault");
   });
+  document.querySelectorAll("[data-profile-visibility-status]").forEach((element) => {
+    element.textContent = translate(isVisible ? "profileDialog.visibilityOn" : "profileDialog.visibilityOff");
+  });
+  document.querySelectorAll("[data-profile-visibility-toggle]").forEach((button) => {
+    button.setAttribute("aria-pressed", String(isVisible));
+  });
 };
 
 const saveUserProfileName = () => {
@@ -4012,10 +4042,26 @@ const saveUserProfileName = () => {
 const resetUserProfile = () => {
   localStorage.setItem(USER_PROFILE_NAME_KEY, DEFAULT_USER_PROFILE_NAME);
   localStorage.removeItem(USER_PROFILE_AVATAR_KEY);
+  localStorage.setItem(USER_PROFILE_VISIBILITY_KEY, "true");
   const avatarInput = document.querySelector("[data-profile-avatar-input]");
   if (avatarInput) avatarInput.value = "";
   syncUserProfileUI();
   showCopyToast("profileDialog.resetSaved");
+};
+
+const resetUserProfileAvatar = () => {
+  localStorage.removeItem(USER_PROFILE_AVATAR_KEY);
+  const avatarInput = document.querySelector("[data-profile-avatar-input]");
+  if (avatarInput) avatarInput.value = "";
+  syncUserProfileUI();
+  showCopyToast("profileDialog.photoResetSaved");
+};
+
+const toggleUserProfileVisibility = () => {
+  const nextValue = !getUserProfileVisibility();
+  localStorage.setItem(USER_PROFILE_VISIBILITY_KEY, String(nextValue));
+  syncUserProfileUI();
+  showCopyToast(nextValue ? "profileDialog.visibilitySavedOn" : "profileDialog.visibilitySavedOff");
 };
 
 const readUserProfileAvatar = (file) => {
@@ -5013,6 +5059,8 @@ const setupUserProfileDialog = () => {
 
   document.querySelector("[data-profile-save]")?.addEventListener("click", saveUserProfileName);
   document.querySelector("[data-profile-reset]")?.addEventListener("click", resetUserProfile);
+  document.querySelector("[data-profile-avatar-reset]")?.addEventListener("click", resetUserProfileAvatar);
+  document.querySelector("[data-profile-visibility-toggle]")?.addEventListener("click", toggleUserProfileVisibility);
   document.querySelector("[data-profile-name-input]")?.addEventListener("keydown", (event) => {
     if (event.key === "Enter") saveUserProfileName();
   });
@@ -6133,6 +6181,8 @@ const clearSiteCache = () => {
 
   [
     "profile-theme",
+    "profile-user-name",
+    "profile-user-avatar",
     "profile-language",
     "profile-density",
     "profile-currency",

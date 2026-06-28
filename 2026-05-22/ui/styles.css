@@ -9892,7 +9892,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
 .user-profile-controls {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   gap: 10px;
   align-items: end;
 }
@@ -9956,6 +9956,33 @@ html[lang="ko"] .faq-feedback-strip h2 {
   clip: rect(0 0 0 0);
 }
 
+.user-profile-mini-button,
+.user-profile-toggle {
+  min-height: 42px;
+  border: 1px solid rgba(238, 238, 238, 0.14);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.user-profile-mini-button {
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+.user-profile-mini-button:hover,
+.user-profile-mini-button:focus-visible,
+.user-profile-toggle:hover,
+.user-profile-toggle:focus-visible {
+  border-color: rgba(238, 238, 238, 0.24);
+  background: rgba(255, 255, 255, 0.12);
+  outline: none;
+}
+
 .user-profile-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -9985,6 +10012,27 @@ html[lang="ko"] .faq-feedback-strip h2 {
   font-size: 14px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.user-profile-visibility-field {
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.user-profile-visibility-field span {
+  align-self: center;
+}
+
+.user-profile-toggle {
+  display: inline-grid;
+  place-items: center;
+  min-width: 112px;
+  padding: 0 14px;
+}
+
+.user-profile-toggle[aria-pressed="true"] {
+  background: var(--highlight-soft);
 }
 
 .user-profile-actions {

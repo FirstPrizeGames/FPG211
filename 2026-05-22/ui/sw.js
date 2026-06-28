@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260628-help-flyout-position";
+const CACHE_NAME = "profile-offline-20260628-profile-visibility-photo";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

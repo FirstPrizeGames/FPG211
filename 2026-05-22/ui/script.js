@@ -503,19 +503,74 @@ const closeSidebarAccountMenus = (exceptAccount = null) => {
   });
 };
 
+const resetSidebarHelpPanelPosition = (panel) => {
+  if (!(panel instanceof HTMLElement)) return;
+  ["position", "top", "right", "bottom", "left", "transform", "maxHeight"].forEach((property) => {
+    panel.style.removeProperty(property);
+  });
+};
+
+const positionSidebarHelpPanel = (menu) => {
+  if (!(menu instanceof HTMLElement)) return;
+  const trigger = menu.querySelector("[data-sidebar-help-trigger]");
+  const panel = menu.querySelector(".sidebar-help-panel");
+  if (!(trigger instanceof HTMLElement) || !(panel instanceof HTMLElement) || panel.hidden) return;
+
+  const margin = 12;
+  const gap = 12;
+  const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const maxPanelHeight = Math.max(220, viewportHeight - margin * 2);
+
+  panel.style.position = "fixed";
+  panel.style.right = "auto";
+  panel.style.bottom = "auto";
+  panel.style.left = "0px";
+  panel.style.top = "0px";
+  panel.style.transform = "none";
+  panel.style.maxHeight = `${maxPanelHeight}px`;
+
+  const triggerRect = trigger.getBoundingClientRect();
+  const panelRect = panel.getBoundingClientRect();
+  const panelWidth = panelRect.width || 246;
+  const panelHeight = Math.min(panel.scrollHeight || panelRect.height || 320, maxPanelHeight);
+  const preferredLeft = triggerRect.right + gap;
+  const fallbackLeft = triggerRect.left - panelWidth - gap;
+  const left =
+    preferredLeft + panelWidth <= viewportWidth - margin
+      ? preferredLeft
+      : Math.max(margin, Math.min(fallbackLeft, viewportWidth - panelWidth - margin));
+  const centeredTop = triggerRect.top + triggerRect.height / 2 - panelHeight / 2;
+  const top = Math.max(margin, Math.min(centeredTop, viewportHeight - panelHeight - margin));
+
+  panel.style.left = `${Math.round(left)}px`;
+  panel.style.top = `${Math.round(top)}px`;
+};
+
 const setSidebarHelpOpen = (menu, isOpen) => {
   if (!(menu instanceof HTMLElement)) return;
   const trigger = menu.querySelector("[data-sidebar-help-trigger]");
   const panel = menu.querySelector(".sidebar-help-panel");
   menu.classList.toggle("is-open", isOpen);
   trigger?.setAttribute("aria-expanded", String(isOpen));
-  if (panel instanceof HTMLElement) panel.hidden = !isOpen;
+  if (panel instanceof HTMLElement) {
+    panel.hidden = !isOpen;
+    if (isOpen) {
+      positionSidebarHelpPanel(menu);
+    } else {
+      resetSidebarHelpPanelPosition(panel);
+    }
+  }
 };
 
 const closeSidebarHelpMenus = (exceptMenu = null) => {
   document.querySelectorAll(".sidebar-help-menu.is-open").forEach((menu) => {
     if (menu !== exceptMenu) setSidebarHelpOpen(menu, false);
   });
+};
+
+const repositionOpenSidebarHelpMenus = () => {
+  document.querySelectorAll(".sidebar-help-menu.is-open").forEach((menu) => positionSidebarHelpPanel(menu));
 };
 
 const openUserProfileDialog = () => {
@@ -633,6 +688,9 @@ document.addEventListener("keydown", (event) => {
     group.querySelector(".nav-group-trigger")?.setAttribute("aria-expanded", "false");
   });
 });
+
+window.addEventListener("resize", repositionOpenSidebarHelpMenus);
+window.addEventListener("scroll", repositionOpenSidebarHelpMenus, true);
 
 const createContextMenuFallback = () => {
   const menu = document.createElement("div");

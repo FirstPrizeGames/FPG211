@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260628-profile-done-removed";
+const CACHE_NAME = "profile-offline-20260628-browser-language-default";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

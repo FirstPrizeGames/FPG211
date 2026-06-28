@@ -3,6 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <style id="initial-theme-lock">
+      html,
+      body {
+        min-height: 100%;
+        background: #111110;
+        color: #f4f3ee;
+        color-scheme: dark;
+      }
+
+      html[data-initial-language="en"]:not([data-i18n-ready="true"]) [data-i18n],
+      html[data-initial-language="en"]:not([data-i18n-ready="true"]) [data-sidebar-label-key] {
+        visibility: hidden;
+      }
+    </style>
     <title>Trust Center · First Prize Games</title>
     <meta
       name="description"
@@ -41,7 +56,12 @@
         const normalizeKidMode = (mode) => mode === "true" ? "strong" : ["soft", "strong"].includes(mode) ? mode : "off";
         const normalizeAccent = (accent) => ["blue", "green", "rose", "orange", "purple"].includes(accent) ? accent : "neutral";
         document.documentElement.dataset.theme = normalizeTheme(localStorage.getItem("profile-theme"));
-        document.documentElement.lang = ["ko", "en"].includes(localStorage.getItem("profile-language")) ? localStorage.getItem("profile-language") : "en";
+        const savedLanguage = ["ko", "en"].includes(localStorage.getItem("profile-language")) ? localStorage.getItem("profile-language") : "";
+        const browserLanguage = (((navigator.languages || [navigator.language]) || [])
+          .map((language) => String(language || "").toLowerCase())
+          .find((language) => language.startsWith("ko") || language.startsWith("en")) || "ko").startsWith("en") ? "en" : "ko";
+        document.documentElement.lang = savedLanguage || browserLanguage;
+        document.documentElement.dataset.initialLanguage = document.documentElement.lang;
         document.documentElement.dataset.accent = normalizeAccent(localStorage.getItem("profile-accent"));
         document.documentElement.dataset.density = ["compact", "comfortable", "spacious"].includes(localStorage.getItem("profile-density")) ? localStorage.getItem("profile-density") : "comfortable";
         document.documentElement.dataset.fastRender = normalizeBoolean(localStorage.getItem("profile-setting-fast-render") || localStorage.getItem("profile-fast-render"), false) ? "true" : "false";
@@ -51,7 +71,7 @@
         document.documentElement.dataset.sidebarCollapsed = sidebarNavEnabled && normalizeBoolean(localStorage.getItem("profile-sidebar-collapsed"), false) ? "true" : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260628-profile-done-removed" />
+    <link rel="stylesheet" href="../styles.css?v=20260628-browser-language-default" />
   </head>
   <body class="trust-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -122,6 +142,6 @@
         </a>
       </section>
     </main>
-    <script src="../script.js?v=20260628-profile-done-removed" defer></script>
+    <script src="../script.js?v=20260628-browser-language-default" defer></script>
   </body>
 </html>

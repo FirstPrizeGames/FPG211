@@ -3,6 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <style id="initial-theme-lock">
+      html,
+      body {
+        min-height: 100%;
+        background: #111110;
+        color: #f4f3ee;
+        color-scheme: dark;
+      }
+
+      html[data-initial-language="en"]:not([data-i18n-ready="true"]) [data-i18n],
+      html[data-initial-language="en"]:not([data-i18n-ready="true"]) [data-sidebar-label-key] {
+        visibility: hidden;
+      }
+    </style>
     <title>Security · First Prize Games</title>
     <meta name="description" content="Security notes for browser storage, notifications, external checkout, feedback forms, and local-first controls." />
     <meta name="theme-color" content="#151514" />
@@ -28,7 +43,12 @@
       (() => {
         const b = (value, fallback = false) => [true, "true", "1", "on"].includes(value) ? true : [false, "false", "0", "off"].includes(value) ? false : fallback;
         document.documentElement.dataset.theme = ["dark", "lights-off"].includes(localStorage.getItem("profile-theme")) ? localStorage.getItem("profile-theme") : "dark";
-        document.documentElement.lang = ["ko", "en"].includes(localStorage.getItem("profile-language")) ? localStorage.getItem("profile-language") : "en";
+        const savedLanguage = ["ko", "en"].includes(localStorage.getItem("profile-language")) ? localStorage.getItem("profile-language") : "";
+        const browserLanguage = (((navigator.languages || [navigator.language]) || [])
+          .map((language) => String(language || "").toLowerCase())
+          .find((language) => language.startsWith("ko") || language.startsWith("en")) || "ko").startsWith("en") ? "en" : "ko";
+        document.documentElement.lang = savedLanguage || browserLanguage;
+        document.documentElement.dataset.initialLanguage = document.documentElement.lang;
         document.documentElement.dataset.accent = "neutral";
         document.documentElement.dataset.density = ["compact", "comfortable", "spacious"].includes(localStorage.getItem("profile-density")) ? localStorage.getItem("profile-density") : "comfortable";
         document.documentElement.dataset.fastRender = b(localStorage.getItem("profile-setting-fast-render"), false) ? "true" : "false";
@@ -38,7 +58,7 @@
         document.documentElement.dataset.sidebarCollapsed = sidebar && b(localStorage.getItem("profile-sidebar-collapsed"), false) ? "true" : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260628-profile-done-removed" />
+    <link rel="stylesheet" href="../styles.css?v=20260628-browser-language-default" />
   </head>
   <body class="security-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -76,6 +96,6 @@
         <article><h2 data-i18n="security.reportTitle">Report an issue</h2><p data-i18n="security.reportBody">보안이나 개인정보 관련 문제가 보이면 Feedback 경로로 알려주세요.</p></article>
       </section>
     </main>
-    <script src="../script.js?v=20260628-profile-done-removed" defer></script>
+    <script src="../script.js?v=20260628-browser-language-default" defer></script>
   </body>
 </html>

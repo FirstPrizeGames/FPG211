@@ -3955,7 +3955,17 @@ const normalizeTheme = (theme) => {
   return "";
 };
 
-const normalizeLanguage = (language) => (language === "ko" || language === "en" ? language : "en");
+const normalizeLanguage = (language) => {
+  const value = String(language || "").toLowerCase();
+  if (value.startsWith("ko")) return "ko";
+  if (value.startsWith("en")) return "en";
+  return "";
+};
+
+const detectBrowserLanguage = () => {
+  const languages = Array.isArray(navigator.languages) && navigator.languages.length ? navigator.languages : [navigator.language];
+  return languages.map(normalizeLanguage).find(Boolean) || "ko";
+};
 
 const normalizeDensity = (density) => {
   if (density === "compact" || density === "comfortable" || density === "spacious") return density;
@@ -3977,7 +3987,7 @@ const getInitialTheme = () => {
   return "dark";
 };
 
-const getInitialLanguage = () => normalizeLanguage(localStorage.getItem("profile-language"));
+const getInitialLanguage = () => normalizeLanguage(localStorage.getItem("profile-language")) || detectBrowserLanguage();
 
 let currentLanguage = getInitialLanguage();
 
@@ -4519,7 +4529,7 @@ const setLanguage = (language) => {
     ko: "settings.languageKorean",
     en: "settings.languageEnglish",
   };
-  const resolvedLanguage = normalizeLanguage(language);
+  const resolvedLanguage = normalizeLanguage(language) || detectBrowserLanguage();
 
   currentLanguage = resolvedLanguage;
   document.documentElement.lang = resolvedLanguage;
@@ -4558,6 +4568,7 @@ const setLanguage = (language) => {
   }
 
   shareLinkButton?.setAttribute("aria-label", translate("share.copy"));
+  document.documentElement.dataset.i18nReady = "true";
 
   setTheme(document.documentElement.dataset.theme || getInitialTheme());
   setAccent(document.documentElement.dataset.accent || "neutral");

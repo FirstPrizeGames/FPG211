@@ -299,7 +299,6 @@ const createUserProfileDialog = () => {
         <a class="button" href="/settings" data-i18n="profileDialog.openSettings">Open settings</a>
         <button class="button primary" type="button" data-profile-save data-i18n="profileDialog.save">Save</button>
         <button class="button" type="button" data-profile-reset data-i18n="profileDialog.reset">Reset</button>
-        <button class="button" type="button" data-user-profile-close data-i18n="profileDialog.done">Done</button>
       </div>
     </div>
   `;
@@ -1138,7 +1137,6 @@ const translations = {
     "profileDialog.openSettings": "설정 열기",
     "profileDialog.save": "저장",
     "profileDialog.reset": "초기화",
-    "profileDialog.done": "완료",
     "profileDialog.saved": "프로필 이름이 저장되었습니다.",
     "profileDialog.resetSaved": "프로필이 기본값으로 돌아갔습니다.",
     "profileDialog.photoSaved": "프로필 사진이 저장되었습니다.",
@@ -2564,7 +2562,6 @@ const translations = {
     "profileDialog.openSettings": "Open settings",
     "profileDialog.save": "Save",
     "profileDialog.reset": "Reset",
-    "profileDialog.done": "Done",
     "profileDialog.saved": "Profile name saved.",
     "profileDialog.resetSaved": "Profile reset to defaults.",
     "profileDialog.photoSaved": "Profile photo saved.",

@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260628-mobile-menu-zfix";
+const CACHE_NAME = "profile-offline-20260628-account-help-license";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

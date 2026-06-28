@@ -181,6 +181,7 @@ const createSidebarHelpMenu = () => {
     { href: "/terms", icon: navIconMarkup.terms, labelKey: "nav.terms", fallback: "Terms" },
     { href: "/security", icon: navIconMarkup.security, labelKey: "nav.security", fallback: "Security" },
     { href: "/privacy", icon: navIconMarkup.privacy, labelKey: "nav.privacy", fallback: "Privacy Policy" },
+    { href: "/license", icon: navIconMarkup.license, labelKey: "nav.license", fallback: "License" },
   ].forEach((item) => {
     const anchor = createNavAnchor(item);
     anchor.classList.add("sidebar-help-link");

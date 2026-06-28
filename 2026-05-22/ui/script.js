@@ -971,11 +971,11 @@ const browserUsageWeeklyBar = document.querySelector("[data-browser-weekly-bar]"
 const browserUsageMonthlyReset = document.querySelector("[data-browser-monthly-reset]");
 const browserUsageMonthlyRemaining = document.querySelector("[data-browser-monthly-remaining]");
 const browserUsageMonthlyBar = document.querySelector("[data-browser-monthly-bar]");
-const browserUsageYearlyReset = document.querySelector("[data-browser-yearly-reset]");
-const browserUsageYearlyRemaining = document.querySelector("[data-browser-yearly-remaining]");
-const browserUsageYearlyBar = document.querySelector("[data-browser-yearly-bar]");
 const usageResetButton = document.querySelector("[data-usage-reset-button]");
 const usageResetStatus = document.querySelector("[data-usage-reset-status]");
+let usageResetWarningDialog = document.querySelector("[data-usage-reset-warning]");
+let usageResetWarningCloseButtons = [...document.querySelectorAll("[data-usage-reset-warning-close]")];
+let usageResetWarningConfirm = document.querySelector("[data-usage-reset-warning-confirm]");
 const usageLearnOpen = document.querySelector("[data-usage-learn-open]");
 const usageLearnDialog = document.querySelector("[data-usage-learn-dialog]");
 const usageLearnCloseButtons = [...document.querySelectorAll("[data-usage-learn-close]")];
@@ -1990,13 +1990,12 @@ const translations = {
     "usage.dailyLimitTitle": "5시간 사용 한도",
     "usage.weeklyLimitTitle": "주간 사용 한도",
     "usage.monthlyLimitTitle": "월간 사용 한도",
-    "usage.yearlyLimitTitle": "연간 사용 한도",
     "usage.remainingPercent": "{percent}% 남음",
     "usage.resetAt": "{time} 초기화",
     "usage.resetOn": "{date} 초기화",
     "usage.learnMore": "Learn more about usage limits",
     "usage.learnDialogTitle": "사용 한도 작동 방식",
-    "usage.learnDialogBody": "이 한도는 서버 계정이 아니라 현재 브라우저에서만 계산됩니다. 처음 접속한 순간부터 5시간, 주간, 월간, 연간 한도가 시작되고, 기간이 지나면 자동으로 새 한도로 초기화됩니다.",
+    "usage.learnDialogBody": "이 한도는 서버 계정이 아니라 현재 브라우저에서만 계산됩니다. 처음 접속한 순간부터 5시간, 주간, 월간 한도가 시작되고, 기간이 지나면 자동으로 새 한도로 초기화됩니다.",
     "usage.learnPointLocalTitle": "브라우저 기준",
     "usage.learnPointLocalBody": "기록은 이 기기의 브라우저 저장소에만 남습니다.",
     "usage.learnPointResetTitle": "자동 초기화",
@@ -2013,8 +2012,13 @@ const translations = {
     "usage.resetStatusLoading": "초기화 가능 횟수를 확인하는 중입니다.",
     "usage.resetStatus": "이번 주 {count}번 더 초기화할 수 있습니다.",
     "usage.resetStatusEmpty": "{date}에 다시 사용할 수 있습니다.",
+    "usage.resetWarningEyebrow": "Usage reset",
+    "usage.resetWarningTitle": "한도를 초기화할까요?",
+    "usage.resetWarningBody": "5시간, 주간, 월간 사용 한도가 모두 지금부터 다시 시작됩니다. 이번 주 초기화 가능 횟수 1회가 사용됩니다.",
+    "usage.resetWarningCancel": "취소",
+    "usage.resetWarningConfirm": "초기화",
     "usage.settingsTitle": "사용량 페이지",
-    "usage.settingsBody": "5시간, 주간, 월간, 연간 한도를 Usage 페이지에서 확인합니다.",
+    "usage.settingsBody": "5시간, 주간, 월간 한도를 Usage 페이지에서 확인합니다.",
     "usage.open": "Usage 열기",
     "usage.summaryValue": "페이지 이동",
     "settings.accentTitle": "강조 컬러",
@@ -3410,13 +3414,12 @@ const translations = {
     "usage.dailyLimitTitle": "5-hour usage limit",
     "usage.weeklyLimitTitle": "Weekly usage limit",
     "usage.monthlyLimitTitle": "Monthly usage limit",
-    "usage.yearlyLimitTitle": "Yearly usage limit",
     "usage.remainingPercent": "{percent}% left",
     "usage.resetAt": "Resets at {time}",
     "usage.resetOn": "Resets on {date}",
     "usage.learnMore": "Learn more about usage limits",
     "usage.learnDialogTitle": "How usage limits work",
-    "usage.learnDialogBody": "These limits are calculated only in the current browser, not on a server account. The 5-hour, weekly, monthly, and yearly limits start from the moment you first visit, then reset automatically after each window expires.",
+    "usage.learnDialogBody": "These limits are calculated only in the current browser, not on a server account. The 5-hour, weekly, and monthly limits start from the moment you first visit, then reset automatically after each window expires.",
     "usage.learnPointLocalTitle": "Browser based",
     "usage.learnPointLocalBody": "The record stays in this device's browser storage.",
     "usage.learnPointResetTitle": "Automatic reset",
@@ -3433,8 +3436,13 @@ const translations = {
     "usage.resetStatusLoading": "Checking reset availability.",
     "usage.resetStatus": "{count} resets left this week.",
     "usage.resetStatusEmpty": "Available again on {date}.",
+    "usage.resetWarningEyebrow": "Usage reset",
+    "usage.resetWarningTitle": "Reset usage limits?",
+    "usage.resetWarningBody": "The 5-hour, weekly, and monthly usage limits will restart from now. This uses 1 reset from this week's allowance.",
+    "usage.resetWarningCancel": "Cancel",
+    "usage.resetWarningConfirm": "Reset",
     "usage.settingsTitle": "Usage page",
-    "usage.settingsBody": "Review the 5-hour, weekly, monthly, and yearly usage limits on the Usage page.",
+    "usage.settingsBody": "Review the 5-hour, weekly, and monthly usage limits on the Usage page.",
     "usage.open": "Open Usage",
     "usage.summaryValue": "Open page",
     "settings.accentTitle": "Accent color",
@@ -5365,6 +5373,34 @@ const createClipboardWarningDialog = () => {
   clipboardWarningContinue = document.querySelector("[data-clipboard-warning-continue]");
 };
 
+const createUsageResetWarningDialog = () => {
+  if (!document.querySelector("[data-usage-reset-warning]")) {
+    const dialog = document.createElement("div");
+    dialog.className = "cache-dialog usage-reset-warning-dialog";
+    dialog.dataset.usageResetWarning = "";
+    dialog.hidden = true;
+    dialog.innerHTML = `
+      <div class="cache-dialog-panel usage-reset-warning-panel" role="dialog" aria-modal="true" aria-labelledby="usage-reset-warning-title">
+        <button class="dialog-close-button" type="button" data-usage-reset-warning-close aria-label="닫기" data-i18n-aria-label="share.close">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+        </button>
+        <p class="eyebrow" data-i18n="usage.resetWarningEyebrow">Usage reset</p>
+        <h2 id="usage-reset-warning-title" data-i18n="usage.resetWarningTitle">한도를 초기화할까요?</h2>
+        <p data-i18n="usage.resetWarningBody">5시간, 주간, 월간 사용 한도가 모두 지금부터 다시 시작됩니다. 이번 주 초기화 가능 횟수 1회가 사용됩니다.</p>
+        <div class="cache-warning-actions">
+          <button class="button cache-cancel-button" type="button" data-usage-reset-warning-close data-i18n="usage.resetWarningCancel">취소</button>
+          <button class="button cache-confirm-button usage-reset-confirm-button" type="button" data-usage-reset-warning-confirm data-i18n="usage.resetWarningConfirm">초기화</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(dialog);
+  }
+
+  usageResetWarningDialog = document.querySelector("[data-usage-reset-warning]");
+  usageResetWarningCloseButtons = [...document.querySelectorAll("[data-usage-reset-warning-close]")];
+  usageResetWarningConfirm = document.querySelector("[data-usage-reset-warning-confirm]");
+};
+
 const createQuickSettingsDialog = () => {
   if (!document.querySelector("[data-quick-settings-dialog]")) {
     const dialog = document.createElement("div");
@@ -6063,8 +6099,6 @@ const clearSiteCache = () => {
     "profile-browser-usage-week-used-ms",
     "profile-browser-usage-month-start-ms",
     "profile-browser-usage-month-used-ms",
-    "profile-browser-usage-year-start-ms",
-    "profile-browser-usage-year-used-ms",
     "profile-browser-usage-reset-week-start-ms",
     "profile-browser-usage-reset-week-count",
     activityLogKey,
@@ -6122,8 +6156,6 @@ const browserUsageWeeklyLimitMs = 7 * browserUsageLimitMs;
 const browserUsageWeekMs = 7 * 24 * 60 * 60 * 1000;
 const browserUsageMonthlyLimitMs = 30 * browserUsageLimitMs;
 const browserUsageMonthMs = 30 * 24 * 60 * 60 * 1000;
-const browserUsageYearlyLimitMs = 365 * browserUsageLimitMs;
-const browserUsageYearMs = 365 * 24 * 60 * 60 * 1000;
 const browserUsageResetLimit = 2;
 const browserUsageStartedAt = Date.now();
 let browserUsageWindowStart = Number.parseInt(localStorage.getItem("profile-browser-usage-window-start-ms") || "0", 10);
@@ -6135,8 +6167,6 @@ let browserUsageWeeklyWindowStart = Number.parseInt(localStorage.getItem("profil
 let browserUsageWeeklyBaseMs = Number.parseInt(localStorage.getItem("profile-browser-usage-week-used-ms") || "0", 10);
 let browserUsageMonthlyWindowStart = Number.parseInt(localStorage.getItem("profile-browser-usage-month-start-ms") || "0", 10);
 let browserUsageMonthlyBaseMs = Number.parseInt(localStorage.getItem("profile-browser-usage-month-used-ms") || "0", 10);
-let browserUsageYearlyWindowStart = Number.parseInt(localStorage.getItem("profile-browser-usage-year-start-ms") || "0", 10);
-let browserUsageYearlyBaseMs = Number.parseInt(localStorage.getItem("profile-browser-usage-year-used-ms") || "0", 10);
 let browserUsageResetWeekStart = Number.parseInt(
   localStorage.getItem("profile-browser-usage-reset-week-start-ms") || "0",
   10,
@@ -6149,7 +6179,6 @@ let browserUsageRedirected = false;
 let browserUsageWindowStateChanged = false;
 let browserUsageWeeklyWindowStateChanged = false;
 let browserUsageMonthlyWindowStateChanged = false;
-let browserUsageYearlyWindowStateChanged = false;
 let browserUsageResetWindowStateChanged = false;
 let usageLimitNotice = null;
 if (!Number.isFinite(browserUsageWindowStart) || browserUsageWindowStart <= 0) {
@@ -6176,14 +6205,6 @@ if (!Number.isFinite(browserUsageMonthlyBaseMs) || browserUsageMonthlyBaseMs < 0
   browserUsageMonthlyBaseMs = 0;
   browserUsageMonthlyWindowStateChanged = true;
 }
-if (!Number.isFinite(browserUsageYearlyWindowStart) || browserUsageYearlyWindowStart <= 0) {
-  browserUsageYearlyWindowStart = browserUsageStartedAt;
-  browserUsageYearlyWindowStateChanged = true;
-}
-if (!Number.isFinite(browserUsageYearlyBaseMs) || browserUsageYearlyBaseMs < 0) {
-  browserUsageYearlyBaseMs = 0;
-  browserUsageYearlyWindowStateChanged = true;
-}
 if (!Number.isFinite(browserUsageResetWeekStart) || browserUsageResetWeekStart <= 0) {
   browserUsageResetWeekStart = 0;
   browserUsageResetWindowStateChanged = true;
@@ -6204,10 +6225,6 @@ if (browserUsageWeeklyWindowStateChanged) {
 if (browserUsageMonthlyWindowStateChanged) {
   localStorage.setItem("profile-browser-usage-month-start-ms", String(browserUsageMonthlyWindowStart));
   localStorage.setItem("profile-browser-usage-month-used-ms", String(browserUsageMonthlyBaseMs));
-}
-if (browserUsageYearlyWindowStateChanged) {
-  localStorage.setItem("profile-browser-usage-year-start-ms", String(browserUsageYearlyWindowStart));
-  localStorage.setItem("profile-browser-usage-year-used-ms", String(browserUsageYearlyBaseMs));
 }
 if (browserUsageResetWindowStateChanged) {
   localStorage.setItem("profile-browser-usage-reset-week-start-ms", String(browserUsageResetWeekStart));
@@ -6307,16 +6324,6 @@ const refreshBrowserUsageMonthlyWindow = () => {
   localStorage.setItem("profile-browser-usage-month-used-ms", "0");
 };
 
-const refreshBrowserUsageYearlyWindow = () => {
-  const now = Date.now();
-  if (now - browserUsageYearlyWindowStart < browserUsageYearMs) return;
-
-  browserUsageYearlyWindowStart = now;
-  browserUsageYearlyBaseMs = 0;
-  localStorage.setItem("profile-browser-usage-year-start-ms", String(browserUsageYearlyWindowStart));
-  localStorage.setItem("profile-browser-usage-year-used-ms", "0");
-};
-
 const refreshBrowserUsageResetWindow = () => {
   const now = Date.now();
   if (browserUsageResetWeekStart <= 0) return;
@@ -6331,7 +6338,6 @@ const refreshBrowserUsageResetWindow = () => {
 refreshBrowserUsageWindow();
 refreshBrowserUsageWeeklyWindow();
 refreshBrowserUsageMonthlyWindow();
-refreshBrowserUsageYearlyWindow();
 refreshBrowserUsageResetWindow();
 
 const getUsageResetRemaining = () => {
@@ -6371,8 +6377,6 @@ const resetBrowserUsageLimits = () => {
   browserUsageWeeklyBaseMs = 0;
   browserUsageMonthlyWindowStart = now;
   browserUsageMonthlyBaseMs = 0;
-  browserUsageYearlyWindowStart = now;
-  browserUsageYearlyBaseMs = 0;
   browserUsageRedirected = false;
   browserUsageResetWeekCount = Math.min(browserUsageResetWeekCount + 1, browserUsageResetLimit);
   localStorage.setItem("profile-browser-usage-window-start-ms", String(browserUsageWindowStart));
@@ -6381,14 +6385,44 @@ const resetBrowserUsageLimits = () => {
   localStorage.setItem("profile-browser-usage-week-used-ms", "0");
   localStorage.setItem("profile-browser-usage-month-start-ms", String(browserUsageMonthlyWindowStart));
   localStorage.setItem("profile-browser-usage-month-used-ms", "0");
-  localStorage.setItem("profile-browser-usage-year-start-ms", String(browserUsageYearlyWindowStart));
-  localStorage.setItem("profile-browser-usage-year-used-ms", "0");
   localStorage.setItem("profile-browser-usage-reset-week-start-ms", String(browserUsageResetWeekStart));
   localStorage.setItem("profile-browser-usage-reset-week-count", String(browserUsageResetWeekCount));
   localStorage.removeItem("profile-browser-usage-total-ms");
   setUsageLimitNoticeVisible(false);
   updateBrowserUsage();
   updateUsageResetControl();
+};
+
+const showUsageResetWarningDialog = () => {
+  if (getUsageResetRemaining() <= 0) {
+    updateUsageResetControl();
+    return;
+  }
+
+  if (!usageResetWarningDialog) createUsageResetWarningDialog();
+  if (!usageResetWarningDialog) return;
+  usageResetWarningDialog.hidden = false;
+  usageResetWarningDialog.classList.remove("is-closing");
+  lockBodyScroll();
+  window.setTimeout(() => {
+    usageResetWarningConfirm?.focus({ preventScroll: true });
+  }, 30);
+};
+
+const closeUsageResetWarningDialog = () => {
+  if (!usageResetWarningDialog || usageResetWarningDialog.hidden) return;
+  usageResetWarningDialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    usageResetWarningDialog.hidden = true;
+    usageResetWarningDialog.classList.remove("is-closing");
+    unlockBodyScroll();
+    usageResetButton?.focus({ preventScroll: true });
+  }, 160);
+};
+
+const confirmUsageResetWarningDialog = () => {
+  resetBrowserUsageLimits();
+  closeUsageResetWarningDialog();
 };
 
 const getCurrentBrowserUsageMs = () => {
@@ -6406,24 +6440,16 @@ const getCurrentMonthlyUsageMs = () => {
   return browserUsageMonthlyBaseMs + (Date.now() - Math.max(browserUsageStartedAt, browserUsageMonthlyWindowStart));
 };
 
-const getCurrentYearlyUsageMs = () => {
-  refreshBrowserUsageYearlyWindow();
-  return browserUsageYearlyBaseMs + (Date.now() - Math.max(browserUsageStartedAt, browserUsageYearlyWindowStart));
-};
-
 const persistBrowserUsage = () => {
   refreshBrowserUsageWindow();
   refreshBrowserUsageWeeklyWindow();
   refreshBrowserUsageMonthlyWindow();
-  refreshBrowserUsageYearlyWindow();
   localStorage.setItem("profile-browser-usage-window-start-ms", String(browserUsageWindowStart));
   localStorage.setItem("profile-browser-usage-used-ms", String(Math.min(getCurrentBrowserUsageMs(), browserUsageLimitMs)));
   localStorage.setItem("profile-browser-usage-week-start-ms", String(browserUsageWeeklyWindowStart));
   localStorage.setItem("profile-browser-usage-week-used-ms", String(Math.min(getCurrentWeeklyUsageMs(), browserUsageWeeklyLimitMs)));
   localStorage.setItem("profile-browser-usage-month-start-ms", String(browserUsageMonthlyWindowStart));
   localStorage.setItem("profile-browser-usage-month-used-ms", String(Math.min(getCurrentMonthlyUsageMs(), browserUsageMonthlyLimitMs)));
-  localStorage.setItem("profile-browser-usage-year-start-ms", String(browserUsageYearlyWindowStart));
-  localStorage.setItem("profile-browser-usage-year-used-ms", String(Math.min(getCurrentYearlyUsageMs(), browserUsageYearlyLimitMs)));
   localStorage.removeItem("profile-browser-usage-total-ms");
 };
 
@@ -6431,25 +6457,20 @@ const updateBrowserUsage = () => {
   refreshBrowserUsageWindow();
   refreshBrowserUsageWeeklyWindow();
   refreshBrowserUsageMonthlyWindow();
-  refreshBrowserUsageYearlyWindow();
 
   const totalMs = Math.min(getCurrentBrowserUsageMs(), browserUsageLimitMs);
   const weeklyMs = Math.min(getCurrentWeeklyUsageMs(), browserUsageWeeklyLimitMs);
   const monthlyMs = Math.min(getCurrentMonthlyUsageMs(), browserUsageMonthlyLimitMs);
-  const yearlyMs = Math.min(getCurrentYearlyUsageMs(), browserUsageYearlyLimitMs);
   const dailyRemainingRatio = Math.max(1 - totalMs / browserUsageLimitMs, 0);
   const weeklyRemainingRatio = Math.max(1 - weeklyMs / browserUsageWeeklyLimitMs, 0);
   const monthlyRemainingRatio = Math.max(1 - monthlyMs / browserUsageMonthlyLimitMs, 0);
-  const yearlyRemainingRatio = Math.max(1 - yearlyMs / browserUsageYearlyLimitMs, 0);
   const dailyRemainingPercent = Math.ceil(dailyRemainingRatio * 100);
   const weeklyRemainingPercent = Math.ceil(weeklyRemainingRatio * 100);
   const monthlyRemainingPercent = Math.ceil(monthlyRemainingRatio * 100);
-  const yearlyRemainingPercent = Math.ceil(yearlyRemainingRatio * 100);
   const hasReachedLimit =
     totalMs >= browserUsageLimitMs ||
     weeklyMs >= browserUsageWeeklyLimitMs ||
-    monthlyMs >= browserUsageMonthlyLimitMs ||
-    yearlyMs >= browserUsageYearlyLimitMs;
+    monthlyMs >= browserUsageMonthlyLimitMs;
 
   setUsageLimitNoticeVisible(hasReachedLimit);
   updateUsageResetControl();
@@ -6457,8 +6478,7 @@ const updateBrowserUsage = () => {
   if (
     !browserUsageDailyRemaining &&
     !browserUsageWeeklyRemaining &&
-    !browserUsageMonthlyRemaining &&
-    !browserUsageYearlyRemaining
+    !browserUsageMonthlyRemaining
   ) return;
 
   if (browserUsageDailyReset) browserUsageDailyReset.textContent = formatUsageResetTime(browserUsageWindowStart + browserUsageLimitMs);
@@ -6476,11 +6496,6 @@ const updateBrowserUsage = () => {
     browserUsageMonthlyRemaining.textContent = translate("usage.remainingPercent").replace("{percent}", String(monthlyRemainingPercent));
   }
   if (browserUsageMonthlyBar) browserUsageMonthlyBar.style.transform = `scaleX(${monthlyRemainingRatio})`;
-  if (browserUsageYearlyReset) browserUsageYearlyReset.textContent = formatUsageResetFullDate(browserUsageYearlyWindowStart + browserUsageYearMs);
-  if (browserUsageYearlyRemaining) {
-    browserUsageYearlyRemaining.textContent = translate("usage.remainingPercent").replace("{percent}", String(yearlyRemainingPercent));
-  }
-  if (browserUsageYearlyBar) browserUsageYearlyBar.style.transform = `scaleX(${yearlyRemainingRatio})`;
   if (hasReachedLimit && !browserUsageRedirected) {
     browserUsageRedirected = true;
     persistBrowserUsage();
@@ -7623,6 +7638,7 @@ createSourceDialog();
 createPrintDialog();
 createClipboardDialog();
 createClipboardWarningDialog();
+createUsageResetWarningDialog();
 createQuickSettingsDialog();
 createWelcomeDialog();
 createMobileQuickActions();
@@ -7837,7 +7853,14 @@ usageLearnCloseButtons.forEach((button) => {
 usageLearnDialog?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === usageLearnDialog) closeUsageLearnDialog();
 });
-usageResetButton?.addEventListener("click", resetBrowserUsageLimits);
+usageResetButton?.addEventListener("click", showUsageResetWarningDialog);
+usageResetWarningCloseButtons.forEach((button) => {
+  button.addEventListener("click", closeUsageResetWarningDialog);
+});
+usageResetWarningConfirm?.addEventListener("click", confirmUsageResetWarningDialog);
+usageResetWarningDialog?.addEventListener("click", (event) => {
+  if (event.button === 0 && event.target === usageResetWarningDialog) closeUsageResetWarningDialog();
+});
 shareLinkButton?.addEventListener("click", showShareDialog);
 shareClose?.addEventListener("click", closeShareDialog);
 shareCopy?.addEventListener("click", copyShareLink);

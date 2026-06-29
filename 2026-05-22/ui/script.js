@@ -63,7 +63,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260629-settings-mobile-tabs2`;
+  const repairUrl = `${guard.fallback}?v=20260629-settings-save-toast-green`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -520,6 +520,7 @@ const setupSettingsPageEarlyRecovery = () => {
         event.preventDefault();
         event.stopImmediatePropagation();
         updateToggle(toggle, !toggle.classList.contains("is-on"));
+        showCopyToast("settings.saved");
         return;
       }
 
@@ -592,6 +593,7 @@ const setupSettingsPageEarlyRecovery = () => {
         event.preventDefault();
         event.stopImmediatePropagation();
         setContextMenuModeEarly(contextMenuChoice.dataset.contextMenuChoice);
+        showCopyToast("settings.saved");
         return;
       }
 
@@ -645,6 +647,7 @@ const setupSettingsPageEarlyRecovery = () => {
           const value = choice.dataset[choiceConfig.dataKey];
           choiceConfig.apply(value);
           setChoiceActive(choiceConfig, value);
+          showCopyToast("settings.saved");
         }
         closeMenus();
         return;
@@ -3391,6 +3394,7 @@ const translations = {
     "settings.siteDataDialogTitle": "사이트 데이터 삭제",
     "settings.siteDataConfirm": "삭제하기",
     "settings.siteDataDone": "사이트 데이터가 삭제되었습니다.",
+    "settings.saved": "설정이 저장되었습니다.",
     "settings.clearCacheTitle": "사이트 데이터 삭제",
     "settings.clearCacheBody": "이 브라우저에 저장된 사이트 데이터를 삭제하고 기본값으로 되돌립니다.",
     "settings.clearCacheButton": "데이터 삭제",
@@ -4863,6 +4867,7 @@ const translations = {
     "settings.siteDataDialogTitle": "Delete site data",
     "settings.siteDataConfirm": "Delete",
     "settings.siteDataDone": "Site data has been deleted.",
+    "settings.saved": "Settings saved.",
     "settings.clearCacheTitle": "Delete site data",
     "settings.clearCacheBody":
       "Removes this site's saved browser data and restores defaults.",
@@ -5580,6 +5585,7 @@ const showCopyToast = (messageKey = "toast.copyText") => {
 
   window.clearTimeout(copyToastTimeoutId);
   toast.textContent = message;
+  toast.dataset.toastTone = messageKey === "settings.saved" ? "success" : "default";
   toast.hidden = false;
   toast.classList.remove("is-hiding");
   toast.classList.add("is-visible");
@@ -6207,6 +6213,7 @@ const setupSettingToggles = () => {
         document.documentElement.dataset.navLayout = nextValue ? "sidebar" : "top";
       }
       updateSettingToggle(button, nextValue);
+      showCopyToast("settings.saved");
     });
   });
 };
@@ -6339,6 +6346,7 @@ const setupContextMenuModeDialog = () => {
   contextModeChoices.forEach((button) => {
     button.addEventListener("click", () => {
       setContextMenuMode(button.dataset.contextMenuChoice);
+      showCopyToast("settings.saved");
     });
   });
 };
@@ -9063,6 +9071,7 @@ const browserUsageIntervalId = window.setInterval(() => {
 themeChoices.forEach((button) => {
   button.addEventListener("click", () => {
     setTheme(button.dataset.themeChoice);
+    showCopyToast("settings.saved");
     setSettingSelectOpen(themeSelect, themeTrigger, themeMenu, false);
   });
 });
@@ -9070,6 +9079,7 @@ themeChoices.forEach((button) => {
 languageChoices.forEach((button) => {
   button.addEventListener("click", () => {
     setLanguage(button.dataset.languageChoice);
+    showCopyToast("settings.saved");
     setSettingSelectOpen(languageSelect, languageTrigger, languageMenu, false);
   });
 });
@@ -9554,6 +9564,7 @@ const setupSettingsControlRecovery = () => {
         event.preventDefault();
         event.stopImmediatePropagation();
         setTheme(themeChoice.dataset.themeChoice);
+        showCopyToast("settings.saved");
         closeSettingMenus();
         return;
       }
@@ -9563,6 +9574,7 @@ const setupSettingsControlRecovery = () => {
         event.preventDefault();
         event.stopImmediatePropagation();
         setLanguage(languageChoice.dataset.languageChoice);
+        showCopyToast("settings.saved");
         closeSettingMenus();
         return;
       }

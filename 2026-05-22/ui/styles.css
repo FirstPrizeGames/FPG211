@@ -15524,6 +15524,13 @@ html[lang="ko"] .faq-feedback-strip h2 {
   font-weight: 760;
 }
 
+.copy-toast[data-toast-tone="success"] {
+  border-color: color-mix(in srgb, #84cc16 58%, #365314);
+  background: #d9f99d;
+  color: #1a2e05;
+  box-shadow: 0 18px 44px rgba(22, 101, 52, 0.26);
+}
+
 .cookie-notice,
 .cache-dialog-panel,
 .settings-body .cache-dialog-panel {

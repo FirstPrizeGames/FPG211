@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260629-official-home-mobile-check";
+const CACHE_NAME = "profile-offline-20260629-official-home-hover-hitbox-fix";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

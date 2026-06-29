@@ -16815,9 +16815,25 @@ html[lang="ko"] .faq-feedback-strip h2 {
   outline: none !important;
 }
 
+.official-home-body .official-menu-link:hover:not(.is-active),
+.official-home-body .official-menu-link:focus-visible:not(.is-active),
+.official-home-body .official-menu-item:hover > button,
+.official-home-body .official-menu-item:focus-within > button {
+  background: color-mix(in srgb, var(--ink) 6%, transparent) !important;
+}
+
+.official-home-body .official-home-menu:hover .official-menu-item:focus-within:not(:hover) > button {
+  background: transparent !important;
+}
+
 .official-home-body .official-menu-item {
   position: static !important;
   display: inline-flex !important;
+}
+
+.official-home-body .official-menu-item::after {
+  content: none !important;
+  display: none !important;
 }
 
 .official-home-body .official-mega-panel,

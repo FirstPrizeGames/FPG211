@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260629-settings-save-toast-green";
+const CACHE_NAME = "profile-offline-20260629-toast-above-modal";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

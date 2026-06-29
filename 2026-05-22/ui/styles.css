@@ -5716,7 +5716,7 @@ html[lang="ko"] .about-next-direction h2 {
   position: fixed;
   left: 50%;
   bottom: calc(18px + env(safe-area-inset-bottom));
-  z-index: 140;
+  z-index: 4300;
   max-width: min(420px, calc(100% - 32px));
   padding: 11px 15px;
   border: 1px solid color-mix(in srgb, var(--line) 88%, transparent);

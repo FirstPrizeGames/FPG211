@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260629-settings-inline-modal";
+const CACHE_NAME = "profile-offline-20260629-settings-mobile-tabs2";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

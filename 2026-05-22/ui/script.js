@@ -63,7 +63,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260629-settings-inline-modal`;
+  const repairUrl = `${guard.fallback}?v=20260629-settings-mobile-tabs2`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -160,7 +160,7 @@ const setupUsagePageEarlyRecovery = () => {
   writeNumber("profile-browser-usage-reset-week-start-ms", resetStart);
   writeNumber("profile-browser-usage-reset-week-count", resetCount);
 
-  const updateRow = (resetSelector, remainingSelector, barSelector, start, used, limit, dateFormatter) => {
+  const updateRow = (resetSelector, remainingSelector, barSelector, start, used, limit, resetWindowMs, dateFormatter) => {
     const elapsed = activeStartedAt > 0 ? Math.max(0, now - Math.max(activeStartedAt, start)) : 0;
     const total = Math.min(used + elapsed, limit);
     const ratio = Math.max(1 - total / limit, 0);
@@ -168,15 +168,15 @@ const setupUsagePageEarlyRecovery = () => {
     const reset = document.querySelector(resetSelector);
     const remaining = document.querySelector(remainingSelector);
     const bar = document.querySelector(barSelector);
-    if (reset) reset.textContent = dateFormatter(start + limit);
+    if (reset) reset.textContent = dateFormatter(start + resetWindowMs);
     if (remaining) remaining.textContent = `${percent}% left`;
     if (bar) bar.style.transform = `scaleX(${ratio})`;
   };
 
   const updateUsageUi = () => {
-    updateRow("[data-browser-daily-reset]", "[data-browser-daily-remaining]", "[data-browser-daily-bar]", dailyStart, dailyUsed, dailyLimitMs, formatTime);
-    updateRow("[data-browser-weekly-reset]", "[data-browser-weekly-remaining]", "[data-browser-weekly-bar]", weeklyStart, weeklyUsed, weekMs, formatDate);
-    updateRow("[data-browser-monthly-reset]", "[data-browser-monthly-remaining]", "[data-browser-monthly-bar]", monthlyStart, monthlyUsed, monthMs, formatDate);
+    updateRow("[data-browser-daily-reset]", "[data-browser-daily-remaining]", "[data-browser-daily-bar]", dailyStart, dailyUsed, dailyLimitMs, dailyLimitMs, formatTime);
+    updateRow("[data-browser-weekly-reset]", "[data-browser-weekly-remaining]", "[data-browser-weekly-bar]", weeklyStart, weeklyUsed, weeklyLimitMs, weekMs, formatDate);
+    updateRow("[data-browser-monthly-reset]", "[data-browser-monthly-remaining]", "[data-browser-monthly-bar]", monthlyStart, monthlyUsed, monthlyLimitMs, monthMs, formatDate);
 
     const remaining = Math.max(resetLimit - resetCount, 0);
     const status = document.querySelector("[data-usage-reset-status]");

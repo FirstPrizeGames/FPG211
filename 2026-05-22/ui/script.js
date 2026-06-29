@@ -63,7 +63,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260629-usage-early-recovery`;
+  const repairUrl = `${guard.fallback}?v=20260629-usage-visible-session`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -81,6 +81,18 @@ const setupUsagePageEarlyRecovery = () => {
   const weeklyLimitMs = 7 * dailyLimitMs;
   const monthlyLimitMs = 30 * dailyLimitMs;
   const resetLimit = 2;
+  const activeStartedAt = document.visibilityState === "visible" ? now : 0;
+  const accountingVersion = "visible-session-v1";
+  if (localStorage.getItem("profile-browser-usage-accounting-version") !== accountingVersion) {
+    localStorage.setItem("profile-browser-usage-window-start-ms", String(now));
+    localStorage.setItem("profile-browser-usage-used-ms", "0");
+    localStorage.setItem("profile-browser-usage-week-start-ms", String(now));
+    localStorage.setItem("profile-browser-usage-week-used-ms", "0");
+    localStorage.setItem("profile-browser-usage-month-start-ms", String(now));
+    localStorage.setItem("profile-browser-usage-month-used-ms", "0");
+    localStorage.removeItem("profile-browser-usage-total-ms");
+    localStorage.setItem("profile-browser-usage-accounting-version", accountingVersion);
+  }
 
   const readNumber = (key, fallback) => {
     const value = Number.parseInt(localStorage.getItem(key) || "", 10);
@@ -138,7 +150,7 @@ const setupUsagePageEarlyRecovery = () => {
   writeNumber("profile-browser-usage-reset-week-count", resetCount);
 
   const updateRow = (resetSelector, remainingSelector, barSelector, start, used, limit, dateFormatter) => {
-    const elapsed = Math.max(0, now - start);
+    const elapsed = activeStartedAt > 0 ? Math.max(0, now - Math.max(activeStartedAt, start)) : 0;
     const total = Math.min(used + elapsed, limit);
     const ratio = Math.max(1 - total / limit, 0);
     const percent = Math.ceil(ratio * 100);
@@ -272,6 +284,318 @@ const setupUsagePageEarlyRecovery = () => {
 };
 
 setupUsagePageEarlyRecovery();
+
+const setupSettingsPageEarlyRecovery = () => {
+  if (!document.querySelector(".settings-page")) return;
+
+  const selectConfigs = [
+    {
+      select: document.querySelector("[data-theme-select]"),
+      trigger: document.querySelector("[data-theme-trigger]"),
+      menu: document.querySelector("[data-theme-menu]"),
+      triggerSelector: "[data-theme-trigger]",
+      choiceSelector: "[data-theme-choice]",
+      dataKey: "themeChoice",
+      storageKey: "profile-theme",
+      apply: (value) => {
+        const resolved = ["dark", "lights-off"].includes(value) ? value : "dark";
+        document.documentElement.dataset.theme = resolved;
+        localStorage.setItem("profile-theme", resolved);
+      },
+    },
+    {
+      select: document.querySelector("[data-language-select]"),
+      trigger: document.querySelector("[data-language-trigger]"),
+      menu: document.querySelector("[data-language-menu]"),
+      triggerSelector: "[data-language-trigger]",
+      choiceSelector: "[data-language-choice]",
+      dataKey: "languageChoice",
+      storageKey: "profile-language",
+      apply: (value) => {
+        const resolved = value === "en" ? "en" : "ko";
+        document.documentElement.lang = resolved;
+        localStorage.setItem("profile-language", resolved);
+      },
+    },
+    {
+      select: document.querySelector("[data-density-select]"),
+      trigger: document.querySelector("[data-density-trigger]"),
+      menu: document.querySelector("[data-density-menu]"),
+      triggerSelector: "[data-density-trigger]",
+      choiceSelector: "[data-density-choice]",
+      dataKey: "densityChoice",
+      storageKey: "profile-density",
+      apply: (value) => {
+        const resolved = ["compact", "comfortable", "spacious"].includes(value) ? value : "comfortable";
+        document.documentElement.dataset.density = resolved;
+        localStorage.setItem("profile-density", resolved);
+      },
+    },
+    {
+      select: document.querySelector("[data-kid-mode-select]"),
+      trigger: document.querySelector("[data-kid-mode-trigger]"),
+      menu: document.querySelector("[data-kid-mode-menu]"),
+      triggerSelector: "[data-kid-mode-trigger]",
+      choiceSelector: "[data-kid-mode-choice]",
+      dataKey: "kidModeChoice",
+      storageKey: "profile-setting-kid-mode",
+      apply: (value) => {
+        const resolved = ["soft", "strong"].includes(value) ? value : "off";
+        document.documentElement.dataset.kidMode = resolved;
+        localStorage.setItem("profile-setting-kid-mode", resolved);
+      },
+    },
+    {
+      select: document.querySelector("[data-accent-select]"),
+      trigger: document.querySelector("[data-accent-trigger]"),
+      menu: document.querySelector("[data-accent-menu]"),
+      triggerSelector: "[data-accent-trigger]",
+      choiceSelector: "[data-accent-choice]",
+      dataKey: "accentChoice",
+      storageKey: "profile-accent",
+      apply: (value) => {
+        const allowed = ["neutral", "green", "rose", "orange", "blue", "purple"];
+        const resolved = allowed.includes(value) ? value : "neutral";
+        document.documentElement.dataset.accent = resolved;
+        localStorage.setItem("profile-accent", resolved);
+      },
+    },
+  ];
+
+  const closeMenus = (except = null) => {
+    selectConfigs.forEach(({ select, trigger, menu }) => {
+      if (select === except) return;
+      select?.classList.remove("is-open", "is-open-up");
+      trigger?.setAttribute("aria-expanded", "false");
+      if (menu) menu.hidden = true;
+    });
+  };
+
+  const openMenu = (config) => {
+    const isOpen = Boolean(config.select?.classList.contains("is-open"));
+    closeMenus(config.select);
+    config.select?.classList.toggle("is-open", !isOpen);
+    config.trigger?.setAttribute("aria-expanded", String(!isOpen));
+    if (config.menu) config.menu.hidden = isOpen;
+  };
+
+  const setChoiceActive = (config, value) => {
+    config.menu?.querySelectorAll(config.choiceSelector).forEach((button) => {
+      const isActive = button.dataset[config.dataKey] === value;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-selected", String(isActive));
+    });
+  };
+
+  const updateToggle = (button, isOn) => {
+    button.classList.toggle("is-on", isOn);
+    button.setAttribute("aria-pressed", String(isOn));
+
+    const key = button.dataset.toggleKey;
+    localStorage.setItem(`profile-setting-${key}`, String(isOn));
+    if (key === "payment-block") {
+      document.querySelectorAll("[data-payment-block-status]").forEach((status) => {
+        status.dataset.paymentState = isOn ? "blocked" : "allowed";
+        status.textContent = isOn ? "Blocked" : "Allowed";
+      });
+    }
+    if (key === "profile-public") {
+      localStorage.setItem("profile-setting-profile-public", String(isOn));
+    }
+    if (key === "notifications") {
+      document.querySelectorAll("[data-notification-status]").forEach((status) => {
+        status.dataset.notificationState = isOn ? "on" : "off";
+        status.textContent = isOn ? "On" : "Off";
+      });
+    }
+  };
+
+  const openDialog = (selector) => {
+    const dialog = document.querySelector(selector);
+    if (!dialog) return;
+    dialog.classList.remove("is-closing");
+    dialog.hidden = false;
+  };
+
+  const closeDialog = (selector) => {
+    const dialog = document.querySelector(selector);
+    if (!dialog) return;
+    dialog.classList.add("is-closing");
+    window.setTimeout(() => {
+      dialog.hidden = true;
+      dialog.classList.remove("is-closing");
+    }, 160);
+  };
+
+  const setNavigationLayoutEarly = (layout) => {
+    const resolved = layout === "top" ? "top" : "sidebar";
+    document.documentElement.dataset.navLayout = resolved;
+    localStorage.setItem("profile-setting-sidebar-nav", String(resolved === "sidebar"));
+    document.querySelectorAll("[data-nav-layout-choice]").forEach((button) => {
+      const isActive = button.dataset.navLayoutChoice === resolved;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-selected", String(isActive));
+    });
+  };
+
+  const setContextMenuModeEarly = (mode) => {
+    const resolved = mode === "native" ? "native" : "custom";
+    localStorage.setItem("profile-setting-custom-context-menu", String(resolved === "custom"));
+    document.querySelectorAll("[data-context-menu-choice]").forEach((button) => {
+      const isActive = button.dataset.contextMenuChoice === resolved;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-selected", String(isActive));
+    });
+  };
+
+  document.addEventListener(
+    "click",
+    (event) => {
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target) return;
+
+      const toggle = target.closest("[data-toggle-key]");
+      if (toggle instanceof HTMLButtonElement) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        updateToggle(toggle, !toggle.classList.contains("is-on"));
+        return;
+      }
+
+      if (target.closest("[data-nav-layout-open]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        openDialog("[data-nav-layout-dialog]");
+        return;
+      }
+
+      if (target.closest("[data-context-menu-open]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        openDialog("[data-context-mode-dialog]");
+        return;
+      }
+
+      if (target.closest("[data-cookie-settings-open]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        openDialog("[data-cookie-settings-dialog]");
+        return;
+      }
+
+      if (target.closest("[data-beta-lab-open]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        openDialog("[data-beta-lab-dialog]");
+        return;
+      }
+
+      if (target.closest("[data-nav-layout-close]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        closeDialog("[data-nav-layout-dialog]");
+        return;
+      }
+
+      if (target.closest("[data-context-mode-close]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        closeDialog("[data-context-mode-dialog]");
+        return;
+      }
+
+      if (target.closest("[data-cookie-settings-close]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        closeDialog("[data-cookie-settings-dialog]");
+        return;
+      }
+
+      if (target.closest("[data-beta-lab-close]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        closeDialog("[data-beta-lab-dialog]");
+        return;
+      }
+
+      const navLayoutChoice = target.closest("[data-nav-layout-choice]");
+      if (navLayoutChoice instanceof HTMLButtonElement) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        setNavigationLayoutEarly(navLayoutChoice.dataset.navLayoutChoice);
+        return;
+      }
+
+      const contextMenuChoice = target.closest("[data-context-menu-choice]");
+      if (contextMenuChoice instanceof HTMLButtonElement) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        setContextMenuModeEarly(contextMenuChoice.dataset.contextMenuChoice);
+        return;
+      }
+
+      const cookiePreferenceToggle = target.closest("[data-cookie-preference-toggle]");
+      if (cookiePreferenceToggle instanceof HTMLButtonElement) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const isOn = cookiePreferenceToggle.getAttribute("aria-pressed") === "true";
+        cookiePreferenceToggle.classList.toggle("is-on", !isOn);
+        cookiePreferenceToggle.setAttribute("aria-pressed", String(!isOn));
+        localStorage.setItem("profile-cookie-preferences", JSON.stringify({ preferences: !isOn }));
+        const status = document.querySelector("[data-cookie-settings-status]");
+        if (status) status.textContent = !isOn ? "Preference storage is on." : "Preference storage is off.";
+        return;
+      }
+
+      const betaFeature = target.closest("[data-beta-feature]");
+      if (betaFeature instanceof HTMLButtonElement) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const nextValue = localStorage.getItem("profile-beta-settings-redesign") !== "true";
+        localStorage.setItem("profile-beta-settings-redesign", String(nextValue));
+        localStorage.setItem("profile-setting-beta-features", String(nextValue));
+        document.documentElement.dataset.settingsRedesign = nextValue ? "true" : "false";
+        document.documentElement.dataset.betaFeatures = nextValue ? "true" : "false";
+        document.querySelectorAll("[data-beta-redesign-state]").forEach((state) => {
+          state.dataset.betaFeatureState = nextValue ? "active" : "idle";
+          state.textContent = nextValue ? "Active" : "Apply";
+        });
+        return;
+      }
+
+      const triggerConfig = selectConfigs.find((config) => target.closest(config.triggerSelector));
+      if (triggerConfig) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        openMenu(triggerConfig);
+        return;
+      }
+
+      const choiceConfig = selectConfigs.find((config) => target.closest(config.choiceSelector));
+      if (choiceConfig) {
+        const choice = target.closest(choiceConfig.choiceSelector);
+        if (!(choice instanceof HTMLButtonElement)) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (choice.dataset.premiumPlan) {
+          const note = document.querySelector("[data-premium-note]");
+          if (note) note.hidden = false;
+        } else {
+          const value = choice.dataset[choiceConfig.dataKey];
+          choiceConfig.apply(value);
+          setChoiceActive(choiceConfig, value);
+        }
+        closeMenus();
+        return;
+      }
+
+      if (!target.closest(".setting-select, .accent-select")) closeMenus();
+    },
+    true,
+  );
+};
+
+setupSettingsPageEarlyRecovery();
 
 const createPageLoader = () => {
   if (document.querySelector("[data-page-loader]")) {
@@ -1223,6 +1547,151 @@ const enhanceContextMenuActions = (menu) => {
 };
 
 const ensureContextMenu = () => enhanceContextMenuActions(document.querySelector("[data-context-menu]") || createContextMenuFallback());
+
+const setupContextMenuEarlyRecovery = () => {
+  const menu = ensureContextMenu();
+  if (!menu || menu.dataset.earlyContextRecovery === "true") return;
+  menu.dataset.earlyContextRecovery = "true";
+  let earlyCloseTimeoutId = 0;
+  let earlyTargetElement = null;
+  let earlyTargetLink = null;
+  let earlyTargetImage = null;
+
+  const hideMenu = () => {
+    window.clearTimeout(earlyCloseTimeoutId);
+    menu.hidden = true;
+    menu.classList.remove("is-closing");
+    earlyTargetLink = null;
+    earlyTargetImage = null;
+  };
+
+  const readBooleanSetting = (value, fallback = true) => {
+    if (value === true || value === "true" || value === "1" || value === "on") return true;
+    if (value === false || value === "false" || value === "0" || value === "off") return false;
+    return fallback;
+  };
+  const canUseCustomMenu = () =>
+    window.matchMedia?.("(max-width: 760px)").matches !== true &&
+    readBooleanSetting(localStorage.getItem("profile-setting-custom-context-menu"), true);
+  const isNativeTarget = (target) =>
+    Boolean(target?.closest?.("select, .share-link-field, .share-link-field *"));
+  const isEditableTarget = (target) =>
+    Boolean(target?.matches?.("input:not([type]), input[type='text'], input[type='search'], input[type='email'], input[type='url'], input[type='tel'], textarea, [contenteditable='true']"));
+  const getEditableText = (target) =>
+    isEditableTarget(target) && typeof target.selectionStart === "number"
+      ? target.value.slice(target.selectionStart, target.selectionEnd).trim()
+      : "";
+  const getImageTarget = (target) => {
+    const image = target?.closest?.("img");
+    return image && !image.closest(".brand-logo") ? image : null;
+  };
+  const writeText = async (text) => {
+    if (!text) return;
+    if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text);
+  };
+  const refreshSeparators = () => {
+    let hasVisibleActionBefore = false;
+    let pendingSeparator = null;
+    Array.from(menu.children).forEach((item) => {
+      if (item.classList?.contains("context-menu-separator")) {
+        item.hidden = true;
+        pendingSeparator = item;
+        return;
+      }
+      const isVisibleAction = item.matches?.("button") && !item.hidden;
+      if (!isVisibleAction) return;
+      if (pendingSeparator && hasVisibleActionBefore) pendingSeparator.hidden = false;
+      pendingSeparator = null;
+      hasVisibleActionBefore = true;
+    });
+  };
+
+  document.addEventListener(
+    "contextmenu",
+    (event) => {
+      if (window.__fpgFullContextMenuReady === true) return;
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target || event.defaultPrevented || !canUseCustomMenu() || isNativeTarget(target)) return;
+
+      event.preventDefault();
+      window.clearTimeout(earlyCloseTimeoutId);
+      earlyTargetElement = target;
+      earlyTargetLink = target.closest?.("a[href]") || null;
+      earlyTargetImage = getImageTarget(target);
+
+      const selectedText = getEditableText(earlyTargetElement) || window.getSelection?.().toString().trim() || "";
+      const copySelectionButton = menu.querySelector('[data-context-action="copy-selection"]');
+      const cutButton = menu.querySelector('[data-context-action="cut"]');
+      const openLinkButton = menu.querySelector('[data-context-action="open-link"]');
+      const copyLinkButton = menu.querySelector('[data-context-action="copy-link"]');
+      const saveImageButton = menu.querySelector('[data-context-action="save-image"]');
+      if (copySelectionButton) copySelectionButton.hidden = selectedText.length === 0;
+      if (cutButton) cutButton.hidden = getEditableText(earlyTargetElement).length === 0;
+      if (openLinkButton) openLinkButton.hidden = !earlyTargetLink;
+      if (copyLinkButton) copyLinkButton.hidden = !earlyTargetLink;
+      if (saveImageButton) saveImageButton.hidden = !earlyTargetImage;
+
+      menu.hidden = false;
+      menu.classList.remove("is-closing");
+      const rect = menu.getBoundingClientRect();
+      const margin = 10;
+      menu.style.left = `${Math.max(margin, Math.min(event.clientX, window.innerWidth - rect.width - margin))}px`;
+      menu.style.top = `${Math.max(margin, Math.min(event.clientY, window.innerHeight - rect.height - margin))}px`;
+      refreshSeparators();
+    },
+    true,
+  );
+
+  menu.addEventListener(
+    "click",
+    (event) => {
+      if (window.__fpgFullContextMenuReady === true) return;
+      const target = event.target instanceof Element ? event.target : null;
+      const button = target?.closest?.("[data-context-action]");
+      if (!button) return;
+      const action = button.dataset.contextAction;
+      if (action === "close") {
+        hideMenu();
+        return;
+      }
+      if (action === "copy") {
+        writeText(window.location.href).catch(() => {});
+        hideMenu();
+        return;
+      }
+      if (action === "copy-selection") {
+        const text = getEditableText(earlyTargetElement) || window.getSelection?.().toString().trim() || "";
+        writeText(text).catch(() => {});
+        hideMenu();
+        return;
+      }
+      if (action === "copy-link" && earlyTargetLink) {
+        writeText(earlyTargetLink.href).catch(() => {});
+        hideMenu();
+        return;
+      }
+      if (action === "open-link" && earlyTargetLink) {
+        window.open(earlyTargetLink.href, "_blank", "noopener,noreferrer");
+        hideMenu();
+        return;
+      }
+      if (action === "top") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        hideMenu();
+      }
+    },
+    true,
+  );
+
+  document.addEventListener("click", (event) => {
+    if (window.__fpgFullContextMenuReady === true) return;
+    const target = event.target instanceof Element ? event.target : null;
+    if (menu.hidden || target?.closest?.("[data-context-menu]")) return;
+    hideMenu();
+  });
+};
+
+setupContextMenuEarlyRecovery();
 
 const navLinks = [...document.querySelectorAll(".nav-links a")];
 const themeChoices = [...document.querySelectorAll("[data-theme-choice]")];
@@ -6477,6 +6946,18 @@ const browserUsageMonthlyLimitMs = 30 * browserUsageLimitMs;
 const browserUsageMonthMs = 30 * 24 * 60 * 60 * 1000;
 const browserUsageResetLimit = 2;
 const browserUsageStartedAt = Date.now();
+const browserUsageAccountingVersion = "visible-session-v1";
+if (localStorage.getItem("profile-browser-usage-accounting-version") !== browserUsageAccountingVersion) {
+  localStorage.setItem("profile-browser-usage-window-start-ms", String(browserUsageStartedAt));
+  localStorage.setItem("profile-browser-usage-used-ms", "0");
+  localStorage.setItem("profile-browser-usage-week-start-ms", String(browserUsageStartedAt));
+  localStorage.setItem("profile-browser-usage-week-used-ms", "0");
+  localStorage.setItem("profile-browser-usage-month-start-ms", String(browserUsageStartedAt));
+  localStorage.setItem("profile-browser-usage-month-used-ms", "0");
+  localStorage.removeItem("profile-browser-usage-total-ms");
+  localStorage.setItem("profile-browser-usage-accounting-version", browserUsageAccountingVersion);
+}
+let browserUsageActiveStartedAt = document.visibilityState === "visible" ? browserUsageStartedAt : 0;
 let browserUsageWindowStart = Number.parseInt(localStorage.getItem("profile-browser-usage-window-start-ms") || "0", 10);
 let browserUsageBaseMs = Number.parseInt(
   localStorage.getItem("profile-browser-usage-used-ms") || localStorage.getItem("profile-browser-usage-total-ms") || "0",
@@ -6744,32 +7225,41 @@ const confirmUsageResetWarningDialog = () => {
   closeUsageResetWarningDialog();
 };
 
+const getBrowserUsageActiveElapsed = (windowStart) =>
+  browserUsageActiveStartedAt > 0
+    ? Math.max(0, Date.now() - Math.max(browserUsageActiveStartedAt, windowStart))
+    : 0;
+
 const getCurrentBrowserUsageMs = () => {
   refreshBrowserUsageWindow();
-  return browserUsageBaseMs + (Date.now() - Math.max(browserUsageStartedAt, browserUsageWindowStart));
+  return browserUsageBaseMs + getBrowserUsageActiveElapsed(browserUsageWindowStart);
 };
 
 const getCurrentWeeklyUsageMs = () => {
   refreshBrowserUsageWeeklyWindow();
-  return browserUsageWeeklyBaseMs + (Date.now() - Math.max(browserUsageStartedAt, browserUsageWeeklyWindowStart));
+  return browserUsageWeeklyBaseMs + getBrowserUsageActiveElapsed(browserUsageWeeklyWindowStart);
 };
 
 const getCurrentMonthlyUsageMs = () => {
   refreshBrowserUsageMonthlyWindow();
-  return browserUsageMonthlyBaseMs + (Date.now() - Math.max(browserUsageStartedAt, browserUsageMonthlyWindowStart));
+  return browserUsageMonthlyBaseMs + getBrowserUsageActiveElapsed(browserUsageMonthlyWindowStart);
 };
 
 const persistBrowserUsage = () => {
   refreshBrowserUsageWindow();
   refreshBrowserUsageWeeklyWindow();
   refreshBrowserUsageMonthlyWindow();
+  browserUsageBaseMs = Math.min(getCurrentBrowserUsageMs(), browserUsageLimitMs);
+  browserUsageWeeklyBaseMs = Math.min(getCurrentWeeklyUsageMs(), browserUsageWeeklyLimitMs);
+  browserUsageMonthlyBaseMs = Math.min(getCurrentMonthlyUsageMs(), browserUsageMonthlyLimitMs);
   localStorage.setItem("profile-browser-usage-window-start-ms", String(browserUsageWindowStart));
-  localStorage.setItem("profile-browser-usage-used-ms", String(Math.min(getCurrentBrowserUsageMs(), browserUsageLimitMs)));
+  localStorage.setItem("profile-browser-usage-used-ms", String(browserUsageBaseMs));
   localStorage.setItem("profile-browser-usage-week-start-ms", String(browserUsageWeeklyWindowStart));
-  localStorage.setItem("profile-browser-usage-week-used-ms", String(Math.min(getCurrentWeeklyUsageMs(), browserUsageWeeklyLimitMs)));
+  localStorage.setItem("profile-browser-usage-week-used-ms", String(browserUsageWeeklyBaseMs));
   localStorage.setItem("profile-browser-usage-month-start-ms", String(browserUsageMonthlyWindowStart));
-  localStorage.setItem("profile-browser-usage-month-used-ms", String(Math.min(getCurrentMonthlyUsageMs(), browserUsageMonthlyLimitMs)));
+  localStorage.setItem("profile-browser-usage-month-used-ms", String(browserUsageMonthlyBaseMs));
   localStorage.removeItem("profile-browser-usage-total-ms");
+  browserUsageActiveStartedAt = document.visibilityState === "visible" ? Date.now() : 0;
 };
 
 const updateBrowserUsage = () => {
@@ -7111,7 +7601,7 @@ const isNativeContextTarget = (target) =>
   );
 
 const shouldUseNativeContextMenu = () =>
-  window.matchMedia?.("(max-width: 760px), (hover: none), (pointer: coarse)").matches;
+  window.matchMedia?.("(max-width: 760px)").matches;
 
 const isEditableTextTarget = (target) =>
   Boolean(target?.matches?.("input:not([type]), input[type='text'], input[type='search'], input[type='email'], input[type='url'], input[type='tel'], textarea, [contenteditable='true']"));
@@ -7995,6 +8485,7 @@ setCurrency(localStorage.getItem("profile-currency") || (currentLanguage === "ko
 updateStorageEstimate();
 updateBrowserUsage();
 const browserUsageIntervalId = window.setInterval(() => {
+  if (document.visibilityState !== "visible") return;
   updateBrowserUsage();
   persistBrowserUsage();
 }, 1000);
@@ -8150,6 +8641,16 @@ window.addEventListener("pagehide", () => {
   persistBrowserUsage();
   window.clearInterval(browserUsageIntervalId);
 });
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    persistBrowserUsage();
+    browserUsageActiveStartedAt = 0;
+    return;
+  }
+
+  browserUsageActiveStartedAt = Date.now();
+  updateBrowserUsage();
+});
 feedbackOpen?.addEventListener("click", showFeedbackWarning);
 feedbackCancel?.addEventListener("click", closeFeedbackWarning);
 feedbackConfirm?.addEventListener("click", openFeedbackForm);
@@ -8249,6 +8750,7 @@ adblockDismiss?.addEventListener("click", () => {
 });
 
 document.addEventListener("contextmenu", showContextMenu);
+window.__fpgFullContextMenuReady = true;
 
 document.addEventListener("click", (event) => {
   if (!contextMenu?.contains(event.target)) closeContextMenu();

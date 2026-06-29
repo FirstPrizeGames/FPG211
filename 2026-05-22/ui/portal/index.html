@@ -18,32 +18,31 @@
         visibility: hidden;
       }
     </style>
-    <title>500 · First Prize Games</title>
+    <title>First Prize Games Portal</title>
     <meta
       name="description"
-      content="A temporary server error page for recovery, support, and status navigation."
+      content="The First Prize Games portal with sharing, subscription, updates, feedback, and profile navigation tools."
     />
-    <meta name="robots" content="noindex" />
-    <meta name="theme-color" content="#151514" />
-    <link rel="canonical" href="https://firstprizegames.info/500" />
-    <meta property="og:title" content="500 · First Prize Games" />
+    <meta name="theme-color" content="#050706" />
+    <link rel="canonical" href="https://firstprizegames.info/portal" />
+    <meta property="og:title" content="First Prize Games" />
     <meta
       property="og:description"
-      content="A temporary server error page with recovery links and status guidance."
+      content="A calm, modern profile site for emergency response work, bio details, FAQ, and feedback."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="First Prize Games" />
-    <meta property="og:url" content="https://firstprizegames.info/500" />
-    <meta property="og:image" content="https://firstprizegames.info/assets/profile-hero.jpg" />
+    <meta property="og:url" content="https://firstprizegames.info/portal" />
+    <meta property="og:image" content="https://firstprizegames.info/assets/home-us-ambulance-hero.jpg" />
     <meta property="og:image:width" content="1280" />
-    <meta property="og:image:height" content="683" />
+    <meta property="og:image:height" content="720" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="500 · First Prize Games" />
+    <meta name="twitter:title" content="First Prize Games" />
     <meta
       name="twitter:description"
-      content="A temporary server error page with recovery links and status guidance."
+      content="A calm, modern profile site for emergency response work, bio details, FAQ, and feedback."
     />
-    <meta name="twitter:image" content="https://firstprizegames.info/assets/profile-hero.jpg" />
+    <meta name="twitter:image" content="https://firstprizegames.info/assets/home-us-ambulance-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png" />
@@ -52,7 +51,36 @@
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="application-name" content="First Prize Games" />
-    <meta name="msapplication-TileColor" content="#151514" />
+    <meta name="msapplication-TileColor" content="#050706" />
+    <link rel="preload" href="../assets/home-us-ambulance-hero.jpg" as="image" fetchpriority="high" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://firstprizegames.info/#website",
+            "name": "First Prize Games",
+            "url": "https://firstprizegames.info/",
+            "inLanguage": ["ko", "en"],
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://firstprizegames.info/?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://firstprizegames.info/#organization",
+            "name": "First Prize Games",
+            "url": "https://firstprizegames.info/",
+            "logo": "https://firstprizegames.info/assets/logo.png",
+            "image": "https://firstprizegames.info/assets/home-us-ambulance-hero.jpg",
+            "knowsAbout": ["Emergency response", "Game UI", "Roblox systems", "Unity development"]
+          }
+        ]
+      }
+    </script>
     <script>
       (() => {
         const normalizeTheme = (theme) => {
@@ -107,7 +135,7 @@
     </script>
     <link rel="stylesheet" href="../styles.css?v=20260629-official-home-mega-nav-fix" />
   </head>
-  <body>
+  <body class="home-body">
     <div class="loading-bar" aria-hidden="true"></div>
     <div class="scroll-progress" aria-hidden="true"></div>
     <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
@@ -118,10 +146,10 @@
       <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
     </div>
     <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
-    <main class="shell" id="main-content" tabindex="-1">
-      <nav class="topbar" aria-label="서버 오류 페이지 메뉴">
+    <main class="shell home-page" id="main-content" tabindex="-1">
+      <nav class="topbar" aria-label="프로필 메뉴" data-i18n-aria-label="aria.profileMenu">
         <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
-          <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
+          <img src="/assets/logo.png" alt="" width="537" height="532" decoding="async" draggable="false" />
           <span>FP</span>
         </a>
         <button class="mobile-menu-button" type="button" aria-expanded="false" data-mobile-menu-toggle>
@@ -131,7 +159,7 @@
           </svg>
         </button>
         <div class="nav-links" data-mobile-menu>
-          <a href="/"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg><span data-i18n="nav.home">Home</span></a>
+          <a class="is-active" href="/"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg><span data-i18n="nav.home">Home</span></a>
           <a href="/Creator"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z" /><path d="m3 14 9 5 9-5" /><path d="m3 11 9 5 9-5" /></svg><span data-i18n="nav.creator">Creator</span></a>
           <a href="/Bio"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0" /><circle cx="12" cy="7" r="4" /></svg><span data-i18n="nav.bio">Bio</span></a>
           <a href="/about"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg><span data-i18n="nav.aboutUs">About us</span></a>
@@ -144,53 +172,239 @@
         </div>
       </nav>
 
-      <section class="error-page error-page-redesign enterprise-page" aria-labelledby="error-title">
-        <div class="error-copy">
-          <p class="error-code" data-i18n="serverError.code">500_SERVER_ERROR</p>
-          <h1 id="error-title" data-i18n="serverError.title">일시적인 서버 오류입니다.</h1>
-          <p data-i18n="serverError.body">
-            요청을 처리하는 중 문제가 발생했습니다. 잠시 후 다시 시도하거나 상태 페이지에서 서비스 상태를 확인해 주세요.
+      <section class="home-hero" id="intro">
+        <div class="home-hero-copy">
+          <h1 data-i18n="home.heroTitle">차분한 대응. 선명한 시스템.</h1>
+          <p class="home-lead" data-i18n="home.lead">
+            응급 대응, 창작 기록, 후원 경로, 개인정보와 설정을 빠르게 찾을 수 있게 정리한 공개 프로필 포털입니다.
           </p>
-          <div class="actions error-actions">
-            <button class="button primary" type="button" data-go-url="/" data-i18n="serverError.home">다시 홈으로 이동</button>
-            <button class="button ghost" type="button" data-go-url="/status" data-i18n="serverError.status">Status 확인</button>
-            <button class="button ghost" type="button" data-go-url="/feedback" data-i18n="serverError.feedback">문제 알리기</button>
+          <div class="home-hero-actions">
+            <a class="button primary" href="/Creator" data-i18n="home.openCreator">Creator 보기</a>
+            <a class="button ghost" href="/feedback" data-i18n="home.openSupport">Support 문의</a>
           </div>
         </div>
-        <aside class="error-console" aria-label="서버 복구 상태" data-i18n-aria-label="serverError.recoveryLabel">
-          <div class="error-console-top">
-            <span data-i18n="serverError.consoleLabel">Service recovery</span>
-            <strong>500</strong>
-          </div>
-          <div class="error-console-map" aria-hidden="true">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <div class="error-console-status">
-            <span data-i18n="serverError.lastCheck">Last check</span>
-            <strong data-i18n="serverError.statusValue">Temporary service issue</strong>
-          </div>
-        </aside>
+        <figure class="home-hero-media">
+          <img src="../assets/home-us-ambulance-hero.jpg" alt="" width="1280" height="720" loading="eager" decoding="async" />
+          <figcaption>
+            <span data-i18n="home.signalLabel">Emergency</span>
+            <strong data-i18n="home.signalValue">U.S. ambulance at emergency entry</strong>
+          </figcaption>
+        </figure>
       </section>
 
-      <section class="error-route-section" aria-label="서버 오류 복구 경로" data-i18n-aria-label="serverError.routesLabel">
-        <a href="/" class="error-route-card">
-          <span data-i18n="serverError.routeHomeLabel">Return</span>
-          <strong data-i18n="nav.home">Home</strong>
-          <small data-i18n="serverError.routeHomeBody">문제가 없는 기본 화면으로 돌아갑니다.</small>
-        </a>
-        <a href="/status" class="error-route-card">
-          <span data-i18n="serverError.routeStatusLabel">Health</span>
-          <strong data-i18n="nav.status">Status</strong>
-          <small data-i18n="serverError.routeStatusBody">서비스 상태와 최근 점검 여부를 확인합니다.</small>
-        </a>
-        <a href="/feedback" class="error-route-card">
-          <span data-i18n="serverError.routeFeedbackLabel">Report</span>
-          <strong data-i18n="nav.feedback">Feedback</strong>
-          <small data-i18n="serverError.routeFeedbackBody">같은 문제가 반복되면 상황을 알려주세요.</small>
+      <section class="home-ledger" aria-label="Home system summary" data-i18n-aria-label="aria.homeLedger">
+        <div>
+          <span data-i18n="home.ledgerResponseLabel">Response</span>
+          <strong data-i18n="home.ledgerResponseValue">Ready</strong>
+        </div>
+        <div>
+          <span data-i18n="home.ledgerCreatorLabel">Creator</span>
+          <strong data-i18n="home.ledgerCreatorValue">Tools and games</strong>
+        </div>
+        <div>
+          <span data-i18n="home.ledgerSupportLabel">Support</span>
+          <strong data-i18n="home.ledgerSupportValue">Stripe links</strong>
+        </div>
+        <div>
+          <span data-i18n="home.ledgerPrivacyLabel">Privacy</span>
+          <strong data-i18n="home.ledgerPrivacyValue">Local-first controls</strong>
+        </div>
+      </section>
+
+      <section class="home-field-scene" aria-label="Field ambulance scene" data-i18n-aria-label="aria.homeFieldScene">
+        <figure>
+          <img
+            src="../assets/home-field-ambulance-scene-v2.jpg"
+            alt=""
+            width="1680"
+            height="944"
+            loading="eager"
+            decoding="async"
+          />
+          <figcaption>
+            <span data-i18n="home.fieldSceneLabel">Field scene</span>
+            <strong data-i18n="home.fieldSceneValue">A working response moment</strong>
+          </figcaption>
+        </figure>
+      </section>
+
+      <section class="home-route-deck" aria-label="Primary routes" data-i18n-aria-label="aria.homeRoutes">
+        <div class="home-section-copy">
+          <p class="home-section-kicker" data-i18n="home.routesKicker">Routes</p>
+          <h2 data-i18n="home.routesTitle">바로 갈 수 있는 네 개의 입구.</h2>
+          <p data-i18n="home.routesLead">홈은 길을 찾는 곳으로 두고, 자세한 내용은 각 전용 페이지에서 더 깊게 볼 수 있게 나눴습니다.</p>
+        </div>
+        <div class="home-route-list">
+          <a href="/Bio">
+            <span>01</span>
+            <div>
+              <strong data-i18n="home.routeBioTitle">Who I am</strong>
+              <p data-i18n="home.routeBioBody">응급 대응자 프로필과 관심사.</p>
+            </div>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
+          </a>
+          <a href="/about">
+            <span>02</span>
+            <div>
+              <strong data-i18n="home.routeAboutTitle">The system</strong>
+              <p data-i18n="home.routeAboutBody">사이트 구조와 운영 원칙.</p>
+            </div>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
+          </a>
+          <a href="/Pricing">
+            <span>03</span>
+            <div>
+              <strong data-i18n="home.routePricingTitle">Support plans</strong>
+              <p data-i18n="home.routePricingBody">후원형 플랜과 결제 링크.</p>
+            </div>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
+          </a>
+          <a href="/settings">
+            <span>04</span>
+            <div>
+              <strong data-i18n="home.routeSettingsTitle">Your control</strong>
+              <p data-i18n="home.routeSettingsBody">언어, 테마, 결제 차단 설정.</p>
+            </div>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
+          </a>
+        </div>
+      </section>
+
+      <section class="home-switchboard" aria-label="Quick actions" data-i18n-aria-label="aria.homeSwitchboard">
+        <div class="home-section-copy">
+          <p class="home-section-kicker" data-i18n="home.switchKicker">Quick switchboard</p>
+          <h2 data-i18n="home.switchTitle">자주 쓰는 작업을 한 번에.</h2>
+        </div>
+        <div class="home-action-grid">
+          <a href="/feedback">
+            <span data-i18n="home.actionFeedbackLabel">Feedback</span>
+            <strong data-i18n="home.actionFeedbackTitle">의견 보내기</strong>
+          </a>
+          <a href="/FAQ">
+            <span data-i18n="home.actionFaqLabel">FAQ</span>
+            <strong data-i18n="home.actionFaqTitle">질문 확인</strong>
+          </a>
+          <a href="/Creator">
+            <span data-i18n="home.actionCreatorLabel">Creator</span>
+            <strong data-i18n="home.actionCreatorTitle">제작 기록</strong>
+          </a>
+          <a href="/privacy">
+            <span data-i18n="home.actionPrivacyLabel">Privacy</span>
+            <strong data-i18n="home.actionPrivacyTitle">정책 보기</strong>
+          </a>
+          <a href="/settings#payments">
+            <span data-i18n="home.actionPaymentsLabel">Payments</span>
+            <strong data-i18n="home.actionPaymentsTitle">결제 제어</strong>
+          </a>
+          <button type="button" data-share-link>
+            <span data-i18n="home.actionShareLabel">Share</span>
+            <strong data-i18n="home.actionShareTitle">링크 복사</strong>
+          </button>
+        </div>
+      </section>
+
+      <section class="home-latest" aria-label="Latest updates" data-i18n-aria-label="aria.homeLatest">
+        <p class="home-section-kicker" data-i18n="home.latestKicker">Latest</p>
+        <div class="home-latest-list">
+          <article>
+            <span data-i18n="home.latestOneDate">June 3, 2026</span>
+            <strong data-i18n="home.latestOneTitle">Home redesign</strong>
+            <p data-i18n="home.latestOneBody">홈을 독립적인 운영 포털로 재구성했습니다.</p>
+          </article>
+          <article>
+            <span data-i18n="home.latestTwoDate">June 3, 2026</span>
+            <strong data-i18n="home.latestTwoTitle">About and Bio</strong>
+            <p data-i18n="home.latestTwoBody">소개 페이지들을 각각 다른 고급 디자인으로 분리했습니다.</p>
+          </article>
+          <article>
+            <span data-i18n="home.latestThreeDate">June 3, 2026</span>
+            <strong data-i18n="home.latestThreeTitle">Payment controls</strong>
+            <p data-i18n="home.latestThreeBody">설정에서 결제 차단과 Stripe 링크 상태를 관리할 수 있습니다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="home-feedback-strip" aria-label="Feedback" data-i18n-aria-label="aria.homeFeedback">
+        <div>
+          <p class="home-section-kicker" data-i18n="home.feedbackKicker">Feedback</p>
+          <h2 data-i18n="home.feedbackTitle">이 시스템을 더 좋게 만드는 신호.</h2>
+          <p data-i18n="home.feedbackBody">불편한 흐름, 번역 누락, 결제 접근성, 디자인 균형을 발견하면 바로 알려주세요.</p>
+        </div>
+        <a class="home-feedback-link" href="/feedback">
+          <span data-i18n="home.feedbackButton">Feedback 보내기</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
         </a>
       </section>
+
+      <section class="home-subscribe" aria-labelledby="home-subscribe-title">
+        <div class="home-section-copy">
+          <p class="home-section-kicker" data-i18n="home.subscribeKicker">Subscribe</p>
+          <h2 id="home-subscribe-title" data-i18n="home.subscribeTitle">새 소식을 이메일로 받기.</h2>
+          <p data-i18n="home.subscribeBody">
+            업데이트, 새로운 글, 뉴스성 안내를 이메일로 받을 수 있게 준비합니다. 지금 등록한 정보는 이 브라우저에 저장됩니다.
+          </p>
+        </div>
+        <form class="home-subscribe-form" data-home-subscribe-form>
+          <label class="home-subscribe-field">
+            <span data-i18n="home.subscribeEmailLabel">이메일</span>
+            <input
+              type="email"
+              autocomplete="email"
+              inputmode="email"
+              placeholder="you@example.com"
+              data-home-subscribe-email
+              required
+            />
+          </label>
+          <fieldset class="home-subscribe-topics">
+            <legend data-i18n="home.subscribeTopicsLabel">받고 싶은 소식</legend>
+            <label>
+              <input type="checkbox" value="updates" data-home-subscribe-topic checked />
+              <span data-i18n="home.subscribeTopicUpdates">사이트 업데이트</span>
+            </label>
+            <label>
+              <input type="checkbox" value="news" data-home-subscribe-topic checked />
+              <span data-i18n="home.subscribeTopicNews">새로운 소식과 뉴스</span>
+            </label>
+            <label>
+              <input type="checkbox" value="creator" data-home-subscribe-topic />
+              <span data-i18n="home.subscribeTopicCreator">Creator 기록</span>
+            </label>
+          </fieldset>
+          <div class="home-subscribe-actions">
+            <button class="button primary" type="submit" data-i18n="home.subscribeButton">구독 저장</button>
+            <p class="home-subscribe-status" data-home-subscribe-status role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </section>
+
+      <div class="cache-dialog share-dialog" data-share-dialog hidden>
+        <div class="cache-dialog-panel share-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="share-dialog-title">
+          <p class="eyebrow" data-i18n="share.eyebrow">Share</p>
+          <h2 id="share-dialog-title" data-i18n="share.title">페이지 공유</h2>
+          <p data-i18n="share.body">아래 링크를 복사해서 원하는 곳에 공유할 수 있습니다.</p>
+          <label class="share-link-field">
+            <span data-i18n="share.linkLabel">공유 링크</span>
+            <input type="text" data-share-url readonly />
+          </label>
+          <div class="share-socials" aria-label="외부 공유" data-i18n-aria-label="aria.externalShare">
+            <button type="button" data-share-target="native" data-i18n="share.native">기기 공유</button>
+            <button type="button" data-share-target="x">X</button>
+            <button type="button" data-share-target="facebook">Facebook</button>
+            <button type="button" data-share-target="linkedin">LinkedIn</button>
+            <button type="button" data-share-target="bluesky">Bluesky</button>
+          </div>
+          <p class="share-status" data-share-status hidden data-i18n="share.copied">페이지 링크 복사됨</p>
+          <div class="cache-warning-actions">
+            <button class="button cache-cancel-button" type="button" data-share-close data-i18n="share.close">
+              닫기
+            </button>
+            <button class="button cache-confirm-button share-copy-button" type="button" data-share-copy data-i18n="share.copy">
+              페이지 링크 복사
+            </button>
+          </div>
+        </div>
+      </div>
     </main>
     <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
       <button type="button" data-scroll-to="top" aria-label="맨 위로 이동" data-i18n-aria-label="aria.scrollTop">
@@ -298,3 +512,7 @@
     <script src="../script.js?v=20260629-official-home-mega-nav-fix" defer></script>
   </body>
 </html>
+
+
+
+

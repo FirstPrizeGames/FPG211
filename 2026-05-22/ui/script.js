@@ -5,6 +5,8 @@ const navIconMarkup = {
     '<svg class="nav-flyout-chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6" /></svg>',
   help:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M9.2 9a3 3 0 1 1 5.6 1.5c-.6.8-1.5 1.1-2.1 1.8-.5.5-.7.9-.7 1.7" /><path d="M12 17h.01" /></svg>',
+  keyboard:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2" /><path d="M7 10h.01" /><path d="M11 10h.01" /><path d="M15 10h.01" /><path d="M19 10h.01" /><path d="M7 14h.01" /><path d="M11 14h6" /></svg>',
   home:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg>',
   creator:
@@ -130,6 +132,7 @@ const createNavFlyout = ({ icon, labelKey, fallback, items = [] }) => {
 };
 
 const createTopSearchButton = () => {
+  if (document.body.classList.contains("official-home-body")) return;
   if (document.querySelector("[data-top-search]")) return;
 
   const button = document.createElement("button");
@@ -175,18 +178,34 @@ const createSidebarHelpMenu = () => {
 
   [
     { href: "/FAQ", icon: navIconMarkup.faq, labelKey: "nav.faq", fallback: "FAQ" },
+    { action: "keyboard-shortcuts", icon: navIconMarkup.keyboard, labelKey: "keyboardShortcuts.nav", fallback: "Keyboard shortcuts" },
     { href: "/feedback", icon: navIconMarkup.support, labelKey: "nav.support", fallback: "Support" },
     { href: "/status", icon: navIconMarkup.status, labelKey: "nav.status", fallback: "Status" },
+    { divider: true },
     { href: "/trust", icon: navIconMarkup.trust, labelKey: "nav.trustCenter", fallback: "Trust Center" },
-    { href: "/terms", icon: navIconMarkup.terms, labelKey: "nav.terms", fallback: "Terms" },
     { href: "/security", icon: navIconMarkup.security, labelKey: "nav.security", fallback: "Security" },
     { href: "/privacy", icon: navIconMarkup.privacy, labelKey: "nav.privacy", fallback: "Privacy Policy" },
+    { divider: true },
+    { href: "/terms", icon: navIconMarkup.terms, labelKey: "nav.terms", fallback: "Terms" },
     { href: "/license", icon: navIconMarkup.license, labelKey: "nav.license", fallback: "License" },
   ].forEach((item) => {
-    const anchor = createNavAnchor(item);
-    anchor.classList.add("sidebar-help-link");
-    anchor.setAttribute("role", "menuitem");
-    panel.append(anchor);
+    if (item.divider) {
+      const divider = document.createElement("div");
+      divider.className = "sidebar-help-divider";
+      divider.setAttribute("role", "separator");
+      panel.append(divider);
+      return;
+    }
+
+    const element = item.action ? document.createElement("button") : createNavAnchor(item);
+    if (item.action) {
+      element.type = "button";
+      element.dataset.keyboardShortcutsOpen = "";
+      element.innerHTML = `${item.icon}<span data-i18n="${item.labelKey}">${item.fallback}</span>`;
+    }
+    element.classList.add("sidebar-help-link");
+    element.setAttribute("role", "menuitem");
+    panel.append(element);
   });
 
   if (panel.querySelector(".is-active")) wrapper.classList.add("has-active-item");
@@ -197,7 +216,7 @@ const createSidebarHelpMenu = () => {
 const createSidebarAccountMenu = () => {
   if (document.querySelector("[data-sidebar-account]")) return;
 
-  document.querySelectorAll(".topbar").forEach((topbar, index) => {
+  document.querySelectorAll(".topbar:not([data-official-home-nav])").forEach((topbar, index) => {
     const menuId = `sidebar-account-menu-${index}`;
     const account = document.createElement("div");
     account.className = "sidebar-account";
@@ -253,42 +272,48 @@ const createUserProfileDialog = () => {
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
       </button>
       <div class="user-profile-head">
-        <img class="user-profile-avatar" src="/assets/well.png" alt="" data-profile-avatar-preview />
-        <div>
+        <div class="user-profile-avatar-wrap">
+          <img class="user-profile-avatar" src="/assets/well.png" alt="" data-profile-avatar-preview />
+        </div>
+        <div class="user-profile-summary">
           <p class="eyebrow" data-i18n="profileDialog.eyebrow">Profile</p>
           <h2 id="user-profile-title" data-profile-name>My name</h2>
           <p data-i18n="profileDialog.body">Customize the account surface used by this site.</p>
+          <span class="user-profile-plan-pill" data-profile-plan>Free</span>
         </div>
       </div>
-      <div class="user-profile-controls">
+      <div class="user-profile-section">
+        <div class="user-profile-section-copy">
+          <h3 data-i18n="profileDialog.accountSection">Account details</h3>
+          <p data-i18n="profileDialog.accountBody">Set the public name shown in account surfaces.</p>
+        </div>
         <label class="user-profile-control">
           <span data-i18n="profileDialog.nameControl">User name</span>
           <input type="text" value="My name" maxlength="40" data-profile-name-input />
         </label>
-        <label class="user-profile-upload">
-          <span data-i18n="profileDialog.photoControl">Add profile photo</span>
-          <input type="file" accept="image/png,image/jpeg,image/webp" data-profile-avatar-input />
-        </label>
-        <button class="user-profile-mini-button" type="button" data-profile-avatar-reset data-i18n="profileDialog.photoReset">Reset photo</button>
       </div>
-      <div class="user-profile-grid">
-        <div class="user-profile-field">
-          <span data-i18n="profileDialog.displayName">Display name</span>
-          <strong data-profile-name>My name</strong>
+      <div class="user-profile-section">
+        <div class="user-profile-section-copy">
+          <h3 data-i18n="profileDialog.photoSection">Profile photo</h3>
+          <p>
+            <span data-i18n="profileDialog.photoBody">Use a custom image or return to the default ambulance image.</span>
+            <strong data-profile-avatar-status data-i18n="profileDialog.avatarDefault">Ambulance image</strong>
+          </p>
         </div>
-        <div class="user-profile-field">
-          <span data-i18n="profileDialog.plan">Plan</span>
-          <strong data-profile-plan>Free</strong>
+        <div class="user-profile-photo-actions">
+          <label class="user-profile-upload">
+            <span data-i18n="profileDialog.photoControl">Add profile photo</span>
+            <input type="file" accept="image/png,image/jpeg,image/webp" data-profile-avatar-input />
+          </label>
+          <button class="user-profile-mini-button" type="button" data-profile-avatar-reset data-i18n="profileDialog.photoReset">Reset photo</button>
         </div>
-        <div class="user-profile-field">
-          <span data-i18n="profileDialog.avatar">Avatar</span>
-          <strong data-profile-avatar-status data-i18n="profileDialog.avatarDefault">Ambulance image</strong>
+      </div>
+      <div class="user-profile-section">
+        <div class="user-profile-section-copy">
+          <h3 data-i18n="profileDialog.privacySection">Privacy</h3>
+          <p data-i18n="profileDialog.visibilityBody">Control whether this profile appears as visible in site settings.</p>
         </div>
-        <div class="user-profile-field">
-          <span data-i18n="profileDialog.storage">Storage</span>
-          <strong data-i18n="profileDialog.storageValue">Local browser</strong>
-        </div>
-        <div class="user-profile-field user-profile-visibility-field">
+        <div class="user-profile-visibility-field">
           <span data-i18n="profileDialog.visibility">Profile visibility</span>
           <button class="user-profile-toggle" type="button" data-profile-visibility-toggle aria-pressed="true">
             <strong data-profile-visibility-status data-i18n="profileDialog.visibilityOn">Visible</strong>
@@ -296,10 +321,37 @@ const createUserProfileDialog = () => {
         </div>
       </div>
       <div class="user-profile-actions">
-        <a class="button" href="/settings" data-i18n="profileDialog.openSettings">Open settings</a>
-        <button class="button primary" type="button" data-profile-save data-i18n="profileDialog.save">Save</button>
         <button class="button" type="button" data-profile-reset data-i18n="profileDialog.reset">Reset</button>
+        <button class="button primary" type="button" data-profile-save data-i18n="profileDialog.save">Save</button>
       </div>
+    </div>
+  `;
+  document.body.append(dialog);
+};
+
+const createKeyboardShortcutsDialog = () => {
+  if (document.querySelector("[data-keyboard-shortcuts-dialog]")) return;
+
+  const dialog = document.createElement("div");
+  dialog.className = "cache-dialog keyboard-shortcuts-dialog";
+  dialog.dataset.keyboardShortcutsDialog = "";
+  dialog.hidden = true;
+  dialog.innerHTML = `
+    <div class="cache-dialog-panel keyboard-shortcuts-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="keyboard-shortcuts-title">
+      <button class="dialog-close-button" type="button" data-keyboard-shortcuts-close aria-label="닫기" data-i18n-aria-label="share.close">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+      </button>
+      <p class="eyebrow" data-i18n="keyboardShortcuts.eyebrow">SHORTCUTS</p>
+      <h2 id="keyboard-shortcuts-title" data-i18n="keyboardShortcuts.title">Keyboard shortcuts</h2>
+      <p data-i18n="keyboardShortcuts.body">Use these shortcuts to move faster around the site.</p>
+      <dl class="keyboard-shortcuts-list">
+        <div><dt><kbd>Ctrl</kbd><kbd>K</kbd></dt><dd data-i18n="keyboardShortcuts.search">Open search</dd></div>
+        <div><dt><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>C</kbd></dt><dd data-i18n="keyboardShortcuts.copy">Copy page link</dd></div>
+        <div><dt><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>S</kbd></dt><dd data-i18n="keyboardShortcuts.share">Open share</dd></div>
+        <div><dt><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>Q</kbd></dt><dd data-i18n="keyboardShortcuts.qr">Create QR code</dd></div>
+        <div><dt><kbd>Ctrl</kbd><kbd>P</kbd></dt><dd data-i18n="keyboardShortcuts.print">Open print options</dd></div>
+        <div><dt><kbd>Esc</kbd></dt><dd data-i18n="keyboardShortcuts.close">Close popup or menu</dd></div>
+      </dl>
     </div>
   `;
   document.body.append(dialog);
@@ -354,7 +406,7 @@ const createMobileQuickActions = () => {
       fallback: "Share",
     },
     {
-      action: "quick-settings",
+      href: "/settings",
       icon: navIconMarkup.settings,
       labelKey: "quickActions.settings",
       fallback: "Settings",
@@ -371,6 +423,7 @@ const enhanceSidebarNavigation = () => {
       labelKey: "nav.groupMain",
       items: [
         { href: "/", icon: navIconMarkup.home, labelKey: "nav.home", fallback: "Home" },
+        { href: "/portal", icon: navIconMarkup.analytics, labelKey: "nav.portal", fallback: "Portal" },
         { href: "/updates", icon: navIconMarkup.updates, labelKey: "nav.updates", fallback: "Latest updates" },
         { href: "/activity", icon: navIconMarkup.activity, labelKey: "nav.activity", fallback: "Activity" },
         { href: "/Creator", icon: navIconMarkup.creator, labelKey: "nav.creator", fallback: "Creator" },
@@ -395,7 +448,7 @@ const enhanceSidebarNavigation = () => {
     },
   ];
 
-  document.querySelectorAll(".nav-links").forEach((nav) => {
+  document.querySelectorAll(".nav-links:not([data-official-home-menu])").forEach((nav) => {
     nav.replaceChildren();
 
     navGroups.forEach((group, index) => {
@@ -433,7 +486,6 @@ const enhanceSidebarNavigation = () => {
         }
 
         const anchor = createNavAnchor(item);
-        if (item.quickSettings) anchor.dataset.quickSettingsOpen = "";
         if (item.className) anchor.classList.add(item.className);
         menu.append(anchor);
       });
@@ -449,6 +501,7 @@ enhanceSidebarNavigation();
 createTopSearchButton();
 createSidebarAccountMenu();
 createUserProfileDialog();
+createKeyboardShortcutsDialog();
 
 const createStandardFooter = () => {
   if (document.querySelector("[data-site-footer]")) return;
@@ -596,6 +649,24 @@ const closeUserProfileDialog = () => {
   }, 140);
 };
 
+const openKeyboardShortcutsDialog = () => {
+  const dialog = document.querySelector("[data-keyboard-shortcuts-dialog]");
+  if (!dialog) return;
+  dialog.classList.remove("is-closing");
+  dialog.hidden = false;
+  dialog.querySelector("[data-keyboard-shortcuts-close]")?.focus({ preventScroll: true });
+};
+
+const closeKeyboardShortcutsDialog = () => {
+  const dialog = document.querySelector("[data-keyboard-shortcuts-dialog]");
+  if (!dialog || dialog.hidden) return;
+  dialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    dialog.hidden = true;
+    dialog.classList.remove("is-closing");
+  }, 160);
+};
+
 document.addEventListener("click", (event) => {
   const accountTrigger = event.target.closest?.("[data-sidebar-account-trigger]");
   const account = event.target.closest?.(".sidebar-account");
@@ -629,6 +700,24 @@ document.addEventListener("click", (event) => {
   if (accountAction?.dataset.sidebarAccountAction === "profile") {
     closeSidebarAccountMenus();
     openUserProfileDialog();
+    return;
+  }
+
+  if (event.target.closest?.("[data-keyboard-shortcuts-open]")) {
+    closeSidebarHelpMenus();
+    closeSidebarAccountMenus();
+    openKeyboardShortcutsDialog();
+    return;
+  }
+
+  if (event.target.closest?.("[data-keyboard-shortcuts-close]")) {
+    closeKeyboardShortcutsDialog();
+    return;
+  }
+
+  const keyboardShortcutsDialog = event.target.closest?.("[data-keyboard-shortcuts-dialog]");
+  if (keyboardShortcutsDialog && event.target === keyboardShortcutsDialog) {
+    closeKeyboardShortcutsDialog();
     return;
   }
 
@@ -686,6 +775,7 @@ document.addEventListener("contextmenu", (event) => {
 document.addEventListener("keydown", (event) => {
   if (event.key !== "Escape") return;
   closeUserProfileDialog();
+  closeKeyboardShortcutsDialog();
   closeSidebarHelpMenus();
   closeSidebarAccountMenus();
   closeNavFlyouts();
@@ -994,14 +1084,6 @@ let clipboardClear = document.querySelector("[data-clipboard-clear]");
 let clipboardWarningDialog = document.querySelector("[data-clipboard-warning-dialog]");
 let clipboardWarningCloseButtons = [...document.querySelectorAll("[data-clipboard-warning-close]")];
 let clipboardWarningContinue = document.querySelector("[data-clipboard-warning-continue]");
-let quickSettingsDialog = document.querySelector("[data-quick-settings-dialog]");
-let quickSettingsCloseButtons = [...document.querySelectorAll("[data-quick-settings-close]")];
-let quickSettingsOpenButtons = [...document.querySelectorAll("[data-quick-settings-open]")];
-let quickSettingsThemeButtons = [...document.querySelectorAll("[data-quick-theme]")];
-let quickSettingsLanguageButtons = [...document.querySelectorAll("[data-quick-language]")];
-let quickSettingsNotificationToggle = document.querySelector("[data-quick-notifications]");
-let quickSettingsFastRenderToggle = document.querySelector("[data-quick-fast-render]");
-let quickSettingsStatus = document.querySelector("[data-quick-settings-status]");
 const adblockBait = document.querySelector(".adblock-bait");
 const adblockNotice = document.querySelector("[data-adblock-notice]");
 const adblockDismiss = document.querySelector("[data-adblock-dismiss]");
@@ -1094,6 +1176,7 @@ const translations = {
     "nav.groupManage": "관리",
     "nav.groupTrust": "신뢰",
     "nav.home": "홈",
+    "nav.portal": "Portal",
     "nav.creator": "제작자",
     "nav.about": "소개",
     "nav.aboutUs": "소개",
@@ -1109,6 +1192,13 @@ const translations = {
     "nav.faq": "FAQ",
     "nav.settings": "설정",
     "nav.accessibility": "접근성",
+    "officialNav.features": "기능",
+    "officialNav.learn": "Learn",
+    "officialNav.profileGroup": "Profile",
+    "officialNav.toolsGroup": "Tools",
+    "officialNav.supportGroup": "Support",
+    "officialNav.creatorGroup": "Creator",
+    "officialNav.trustGroup": "Trust",
     "nav.sitemap": "사이트맵",
     "nav.trust": "신뢰",
     "nav.trustCenter": "신뢰 센터",
@@ -1121,20 +1211,20 @@ const translations = {
     "profileDialog.eyebrow": "Profile",
     "profileDialog.title": "My name",
     "profileDialog.body": "이 사이트에서 사용하는 계정 표시 화면을 확인하고 관리합니다.",
+    "profileDialog.accountSection": "계정 정보",
+    "profileDialog.accountBody": "계정 영역에 표시되는 공개 이름을 설정합니다.",
+    "profileDialog.photoSection": "프로필 사진",
+    "profileDialog.photoBody": "사용자 이미지를 추가하거나 기본 구급차 이미지로 되돌립니다.",
+    "profileDialog.privacySection": "공개 설정",
+    "profileDialog.visibilityBody": "사이트 설정에서 이 프로필을 표시할지 관리합니다.",
     "profileDialog.nameControl": "사용자 이름 변경",
     "profileDialog.photoControl": "프로필 사진 추가",
-    "profileDialog.displayName": "표시 이름",
-    "profileDialog.plan": "플랜",
-    "profileDialog.avatar": "아바타",
     "profileDialog.avatarDefault": "구급차 이미지",
     "profileDialog.avatarCustom": "사용자 이미지",
     "profileDialog.photoReset": "사진 초기화",
     "profileDialog.visibility": "프로필 표시",
     "profileDialog.visibilityOn": "표시 중",
     "profileDialog.visibilityOff": "숨김",
-    "profileDialog.storage": "저장 위치",
-    "profileDialog.storageValue": "브라우저 로컬",
-    "profileDialog.openSettings": "설정 열기",
     "profileDialog.save": "저장",
     "profileDialog.reset": "초기화",
     "profileDialog.saved": "프로필 이름이 저장되었습니다.",
@@ -1144,6 +1234,16 @@ const translations = {
     "profileDialog.photoTooLarge": "이미지가 너무 커서 저장하지 못했습니다.",
     "profileDialog.visibilitySavedOn": "프로필 표시가 켜졌습니다.",
     "profileDialog.visibilitySavedOff": "프로필 표시가 꺼졌습니다.",
+    "keyboardShortcuts.nav": "키보드 단축키",
+    "keyboardShortcuts.eyebrow": "SHORTCUTS",
+    "keyboardShortcuts.title": "키보드 단축키",
+    "keyboardShortcuts.body": "사이트를 더 빠르게 이동할 때 사용할 수 있는 단축키입니다.",
+    "keyboardShortcuts.search": "검색 열기",
+    "keyboardShortcuts.copy": "페이지 링크 복사",
+    "keyboardShortcuts.share": "공유 열기",
+    "keyboardShortcuts.qr": "QR 코드 만들기",
+    "keyboardShortcuts.print": "인쇄 옵션 열기",
+    "keyboardShortcuts.close": "팝업 또는 메뉴 닫기",
     "welcome.eyebrow": "Welcome",
     "welcome.title": "First Prize Games에 오신 것을 환영합니다",
     "welcome.body": "처음 방문했다면 여기서 주요 페이지와 설정을 빠르게 둘러볼 수 있습니다.",
@@ -1325,7 +1425,9 @@ const translations = {
     "cookie.settings": "Settings 보기",
     "cookie.learnMore": "자세히 알아보기",
     "search.homeTitle": "Home",
-    "search.homeBody": "응급 대응 프로필의 소개, 주요 역량, 공유 기능을 확인합니다.",
+    "search.homeBody": "First Prize Games의 공식 첫 화면과 주요 경로를 확인합니다.",
+    "search.portalTitle": "Portal",
+    "search.portalBody": "공유, 구독, 최신 업데이트, 피드백 같은 기존 Home 기능을 확인합니다.",
     "search.creatorTitle": "Creator",
     "search.creatorBody": "Unity로 게임을 만드는 방법, 제작 흐름, Unity 요금제 정보를 봅니다.",
     "search.bioTitle": "Bio",
@@ -1539,6 +1641,37 @@ const translations = {
     "faq.feedbackTitle": "질문이 남아 있으면 기록에 추가하겠습니다.",
     "faq.feedbackBody": "빠진 답변, 틀린 번역, 더 자세히 알고 싶은 주제를 Feedback으로 보내주세요.",
     "faq.feedbackButton": "Feedback 보내기",
+    "homeCorporate.kicker": "Official Home",
+    "homeCorporate.title": "First Prize Games",
+    "homeCorporate.lead": "응급 대응 프로필, 제작 기록, 지원 경로, 개인정보 안내를 한곳에서 확인할 수 있는 공식 사이트입니다.",
+    "homeCorporate.openPortal": "Portal 열기",
+    "homeCorporate.openAbout": "사이트 소개",
+    "homeCorporate.mediaLabel": "Public profile",
+    "homeCorporate.mediaValue": "응급 대응과 제작 기록",
+    "homeCorporate.ledgerProfileLabel": "Profile",
+    "homeCorporate.ledgerProfileValue": "공개",
+    "homeCorporate.ledgerPortalLabel": "Portal",
+    "homeCorporate.ledgerPortalValue": "도구 준비됨",
+    "homeCorporate.ledgerTrustLabel": "Trust",
+    "homeCorporate.ledgerTrustValue": "정책 제공",
+    "homeCorporate.ledgerStatusLabel": "Status",
+    "homeCorporate.ledgerStatusValue": "온라인",
+    "homeCorporate.routesKicker": "Start here",
+    "homeCorporate.routesTitle": "필요한 페이지로 바로 이동하세요.",
+    "homeCorporate.routesLead": "Home은 공식 첫 화면으로 유지하고, 작업성 기능은 Portal과 전용 페이지로 분리했습니다.",
+    "homeCorporate.routePortalTitle": "Portal",
+    "homeCorporate.routePortalBody": "공유, 구독, 빠른 이동 기능을 모아 둔 기존 Home입니다.",
+    "homeCorporate.routeBioTitle": "Bio",
+    "homeCorporate.routeBioBody": "프로필, 관심사, 소개 정보를 확인합니다.",
+    "homeCorporate.routeCreatorTitle": "Creator",
+    "homeCorporate.routeCreatorBody": "제작 기록과 프로젝트 방향을 봅니다.",
+    "homeCorporate.routeTrustTitle": "Trust Center",
+    "homeCorporate.routeTrustBody": "개인정보, 보안, 상태 정보를 한곳에서 확인합니다.",
+    "homeCorporate.stripKicker": "Support",
+    "homeCorporate.stripTitle": "문의와 업데이트는 전용 페이지에서 관리합니다.",
+    "homeCorporate.stripBody": "피드백, 최신 업데이트, 사용량, 설정은 각각 독립된 페이지에서 더 명확하게 확인할 수 있습니다.",
+    "homeCorporate.feedbackButton": "Feedback",
+    "homeCorporate.updatesButton": "최신 업데이트",
     "home.heroTitle": "차분한 대응. 선명한 시스템.",
     "home.lead":
       "응급 대응, 창작 기록, 후원 경로, 개인정보와 설정을 빠르게 찾을 수 있게 정리한 공개 프로필 포털입니다.",
@@ -2033,20 +2166,6 @@ const translations = {
     "settings.cookieStatusOn": "설정 저장 쿠키가 켜져 있습니다.",
     "settings.cookieStatusOff": "설정 저장 쿠키가 꺼져 있습니다.",
     "settings.cookieLearnMore": "자세히 알아보기",
-    "quickSettings.eyebrow": "Quick settings",
-    "quickSettings.title": "빠른 설정",
-    "quickSettings.body": "자주 쓰는 표시 설정만 빠르게 조정합니다. 자세한 항목은 전체 설정에서 관리합니다.",
-    "quickSettings.general": "General",
-    "quickSettings.controls": "Controls",
-    "quickSettings.themeHint": "차분한 표시 테마를 선택합니다.",
-    "quickSettings.languageHint": "사이트 표시 언어를 전환합니다.",
-    "quickSettings.notificationsHint": "이 브라우저의 사이트 알림 권한을 요청합니다.",
-    "quickSettings.fastRenderHint": "블러, 그림자, 애니메이션을 줄입니다.",
-    "quickSettings.fullSettings": "전체 설정 열기",
-    "quickSettings.statusReady": "빠른 설정이 준비되었습니다.",
-    "quickSettings.statusSaved": "설정이 저장되었습니다.",
-    "quickSettings.statusNotificationsOn": "알림 설정이 켜졌습니다.",
-    "quickSettings.statusNotificationsOff": "알림 설정이 꺼졌습니다.",
     "settings.clearCacheTitle": "브라우저 캐시 정리",
     "settings.clearCacheBody": "이 사이트에 저장된 테마, 언어, 표시 설정을 삭제하고 기본값으로 되돌립니다.",
     "settings.clearCacheButton": "캐시 정리",
@@ -2519,6 +2638,7 @@ const translations = {
     "nav.groupManage": "Manage",
     "nav.groupTrust": "Trust",
     "nav.home": "Home",
+    "nav.portal": "Portal",
     "nav.creator": "Creator",
     "nav.about": "About",
     "nav.aboutUs": "About us",
@@ -2534,6 +2654,13 @@ const translations = {
     "nav.faq": "FAQ",
     "nav.settings": "Settings",
     "nav.accessibility": "Accessibility",
+    "officialNav.features": "Features",
+    "officialNav.learn": "Learn",
+    "officialNav.profileGroup": "Profile",
+    "officialNav.toolsGroup": "Tools",
+    "officialNav.supportGroup": "Support",
+    "officialNav.creatorGroup": "Creator",
+    "officialNav.trustGroup": "Trust",
     "nav.sitemap": "Sitemap",
     "nav.trust": "Trust",
     "nav.trustCenter": "Trust Center",
@@ -2546,20 +2673,20 @@ const translations = {
     "profileDialog.eyebrow": "Profile",
     "profileDialog.title": "My name",
     "profileDialog.body": "Review and manage the account surface used by this site.",
+    "profileDialog.accountSection": "Account details",
+    "profileDialog.accountBody": "Set the public name shown in account surfaces.",
+    "profileDialog.photoSection": "Profile photo",
+    "profileDialog.photoBody": "Use a custom image or return to the default ambulance image.",
+    "profileDialog.privacySection": "Privacy",
+    "profileDialog.visibilityBody": "Control whether this profile appears as visible in site settings.",
     "profileDialog.nameControl": "Change user name",
     "profileDialog.photoControl": "Add profile photo",
-    "profileDialog.displayName": "Display name",
-    "profileDialog.plan": "Plan",
-    "profileDialog.avatar": "Avatar",
     "profileDialog.avatarDefault": "Ambulance image",
     "profileDialog.avatarCustom": "Custom image",
     "profileDialog.photoReset": "Reset photo",
     "profileDialog.visibility": "Profile visibility",
     "profileDialog.visibilityOn": "Visible",
     "profileDialog.visibilityOff": "Hidden",
-    "profileDialog.storage": "Storage",
-    "profileDialog.storageValue": "Local browser",
-    "profileDialog.openSettings": "Open settings",
     "profileDialog.save": "Save",
     "profileDialog.reset": "Reset",
     "profileDialog.saved": "Profile name saved.",
@@ -2569,6 +2696,16 @@ const translations = {
     "profileDialog.photoTooLarge": "The image is too large to save.",
     "profileDialog.visibilitySavedOn": "Profile visibility is on.",
     "profileDialog.visibilitySavedOff": "Profile visibility is off.",
+    "keyboardShortcuts.nav": "Keyboard shortcuts",
+    "keyboardShortcuts.eyebrow": "SHORTCUTS",
+    "keyboardShortcuts.title": "Keyboard shortcuts",
+    "keyboardShortcuts.body": "Use these shortcuts to move faster around the site.",
+    "keyboardShortcuts.search": "Open search",
+    "keyboardShortcuts.copy": "Copy page link",
+    "keyboardShortcuts.share": "Open share",
+    "keyboardShortcuts.qr": "Create QR code",
+    "keyboardShortcuts.print": "Open print options",
+    "keyboardShortcuts.close": "Close popup or menu",
     "welcome.eyebrow": "Welcome",
     "welcome.title": "Welcome to First Prize Games",
     "welcome.body": "Start with the main pages, settings, and trust information in one quick view.",
@@ -2750,7 +2887,9 @@ const translations = {
     "cookie.settings": "View Settings",
     "cookie.learnMore": "Learn more",
     "search.homeTitle": "Home",
-    "search.homeBody": "View the emergency response profile intro, core strengths, and sharing tools.",
+    "search.homeBody": "Open the official First Prize Games first screen and primary routes.",
+    "search.portalTitle": "Portal",
+    "search.portalBody": "Use the former Home tools for sharing, subscriptions, updates, feedback, and quick navigation.",
     "search.creatorTitle": "Creator",
     "search.creatorBody": "Read how to make games with Unity, production workflow, and Unity pricing notes.",
     "search.bioTitle": "Bio",
@@ -2964,6 +3103,37 @@ const translations = {
     "faq.feedbackTitle": "If it is not answered, I will add it to the record.",
     "faq.feedbackBody": "Send missing answers, translation issues, or topics that need more detail through Feedback.",
     "faq.feedbackButton": "Send Feedback",
+    "homeCorporate.kicker": "Official Home",
+    "homeCorporate.title": "First Prize Games",
+    "homeCorporate.lead": "The official site for the emergency response profile, creation notes, support paths, and privacy information.",
+    "homeCorporate.openPortal": "Open Portal",
+    "homeCorporate.openAbout": "About the site",
+    "homeCorporate.mediaLabel": "Public profile",
+    "homeCorporate.mediaValue": "Emergency response and creation notes",
+    "homeCorporate.ledgerProfileLabel": "Profile",
+    "homeCorporate.ledgerProfileValue": "Public",
+    "homeCorporate.ledgerPortalLabel": "Portal",
+    "homeCorporate.ledgerPortalValue": "Tools ready",
+    "homeCorporate.ledgerTrustLabel": "Trust",
+    "homeCorporate.ledgerTrustValue": "Policies available",
+    "homeCorporate.ledgerStatusLabel": "Status",
+    "homeCorporate.ledgerStatusValue": "Online",
+    "homeCorporate.routesKicker": "Start here",
+    "homeCorporate.routesTitle": "Go straight to the page you need.",
+    "homeCorporate.routesLead": "Home now stays as the official first screen, while working tools live in Portal and dedicated pages.",
+    "homeCorporate.routePortalTitle": "Portal",
+    "homeCorporate.routePortalBody": "The former Home with sharing, subscription, and quick navigation tools.",
+    "homeCorporate.routeBioTitle": "Bio",
+    "homeCorporate.routeBioBody": "Profile details, interests, and introduction.",
+    "homeCorporate.routeCreatorTitle": "Creator",
+    "homeCorporate.routeCreatorBody": "Creation notes and project direction.",
+    "homeCorporate.routeTrustTitle": "Trust Center",
+    "homeCorporate.routeTrustBody": "Privacy, security, and status information in one place.",
+    "homeCorporate.stripKicker": "Support",
+    "homeCorporate.stripTitle": "Feedback and updates now have dedicated pages.",
+    "homeCorporate.stripBody": "Feedback, latest updates, usage, and settings are easier to manage as separate focused pages.",
+    "homeCorporate.feedbackButton": "Feedback",
+    "homeCorporate.updatesButton": "Latest updates",
     "home.heroTitle": "Calm response. Clear systems.",
     "home.lead":
       "A public profile portal for emergency response, creation notes, support paths, privacy, and settings, arranged so each signal is easy to find.",
@@ -3461,20 +3631,6 @@ const translations = {
     "settings.cookieStatusOn": "Preference cookie is on.",
     "settings.cookieStatusOff": "Preference cookie is off.",
     "settings.cookieLearnMore": "Learn more",
-    "quickSettings.eyebrow": "Quick settings",
-    "quickSettings.title": "Quick settings",
-    "quickSettings.body": "Adjust only the most common display settings here. Detailed controls stay on the full Settings page.",
-    "quickSettings.general": "General",
-    "quickSettings.controls": "Controls",
-    "quickSettings.themeHint": "Choose a quiet display theme.",
-    "quickSettings.languageHint": "Switch the interface language.",
-    "quickSettings.notificationsHint": "Ask this browser for site notification permission.",
-    "quickSettings.fastRenderHint": "Reduce blur, shadows, and animation.",
-    "quickSettings.fullSettings": "Open full settings",
-    "quickSettings.statusReady": "Quick settings are ready.",
-    "quickSettings.statusSaved": "Setting saved.",
-    "quickSettings.statusNotificationsOn": "Notifications are on.",
-    "quickSettings.statusNotificationsOff": "Notifications are off.",
     "settings.clearCacheTitle": "Clear browser cache",
     "settings.clearCacheBody":
       "Removes this site's saved theme, language, and display preferences and restores defaults.",
@@ -4314,8 +4470,17 @@ const siteSearchIndex = [
     bodyKey: "search.homeBody",
     url: "/",
     keywords: {
-      ko: "home 프로필 구급대원 응급 대응 소개 주요 역량 공유 contact",
-      en: "home profile emergency responder intro strengths share contact",
+      ko: "home 공식 첫 화면 first prize games 프로필 응급 대응 소개 신뢰 포털",
+      en: "home official first screen first prize games profile emergency response trust portal",
+    },
+  },
+  {
+    titleKey: "search.portalTitle",
+    bodyKey: "search.portalBody",
+    url: "/portal",
+    keywords: {
+      ko: "portal 포털 기존 home 공유 구독 업데이트 피드백 빠른 이동",
+      en: "portal old home share subscribe updates feedback quick navigation",
     },
   },
   {
@@ -4673,110 +4838,6 @@ const updateNotificationStatus = (isOn) => {
     const isUnavailable = permission === "denied" || permission === "unsupported";
     button.disabled = isUnavailable;
     button.setAttribute("aria-disabled", String(isUnavailable));
-  });
-};
-
-const syncQuickSettingsControls = () => {
-  const theme = document.documentElement.dataset.theme || getInitialTheme();
-  const language = currentLanguage || getInitialLanguage();
-  const notificationsOn = localStorage.getItem("profile-setting-notifications") === "true";
-  const fastRenderOn = document.documentElement.dataset.fastRender === "true";
-
-  quickSettingsThemeButtons.forEach((button) => {
-    const isActive = button.dataset.quickTheme === theme;
-    button.classList.toggle("is-active", isActive);
-    button.setAttribute("aria-pressed", String(isActive));
-  });
-
-  quickSettingsLanguageButtons.forEach((button) => {
-    const isActive = button.dataset.quickLanguage === language;
-    button.classList.toggle("is-active", isActive);
-    button.setAttribute("aria-pressed", String(isActive));
-  });
-
-  if (quickSettingsNotificationToggle) {
-    quickSettingsNotificationToggle.classList.toggle("is-on", notificationsOn);
-    quickSettingsNotificationToggle.setAttribute("aria-pressed", String(notificationsOn));
-    quickSettingsNotificationToggle.disabled = getNotificationPermissionState() === "unsupported";
-  }
-
-  if (quickSettingsFastRenderToggle) {
-    quickSettingsFastRenderToggle.classList.toggle("is-on", fastRenderOn);
-    quickSettingsFastRenderToggle.setAttribute("aria-pressed", String(fastRenderOn));
-  }
-};
-
-const setQuickSettingsStatus = (key) => {
-  if (!quickSettingsStatus) return;
-  quickSettingsStatus.textContent = translate(key);
-};
-
-const openQuickSettingsDialog = () => {
-  if (!quickSettingsDialog) return;
-  syncQuickSettingsControls();
-  setQuickSettingsStatus("quickSettings.statusReady");
-  quickSettingsDialog.classList.remove("is-closing");
-  quickSettingsDialog.hidden = false;
-};
-
-const closeQuickSettingsDialog = () => {
-  if (!quickSettingsDialog || quickSettingsDialog.hidden) return;
-  quickSettingsDialog.classList.add("is-closing");
-  window.setTimeout(() => {
-    quickSettingsDialog.hidden = true;
-    quickSettingsDialog.classList.remove("is-closing");
-  }, 180);
-};
-
-const setupQuickSettingsDialog = () => {
-  quickSettingsOpenButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      event.preventDefault();
-      openQuickSettingsDialog();
-    });
-  });
-
-  quickSettingsCloseButtons.forEach((button) => button.addEventListener("click", closeQuickSettingsDialog));
-  quickSettingsDialog?.addEventListener("click", (event) => {
-    if (event.button === 0 && event.target === quickSettingsDialog) closeQuickSettingsDialog();
-  });
-
-  quickSettingsThemeButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      setTheme(button.dataset.quickTheme);
-      setQuickSettingsStatus("quickSettings.statusSaved");
-      syncQuickSettingsControls();
-    });
-  });
-
-  quickSettingsLanguageButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      setLanguage(button.dataset.quickLanguage);
-      setQuickSettingsStatus("quickSettings.statusSaved");
-      syncQuickSettingsControls();
-    });
-  });
-
-  quickSettingsNotificationToggle?.addEventListener("click", async () => {
-    const requestedEnable = !quickSettingsNotificationToggle.classList.contains("is-on");
-    quickSettingsNotificationToggle.disabled = true;
-    const enabled = await resolveNotificationToggle(requestedEnable);
-    quickSettingsNotificationToggle.disabled = false;
-    localStorage.setItem("profile-setting-notifications", String(enabled));
-    const notificationToggle = document.querySelector('[data-toggle-key="notifications"]');
-    if (notificationToggle) updateSettingToggle(notificationToggle, enabled);
-    updateNotificationStatus(enabled);
-    showNotificationPermissionMessage(getNotificationPermissionState(), enabled, requestedEnable);
-    setQuickSettingsStatus(enabled ? "quickSettings.statusNotificationsOn" : "quickSettings.statusNotificationsOff");
-    syncQuickSettingsControls();
-  });
-
-  quickSettingsFastRenderToggle?.addEventListener("click", () => {
-    setFastRender(!quickSettingsFastRenderToggle.classList.contains("is-on"));
-    const fastRenderToggle = document.querySelector('[data-toggle-key="fast-render"]');
-    if (fastRenderToggle) updateSettingToggle(fastRenderToggle, document.documentElement.dataset.fastRender === "true");
-    setQuickSettingsStatus("quickSettings.statusSaved");
-    syncQuickSettingsControls();
   });
 };
 
@@ -5444,8 +5505,7 @@ const createClipboardDialog = () => {
         <p data-i18n="clipboard.body">이 사이트에서 복사한 링크, 제목, 텍스트만 이 브라우저에 임시로 저장합니다.</p>
         <p class="clipboard-status" data-clipboard-status></p>
         <div class="clipboard-list" data-clipboard-list></div>
-        <div class="cache-warning-actions">
-          <button class="button cache-cancel-button" type="button" data-clipboard-close data-i18n="clipboard.close">닫기</button>
+        <div class="cache-warning-actions clipboard-actions">
           <button class="button cache-confirm-button" type="button" data-clipboard-clear data-i18n="clipboard.clear">전체 삭제</button>
         </div>
       </div>
@@ -5514,83 +5574,6 @@ const createUsageResetWarningDialog = () => {
   usageResetWarningDialog = document.querySelector("[data-usage-reset-warning]");
   usageResetWarningCloseButtons = [...document.querySelectorAll("[data-usage-reset-warning-close]")];
   usageResetWarningConfirm = document.querySelector("[data-usage-reset-warning-confirm]");
-};
-
-const createQuickSettingsDialog = () => {
-  if (!document.querySelector("[data-quick-settings-dialog]")) {
-    const dialog = document.createElement("div");
-    dialog.className = "cache-dialog quick-settings-dialog";
-    dialog.dataset.quickSettingsDialog = "";
-    dialog.hidden = true;
-    dialog.innerHTML = `
-      <div class="cache-dialog-panel quick-settings-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="quick-settings-title">
-        <button class="dialog-close-button" type="button" data-quick-settings-close aria-label="닫기" data-i18n-aria-label="share.close">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
-        </button>
-        <p class="eyebrow" data-i18n="quickSettings.eyebrow">Quick settings</p>
-        <h2 id="quick-settings-title" data-i18n="quickSettings.title">빠른 설정</h2>
-        <p data-i18n="quickSettings.body">자주 쓰는 표시 설정만 빠르게 조정합니다. 자세한 항목은 전체 설정에서 관리합니다.</p>
-        <div class="quick-settings-grid">
-          <section class="quick-settings-section" aria-labelledby="quick-settings-general-title">
-            <h3 id="quick-settings-general-title" data-i18n="quickSettings.general">General</h3>
-            <div class="quick-settings-row">
-              <div>
-                <strong data-i18n="settings.themeTitle">Theme mode</strong>
-                <span data-i18n="quickSettings.themeHint">Choose a quiet display theme.</span>
-              </div>
-              <div class="quick-settings-segment" role="group" aria-label="Theme mode" data-i18n-aria-label="aria.themeMode">
-                <button type="button" data-quick-theme="dark" data-i18n="settings.themeDark">다크</button>
-                <button type="button" data-quick-theme="lights-off" data-i18n="settings.lightsOff">Lights Off</button>
-              </div>
-            </div>
-            <div class="quick-settings-row">
-              <div>
-                <strong data-i18n="settings.languageTitle">Language</strong>
-                <span data-i18n="quickSettings.languageHint">Switch the interface language.</span>
-              </div>
-              <div class="quick-settings-segment" role="group" aria-label="Language" data-i18n-aria-label="aria.language">
-                <button type="button" data-quick-language="ko" data-i18n="settings.languageKorean">한국어</button>
-                <button type="button" data-quick-language="en" data-i18n="settings.languageEnglish">English</button>
-              </div>
-            </div>
-          </section>
-          <section class="quick-settings-section" aria-labelledby="quick-settings-controls-title">
-            <h3 id="quick-settings-controls-title" data-i18n="quickSettings.controls">Controls</h3>
-            <button class="quick-settings-toggle" type="button" data-quick-notifications aria-pressed="false">
-              <span>
-                <strong data-i18n="settings.notificationsTitle">Notifications</strong>
-                <small data-i18n="quickSettings.notificationsHint">Ask this browser for site notification permission.</small>
-              </span>
-              <i aria-hidden="true"></i>
-            </button>
-            <button class="quick-settings-toggle" type="button" data-quick-fast-render aria-pressed="false">
-              <span>
-                <strong data-i18n="settings.fastRenderTitle">Fast rendering</strong>
-                <small data-i18n="quickSettings.fastRenderHint">Reduce blur, shadows, and animation.</small>
-              </span>
-              <i aria-hidden="true"></i>
-            </button>
-          </section>
-        </div>
-        <p class="quick-settings-status" data-quick-settings-status role="status" aria-live="polite"></p>
-        <div class="quick-settings-actions">
-          <a class="button secondary-button" href="/settings#storage" data-i18n="settings.cookieSettingsButton">쿠키 설정</a>
-          <a class="button secondary-button" href="/accessibility" data-i18n="settings.accessibilityOpen">Accessibility 열기</a>
-          <a class="button cache-confirm-button" href="/settings" data-i18n="quickSettings.fullSettings">전체 설정 열기</a>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(dialog);
-  }
-
-  quickSettingsDialog = document.querySelector("[data-quick-settings-dialog]");
-  quickSettingsCloseButtons = [...document.querySelectorAll("[data-quick-settings-close]")];
-  quickSettingsOpenButtons = [...document.querySelectorAll("[data-quick-settings-open]")];
-  quickSettingsThemeButtons = [...document.querySelectorAll("[data-quick-theme]")];
-  quickSettingsLanguageButtons = [...document.querySelectorAll("[data-quick-language]")];
-  quickSettingsNotificationToggle = document.querySelector("[data-quick-notifications]");
-  quickSettingsFastRenderToggle = document.querySelector("[data-quick-fast-render]");
-  quickSettingsStatus = document.querySelector("[data-quick-settings-status]");
 };
 
 const createWelcomeDialog = () => {
@@ -5960,9 +5943,6 @@ const setupMobileQuickActions = () => {
       return;
     }
 
-    if (action === "quick-settings") {
-      openQuickSettingsDialog();
-    }
   });
 };
 
@@ -7297,7 +7277,7 @@ const handleContextMenuAction = async (action) => {
   }
 
   if (action === "settings") {
-    openQuickSettingsDialog();
+    window.location.href = "/settings";
   }
 };
 
@@ -7756,7 +7736,6 @@ createPrintDialog();
 createClipboardDialog();
 createClipboardWarningDialog();
 createUsageResetWarningDialog();
-createQuickSettingsDialog();
 createWelcomeDialog();
 createMobileQuickActions();
 setupCookieNotice();
@@ -7782,7 +7761,6 @@ setupNotificationTest();
 setupNavLayoutDialog();
 setupContextMenuModeDialog();
 setupCookieSettingsDialog();
-setupQuickSettingsDialog();
 setupUserProfileDialog();
 setupFastRenderSwipe();
 setupToggleRightTrack();
@@ -7930,6 +7908,7 @@ document.addEventListener("click", (event) => {
 document.addEventListener("keydown", (event) => {
   if (event.key !== "Escape") return;
   setMobileMenuOpen(false);
+  closeKeyboardShortcutsDialog();
   closeUsageLearnDialog();
 });
 

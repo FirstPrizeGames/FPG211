@@ -21,28 +21,28 @@
     <title>First Prize Games</title>
     <meta
       name="description"
-      content="A modern personal profile for an emergency responder, with bio, FAQ, pricing, feedback, and accessible display settings."
+      content="The official First Prize Games home for profile, portal, creator notes, support, privacy, and trust information."
     />
     <meta name="theme-color" content="#050706" />
     <link rel="canonical" href="https://firstprizegames.info/" />
     <meta property="og:title" content="First Prize Games" />
     <meta
       property="og:description"
-      content="A calm, modern profile site for emergency response work, bio details, FAQ, and feedback."
+      content="The official First Prize Games home for profile, portal, creator notes, support, privacy, and trust information."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="First Prize Games" />
     <meta property="og:url" content="https://firstprizegames.info/" />
-    <meta property="og:image" content="https://firstprizegames.info/assets/home-us-ambulance-hero.jpg" />
-    <meta property="og:image:width" content="1280" />
-    <meta property="og:image:height" content="720" />
+    <meta property="og:image" content="https://firstprizegames.info/assets/official-home-operations-hero.jpg" />
+    <meta property="og:image:width" content="1672" />
+    <meta property="og:image:height" content="941" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="First Prize Games" />
     <meta
       name="twitter:description"
-      content="A calm, modern profile site for emergency response work, bio details, FAQ, and feedback."
+      content="The official First Prize Games home for profile, portal, creator notes, support, privacy, and trust information."
     />
-    <meta name="twitter:image" content="https://firstprizegames.info/assets/home-us-ambulance-hero.jpg" />
+    <meta name="twitter:image" content="https://firstprizegames.info/assets/official-home-operations-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png" />
@@ -52,7 +52,7 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="application-name" content="First Prize Games" />
     <meta name="msapplication-TileColor" content="#050706" />
-    <link rel="preload" href="assets/home-us-ambulance-hero.jpg" as="image" fetchpriority="high" />
+    <link rel="preload" href="assets/official-home-operations-hero.jpg" as="image" fetchpriority="high" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -75,7 +75,7 @@
             "name": "First Prize Games",
             "url": "https://firstprizegames.info/",
             "logo": "https://firstprizegames.info/assets/logo.png",
-            "image": "https://firstprizegames.info/assets/home-us-ambulance-hero.jpg",
+            "image": "https://firstprizegames.info/assets/official-home-operations-hero.jpg",
             "knowsAbout": ["Emergency response", "Game UI", "Roblox systems", "Unity development"]
           }
         ]
@@ -133,9 +133,9 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260628-browser-language-default" />
+    <link rel="stylesheet" href="styles.css?v=20260629-official-home-mega-nav-fix" />
   </head>
-  <body class="home-body">
+  <body class="home-body official-home-body">
     <div class="loading-bar" aria-hidden="true"></div>
     <div class="scroll-progress" aria-hidden="true"></div>
     <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
@@ -147,7 +147,7 @@
     </div>
     <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
     <main class="shell home-page" id="main-content" tabindex="-1">
-      <nav class="topbar" aria-label="프로필 메뉴" data-i18n-aria-label="aria.profileMenu">
+      <nav class="topbar official-home-nav" aria-label="프로필 메뉴" data-i18n-aria-label="aria.profileMenu" data-official-home-nav>
         <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
           <img src="/assets/logo.png" alt="" width="537" height="532" decoding="async" draggable="false" />
           <span>FP</span>
@@ -158,226 +158,158 @@
             <path d="m6 9 6 6 6-6" />
           </svg>
         </button>
-        <div class="nav-links" data-mobile-menu>
-          <a class="is-active" href="/"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg><span data-i18n="nav.home">Home</span></a>
-          <a href="/Creator"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z" /><path d="m3 14 9 5 9-5" /><path d="m3 11 9 5 9-5" /></svg><span data-i18n="nav.creator">Creator</span></a>
-          <a href="/Bio"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0" /><circle cx="12" cy="7" r="4" /></svg><span data-i18n="nav.bio">Bio</span></a>
-          <a href="/about"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg><span data-i18n="nav.aboutUs">About us</span></a>
-          <a href="/FAQ"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 1 1 5.8 1c-.5.9-1.4 1.3-2.1 1.9-.6.5-.8.9-.8 2.1" /><path d="M12 17h.01" /></svg><span data-i18n="nav.faq">FAQ</span></a>
-          <a href="/Pricing"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 10h18" /><path d="M7 15h4" /></svg><span data-i18n="nav.pricing">Pricing</span></a>
-          <a href="/settings"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3h.1A1.7 1.7 0 0 0 10 3.1V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1A1.7 1.7 0 0 0 20.9 10h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" /></svg><span data-i18n="nav.settings">Settings</span></a>
-          <a href="/privacy"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-5" /></svg><span data-i18n="nav.privacy">Privacy Policy</span></a>
-          <a href="/license"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z" /><path d="M14 3v6h5" /><path d="M9 14h6" /><path d="M9 18h4" /><path d="M5 7v14" /></svg><span data-i18n="nav.license">License</span></a>
-          <a class="nav-feedback-link" href="/feedback" data-i18n="nav.feedback">Feedback</a>
+        <div class="nav-links official-home-menu" data-mobile-menu data-official-home-menu>
+          <a class="official-menu-link is-active" href="/" data-i18n="nav.home">Home</a>
+          <div class="official-menu-item">
+            <button type="button" data-i18n="officialNav.features">Features</button>
+            <div class="official-mega-panel">
+              <section>
+                <h2 data-i18n="officialNav.profileGroup">Profile</h2>
+                <a href="/portal" data-i18n="nav.portal">Portal</a>
+                <a href="/Bio" data-i18n="nav.bio">Bio</a>
+                <a href="/about" data-i18n="nav.aboutUs">About us</a>
+                <a href="/activity" data-i18n="nav.activity">Activity</a>
+              </section>
+              <section>
+                <h2 data-i18n="officialNav.toolsGroup">Tools</h2>
+                <a href="/search" data-i18n="nav.search">Search</a>
+                <a href="/usage" data-i18n="usage.nav">Usage</a>
+                <a href="/settings" data-i18n="nav.settings">Settings</a>
+                <a href="/accessibility" data-i18n="nav.accessibility">Accessibility</a>
+              </section>
+              <section>
+                <h2 data-i18n="officialNav.supportGroup">Support</h2>
+                <a href="/FAQ" data-i18n="nav.faq">FAQ</a>
+                <a href="/feedback" data-i18n="nav.feedback">Feedback</a>
+                <a href="/updates" data-i18n="nav.updates">Latest updates</a>
+                <a href="/status" data-i18n="nav.status">Status</a>
+              </section>
+            </div>
+          </div>
+          <div class="official-menu-item">
+            <button type="button" data-i18n="officialNav.learn">Learn</button>
+            <div class="official-mega-panel official-mega-panel-compact">
+              <section>
+                <h2 data-i18n="officialNav.creatorGroup">Creator</h2>
+                <a href="/Creator" data-i18n="nav.creator">Creator</a>
+                <a href="/FAQ" data-i18n="nav.faq">FAQ</a>
+                <a href="/updates" data-i18n="nav.updates">Latest updates</a>
+              </section>
+              <section>
+                <h2 data-i18n="officialNav.trustGroup">Trust</h2>
+                <a href="/trust" data-i18n="nav.trustCenter">Trust Center</a>
+                <a href="/security" data-i18n="nav.security">Security</a>
+                <a href="/privacy" data-i18n="nav.privacy">Privacy Policy</a>
+                <a href="/terms" data-i18n="nav.terms">Terms</a>
+                <a href="/license" data-i18n="nav.license">License</a>
+              </section>
+            </div>
+          </div>
+          <a class="official-menu-link" href="/Creator" data-i18n="nav.creator">Creator</a>
+          <a class="official-menu-link" href="/Pricing" data-i18n="nav.pricing">Pricing</a>
+          <a class="official-menu-link" href="/feedback" data-i18n="nav.feedback">Feedback</a>
         </div>
       </nav>
 
-      <section class="home-hero" id="intro">
+      <section class="home-hero corporate-home-hero" id="intro">
         <div class="home-hero-copy">
-          <h1 data-i18n="home.heroTitle">차분한 대응. 선명한 시스템.</h1>
-          <p class="home-lead" data-i18n="home.lead">
-            응급 대응, 창작 기록, 후원 경로, 개인정보와 설정을 빠르게 찾을 수 있게 정리한 공개 프로필 포털입니다.
+          <p class="home-section-kicker" data-i18n="homeCorporate.kicker">Official Home</p>
+          <h1 data-i18n="homeCorporate.title">First Prize Games</h1>
+          <p class="home-lead" data-i18n="homeCorporate.lead">
+            응급 대응 프로필, 제작 기록, 지원 경로, 개인정보 안내를 한곳에서 확인할 수 있는 공식 사이트입니다.
           </p>
           <div class="home-hero-actions">
-            <a class="button primary" href="/Creator" data-i18n="home.openCreator">Creator 보기</a>
-            <a class="button ghost" href="/feedback" data-i18n="home.openSupport">Support 문의</a>
+            <a class="button primary" href="/portal" data-i18n="homeCorporate.openPortal">Portal 열기</a>
+            <a class="button ghost" href="/about" data-i18n="homeCorporate.openAbout">사이트 소개</a>
           </div>
         </div>
         <figure class="home-hero-media">
-          <img src="assets/home-us-ambulance-hero.jpg" alt="" width="1280" height="720" loading="eager" decoding="async" />
+          <img src="assets/official-home-operations-hero.jpg" alt="" width="1672" height="941" loading="eager" decoding="async" />
           <figcaption>
-            <span data-i18n="home.signalLabel">Emergency</span>
-            <strong data-i18n="home.signalValue">U.S. ambulance at emergency entry</strong>
+            <span data-i18n="homeCorporate.mediaLabel">Public profile</span>
+            <strong data-i18n="homeCorporate.mediaValue">Emergency response and creation notes</strong>
           </figcaption>
         </figure>
       </section>
 
-      <section class="home-ledger" aria-label="Home system summary" data-i18n-aria-label="aria.homeLedger">
+      <section class="home-ledger corporate-home-ledger" aria-label="Site summary" data-i18n-aria-label="aria.homeLedger">
         <div>
-          <span data-i18n="home.ledgerResponseLabel">Response</span>
-          <strong data-i18n="home.ledgerResponseValue">Ready</strong>
+          <span data-i18n="homeCorporate.ledgerProfileLabel">Profile</span>
+          <strong data-i18n="homeCorporate.ledgerProfileValue">Public</strong>
         </div>
         <div>
-          <span data-i18n="home.ledgerCreatorLabel">Creator</span>
-          <strong data-i18n="home.ledgerCreatorValue">Tools and games</strong>
+          <span data-i18n="homeCorporate.ledgerPortalLabel">Portal</span>
+          <strong data-i18n="homeCorporate.ledgerPortalValue">Tools ready</strong>
         </div>
         <div>
-          <span data-i18n="home.ledgerSupportLabel">Support</span>
-          <strong data-i18n="home.ledgerSupportValue">Stripe links</strong>
+          <span data-i18n="homeCorporate.ledgerTrustLabel">Trust</span>
+          <strong data-i18n="homeCorporate.ledgerTrustValue">Policies available</strong>
         </div>
         <div>
-          <span data-i18n="home.ledgerPrivacyLabel">Privacy</span>
-          <strong data-i18n="home.ledgerPrivacyValue">Local-first controls</strong>
+          <span data-i18n="homeCorporate.ledgerStatusLabel">Status</span>
+          <strong data-i18n="homeCorporate.ledgerStatusValue">Online</strong>
         </div>
       </section>
 
-      <section class="home-field-scene" aria-label="Field ambulance scene" data-i18n-aria-label="aria.homeFieldScene">
-        <figure>
-          <img
-            src="assets/home-field-ambulance-scene-v2.jpg"
-            alt=""
-            width="1680"
-            height="944"
-            loading="eager"
-            decoding="async"
-          />
-          <figcaption>
-            <span data-i18n="home.fieldSceneLabel">Field scene</span>
-            <strong data-i18n="home.fieldSceneValue">A working response moment</strong>
-          </figcaption>
-        </figure>
-      </section>
-
-      <section class="home-route-deck" aria-label="Primary routes" data-i18n-aria-label="aria.homeRoutes">
+      <section class="home-route-deck corporate-home-routes" aria-label="Primary site routes" data-i18n-aria-label="aria.homeRoutes">
         <div class="home-section-copy">
-          <p class="home-section-kicker" data-i18n="home.routesKicker">Routes</p>
-          <h2 data-i18n="home.routesTitle">바로 갈 수 있는 네 개의 입구.</h2>
-          <p data-i18n="home.routesLead">홈은 길을 찾는 곳으로 두고, 자세한 내용은 각 전용 페이지에서 더 깊게 볼 수 있게 나눴습니다.</p>
+          <p class="home-section-kicker" data-i18n="homeCorporate.routesKicker">Start here</p>
+          <h2 data-i18n="homeCorporate.routesTitle">필요한 페이지로 바로 이동하세요.</h2>
+          <p data-i18n="homeCorporate.routesLead">Home은 공식 첫 화면으로 유지하고, 작업성 기능은 Portal과 전용 페이지로 분리했습니다.</p>
         </div>
         <div class="home-route-list">
-          <a href="/Bio">
+          <a href="/portal">
             <span>01</span>
             <div>
-              <strong data-i18n="home.routeBioTitle">Who I am</strong>
-              <p data-i18n="home.routeBioBody">응급 대응자 프로필과 관심사.</p>
+              <strong data-i18n="homeCorporate.routePortalTitle">Portal</strong>
+              <p data-i18n="homeCorporate.routePortalBody">공유, 구독, 빠른 이동 기능을 모아 둔 기존 Home입니다.</p>
             </div>
             <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
           </a>
-          <a href="/about">
+          <a href="/Bio">
             <span>02</span>
             <div>
-              <strong data-i18n="home.routeAboutTitle">The system</strong>
-              <p data-i18n="home.routeAboutBody">사이트 구조와 운영 원칙.</p>
+              <strong data-i18n="homeCorporate.routeBioTitle">Bio</strong>
+              <p data-i18n="homeCorporate.routeBioBody">프로필, 관심사, 소개 정보를 확인합니다.</p>
             </div>
             <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
-          </a>
-          <a href="/Pricing">
-            <span>03</span>
-            <div>
-              <strong data-i18n="home.routePricingTitle">Support plans</strong>
-              <p data-i18n="home.routePricingBody">후원형 플랜과 결제 링크.</p>
-            </div>
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
-          </a>
-          <a href="/settings">
-            <span>04</span>
-            <div>
-              <strong data-i18n="home.routeSettingsTitle">Your control</strong>
-              <p data-i18n="home.routeSettingsBody">언어, 테마, 결제 차단 설정.</p>
-            </div>
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
-          </a>
-        </div>
-      </section>
-
-      <section class="home-switchboard" aria-label="Quick actions" data-i18n-aria-label="aria.homeSwitchboard">
-        <div class="home-section-copy">
-          <p class="home-section-kicker" data-i18n="home.switchKicker">Quick switchboard</p>
-          <h2 data-i18n="home.switchTitle">자주 쓰는 작업을 한 번에.</h2>
-        </div>
-        <div class="home-action-grid">
-          <a href="/feedback">
-            <span data-i18n="home.actionFeedbackLabel">Feedback</span>
-            <strong data-i18n="home.actionFeedbackTitle">의견 보내기</strong>
-          </a>
-          <a href="/FAQ">
-            <span data-i18n="home.actionFaqLabel">FAQ</span>
-            <strong data-i18n="home.actionFaqTitle">질문 확인</strong>
           </a>
           <a href="/Creator">
-            <span data-i18n="home.actionCreatorLabel">Creator</span>
-            <strong data-i18n="home.actionCreatorTitle">제작 기록</strong>
+            <span>03</span>
+            <div>
+              <strong data-i18n="homeCorporate.routeCreatorTitle">Creator</strong>
+              <p data-i18n="homeCorporate.routeCreatorBody">제작 기록과 프로젝트 방향을 봅니다.</p>
+            </div>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
           </a>
-          <a href="/privacy">
-            <span data-i18n="home.actionPrivacyLabel">Privacy</span>
-            <strong data-i18n="home.actionPrivacyTitle">정책 보기</strong>
+          <a href="/trust">
+            <span>04</span>
+            <div>
+              <strong data-i18n="homeCorporate.routeTrustTitle">Trust Center</strong>
+              <p data-i18n="homeCorporate.routeTrustBody">개인정보, 보안, 상태 정보를 한곳에서 확인합니다.</p>
+            </div>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
           </a>
-          <a href="/settings#payments">
-            <span data-i18n="home.actionPaymentsLabel">Payments</span>
-            <strong data-i18n="home.actionPaymentsTitle">결제 제어</strong>
-          </a>
-          <button type="button" data-share-link>
-            <span data-i18n="home.actionShareLabel">Share</span>
-            <strong data-i18n="home.actionShareTitle">링크 복사</strong>
-          </button>
         </div>
       </section>
 
-      <section class="home-latest" aria-label="Latest updates" data-i18n-aria-label="aria.homeLatest">
-        <p class="home-section-kicker" data-i18n="home.latestKicker">Latest</p>
-        <div class="home-latest-list">
-          <article>
-            <span data-i18n="home.latestOneDate">June 3, 2026</span>
-            <strong data-i18n="home.latestOneTitle">Home redesign</strong>
-            <p data-i18n="home.latestOneBody">홈을 독립적인 운영 포털로 재구성했습니다.</p>
-          </article>
-          <article>
-            <span data-i18n="home.latestTwoDate">June 3, 2026</span>
-            <strong data-i18n="home.latestTwoTitle">About and Bio</strong>
-            <p data-i18n="home.latestTwoBody">소개 페이지들을 각각 다른 고급 디자인으로 분리했습니다.</p>
-          </article>
-          <article>
-            <span data-i18n="home.latestThreeDate">June 3, 2026</span>
-            <strong data-i18n="home.latestThreeTitle">Payment controls</strong>
-            <p data-i18n="home.latestThreeBody">설정에서 결제 차단과 Stripe 링크 상태를 관리할 수 있습니다.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="home-feedback-strip" aria-label="Feedback" data-i18n-aria-label="aria.homeFeedback">
+      <section class="home-feedback-strip corporate-home-strip" aria-label="Operational links" data-i18n-aria-label="aria.homeFeedback">
         <div>
-          <p class="home-section-kicker" data-i18n="home.feedbackKicker">Feedback</p>
-          <h2 data-i18n="home.feedbackTitle">이 시스템을 더 좋게 만드는 신호.</h2>
-          <p data-i18n="home.feedbackBody">불편한 흐름, 번역 누락, 결제 접근성, 디자인 균형을 발견하면 바로 알려주세요.</p>
+          <p class="home-section-kicker" data-i18n="homeCorporate.stripKicker">Support</p>
+          <h2 data-i18n="homeCorporate.stripTitle">문의와 업데이트는 전용 페이지에서 관리합니다.</h2>
+          <p data-i18n="homeCorporate.stripBody">피드백, 최신 업데이트, 사용량, 설정은 각각 독립된 페이지에서 더 명확하게 확인할 수 있습니다.</p>
         </div>
-        <a class="home-feedback-link" href="/feedback">
-          <span data-i18n="home.feedbackButton">Feedback 보내기</span>
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
-        </a>
-      </section>
-
-      <section class="home-subscribe" aria-labelledby="home-subscribe-title">
-        <div class="home-section-copy">
-          <p class="home-section-kicker" data-i18n="home.subscribeKicker">Subscribe</p>
-          <h2 id="home-subscribe-title" data-i18n="home.subscribeTitle">새 소식을 이메일로 받기.</h2>
-          <p data-i18n="home.subscribeBody">
-            업데이트, 새로운 글, 뉴스성 안내를 이메일로 받을 수 있게 준비합니다. 지금 등록한 정보는 이 브라우저에 저장됩니다.
-          </p>
+        <div class="corporate-home-strip-actions">
+          <a class="home-feedback-link" href="/feedback">
+            <span data-i18n="homeCorporate.feedbackButton">Feedback</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
+          </a>
+          <a class="home-feedback-link" href="/updates">
+            <span data-i18n="homeCorporate.updatesButton">Latest updates</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
+          </a>
         </div>
-        <form class="home-subscribe-form" data-home-subscribe-form>
-          <label class="home-subscribe-field">
-            <span data-i18n="home.subscribeEmailLabel">이메일</span>
-            <input
-              type="email"
-              autocomplete="email"
-              inputmode="email"
-              placeholder="you@example.com"
-              data-home-subscribe-email
-              required
-            />
-          </label>
-          <fieldset class="home-subscribe-topics">
-            <legend data-i18n="home.subscribeTopicsLabel">받고 싶은 소식</legend>
-            <label>
-              <input type="checkbox" value="updates" data-home-subscribe-topic checked />
-              <span data-i18n="home.subscribeTopicUpdates">사이트 업데이트</span>
-            </label>
-            <label>
-              <input type="checkbox" value="news" data-home-subscribe-topic checked />
-              <span data-i18n="home.subscribeTopicNews">새로운 소식과 뉴스</span>
-            </label>
-            <label>
-              <input type="checkbox" value="creator" data-home-subscribe-topic />
-              <span data-i18n="home.subscribeTopicCreator">Creator 기록</span>
-            </label>
-          </fieldset>
-          <div class="home-subscribe-actions">
-            <button class="button primary" type="submit" data-i18n="home.subscribeButton">구독 저장</button>
-            <p class="home-subscribe-status" data-home-subscribe-status role="status" aria-live="polite"></p>
-          </div>
-        </form>
       </section>
-
       <div class="cache-dialog share-dialog" data-share-dialog hidden>
         <div class="cache-dialog-panel share-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="share-dialog-title">
           <p class="eyebrow" data-i18n="share.eyebrow">Share</p>
@@ -509,7 +441,7 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="script.js?v=20260628-browser-language-default" defer></script>
+    <script src="script.js?v=20260629-official-home-mega-nav-fix" defer></script>
   </body>
 </html>
 

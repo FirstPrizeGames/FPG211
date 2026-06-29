@@ -1,8 +1,9 @@
-const CACHE_NAME = "profile-offline-20260628-browser-language-default";
+const CACHE_NAME = "profile-offline-20260629-official-home-mega-nav-fix";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
   "/",
+  "/portal",
   "/accessibility",
   "/updates",
   "/search",
@@ -37,6 +38,7 @@ const PRECACHE_URLS = [
   "/assets/icon-512.png",
   "/assets/well.png",
   "/assets/logo.png",
+  "/assets/official-home-operations-hero.jpg",
   "/assets/accessibility-firetruck-hero.jpg",
   "/assets/profile-hero.jpg",
 ];

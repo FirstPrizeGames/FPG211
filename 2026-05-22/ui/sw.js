@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260629-usage-visible-session";
+const CACHE_NAME = "profile-offline-20260629-settings-inline-modal";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

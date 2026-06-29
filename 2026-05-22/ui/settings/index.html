@@ -21,14 +21,14 @@
     <title>Settings · First Prize Games</title>
     <meta
       name="description"
-      content="Profile settings for theme, language, payment blocking, density, kid mode, performance, storage, and accent color."
+      content="Essential settings for theme, language, accessibility, security, profile, and context menu behavior."
     />
     <meta name="theme-color" content="#151514" />
     <link rel="canonical" href="https://firstprizegames.info/settings" />
     <meta property="og:title" content="Settings · First Prize Games" />
     <meta
       property="og:description"
-      content="Adjust theme, language, notifications, payment blocking, kid mode, performance, storage, and accent color settings."
+      content="Adjust essential site preferences in a focused settings dialog."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="First Prize Games" />
@@ -40,7 +40,7 @@
     <meta name="twitter:title" content="Settings · First Prize Games" />
     <meta
       name="twitter:description"
-      content="Adjust theme, language, notifications, payment blocking, kid mode, performance, storage, and accent color settings."
+      content="Adjust essential site preferences in a focused settings dialog."
     />
     <meta name="twitter:image" content="https://firstprizegames.info/assets/profile-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -66,41 +66,27 @@
           if ([false, "false", "0", "off"].includes(value)) return false;
           return fallback;
         };
-        const normalizeKidMode = (mode) => {
-          if (mode === "true") return "strong";
-          return ["soft", "strong"].includes(mode) ? mode : "off";
-        };
-        const normalizeAccent = (accent) =>
-          ["blue", "green", "rose", "orange", "purple"].includes(accent) ? accent : "neutral";
         const savedTheme = normalizeTheme(localStorage.getItem("profile-theme"));
-        document.documentElement.dataset.theme = savedTheme || "dark";
-        const savedLanguage = ["ko", "en"].includes(localStorage.getItem("profile-language")) ? localStorage.getItem("profile-language") : "";
+        const savedLanguage = ["ko", "en"].includes(localStorage.getItem("profile-language"))
+          ? localStorage.getItem("profile-language")
+          : "";
         const browserLanguage = (((navigator.languages || [navigator.language]) || [])
           .map((language) => String(language || "").toLowerCase())
-          .find((language) => language.startsWith("ko") || language.startsWith("en")) || "ko").startsWith("en") ? "en" : "ko";
+          .find((language) => language.startsWith("ko") || language.startsWith("en")) || "ko").startsWith("en")
+          ? "en"
+          : "ko";
+        const sidebarNavEnabled = normalizeBoolean(localStorage.getItem("profile-setting-sidebar-nav"), true);
+
+        document.documentElement.dataset.theme = savedTheme || "dark";
         document.documentElement.lang = savedLanguage || browserLanguage;
         document.documentElement.dataset.initialLanguage = document.documentElement.lang;
-        document.documentElement.dataset.accent = normalizeAccent(localStorage.getItem("profile-accent"));
-        document.documentElement.dataset.density = ["compact", "comfortable", "spacious"].includes(localStorage.getItem("profile-density"))
-          ? localStorage.getItem("profile-density")
-          : "comfortable";
-        document.documentElement.dataset.fastRender = normalizeBoolean(
-          localStorage.getItem("profile-setting-fast-render") || localStorage.getItem("profile-fast-render"),
-          false,
-        )
-          ? "true"
-          : "false";
-        document.documentElement.dataset.kidMode = normalizeKidMode(localStorage.getItem("profile-setting-kid-mode"));
-        document.documentElement.dataset.settingsRedesign = normalizeBoolean(
-          localStorage.getItem("profile-beta-settings-redesign"),
-          false,
-        )
-          ? "true"
-          : "false";
-        const sidebarNavEnabled = normalizeBoolean(
-          localStorage.getItem("profile-setting-sidebar-nav"),
-          true,
-        );
+        document.documentElement.dataset.accent = "neutral";
+        document.documentElement.dataset.density = "comfortable";
+        document.documentElement.dataset.fastRender = "false";
+        document.documentElement.dataset.kidMode = normalizeBoolean(localStorage.getItem("profile-setting-kid-mode"), false)
+          ? "strong"
+          : "off";
+        document.documentElement.dataset.settingsRedesign = "false";
         document.documentElement.dataset.navLayout = sidebarNavEnabled ? "sidebar" : "top";
         document.documentElement.dataset.sidebarCollapsed = sidebarNavEnabled && normalizeBoolean(
           localStorage.getItem("profile-sidebar-collapsed"),
@@ -110,702 +96,194 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260629-usage-visible-session" />
+    <link rel="stylesheet" href="../styles.css?v=20260629-settings-inline-modal" />
   </head>
-  <body class="settings-body">
+  <body class="settings-body settings-modal-body">
     <div class="loading-bar" aria-hidden="true"></div>
-    <div class="scroll-progress" aria-hidden="true"></div>
     <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
-    <div class="adblock-notice" data-adblock-notice hidden>
-      <p data-i18n="adblock.message">
-        광고 차단기가 일부 사이트 기능을 제한할 수 있습니다. 문제가 보이면 이 사이트를 허용 목록에 추가해 주세요.
-      </p>
-      <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
-    </div>
     <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
-    <main class="shell settings-page" id="main-content" tabindex="-1">
-      <nav class="topbar" aria-label="설정 메뉴" data-i18n-aria-label="aria.settingsMenu">
-        <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
-          <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
-          <span>FP</span>
-        </a>
-        <button class="mobile-menu-button" type="button" aria-expanded="false" data-mobile-menu-toggle>
-          <span data-i18n="nav.menu">Menu</span>
-          <svg class="mobile-menu-icon" aria-hidden="true" viewBox="0 0 24 24">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
-        <div class="nav-links" data-mobile-menu>
-          <a href="/"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg><span data-i18n="nav.home">Home</span></a>
-          <a href="/Creator"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z" /><path d="m3 14 9 5 9-5" /><path d="m3 11 9 5 9-5" /></svg><span data-i18n="nav.creator">Creator</span></a>
-          <a href="/Bio"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0" /><circle cx="12" cy="7" r="4" /></svg><span data-i18n="nav.bio">Bio</span></a>
-          <a href="/about"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg><span data-i18n="nav.aboutUs">About us</span></a>
-          <a href="/FAQ"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 1 1 5.8 1c-.5.9-1.4 1.3-2.1 1.9-.6.5-.8.9-.8 2.1" /><path d="M12 17h.01" /></svg><span data-i18n="nav.faq">FAQ</span></a>
-          <a href="/Pricing"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 10h18" /><path d="M7 15h4" /></svg><span data-i18n="nav.pricing">Pricing</span></a>
-          <a class="is-active" href="/settings"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3h.1A1.7 1.7 0 0 0 10 3.1V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1A1.7 1.7 0 0 0 20.9 10h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" /></svg><span data-i18n="nav.settings">Settings</span></a>
-          <a href="/privacy"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-5" /></svg><span data-i18n="nav.privacy">Privacy Policy</span></a>
-          <a href="/license"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z" /><path d="M14 3v6h5" /><path d="M9 14h6" /><path d="M9 18h4" /><path d="M5 7v14" /></svg><span data-i18n="nav.license">License</span></a>
-          <a class="nav-feedback-link" href="/feedback" data-i18n="nav.feedback">Feedback</a>
-        </div>
-      </nav>
 
-      <section class="settings-hero">
-        <div class="settings-copy">
-          <p class="eyebrow" data-i18n="nav.settings">Settings</p>
-          <h1 data-i18n="settings.title">설정 관리 콘솔</h1>
-          <p data-i18n="settings.lead">
-            공개 상태, 표시 방식, 성능, 저장소 설정을 한 화면에서 관리합니다.
-          </p>
-        </div>
-        <div class="settings-overview" aria-label="설정 상태 요약" data-i18n-aria-label="aria.settingsOverview">
-          <div>
-            <span data-i18n="settings.overviewProfile">Profile</span>
-            <strong data-i18n="settings.overviewProfileValue">Public</strong>
-          </div>
-          <div>
-            <span data-i18n="settings.overviewTheme">Theme</span>
-            <strong data-theme-status data-i18n="settings.overviewThemeValue">Synced</strong>
-          </div>
-          <div class="is-payment-summary">
-            <span data-i18n="settings.overviewPayments">Payments</span>
-            <strong data-payment-block-status data-i18n="settings.overviewPaymentsAllowed">Allowed</strong>
-          </div>
-          <div>
-            <span data-i18n="usage.nav">Usage</span>
-            <strong data-i18n="usage.summaryValue">Open page</strong>
-          </div>
-        </div>
-      </section>
-
-      <section class="settings-band" aria-label="프로필 설정" data-i18n-aria-label="aria.settingsPanel">
-        <aside class="settings-sidebar" aria-label="설정 분류" data-i18n-aria-label="aria.settingsCategories">
-          <div class="settings-sidebar-title">
-            <span data-i18n="settings.sidebarEyebrow">Workspace</span>
-            <strong data-i18n="settings.sidebarTitle">Controls</strong>
-          </div>
-          <a class="is-active" href="#profile">
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <path d="M20 21a8 8 0 0 0-16 0" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
-            <span data-i18n="settings.profileTab">Profile</span>
+    <main class="settings-modal-shell settings-page" id="main-content" tabindex="-1">
+      <section class="settings-modal" aria-labelledby="settings-modal-title">
+        <aside class="settings-modal-nav" aria-label="Settings sections">
+          <a class="settings-modal-close" href="/" aria-label="Close settings" data-i18n-aria-label="share.close">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
           </a>
-          <a href="#privacy">
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <rect x="5" y="11" width="14" height="10" rx="2" />
-              <path d="M8 11V7a4 4 0 0 1 8 0v4" />
-            </svg>
-            <span data-i18n="settings.privacyTab">Privacy</span>
-          </a>
-          <a href="#notifications">
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 7h18s-3 0-3-7" />
-              <path d="M10 19a2 2 0 0 0 4 0" />
-            </svg>
-            <span data-i18n="settings.notificationsTab">Notifications</span>
-          </a>
-          <a href="#payments">
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <rect x="3" y="5" width="18" height="14" rx="2" />
-              <path d="M3 10h18" />
-              <path d="m9 15 2 2 4-5" />
-            </svg>
-            <span data-i18n="settings.paymentTab">Payments</span>
-          </a>
-          <a href="#display">
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <rect x="3" y="4" width="18" height="12" rx="2" />
-              <path d="M8 20h8" />
-              <path d="M12 16v4" />
-            </svg>
-            <span data-i18n="settings.displayTab">Display</span>
-          </a>
-          <a href="#navigation">
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <path d="M8 6h13" />
-              <path d="M8 12h13" />
-              <path d="M8 18h13" />
-              <path d="M3 6h.01" />
-              <path d="M3 12h.01" />
-              <path d="M3 18h.01" />
-            </svg>
-            <span data-i18n="settings.navigationTab">Navigation</span>
-          </a>
-          <a href="#kid-mode">
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <circle cx="12" cy="8" r="4" />
-              <path d="M5 21a7 7 0 0 1 14 0" />
-              <path d="M9 8h.01" />
-              <path d="M15 8h.01" />
-              <path d="M10 11c1.2 1 2.8 1 4 0" />
-            </svg>
-            <span data-i18n="settings.kidModeTitle">Kid mode</span>
-          </a>
-          <a href="#accessibility">
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <circle cx="12" cy="4" r="2" />
-              <path d="M5 8h14" />
-              <path d="M12 8v13" />
-              <path d="M8 21l4-8 4 8" />
-            </svg>
-            <span data-i18n="settings.accessibilityTab">Accessibility</span>
-          </a>
-          <a href="#beta">
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <path d="M10 2v6.5L5 18a3 3 0 0 0 2.6 4h8.8A3 3 0 0 0 19 18l-5-9.5V2" />
-              <path d="M8 2h8" />
-              <path d="M8.5 15h7" />
-            </svg>
-            <span data-i18n="settings.betaTab">Beta</span>
-          </a>
-          <a href="#language">
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M2 12h20" />
-              <path d="M12 2a15 15 0 0 1 0 20" />
-              <path d="M12 2a15 15 0 0 0 0 20" />
-            </svg>
-            <span data-i18n="settings.languageTab">Language</span>
-          </a>
-          <a href="#performance">
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <path d="M13 2 4 14h7l-1 8 10-13h-7l0-7Z" />
-            </svg>
-            <span data-i18n="settings.performanceTab">Performance</span>
-          </a>
-          <a href="/usage">
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <ellipse cx="12" cy="5" rx="8" ry="3" />
-              <path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5" />
-              <path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" />
-            </svg>
-            <span data-i18n="usage.nav">Usage</span>
-          </a>
-          <a href="#accent">
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <path d="M12 22a10 10 0 1 1 10-10 3 3 0 0 1-3 3h-1.4a2 2 0 0 0-1.4 3.4l.3.3a2 2 0 0 1-1.4 3.3Z" />
-              <circle cx="7.5" cy="10.5" r="1" />
-              <circle cx="10.5" cy="7.5" r="1" />
-              <circle cx="14" cy="7.5" r="1" />
-              <circle cx="16.5" cy="10.5" r="1" />
-            </svg>
-            <span data-i18n="settings.accentTab">Accent</span>
-          </a>
+          <button class="settings-modal-tab is-active" type="button" data-settings-modal-tab="general">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3h.1A1.7 1.7 0 0 0 10 3.1V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1A1.7 1.7 0 0 0 20.9 10h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" /></svg>
+            <span>General</span>
+          </button>
+          <button class="settings-modal-tab" type="button" data-settings-modal-tab="accessibility">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2" /><path d="M4 8h16" /><path d="M12 6v6" /><path d="m8 21 4-9 4 9" /></svg>
+            <span data-i18n="nav.accessibility">Accessibility</span>
+          </button>
+          <button class="settings-modal-tab" type="button" data-settings-modal-tab="security">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z" /><path d="m9 12 2 2 4-4" /></svg>
+            <span data-i18n="nav.security">Security</span>
+          </button>
+          <button class="settings-modal-tab" type="button" data-settings-modal-tab="profile">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></svg>
+            <span>Profile</span>
+          </button>
+          <button class="settings-modal-tab" type="button" data-settings-modal-tab="context">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 4h9l5 5v11H5z" /><path d="M14 4v5h5" /><path d="M8 13h8" /><path d="M8 17h5" /></svg>
+            <span>Context menu</span>
+          </button>
         </aside>
 
-        <div class="settings-stack">
-          <div class="settings-group-label">
-            <span data-i18n="settings.groupIdentity">Identity & access</span>
-            <p data-i18n="settings.groupIdentityBody">공개 프로필과 방문자 연결 방식을 관리합니다.</p>
-          </div>
-          <article class="setting-card" id="profile">
-            <div>
-              <p class="eyebrow" data-i18n="settings.profileTab">Profile</p>
-              <h3 data-i18n="settings.profileTitle">프로필 공개</h3>
-              <p data-i18n="settings.profileBody">검색과 공유 링크에서 역할과 소개 문구를 표시합니다.</p>
-            </div>
-            <button
-              class="toggle is-on"
-              type="button"
-              aria-label="프로필 공개 켜짐"
-              aria-pressed="true"
-              data-toggle-key="profile-public"
-            ></button>
-          </article>
-
-          <article class="setting-card" id="privacy">
-            <div>
-              <p class="eyebrow" data-i18n="settings.privacyTab">Privacy</p>
-              <h3 data-i18n="settings.contactTitle">연락처 표시</h3>
-              <p data-i18n="settings.contactBody">Feedback 탭을 통해 문의와 개선 의견을 받을 수 있게 안내합니다.</p>
-            </div>
-            <button
-              class="toggle is-on"
-              type="button"
-              aria-label="연락처 표시 켜짐"
-              aria-pressed="true"
-              data-toggle-key="contact-visible"
-            ></button>
-          </article>
-
-          <article class="setting-card setting-card-notifications" id="notifications">
-            <div>
-              <p class="eyebrow" data-i18n="settings.notificationsTab">Notifications</p>
-              <h3 data-i18n="settings.notificationsTitle">알림</h3>
-              <p data-i18n="settings.notificationsBody">중요한 사이트 업데이트를 이 브라우저에서 알림으로 받을 수 있게 합니다.</p>
-            </div>
-            <div class="notification-control">
-              <span class="notification-status" data-notification-status data-i18n="settings.notificationsReady">준비됨</span>
-              <button class="notification-test-button" type="button" data-notification-test data-i18n="settings.notificationsTest">
-                테스트
-              </button>
-              <button
-                class="toggle"
-                type="button"
-                aria-label="알림 꺼짐"
-                aria-pressed="false"
-                data-toggle-key="notifications"
-              ></button>
-            </div>
-          </article>
-
-          <article class="setting-card" id="payments">
-            <div>
-              <p class="eyebrow" data-i18n="settings.paymentTab">Payments</p>
-              <h3 data-i18n="settings.paymentBlockTitle">결제 차단</h3>
-              <p data-i18n="settings.paymentBlockBody">이 설정을 켜면 Pricing 페이지의 유료 플랜 버튼이 외부 Stripe checkout으로 이동하지 않습니다.</p>
-            </div>
-            <button
-              class="toggle"
-              type="button"
-              aria-label="결제 차단 꺼짐"
-              aria-pressed="false"
-              data-toggle-key="payment-block"
-            ></button>
-          </article>
-
-          <div class="settings-group-label">
-            <span data-i18n="settings.groupExperience">Experience</span>
-            <p data-i18n="settings.groupExperienceBody">방문자가 보는 화면의 테마, 언어, 접근성을 조정합니다.</p>
-          </div>
-          <article class="setting-card" id="display">
-            <div>
-              <p class="eyebrow" data-i18n="settings.displayTab">Display</p>
-              <h3 data-i18n="settings.themeTitle">테마 모드</h3>
-              <p data-i18n="settings.themeBody">프로필 화면을 다크 또는 밝기 끄기 모드로 관리합니다.</p>
-            </div>
-            <div class="setting-compat-panel" aria-label="테마 호환 상태" data-i18n-aria-label="aria.themeCompatibility">
-              <span data-i18n="settings.themeScopeLabel">Compatibility</span>
-              <strong data-i18n="settings.themeScopeValue">all routes use normalized theme tokens</strong>
-            </div>
-            <div class="setting-select" data-theme-select>
-              <button
-                class="setting-select-trigger"
-                type="button"
-                aria-haspopup="listbox"
-                aria-expanded="false"
-                data-theme-trigger
-              >
-                <span data-theme-label data-i18n="settings.themeDark">다크</span>
-                <span class="setting-select-chevron" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </span>
-              </button>
-              <div class="setting-select-menu" role="listbox" aria-label="테마 모드 선택" data-theme-menu hidden data-i18n-aria-label="aria.themeMode">
-                <button class="is-active" type="button" role="option" aria-selected="true" data-theme-choice="dark" data-i18n="settings.themeDark">다크</button>
-                <button type="button" role="option" aria-selected="false" data-theme-choice="lights-off" data-i18n="settings.lightsOff">
-                  밝기 끄기
+        <div class="settings-modal-content">
+          <section class="settings-modal-panel is-active" data-settings-modal-panel="general" aria-labelledby="settings-modal-title">
+            <h1 id="settings-modal-title">General</h1>
+            <div class="settings-modal-row">
+              <div>
+                <strong data-i18n="settings.themeTitle">테마 모드</strong>
+                <span data-i18n="settings.themeBody">프로필 화면을 다크 또는 밝기 끄기 모드로 관리합니다.</span>
+              </div>
+              <div class="setting-select" data-theme-select>
+                <button class="setting-select-trigger" type="button" aria-expanded="false" data-theme-trigger>
+                  <span data-theme-label data-i18n="settings.themeDark">다크</span>
+                  <span class="setting-select-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg></span>
                 </button>
+                <div class="setting-select-menu" role="listbox" data-theme-menu hidden>
+                  <button class="is-active" type="button" role="option" aria-selected="true" data-theme-choice="dark" data-i18n="settings.themeDark">다크</button>
+                  <button type="button" role="option" aria-selected="false" data-theme-choice="lights-off" data-i18n="settings.lightsOff">Lights Off</button>
+                </div>
               </div>
             </div>
-          </article>
-
-          <article class="setting-card setting-card-navigation" id="navigation">
-            <div>
-              <p class="eyebrow" data-i18n="settings.navigationTab">Navigation</p>
-              <h3 data-i18n="settings.navigationTitle">사이드바 내비게이션</h3>
-              <p data-i18n="settings.navigationBody">데스크톱 화면에서 상단 메뉴를 왼쪽 세로 버튼 리스트로 표시합니다.</p>
-            </div>
-            <button
-              class="button setting-popup-button"
-              type="button"
-              data-nav-layout-open
-              data-i18n="settings.navigationConfigure"
-            >
-              설정
-            </button>
-          </article>
-
-          <article class="setting-card" id="context-menu">
-            <div>
-              <p class="eyebrow" data-i18n="settings.displayTab">Display</p>
-              <h3 data-i18n="settings.contextMenuTitle">커스텀 우클릭 메뉴</h3>
-              <p data-i18n="settings.contextMenuBody">빠른 작업을 담은 디자인 우클릭 메뉴를 사용합니다.</p>
-            </div>
-            <button
-              class="button setting-popup-button"
-              type="button"
-              data-context-menu-open
-              data-i18n="settings.contextMenuConfigure"
-            >
-              설정
-            </button>
-          </article>
-
-          <article class="setting-card" id="language">
-            <div>
-              <p class="eyebrow" data-i18n="settings.languageTab">Language</p>
-              <h3 data-i18n="settings.languageTitle">언어</h3>
-              <p data-i18n="settings.languageBody">프로필과 설정 화면에 표시되는 언어를 선택합니다.</p>
-            </div>
-            <div class="setting-select" data-language-select>
-              <button
-                class="setting-select-trigger"
-                type="button"
-                aria-haspopup="listbox"
-                aria-expanded="false"
-                data-language-trigger
-              >
-                <span data-language-label data-i18n="settings.languageKorean">한국어</span>
-                <span class="setting-select-chevron" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </span>
-              </button>
-              <div class="setting-select-menu" role="listbox" aria-label="언어 선택" data-language-menu hidden data-i18n-aria-label="aria.language">
-                <button class="is-active" type="button" role="option" aria-selected="true" data-language-choice="ko" data-i18n="settings.languageKorean">한국어</button>
-                <button type="button" role="option" aria-selected="false" data-language-choice="en" data-i18n="settings.languageEnglish">English</button>
+            <div class="settings-modal-row">
+              <div>
+                <strong data-i18n="settings.languageTitle">언어</strong>
+                <span data-i18n="settings.languageBody">프로필과 설정 화면에 표시되는 언어를 선택합니다.</span>
+              </div>
+              <div class="setting-select" data-language-select>
+                <button class="setting-select-trigger" type="button" aria-expanded="false" data-language-trigger>
+                  <span data-language-label data-i18n="settings.languageKorean">한국어</span>
+                  <span class="setting-select-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg></span>
+                </button>
+                <div class="setting-select-menu" role="listbox" data-language-menu hidden>
+                  <button class="is-active" type="button" role="option" aria-selected="true" data-language-choice="ko" data-i18n="settings.languageKorean">한국어</button>
+                  <button type="button" role="option" aria-selected="false" data-language-choice="en" data-i18n="settings.languageEnglish">English</button>
+                </div>
               </div>
             </div>
-          </article>
+          </section>
 
-          <article class="setting-card" id="kid-mode">
-            <div>
-              <p class="eyebrow" data-i18n="settings.displayTab">Display</p>
-              <h3 data-i18n="settings.kidModeTitle">Kid mode</h3>
-              <p data-i18n="settings.kidModeBody">읽기 편한 화면을 위해 글자 크기와 움직임 감소 정도를 단계별로 선택합니다.</p>
+          <section class="settings-modal-panel" data-settings-modal-panel="accessibility" hidden>
+            <h2 data-i18n="nav.accessibility">Accessibility</h2>
+            <div class="settings-modal-row">
+              <div>
+                <strong>Reduced motion</strong>
+                <span data-i18n="settings.kidModeBody">읽기 편한 화면을 위해 글자 크기와 움직임 감소 정도를 단계별로 선택합니다.</span>
+              </div>
+              <button class="toggle" type="button" aria-pressed="false" data-toggle-key="kid-mode"></button>
             </div>
-            <div class="setting-select" data-kid-mode-select>
-              <button
-                class="setting-select-trigger"
-                type="button"
-                aria-haspopup="listbox"
-                aria-expanded="false"
-                data-kid-mode-trigger
-              >
-                <span data-kid-mode-label data-i18n="settings.kidModeOffLevel">Off</span>
-                <span class="setting-select-chevron" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </span>
-              </button>
-              <div class="setting-select-menu" role="listbox" aria-label="Kid mode 선택" data-kid-mode-menu hidden data-i18n-aria-label="aria.kidMode">
-                <button class="is-active" type="button" role="option" aria-selected="true" data-kid-mode-choice="off" data-i18n="settings.kidModeOffLevel">
-                  Off
-                </button>
-                <button type="button" role="option" aria-selected="false" data-kid-mode-choice="soft" data-i18n="settings.kidModeSoftLevel">
-                  Soft
-                </button>
-                <button type="button" role="option" aria-selected="false" data-kid-mode-choice="strong" data-i18n="settings.kidModeStrongLevel">
-                  Strong
-                </button>
+            <div class="settings-modal-row">
+              <div>
+                <strong data-i18n="settings.accessibilityTitle">접근성 안내</strong>
+                <span data-i18n="settings.accessibilityBody">키보드 이동, 색 대비, 언어, Kid mode, 움직임 감소 지원 범위를 확인합니다.</span>
+              </div>
+              <a class="settings-modal-link" href="/accessibility" data-i18n="settings.accessibilityOpen">Accessibility 열기</a>
+            </div>
+          </section>
+
+          <section class="settings-modal-panel" data-settings-modal-panel="security" hidden>
+            <h2 data-i18n="nav.security">Security</h2>
+            <div class="settings-modal-row">
+              <div>
+                <strong data-i18n="settings.cookieSettingsTitle">쿠키 설정</strong>
+                <span data-i18n="settings.cookieSettingsBody">브라우저 저장 안내 쿠키를 팝업에서 켜거나 끕니다. 필수 항목은 사이트 기본 동작을 위해 유지됩니다.</span>
+              </div>
+              <button class="settings-modal-button" type="button" data-cookie-settings-open data-i18n="settings.cookieSettingsButton">Cookie settings</button>
+            </div>
+            <div class="settings-modal-row">
+              <div>
+                <strong data-i18n="settings.siteDataTitle">사이트 데이터</strong>
+                <span data-i18n="settings.siteDataBody">이 브라우저에 저장된 테마, 언어, 프로필, Activity, Usage, 쿠키 안내 선택을 삭제합니다.</span>
+              </div>
+              <button class="settings-modal-button is-danger" type="button" data-clear-cache data-i18n="settings.siteDataButton">Delete data</button>
+            </div>
+            <div class="settings-modal-row">
+              <div>
+                <strong data-i18n="nav.security">Security</strong>
+                <span>Review public security and privacy information.</span>
+              </div>
+              <a class="settings-modal-link" href="/security" data-i18n="nav.security">Security</a>
+            </div>
+          </section>
+
+          <section class="settings-modal-panel" data-settings-modal-panel="profile" hidden>
+            <h2>Profile</h2>
+            <div class="settings-modal-profile">
+              <img class="settings-modal-avatar" src="/assets/well.png" alt="" data-profile-avatar-preview />
+              <div>
+                <strong data-profile-name>My name</strong>
+                <span>Plan: <span data-profile-plan>Free</span></span>
               </div>
             </div>
-          </article>
+            <label class="settings-modal-field">
+              <span>Username</span>
+              <input type="text" value="My name" maxlength="40" data-profile-name-input />
+            </label>
+            <div class="settings-modal-row">
+              <div>
+                <strong>Profile photo</strong>
+                <span data-profile-avatar-status>Ambulance image</span>
+              </div>
+              <label class="settings-modal-button">
+                Add photo
+                <input class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" data-profile-avatar-input />
+              </label>
+            </div>
+            <div class="settings-modal-row">
+              <div>
+                <strong>Profile visibility</strong>
+                <span data-profile-visibility-status>Visible</span>
+              </div>
+              <button class="toggle is-on" type="button" aria-pressed="true" data-profile-visibility-toggle></button>
+            </div>
+            <div class="settings-modal-actions">
+              <button class="settings-modal-button" type="button" data-profile-avatar-reset>Reset photo</button>
+              <button class="settings-modal-button" type="button" data-profile-reset data-i18n="profileDialog.reset">Reset</button>
+              <button class="settings-modal-button is-primary" type="button" data-profile-save data-i18n="profileDialog.save">Save</button>
+            </div>
+          </section>
 
-          <article class="setting-card setting-card-navigation" id="accessibility">
-            <div>
-              <p class="eyebrow" data-i18n="settings.accessibilityTab">Accessibility</p>
-              <h3 data-i18n="settings.accessibilityTitle">접근성 안내</h3>
-              <p data-i18n="settings.accessibilityBody">키보드 이동, 색 대비, 언어, Kid mode, 움직임 감소 지원 범위를 확인합니다.</p>
-            </div>
-            <a class="button setting-popup-button" href="/accessibility" data-i18n="settings.accessibilityOpen">Accessibility 열기</a>
-          </article>
-
-          <div class="settings-group-label">
-            <span data-i18n="settings.groupBeta">Beta lab</span>
-            <p data-i18n="settings.groupBetaBody">아직 실험 중인 기능을 분리해서 켜거나 끕니다.</p>
-          </div>
-          <article class="setting-card setting-card-beta" id="beta">
-            <div>
-              <p class="eyebrow" data-i18n="settings.betaTab">Beta</p>
-              <h3 data-i18n="settings.betaTitle">베타 기능</h3>
-              <p data-i18n="settings.betaBody">새 검색 UI, Activity 필터, 모바일 액션 커스터마이즈 같은 실험 기능을 먼저 사용합니다.</p>
-            </div>
-            <div class="beta-control">
-              <span class="beta-status" data-beta-status data-i18n="settings.betaStatusOff">Off</span>
-              <button
-                class="button setting-popup-button"
-                type="button"
-                data-beta-lab-open
-                data-i18n="settings.betaOpen"
-              >
-                기능 보기
-              </button>
-            </div>
-          </article>
-
-          <div class="settings-group-label">
-            <span data-i18n="settings.groupSystem">System</span>
-            <p data-i18n="settings.groupSystemBody">렌더링, 저장용량, 브라우저 캐시를 관리합니다.</p>
-          </div>
-          <article class="setting-card" id="performance">
-            <div>
-              <p class="eyebrow" data-i18n="settings.performanceTab">Performance</p>
-              <h3 data-i18n="settings.fastRenderTitle">빠른 렌더링</h3>
-              <p data-i18n="settings.fastRenderBody">블러, 그림자, 애니메이션을 줄여 화면을 더 가볍게 표시합니다.</p>
-            </div>
-            <button
-              class="swipe-control"
-              type="button"
-              aria-label="빠른 렌더링 꺼짐"
-              aria-pressed="false"
-              data-fast-render-swipe
-            >
-              <span data-i18n="settings.fastRenderStandard">Standard</span>
-              <span data-i18n="settings.fastRenderFast">Fast</span>
-              <span class="swipe-thumb" aria-hidden="true"></span>
-            </button>
-          </article>
-
-          <article class="setting-card setting-card-navigation" id="usage">
-            <div>
-              <p class="eyebrow" data-i18n="usage.nav">Usage</p>
-              <h3 data-i18n="usage.settingsTitle">사용량 페이지</h3>
-              <p data-i18n="usage.settingsBody">저장용량, 브라우저 사용 시간, 사용료 카운터는 Usage 페이지에서 확인하고 정리합니다.</p>
-            </div>
-            <a class="button setting-popup-button" href="/usage" data-i18n="usage.open">Usage 열기</a>
-          </article>
-
-          <article class="setting-card setting-card-navigation" id="sitemap-settings">
-            <div>
-              <p class="eyebrow" data-i18n="sitemap.eyebrow">Sitemap</p>
-              <h3 data-i18n="sitemap.settingsTitle">사이트맵</h3>
-              <p data-i18n="sitemap.settingsBody">사이트의 공개 페이지와 정책 문서를 한 화면에서 확인합니다.</p>
-            </div>
-            <a class="button setting-popup-button" href="/sitemap" data-i18n="sitemap.open">Sitemap 열기</a>
-          </article>
-
-          <article class="setting-card setting-card-navigation" id="storage">
-            <div>
-              <p class="eyebrow" data-i18n="settings.storageTab">Storage</p>
-              <h3 data-i18n="settings.cookieSettingsTitle">쿠키 설정</h3>
-              <p data-i18n="settings.cookieSettingsBody">브라우저 저장 안내 쿠키를 팝업에서 켜거나 끕니다. 필수 항목은 사이트 기본 동작을 위해 유지됩니다.</p>
-            </div>
-            <button
-              class="button setting-popup-button"
-              type="button"
-              data-cookie-settings-open
-              data-i18n="settings.cookieSettingsButton"
-            >
-              쿠키 설정
-            </button>
-          </article>
-
-          <div class="settings-group-label">
-            <span data-i18n="settings.groupBrand">Brand system</span>
-            <p data-i18n="settings.groupBrandBody">강조 컬러와 화면 밀도를 사이트 톤에 맞춥니다.</p>
-          </div>
-          <article class="setting-card" id="accent">
-            <div>
-              <p class="eyebrow" data-i18n="settings.accentTab">Accent</p>
-              <h3 data-i18n="settings.accentTitle">강조 컬러</h3>
-              <p data-i18n="settings.accentBody">버튼, 진행 바, 포커스 표시 등에 사용할 포인트 컬러를 선택합니다.</p>
-            </div>
-            <div class="accent-compat-panel" aria-label="강조 컬러 적용 범위" data-i18n-aria-label="aria.accentCompatibility">
-              <span data-i18n="settings.accentScopeLabel">Applies to</span>
-              <strong data-i18n="settings.accentScopeValue">shared controls and supported page accents</strong>
-            </div>
-            <div class="accent-select" data-accent-select>
-              <button
-                class="accent-trigger"
-                type="button"
-                aria-haspopup="listbox"
-                aria-expanded="false"
-                data-accent-trigger
-              >
-                <span class="accent-dot" data-accent-preview="neutral"></span>
-                <span data-accent-label data-i18n="settings.accentNeutral">Neutral</span>
-                <span class="accent-chevron" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </span>
-              </button>
-              <div class="accent-menu" role="listbox" aria-label="강조 컬러 선택" data-accent-menu hidden data-i18n-aria-label="aria.accent">
-                <button
-                  class="is-active"
-                  type="button"
-                  role="option"
-                  aria-selected="true"
-                  data-accent-choice="neutral"
-                  data-i18n="settings.accentNeutral"
-                >
-                  Neutral
-                </button>
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected="false"
-                  data-accent-choice="green"
-                  data-i18n="settings.accentGreen"
-                >
-                  Green
-                </button>
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected="false"
-                  data-accent-choice="rose"
-                  data-i18n="settings.accentRose"
-                >
-                  Rose
-                </button>
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected="false"
-                  data-accent-choice="orange"
-                  data-i18n="settings.accentOrange"
-                >
-                  Orange
-                </button>
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected="false"
-                  data-accent-choice="blue"
-                  data-i18n="settings.accentBlue"
-                >
-                  Blue
-                </button>
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected="false"
-                  data-accent-choice="purple"
-                  data-i18n="settings.accentPurple"
-                >
-                  Purple
-                </button>
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected="false"
-                  data-accent-choice="pro-gold"
-                  data-premium-plan="pro"
-                  data-i18n="settings.accentProGold"
-                >
-                  Pro Gold
-                </button>
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected="false"
-                  data-accent-choice="team-cyan"
-                  data-premium-plan="team"
-                  data-i18n="settings.accentTeamCyan"
-                >
-                  Team Cyan
-                </button>
+          <section class="settings-modal-panel" data-settings-modal-panel="context" hidden>
+            <h2>Context menu</h2>
+            <div class="settings-modal-row">
+              <div>
+                <strong data-i18n="settings.contextMenuTitle">커스텀 우클릭 메뉴</strong>
+                <span data-i18n="settings.contextMenuBody">빠른 작업을 담은 디자인 우클릭 메뉴를 사용합니다.</span>
               </div>
             </div>
-            <p class="premium-note" data-premium-note data-i18n="settings.premiumLocked" hidden>
-              이 강조 컬러는 프리미엄 요금제에서 사용할 수 있습니다.
-            </p>
-          </article>
-
-          <article class="setting-card">
-            <div>
-              <p class="eyebrow" data-i18n="settings.layoutTab">Layout</p>
-              <h3 data-i18n="settings.densityTitle">화면 밀도</h3>
-              <p data-i18n="settings.densityBody">프로필 정보와 작업 목록의 간격을 선택합니다.</p>
-            </div>
-            <div class="setting-select" data-density-select>
-              <button
-                class="setting-select-trigger"
-                type="button"
-                aria-haspopup="listbox"
-                aria-expanded="false"
-                data-density-trigger
-              >
-                <span data-density-label data-i18n="settings.densityComfortable">Comfortable</span>
-                <span class="setting-select-chevron" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </span>
+            <div class="settings-modal-choice-list" role="listbox" aria-label="Context menu mode" data-i18n-aria-label="aria.contextMenuMode">
+              <button class="settings-modal-choice is-active" type="button" role="option" aria-selected="true" data-context-menu-choice="custom">
+                <strong data-i18n="settings.contextMenuCustomTitle">Custom menu</strong>
+                <span data-i18n="settings.contextMenuCustomBody">Copy, share, QR code, search, print 같은 사이트 작업을 한 메뉴에서 엽니다.</span>
               </button>
-              <div class="setting-select-menu" role="listbox" aria-label="화면 밀도 선택" data-density-menu hidden data-i18n-aria-label="aria.density">
-                <button type="button" role="option" aria-selected="false" data-density-choice="compact" data-i18n="settings.densityCompact">
-                  Compact
-                </button>
-                <button
-                  class="is-active"
-                  type="button"
-                  role="option"
-                  aria-selected="true"
-                  data-density-choice="comfortable"
-                  data-i18n="settings.densityComfortable"
-                >
-                  Comfortable
-                </button>
-                <button type="button" role="option" aria-selected="false" data-density-choice="spacious" data-i18n="settings.densitySpacious">
-                  Spacious
-                </button>
-              </div>
+              <button class="settings-modal-choice" type="button" role="option" aria-selected="false" data-context-menu-choice="native">
+                <strong data-i18n="settings.contextMenuNativeTitle">Browser default</strong>
+                <span data-i18n="settings.contextMenuNativeBody">브라우저가 제공하는 기본 우클릭 메뉴를 그대로 사용합니다.</span>
+              </button>
             </div>
-          </article>
+          </section>
         </div>
       </section>
 
       <div class="cache-dialog" data-clear-cache-warning hidden>
         <div class="cache-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="cache-dialog-title">
-          <p class="eyebrow" data-i18n="usage.nav">Usage</p>
-          <h2 id="cache-dialog-title" data-i18n="settings.clearCacheTitle">브라우저 캐시 정리</h2>
+          <p class="eyebrow" data-i18n="settings.siteDataTab">Site data</p>
+          <h2 id="cache-dialog-title" data-i18n="settings.siteDataDialogTitle">사이트 데이터 삭제</h2>
           <p data-i18n="settings.clearCacheWarning">
-            저장된 테마, 언어, 표시 설정이 모두 삭제됩니다. 계속하시겠습니까?
+            이 브라우저에 저장된 사이트 설정, 프로필, Activity, Usage 기록, 쿠키 안내 선택이 삭제됩니다. 계속하시겠습니까?
           </p>
           <div class="cache-warning-actions">
-            <button
-              class="button cache-cancel-button"
-              type="button"
-              data-clear-cache-cancel
-              data-i18n="settings.clearCacheCancel"
-            >
-              취소
-            </button>
-            <button
-              class="button cache-confirm-button"
-              type="button"
-              data-clear-cache-confirm
-              data-i18n="settings.clearCacheConfirm"
-            >
-              정리하기
-            </button>
+            <button class="button cache-cancel-button" type="button" data-clear-cache-cancel data-i18n="settings.clearCacheCancel">취소</button>
+            <button class="button cache-confirm-button site-data-confirm-button" type="button" data-clear-cache-confirm data-i18n="settings.siteDataConfirm">삭제하기</button>
           </div>
         </div>
       </div>
-      <div class="cache-dialog nav-layout-dialog" data-nav-layout-dialog hidden>
-        <div class="cache-dialog-panel nav-layout-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="nav-layout-dialog-title">
-          <button class="dialog-close-button" type="button" data-nav-layout-close aria-label="닫기" data-i18n-aria-label="share.close">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
-          </button>
-          <p class="eyebrow" data-i18n="settings.navigationTab">Navigation</p>
-          <h2 id="nav-layout-dialog-title" data-i18n="settings.navigationDialogTitle">내비게이션 레이아웃 선택</h2>
-          <p data-i18n="settings.navigationDialogBody">
-            데스크톱 화면에서 메뉴를 왼쪽에 고정할지, 상단에 간단하게 둘지 선택합니다.
-          </p>
-          <div class="nav-layout-options" role="listbox" aria-label="내비게이션 레이아웃 선택" data-i18n-aria-label="aria.navLayout">
-            <button class="nav-layout-choice is-active" type="button" role="option" aria-selected="true" data-nav-layout-choice="sidebar">
-              <span class="nav-layout-preview is-sidebar-preview" aria-hidden="true">
-                <span></span>
-                <span></span>
-                <span></span>
-              </span>
-              <span class="nav-layout-copy">
-                <strong data-i18n="settings.navigationSidebarTitle">Sidebar</strong>
-                <small data-i18n="settings.navigationSidebarBody">메뉴가 왼쪽에 세로로 고정되어 페이지 이동이 빠릅니다.</small>
-              </span>
-            </button>
-            <button class="nav-layout-choice" type="button" role="option" aria-selected="false" data-nav-layout-choice="top">
-              <span class="nav-layout-preview is-topbar-preview" aria-hidden="true">
-                <span></span>
-                <span></span>
-                <span></span>
-              </span>
-              <span class="nav-layout-copy">
-                <strong data-i18n="settings.navigationTopbarTitle">Top bar</strong>
-                <small data-i18n="settings.navigationTopbarBody">메뉴가 위쪽에 모여 화면을 더 넓게 사용할 수 있습니다.</small>
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
+
       <div class="cache-dialog cookie-settings-dialog" data-cookie-settings-dialog hidden>
         <div class="cache-dialog-panel cookie-settings-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="cookie-settings-dialog-title">
           <button class="dialog-close-button" type="button" data-cookie-settings-close aria-label="닫기" data-i18n-aria-label="share.close">
@@ -823,198 +301,21 @@
                 <strong data-i18n="settings.cookieEssentialTitle">필수 쿠키</strong>
                 <small data-i18n="settings.cookieEssentialBody">보안과 기본 동작에 필요한 항목입니다. 이 항목은 끌 수 없습니다.</small>
               </span>
-              <button
-                class="toggle is-on"
-                type="button"
-                aria-label="필수 쿠키 켜짐"
-                aria-pressed="true"
-                disabled
-                data-i18n-aria-label="settings.cookieEssentialOn"
-              ></button>
+              <button class="toggle is-on" type="button" aria-pressed="true" disabled data-i18n-aria-label="settings.cookieEssentialOn"></button>
             </div>
             <div class="cookie-choice">
               <span class="cookie-choice-copy">
                 <strong data-i18n="settings.cookiePreferenceTitle">설정 저장 쿠키</strong>
                 <small data-i18n="settings.cookiePreferenceBody">브라우저 저장 안내를 확인했다는 선택을 이 브라우저에 저장합니다.</small>
               </span>
-              <button
-                class="toggle"
-                type="button"
-                aria-label="설정 저장 쿠키 꺼짐"
-                aria-pressed="false"
-                data-cookie-preference-toggle
-              ></button>
+              <button class="toggle" type="button" aria-pressed="false" data-cookie-preference-toggle></button>
             </div>
           </div>
           <p class="cookie-settings-status" data-cookie-settings-status role="status" aria-live="polite"></p>
         </div>
       </div>
-      <div class="cache-dialog context-mode-dialog" data-context-mode-dialog hidden>
-        <div class="cache-dialog-panel context-mode-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="context-mode-dialog-title">
-          <button class="dialog-close-button" type="button" data-context-mode-close aria-label="닫기" data-i18n-aria-label="share.close">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
-          </button>
-          <p class="eyebrow" data-i18n="settings.displayTab">Display</p>
-          <h2 id="context-mode-dialog-title" data-i18n="settings.contextMenuDialogTitle">우클릭 메뉴 방식 선택</h2>
-          <p data-i18n="settings.contextMenuDialogBody">
-            빠른 작업이 필요한 경우 커스텀 메뉴를 사용하고, 브라우저 기본 동작을 우선하려면 기본 메뉴를 선택합니다.
-          </p>
-          <div class="nav-layout-options" role="listbox" aria-label="우클릭 메뉴 방식 선택" data-i18n-aria-label="aria.contextMenuMode">
-            <button class="nav-layout-choice context-mode-choice is-active" type="button" role="option" aria-selected="true" data-context-menu-choice="custom">
-              <span class="context-mode-preview is-custom-preview" aria-hidden="true">
-                <span></span>
-                <span></span>
-                <span></span>
-              </span>
-              <span class="nav-layout-copy">
-                <strong data-i18n="settings.contextMenuCustomTitle">Custom menu</strong>
-                <small data-i18n="settings.contextMenuCustomBody">Copy, share, QR code, search, print 같은 사이트 작업을 한 메뉴에서 엽니다.</small>
-              </span>
-            </button>
-            <button class="nav-layout-choice context-mode-choice" type="button" role="option" aria-selected="false" data-context-menu-choice="native">
-              <span class="context-mode-preview is-native-preview" aria-hidden="true">
-                <span></span>
-                <span></span>
-                <span></span>
-              </span>
-              <span class="nav-layout-copy">
-                <strong data-i18n="settings.contextMenuNativeTitle">Browser default</strong>
-                <small data-i18n="settings.contextMenuNativeBody">브라우저가 제공하는 기본 우클릭 메뉴를 그대로 사용합니다.</small>
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="cache-dialog beta-lab-dialog" data-beta-lab-dialog hidden>
-        <div class="cache-dialog-panel beta-lab-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="beta-lab-dialog-title">
-          <button class="dialog-close-button" type="button" data-beta-lab-close aria-label="닫기" data-i18n-aria-label="share.close">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
-          </button>
-          <p class="eyebrow" data-i18n="settings.betaTab">Beta</p>
-          <h2 id="beta-lab-dialog-title" data-i18n="settings.betaDialogTitle">베타 기능</h2>
-          <p data-i18n="settings.betaDialogBody">실험 중인 기능을 선택해서 이 브라우저에서 먼저 사용합니다.</p>
-          <div class="beta-feature-list">
-            <button class="beta-feature-card" type="button" data-beta-feature="settings-redesign">
-              <span class="beta-feature-mark" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M4 6h16" /><path d="M4 12h10" /><path d="M4 18h16" /><path d="M17 10l3 3-3 3" /></svg>
-              </span>
-              <span class="beta-feature-copy">
-                <strong data-i18n="settings.betaRedesignTitle">설정 페이지 재디자인</strong>
-                <small data-i18n="settings.betaRedesignBody">설정 페이지를 더 현대적인 분할 레이아웃과 조용한 패널 디자인으로 바꿉니다.</small>
-              </span>
-              <span class="beta-feature-state" data-beta-redesign-state data-i18n="settings.betaRedesignApply">적용</span>
-            </button>
-          </div>
-        </div>
-      </div>
     </main>
-    <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
-      <button type="button" data-scroll-to="top" aria-label="맨 위로 이동" data-i18n-aria-label="aria.scrollTop">
-        <svg aria-hidden="true" viewBox="0 0 24 24">
-          <path d="M12 5 5 12" />
-          <path d="m12 5 7 7" />
-          <path d="M12 6v13" />
-        </svg>
-      </button>
-      <button type="button" data-scroll-to="bottom" aria-label="맨 아래로 이동" data-i18n-aria-label="aria.scrollBottom">
-        <svg aria-hidden="true" viewBox="0 0 24 24">
-          <path d="M12 19 5 12" />
-          <path d="m12 19 7-7" />
-          <path d="M12 18V5" />
-        </svg>
-      </button>
-    </div>
-    <div class="context-menu" data-context-menu hidden>
-      <button type="button" data-context-action="close">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
-        <span data-i18n="context.close">닫기</span><kbd class="context-shortcut">Esc</kbd>
-      </button>
-      <div class="context-menu-separator" role="separator" aria-hidden="true"></div>
-      <button type="button" data-context-action="open-link" hidden>
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7" /><path d="M8 7h9v9" /><path d="M5 5h6" /><path d="M5 5v14h14v-6" /></svg>
-        <span data-i18n="context.openLink">새 탭에서 링크 열기</span>
-      </button>
-      <button type="button" data-context-action="copy-link" hidden>
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1" /><path d="M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1.1" /></svg>
-        <span data-i18n="context.copyLink">링크 주소 복사</span>
-      </button>
-      <button type="button" data-context-action="save-image" disabled aria-disabled="true">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M5 21h14" /></svg>
-        <span data-i18n="context.saveImage">이미지 저장</span>
-      </button>
-      <button type="button" data-context-action="copy-selection" hidden>
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 7h8" /><path d="M8 12h8" /><path d="M8 17h5" /><rect x="4" y="3" width="16" height="18" rx="2" /></svg>
-        <span data-i18n="context.copySelection">선택한 텍스트 복사</span><kbd class="context-shortcut">Ctrl+C</kbd>
-      </button>
-      <button type="button" data-context-action="paste" disabled aria-disabled="true">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 4h6" /><path d="M10 2h4v4h-4z" /><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2" /><path d="M9 14h6" /><path d="M12 11v6" /></svg>
-        <span data-i18n="context.paste">붙여넣기</span><kbd class="context-shortcut">Ctrl+V</kbd>
-      </button>
-      <div class="context-menu-separator" role="separator" aria-hidden="true"></div>
-      <button type="button" data-context-action="copy">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1" /><path d="M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1.1" /></svg>
-        <span data-i18n="context.copy">페이지 링크 복사</span><kbd class="context-shortcut">Ctrl+Shift+C</kbd>
-      </button>
-      <button type="button" data-context-action="copy-title">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7V5h16v2" /><path d="M9 20h6" /><path d="M12 5v15" /></svg>
-        <span data-i18n="context.copyTitle">페이지 제목 복사</span>
-      </button>
-      <button type="button" data-context-action="share">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.6 10.6 6.8-4.2" /><path d="m8.6 13.4 6.8 4.2" /></svg>
-        <span data-i18n="context.share">공유 열기</span><kbd class="context-shortcut">Ctrl+Shift+S</kbd>
-      </button>
-      <button type="button" data-context-action="qr">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><path d="M14 14h3v3" /><path d="M21 14v7h-7" /><path d="M17 17h4" /></svg>
-        <span data-i18n="context.qr">QR 코드 만들기</span><kbd class="context-shortcut">Ctrl+Shift+Q</kbd>
-      </button>
-      <div class="context-menu-separator" role="separator" aria-hidden="true"></div>
-      <button type="button" data-context-action="search">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m16.5 16.5 4 4" /></svg>
-        <span data-i18n="context.search">사이트 검색</span><kbd class="context-shortcut">Ctrl+K</kbd>
-      </button>
-      <button type="button" data-context-action="print">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 9V3h12v6" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><path d="M6 14h12v7H6z" /><path d="M18 12h.01" /></svg>
-        <span data-i18n="context.print">인쇄</span><kbd class="context-shortcut">Ctrl+P</kbd>
-      </button>
-      <button type="button" data-context-action="source">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m8 9-4 3 4 3" /><path d="m16 9 4 3-4 3" /><path d="m14 5-4 14" /></svg>
-        <span data-i18n="context.source">페이지 소스 보기</span><kbd class="context-shortcut">Ctrl+U</kbd>
-      </button>
-      <div class="context-menu-separator" role="separator" aria-hidden="true"></div>
-      <button type="button" data-context-action="back">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5" /><path d="m11 6-6 6 6 6" /></svg>
-        <span data-i18n="context.back">뒤로 가기</span><kbd class="context-shortcut">Alt+Left</kbd>
-      </button>
-      <button type="button" data-context-action="forward">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
-        <span data-i18n="context.forward">앞으로 가기</span><kbd class="context-shortcut">Alt+Right</kbd>
-      </button>
-      <button type="button" data-context-action="refresh">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-15.3 6.4" /><path d="M3 12A9 9 0 0 1 18.3 5.6" /><path d="M18 2v4h4" /><path d="M6 22v-4H2" /></svg>
-        <span data-i18n="context.refresh">새로고침</span><kbd class="context-shortcut">Ctrl+R</kbd>
-      </button>
-      <button type="button" data-context-action="top">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5 5 12" /><path d="m12 5 7 7" /><path d="M12 6v13" /></svg>
-        <span data-i18n="context.top">맨 위로 이동</span><kbd class="context-shortcut">Home</kbd>
-      </button>
-      <div class="context-menu-separator" role="separator" aria-hidden="true"></div>
-      <button type="button" data-context-action="creator">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z" /><path d="m3 14 9 5 9-5" /><path d="m3 11 9 5 9-5" /></svg>
-        <span data-i18n="context.creator">Creator 열기</span>
-      </button>
-      <button type="button" data-context-action="feedback">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z" /><path d="M8 9h8" /><path d="M8 13h5" /></svg>
-        <span data-i18n="context.feedback">Feedback 열기</span>
-      </button>
-      <button type="button" data-context-action="settings">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3h.1A1.7 1.7 0 0 0 10 3.1V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1A1.7 1.7 0 0 0 20.9 10h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" /></svg>
-        <span data-i18n="context.settings">설정 열기</span>
-      </button>
-    </div>
-    <script src="../script.js?v=20260629-usage-visible-session" defer></script>
+
+    <script src="../script.js?v=20260629-settings-inline-modal" defer></script>
   </body>
 </html>
-
-
-
-

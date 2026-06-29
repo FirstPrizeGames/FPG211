@@ -63,7 +63,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260629-usage-visible-session`;
+  const repairUrl = `${guard.fallback}?v=20260629-settings-inline-modal`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -99,13 +99,24 @@ const setupUsagePageEarlyRecovery = () => {
     return Number.isFinite(value) && value >= 0 ? value : fallback;
   };
   const writeNumber = (key, value) => localStorage.setItem(key, String(value));
+  const isKoreanUsage = () => document.documentElement.lang === "ko";
   const formatTime = (timestamp) =>
-    `Resets at ${new Intl.DateTimeFormat(document.documentElement.lang === "ko" ? "ko-KR" : "en-US", {
+    isKoreanUsage()
+      ? `${new Intl.DateTimeFormat("ko-KR", {
+          hour: "numeric",
+          minute: "2-digit",
+        }).format(new Date(timestamp))} 초기화`
+      : `Resets at ${new Intl.DateTimeFormat("en-US", {
       hour: "numeric",
       minute: "2-digit",
     }).format(new Date(timestamp))}`;
   const formatDate = (timestamp) =>
-    `Resets on ${new Intl.DateTimeFormat(document.documentElement.lang === "ko" ? "ko-KR" : "en-US", {
+    isKoreanUsage()
+      ? `${new Intl.DateTimeFormat("ko-KR", {
+          month: "long",
+          day: "numeric",
+        }).format(new Date(timestamp))} 초기화`
+      : `Resets on ${new Intl.DateTimeFormat("en-US", {
       month: "long",
       day: "numeric",
     }).format(new Date(timestamp))}`;
@@ -173,8 +184,12 @@ const setupUsagePageEarlyRecovery = () => {
     if (status) {
       status.textContent =
         remaining > 0
-          ? `${remaining} resets left this week. Resets on ${new Intl.DateTimeFormat(document.documentElement.lang === "ko" ? "ko-KR" : "en-US", { month: "long", day: "numeric" }).format(new Date(resetStart + weekMs))}.`
-          : "No resets left this week.";
+          ? isKoreanUsage()
+            ? `이번 주 ${remaining}번 더 초기화할 수 있습니다.`
+            : `${remaining} resets left this week.`
+          : isKoreanUsage()
+            ? `이번 주 초기화 횟수를 모두 사용했습니다. ${new Intl.DateTimeFormat("ko-KR", { month: "long", day: "numeric" }).format(new Date(resetStart + weekMs))}에 다시 사용할 수 있습니다.`
+            : `No resets left this week. Resets on ${new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric" }).format(new Date(resetStart + weekMs))}.`;
     }
     if (button) button.disabled = remaining <= 0;
   };
@@ -186,17 +201,18 @@ const setupUsagePageEarlyRecovery = () => {
     dialog.className = "cache-dialog";
     dialog.dataset.usageResetWarning = "";
     dialog.hidden = true;
+    const isKo = isKoreanUsage();
     dialog.innerHTML = `
       <div class="cache-dialog-panel" role="dialog" aria-modal="true">
-        <button class="dialog-close-button" type="button" data-usage-reset-warning-close aria-label="Close">
+        <button class="dialog-close-button" type="button" data-usage-reset-warning-close aria-label="${isKo ? "닫기" : "Close"}">
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
         </button>
-        <p class="eyebrow">Usage reset</p>
-        <h2>Reset usage limits?</h2>
-        <p>The 5-hour, weekly, and monthly usage limits will restart from now. This uses 1 reset from this week's allowance.</p>
+        <p class="eyebrow">${isKo ? "사용량 초기화" : "Usage reset"}</p>
+        <h2>${isKo ? "한도를 초기화할까요?" : "Reset usage limits?"}</h2>
+        <p>${isKo ? "5시간, 주간, 월간 사용 한도가 지금부터 다시 시작됩니다. 이번 주 초기화 가능 횟수 1회를 사용합니다." : "The 5-hour, weekly, and monthly usage limits will restart from now. This uses 1 reset from this week's allowance."}</p>
         <div class="cache-warning-actions">
-          <button class="button cache-cancel-button" type="button" data-usage-reset-warning-close>Cancel</button>
-          <button class="button cache-confirm-button usage-reset-confirm-button" type="button" data-usage-reset-warning-confirm>Reset</button>
+          <button class="button cache-cancel-button" type="button" data-usage-reset-warning-close>${isKo ? "취소" : "Cancel"}</button>
+          <button class="button cache-confirm-button usage-reset-confirm-button" type="button" data-usage-reset-warning-confirm>${isKo ? "초기화" : "Reset"}</button>
         </div>
       </div>
     `;
@@ -410,6 +426,43 @@ const setupSettingsPageEarlyRecovery = () => {
     }
   };
 
+  const setFastRenderEarly = (isOn) => {
+    const nextValue = Boolean(isOn);
+    const swipe = document.querySelector("[data-fast-render-swipe]");
+    document.documentElement.dataset.fastRender = nextValue ? "true" : "false";
+    localStorage.setItem("profile-setting-fast-render", String(nextValue));
+    localStorage.setItem("profile-fast-render", String(nextValue));
+    if (swipe) {
+      swipe.classList.toggle("is-on", nextValue);
+      swipe.setAttribute("aria-pressed", String(nextValue));
+      swipe.setAttribute("aria-label", nextValue ? "Fast rendering on" : "Fast rendering off");
+    }
+  };
+
+  const updateFastRenderFromPointerEarly = (event) => {
+    const swipe = event.currentTarget;
+    if (!(swipe instanceof HTMLElement)) return;
+    const rect = swipe.getBoundingClientRect();
+    const ratio = rect.width > 0 ? (event.clientX - rect.left) / rect.width : 0;
+    setFastRenderEarly(ratio >= 0.5);
+  };
+
+  const initialFastRender =
+    localStorage.getItem("profile-setting-fast-render") ||
+    localStorage.getItem("profile-fast-render");
+  setFastRenderEarly(initialFastRender === "true");
+
+  document.querySelector("[data-fast-render-swipe]")?.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+    updateFastRenderFromPointerEarly(event);
+  });
+
+  document.querySelector("[data-fast-render-swipe]")?.addEventListener("pointermove", (event) => {
+    if (event.buttons !== 1) return;
+    updateFastRenderFromPointerEarly(event);
+  });
+
   const openDialog = (selector) => {
     const dialog = document.querySelector(selector);
     if (!dialog) return;
@@ -453,6 +506,14 @@ const setupSettingsPageEarlyRecovery = () => {
     (event) => {
       const target = event.target instanceof Element ? event.target : null;
       if (!target) return;
+
+      const fastRenderSwipeTarget = target.closest("[data-fast-render-swipe]");
+      if (fastRenderSwipeTarget instanceof HTMLButtonElement) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        setFastRenderEarly(fastRenderSwipeTarget.getAttribute("aria-pressed") !== "true");
+        return;
+      }
 
       const toggle = target.closest("[data-toggle-key]");
       if (toggle instanceof HTMLButtonElement) {
@@ -903,6 +964,227 @@ const createKeyboardShortcutsDialog = () => {
   document.body.append(dialog);
 };
 
+const createSettingsDialog = () => {
+  if (document.body.classList.contains("settings-modal-body")) return;
+  if (document.querySelector("[data-settings-dialog]")) return;
+
+  const dialog = document.createElement("div");
+  dialog.className = "settings-dialog";
+  dialog.dataset.settingsDialog = "";
+  dialog.hidden = true;
+  dialog.innerHTML = `
+    <section class="settings-modal" aria-labelledby="settings-dialog-title">
+      <aside class="settings-modal-nav" aria-label="Settings sections">
+        <button class="settings-modal-close" type="button" aria-label="Close settings" data-settings-dialog-close data-i18n-aria-label="share.close">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+        </button>
+        <button class="settings-modal-tab is-active" type="button" data-settings-modal-tab="general">
+          ${navIconMarkup.settings}
+          <span>General</span>
+        </button>
+        <button class="settings-modal-tab" type="button" data-settings-modal-tab="accessibility">
+          ${navIconMarkup.accessibility}
+          <span data-i18n="nav.accessibility">Accessibility</span>
+        </button>
+        <button class="settings-modal-tab" type="button" data-settings-modal-tab="security">
+          ${navIconMarkup.security}
+          <span data-i18n="nav.security">Security</span>
+        </button>
+        <button class="settings-modal-tab" type="button" data-settings-modal-tab="profile">
+          ${navIconMarkup.bio}
+          <span>Profile</span>
+        </button>
+        <button class="settings-modal-tab" type="button" data-settings-modal-tab="context">
+          ${navIconMarkup.terms}
+          <span>Context menu</span>
+        </button>
+      </aside>
+
+      <div class="settings-modal-content">
+        <section class="settings-modal-panel is-active" data-settings-modal-panel="general" aria-labelledby="settings-dialog-title">
+          <h2 id="settings-dialog-title">General</h2>
+          <div class="settings-modal-row">
+            <div>
+              <strong data-i18n="settings.themeTitle">테마 모드</strong>
+              <span data-i18n="settings.themeBody">프로필 화면을 다크 또는 밝기 끄기 모드로 관리합니다.</span>
+            </div>
+            <div class="setting-select" data-theme-select>
+              <button class="setting-select-trigger" type="button" aria-expanded="false" data-theme-trigger>
+                <span data-theme-label data-i18n="settings.themeDark">다크</span>
+                <span class="setting-select-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg></span>
+              </button>
+              <div class="setting-select-menu" role="listbox" data-theme-menu hidden>
+                <button class="is-active" type="button" role="option" aria-selected="true" data-theme-choice="dark" data-i18n="settings.themeDark">다크</button>
+                <button type="button" role="option" aria-selected="false" data-theme-choice="lights-off" data-i18n="settings.lightsOff">Lights Off</button>
+              </div>
+            </div>
+          </div>
+          <div class="settings-modal-row">
+            <div>
+              <strong data-i18n="settings.languageTitle">언어</strong>
+              <span data-i18n="settings.languageBody">프로필과 설정 화면에 표시되는 언어를 선택합니다.</span>
+            </div>
+            <div class="setting-select" data-language-select>
+              <button class="setting-select-trigger" type="button" aria-expanded="false" data-language-trigger>
+                <span data-language-label data-i18n="settings.languageKorean">한국어</span>
+                <span class="setting-select-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg></span>
+              </button>
+              <div class="setting-select-menu" role="listbox" data-language-menu hidden>
+                <button class="is-active" type="button" role="option" aria-selected="true" data-language-choice="ko" data-i18n="settings.languageKorean">한국어</button>
+                <button type="button" role="option" aria-selected="false" data-language-choice="en" data-i18n="settings.languageEnglish">English</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="settings-modal-panel" data-settings-modal-panel="accessibility" hidden>
+          <h2 data-i18n="nav.accessibility">Accessibility</h2>
+          <div class="settings-modal-row">
+            <div>
+              <strong>Reduced motion</strong>
+              <span data-i18n="settings.kidModeBody">읽기 편한 화면을 위해 글자 크기와 움직임 감소 정도를 단계별로 선택합니다.</span>
+            </div>
+            <button class="toggle" type="button" aria-pressed="false" data-toggle-key="kid-mode"></button>
+          </div>
+          <div class="settings-modal-row">
+            <div>
+              <strong data-i18n="settings.accessibilityTitle">접근성 안내</strong>
+              <span data-i18n="settings.accessibilityBody">키보드 이동, 색 대비, 언어, Kid mode, 움직임 감소 지원 범위를 확인합니다.</span>
+            </div>
+            <a class="settings-modal-link" href="/accessibility" data-i18n="settings.accessibilityOpen">Accessibility 열기</a>
+          </div>
+        </section>
+
+        <section class="settings-modal-panel" data-settings-modal-panel="security" hidden>
+          <h2 data-i18n="nav.security">Security</h2>
+          <div class="settings-modal-row">
+            <div>
+              <strong data-i18n="settings.cookieSettingsTitle">쿠키 설정</strong>
+              <span data-i18n="settings.cookieSettingsBody">브라우저 저장 안내 쿠키를 팝업에서 켜거나 끕니다. 필수 항목은 사이트 기본 동작을 위해 유지됩니다.</span>
+            </div>
+            <button class="settings-modal-button" type="button" data-cookie-settings-open data-i18n="settings.cookieSettingsButton">Cookie settings</button>
+          </div>
+          <div class="settings-modal-row">
+            <div>
+              <strong data-i18n="settings.siteDataTitle">사이트 데이터</strong>
+              <span data-i18n="settings.siteDataBody">이 브라우저에 저장된 테마, 언어, 프로필, Activity, Usage, 쿠키 안내 선택을 삭제합니다.</span>
+            </div>
+            <button class="settings-modal-button is-danger" type="button" data-clear-cache data-i18n="settings.siteDataButton">Delete data</button>
+          </div>
+          <div class="settings-modal-row">
+            <div>
+              <strong data-i18n="nav.security">Security</strong>
+              <span>Review public security and privacy information.</span>
+            </div>
+            <a class="settings-modal-link" href="/security" data-i18n="nav.security">Security</a>
+          </div>
+        </section>
+
+        <section class="settings-modal-panel" data-settings-modal-panel="profile" hidden>
+          <h2>Profile</h2>
+          <div class="settings-modal-profile">
+            <img class="settings-modal-avatar" src="/assets/well.png" alt="" data-profile-avatar-preview />
+            <div>
+              <strong data-profile-name>My name</strong>
+              <span>Plan: <span data-profile-plan>Free</span></span>
+            </div>
+          </div>
+          <label class="settings-modal-field">
+            <span>Username</span>
+            <input type="text" value="My name" maxlength="40" data-profile-name-input />
+          </label>
+          <div class="settings-modal-row">
+            <div>
+              <strong>Profile photo</strong>
+              <span data-profile-avatar-status>Ambulance image</span>
+            </div>
+            <label class="settings-modal-button">
+              Add photo
+              <input class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" data-profile-avatar-input />
+            </label>
+          </div>
+          <div class="settings-modal-row">
+            <div>
+              <strong>Profile visibility</strong>
+              <span data-profile-visibility-status>Visible</span>
+            </div>
+            <button class="toggle is-on" type="button" aria-pressed="true" data-profile-visibility-toggle></button>
+          </div>
+          <div class="settings-modal-actions">
+            <button class="settings-modal-button" type="button" data-profile-avatar-reset>Reset photo</button>
+            <button class="settings-modal-button" type="button" data-profile-reset data-i18n="profileDialog.reset">Reset</button>
+            <button class="settings-modal-button is-primary" type="button" data-profile-save data-i18n="profileDialog.save">Save</button>
+          </div>
+        </section>
+
+        <section class="settings-modal-panel" data-settings-modal-panel="context" hidden>
+          <h2>Context menu</h2>
+          <div class="settings-modal-row">
+            <div>
+              <strong data-i18n="settings.contextMenuTitle">커스텀 우클릭 메뉴</strong>
+              <span data-i18n="settings.contextMenuBody">빠른 작업을 담은 디자인 우클릭 메뉴를 사용합니다.</span>
+            </div>
+          </div>
+          <div class="settings-modal-choice-list" role="listbox" aria-label="Context menu mode" data-i18n-aria-label="aria.contextMenuMode">
+            <button class="settings-modal-choice is-active" type="button" role="option" aria-selected="true" data-context-menu-choice="custom">
+              <strong data-i18n="settings.contextMenuCustomTitle">Custom menu</strong>
+              <span data-i18n="settings.contextMenuCustomBody">Copy, share, QR code, search, print 같은 사이트 작업을 한 메뉴에서 엽니다.</span>
+            </button>
+            <button class="settings-modal-choice" type="button" role="option" aria-selected="false" data-context-menu-choice="native">
+              <strong data-i18n="settings.contextMenuNativeTitle">Browser default</strong>
+              <span data-i18n="settings.contextMenuNativeBody">브라우저가 제공하는 기본 우클릭 메뉴를 그대로 사용합니다.</span>
+            </button>
+          </div>
+        </section>
+      </div>
+    </section>
+    <div class="cache-dialog" data-clear-cache-warning hidden>
+      <div class="cache-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="cache-dialog-title">
+        <p class="eyebrow" data-i18n="settings.siteDataTab">Site data</p>
+        <h2 id="cache-dialog-title" data-i18n="settings.siteDataDialogTitle">사이트 데이터 삭제</h2>
+        <p data-i18n="settings.clearCacheWarning">
+          이 브라우저에 저장된 사이트 설정, 프로필, Activity, Usage 기록, 쿠키 안내 선택이 삭제됩니다. 계속하시겠습니까?
+        </p>
+        <div class="cache-warning-actions">
+          <button class="button cache-cancel-button" type="button" data-clear-cache-cancel data-i18n="settings.clearCacheCancel">취소</button>
+          <button class="button cache-confirm-button site-data-confirm-button" type="button" data-clear-cache-confirm data-i18n="settings.siteDataConfirm">삭제하기</button>
+        </div>
+      </div>
+    </div>
+    <div class="cache-dialog cookie-settings-dialog" data-cookie-settings-dialog hidden>
+      <div class="cache-dialog-panel cookie-settings-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="cookie-settings-dialog-title">
+        <button class="dialog-close-button" type="button" data-cookie-settings-close aria-label="닫기" data-i18n-aria-label="share.close">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+        </button>
+        <p class="eyebrow" data-i18n="settings.storageTab">Storage</p>
+        <h2 id="cookie-settings-dialog-title" data-i18n="settings.cookieDialogTitle">쿠키 설정</h2>
+        <p data-i18n="settings.cookieDialogBody">
+          이 사이트에서 사용하는 쿠키 종류를 선택합니다. 현재 광고나 분석 쿠키는 사용하지 않습니다.
+        </p>
+        <a class="cookie-settings-more" href="/privacy#cookies" data-i18n="settings.cookieLearnMore">자세히 알아보기</a>
+        <div class="cookie-choice-list" aria-label="쿠키 종류 선택" data-i18n-aria-label="aria.cookieSettings">
+          <div class="cookie-choice is-required">
+            <span class="cookie-choice-copy">
+              <strong data-i18n="settings.cookieEssentialTitle">필수 쿠키</strong>
+              <small data-i18n="settings.cookieEssentialBody">보안과 기본 동작에 필요한 항목입니다. 이 항목은 끌 수 없습니다.</small>
+            </span>
+            <button class="toggle is-on" type="button" aria-pressed="true" disabled data-i18n-aria-label="settings.cookieEssentialOn"></button>
+          </div>
+          <div class="cookie-choice">
+            <span class="cookie-choice-copy">
+              <strong data-i18n="settings.cookiePreferenceTitle">설정 저장 쿠키</strong>
+              <small data-i18n="settings.cookiePreferenceBody">브라우저 저장 안내를 확인했다는 선택을 이 브라우저에 저장합니다.</small>
+            </span>
+            <button class="toggle" type="button" aria-pressed="false" data-cookie-preference-toggle></button>
+          </div>
+        </div>
+        <p class="cookie-settings-status" data-cookie-settings-status role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  `;
+  document.body.append(dialog);
+};
+
 const createMobileQuickActionButton = ({ type = "button", href, action, icon, labelKey, fallback }) => {
   const element = document.createElement(href ? "a" : "button");
   element.className = "mobile-quick-action";
@@ -1048,6 +1330,7 @@ createTopSearchButton();
 createSidebarAccountMenu();
 createUserProfileDialog();
 createKeyboardShortcutsDialog();
+createSettingsDialog();
 
 const createStandardFooter = () => {
   if (document.querySelector("[data-site-footer]")) return;
@@ -1213,7 +1496,61 @@ const closeKeyboardShortcutsDialog = () => {
   }, 160);
 };
 
+const openSettingsDialog = () => {
+  const dialog = document.querySelector("[data-settings-dialog]");
+  if (!dialog) return false;
+  dialog.hidden = false;
+  dialog.classList.remove("is-closing");
+  closeSidebarHelpMenus();
+  closeSidebarAccountMenus();
+  closeContextMenu();
+  dialog.querySelector("[data-settings-dialog-close]")?.focus({ preventScroll: true });
+  return true;
+};
+
+const closeSettingsDialog = () => {
+  const dialog = document.querySelector("[data-settings-dialog]");
+  if (!dialog || dialog.hidden) return;
+  dialog.classList.add("is-closing");
+  window.setTimeout(() => {
+    dialog.hidden = true;
+    dialog.classList.remove("is-closing");
+  }, 160);
+};
+
+const isSettingsRouteLink = (link) => {
+  if (!(link instanceof HTMLAnchorElement)) return false;
+  const url = new URL(link.href, window.location.href);
+  return url.origin === window.location.origin && normalizeNavPath(url.pathname) === "/settings";
+};
+
 document.addEventListener("click", (event) => {
+  const settingsLink = event.target.closest?.("a[href]");
+  if (
+    event.button === 0 &&
+    !event.metaKey &&
+    !event.ctrlKey &&
+    !event.shiftKey &&
+    !event.altKey &&
+    isSettingsRouteLink(settingsLink) &&
+    !document.body.classList.contains("settings-modal-body")
+  ) {
+    event.preventDefault();
+    openSettingsDialog();
+    return;
+  }
+
+  if (event.target.closest?.("[data-settings-dialog-close]")) {
+    closeSettingsDialog();
+    return;
+  }
+
+  const settingsDialog = event.target.closest?.("[data-settings-dialog]");
+  if (settingsDialog && event.target === settingsDialog) {
+    closeSettingsDialog();
+    return;
+  }
+
   const accountTrigger = event.target.closest?.("[data-sidebar-account-trigger]");
   const account = event.target.closest?.(".sidebar-account");
 
@@ -1585,9 +1922,90 @@ const setupContextMenuEarlyRecovery = () => {
     const image = target?.closest?.("img");
     return image && !image.closest(".brand-logo") ? image : null;
   };
+  const showEarlyToast = (message) => {
+    let toast = document.querySelector("[data-copy-toast]");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.className = "copy-toast";
+      toast.dataset.copyToast = "";
+      toast.setAttribute("role", "status");
+      toast.setAttribute("aria-live", "polite");
+      document.body.append(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add("is-visible");
+    window.setTimeout(() => toast.classList.remove("is-visible"), 1800);
+  };
   const writeText = async (text) => {
     if (!text) return;
-    if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text);
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.setAttribute("readonly", "");
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.append(textArea);
+        textArea.select();
+        document.execCommand?.("copy");
+        textArea.remove();
+      }
+      showEarlyToast("Copied");
+    } catch {
+      showEarlyToast("Copy was blocked");
+    }
+  };
+  const getPageText = () =>
+    (document.querySelector("main")?.innerText || document.body.innerText || "").replace(/\s+\n/g, "\n").trim();
+  const selectAllText = () => {
+    if (isEditableTarget(earlyTargetElement)) {
+      earlyTargetElement.focus?.();
+      earlyTargetElement.select?.();
+      return;
+    }
+    const range = document.createRange();
+    range.selectNodeContents(document.querySelector("main") || document.body);
+    const selection = window.getSelection?.();
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+  };
+  const cutEditableSelection = () => {
+    if (!isEditableTarget(earlyTargetElement)) return;
+    const start = earlyTargetElement.selectionStart;
+    const end = earlyTargetElement.selectionEnd;
+    const value = earlyTargetElement.value;
+    if (typeof start !== "number" || typeof end !== "number" || start === end) return;
+    writeText(value.slice(start, end)).catch(() => {});
+    earlyTargetElement.value = `${value.slice(0, start)}${value.slice(end)}`;
+    earlyTargetElement.setSelectionRange?.(start, start);
+    earlyTargetElement.dispatchEvent(new Event("input", { bubbles: true }));
+  };
+  const pasteIntoEditable = async () => {
+    if (!isEditableTarget(earlyTargetElement) || !navigator.clipboard?.readText) return;
+    try {
+      const text = await navigator.clipboard.readText();
+      const start = earlyTargetElement.selectionStart ?? earlyTargetElement.value.length;
+      const end = earlyTargetElement.selectionEnd ?? start;
+      const value = earlyTargetElement.value;
+      earlyTargetElement.focus?.();
+      earlyTargetElement.value = `${value.slice(0, start)}${text}${value.slice(end)}`;
+      earlyTargetElement.setSelectionRange?.(start + text.length, start + text.length);
+      earlyTargetElement.dispatchEvent(new Event("input", { bubbles: true }));
+      showEarlyToast("Pasted");
+    } catch {
+      showEarlyToast("Paste was blocked");
+    }
+  };
+  const saveEarlyImage = () => {
+    if (!earlyTargetImage) return;
+    const link = document.createElement("a");
+    link.href = earlyTargetImage.currentSrc || earlyTargetImage.src;
+    link.download = "image";
+    document.body.append(link);
+    link.click();
+    link.remove();
   };
   const refreshSeparators = () => {
     let hasVisibleActionBefore = false;
@@ -1625,11 +2043,21 @@ const setupContextMenuEarlyRecovery = () => {
       const openLinkButton = menu.querySelector('[data-context-action="open-link"]');
       const copyLinkButton = menu.querySelector('[data-context-action="copy-link"]');
       const saveImageButton = menu.querySelector('[data-context-action="save-image"]');
+      const pasteButton = menu.querySelector('[data-context-action="paste"]');
       if (copySelectionButton) copySelectionButton.hidden = selectedText.length === 0;
       if (cutButton) cutButton.hidden = getEditableText(earlyTargetElement).length === 0;
       if (openLinkButton) openLinkButton.hidden = !earlyTargetLink;
       if (copyLinkButton) copyLinkButton.hidden = !earlyTargetLink;
-      if (saveImageButton) saveImageButton.hidden = !earlyTargetImage;
+      if (saveImageButton) {
+        saveImageButton.hidden = !earlyTargetImage;
+        saveImageButton.disabled = !earlyTargetImage;
+        saveImageButton.setAttribute("aria-disabled", String(!earlyTargetImage));
+      }
+      if (pasteButton) {
+        const canPaste = isEditableTarget(earlyTargetElement) && Boolean(navigator.clipboard?.readText);
+        pasteButton.disabled = !canPaste;
+        pasteButton.setAttribute("aria-disabled", String(!canPaste));
+      }
 
       menu.hidden = false;
       menu.classList.remove("is-closing");
@@ -1670,14 +2098,113 @@ const setupContextMenuEarlyRecovery = () => {
         hideMenu();
         return;
       }
+      if (action === "copy-title") {
+        writeText(document.title || window.location.href).catch(() => {});
+        hideMenu();
+        return;
+      }
+      if (action === "text-copy") {
+        writeText(getPageText()).catch(() => {});
+        hideMenu();
+        return;
+      }
+      if (action === "select-all") {
+        selectAllText();
+        hideMenu();
+        return;
+      }
+      if (action === "cut") {
+        cutEditableSelection();
+        hideMenu();
+        return;
+      }
+      if (action === "paste") {
+        pasteIntoEditable().catch(() => {});
+        hideMenu();
+        return;
+      }
       if (action === "open-link" && earlyTargetLink) {
         window.open(earlyTargetLink.href, "_blank", "noopener,noreferrer");
         hideMenu();
         return;
       }
+      if (action === "save-image") {
+        saveEarlyImage();
+        hideMenu();
+        return;
+      }
+      if (action === "share") {
+        if (navigator.share) {
+          navigator.share({ title: document.title, url: window.location.href }).catch(() => {});
+        } else {
+          writeText(window.location.href).catch(() => {});
+        }
+        hideMenu();
+        return;
+      }
+      if (action === "search") {
+        window.location.href = "/search";
+        return;
+      }
+      if (action === "qr") {
+        writeText(window.location.href).catch(() => {});
+        hideMenu();
+        return;
+      }
+      if (action === "print") {
+        window.print();
+        hideMenu();
+        return;
+      }
+      if (action === "source") {
+        window.open(`view-source:${window.location.href}`, "_blank", "noopener,noreferrer");
+        hideMenu();
+        return;
+      }
+      if (action === "clipboard") {
+        showEarlyToast("Clipboard center is available after the page finishes loading.");
+        hideMenu();
+        return;
+      }
+      if (action === "cast") {
+        if ("PresentationRequest" in window) {
+          const request = new PresentationRequest([window.location.href]);
+          request.start?.().catch(() => {});
+        } else {
+          showEarlyToast("Cast is not available in this browser.");
+        }
+        hideMenu();
+        return;
+      }
+      if (action === "back") {
+        window.history.back();
+        hideMenu();
+        return;
+      }
+      if (action === "forward") {
+        window.history.forward();
+        hideMenu();
+        return;
+      }
+      if (action === "refresh") {
+        window.location.reload();
+        return;
+      }
       if (action === "top") {
         window.scrollTo({ top: 0, behavior: "smooth" });
         hideMenu();
+        return;
+      }
+      if (action === "creator") {
+        window.location.href = "/Creator";
+        return;
+      }
+      if (action === "feedback") {
+        window.location.href = "/feedback";
+        return;
+      }
+      if (action === "settings") {
+        if (!openSettingsDialog()) window.location.href = "/settings";
       }
     },
     true,
@@ -2857,13 +3384,20 @@ const translations = {
     "settings.cookieStatusOn": "설정 저장 쿠키가 켜져 있습니다.",
     "settings.cookieStatusOff": "설정 저장 쿠키가 꺼져 있습니다.",
     "settings.cookieLearnMore": "자세히 알아보기",
-    "settings.clearCacheTitle": "브라우저 캐시 정리",
-    "settings.clearCacheBody": "이 사이트에 저장된 테마, 언어, 표시 설정을 삭제하고 기본값으로 되돌립니다.",
-    "settings.clearCacheButton": "캐시 정리",
-    "settings.clearCacheWarning": "저장된 테마, 언어, 표시 설정이 모두 삭제됩니다. 계속하시겠습니까?",
+    "settings.siteDataTab": "Site data",
+    "settings.siteDataTitle": "사이트 데이터",
+    "settings.siteDataBody": "테마, 언어, 프로필, Activity, Usage, 쿠키 안내 선택처럼 이 브라우저에 저장된 데이터를 삭제합니다.",
+    "settings.siteDataButton": "데이터 삭제",
+    "settings.siteDataDialogTitle": "사이트 데이터 삭제",
+    "settings.siteDataConfirm": "삭제하기",
+    "settings.siteDataDone": "사이트 데이터가 삭제되었습니다.",
+    "settings.clearCacheTitle": "사이트 데이터 삭제",
+    "settings.clearCacheBody": "이 브라우저에 저장된 사이트 데이터를 삭제하고 기본값으로 되돌립니다.",
+    "settings.clearCacheButton": "데이터 삭제",
+    "settings.clearCacheWarning": "이 브라우저에 저장된 사이트 설정, 프로필, Activity, Usage 기록, 쿠키 안내 선택이 삭제됩니다. 계속하시겠습니까?",
     "settings.clearCacheCancel": "취소",
-    "settings.clearCacheConfirm": "정리하기",
-    "settings.clearCacheDone": "저장된 설정을 정리했습니다.",
+    "settings.clearCacheConfirm": "삭제하기",
+    "settings.clearCacheDone": "사이트 데이터가 삭제되었습니다.",
     "settings.storageUsageTitle": "저장용량",
     "settings.storageUsageLoading": "저장용량을 확인하는 중입니다.",
     "settings.storageUsageUnsupported": "이 브라우저에서는 저장용량 표시를 지원하지 않습니다.",
@@ -4322,15 +4856,22 @@ const translations = {
     "settings.cookieStatusOn": "Preference cookie is on.",
     "settings.cookieStatusOff": "Preference cookie is off.",
     "settings.cookieLearnMore": "Learn more",
-    "settings.clearCacheTitle": "Clear browser cache",
+    "settings.siteDataTab": "Site data",
+    "settings.siteDataTitle": "Site data",
+    "settings.siteDataBody": "Delete data saved in this browser, including theme, language, profile, Activity, Usage, and storage notice choices.",
+    "settings.siteDataButton": "Delete data",
+    "settings.siteDataDialogTitle": "Delete site data",
+    "settings.siteDataConfirm": "Delete",
+    "settings.siteDataDone": "Site data has been deleted.",
+    "settings.clearCacheTitle": "Delete site data",
     "settings.clearCacheBody":
-      "Removes this site's saved theme, language, and display preferences and restores defaults.",
-    "settings.clearCacheButton": "Clear cache",
+      "Removes this site's saved browser data and restores defaults.",
+    "settings.clearCacheButton": "Delete data",
     "settings.clearCacheWarning":
-      "Saved theme, language, and display settings will be deleted. Do you want to continue?",
+      "Saved site settings, profile, Activity, Usage records, and storage notice choices in this browser will be deleted. Do you want to continue?",
     "settings.clearCacheCancel": "Cancel",
-    "settings.clearCacheConfirm": "Clear",
-    "settings.clearCacheDone": "Saved settings have been cleared.",
+    "settings.clearCacheConfirm": "Delete",
+    "settings.clearCacheDone": "Site data has been deleted.",
     "settings.storageUsageTitle": "Storage usage",
     "settings.storageUsageLoading": "Checking storage usage.",
     "settings.storageUsageUnsupported": "This browser does not support storage usage details.",
@@ -5356,6 +5897,8 @@ const siteSearchIndex = [
   },
 ];
 
+const syncQuickSettingsControls = () => {};
+
 const setTheme = (theme) => {
   const themeLabelKeys = {
     dark: "settings.themeDark",
@@ -5817,15 +6360,27 @@ const setFastRender = (isOn) => {
 const setupUserProfileDialog = () => {
   syncUserProfileUI();
 
-  document.querySelector("[data-profile-save]")?.addEventListener("click", saveUserProfileName);
-  document.querySelector("[data-profile-reset]")?.addEventListener("click", resetUserProfile);
-  document.querySelector("[data-profile-avatar-reset]")?.addEventListener("click", resetUserProfileAvatar);
-  document.querySelector("[data-profile-visibility-toggle]")?.addEventListener("click", toggleUserProfileVisibility);
-  document.querySelector("[data-profile-name-input]")?.addEventListener("keydown", (event) => {
+  document.querySelectorAll("[data-profile-save]").forEach((button) => {
+    button.addEventListener("click", saveUserProfileName);
+  });
+  document.querySelectorAll("[data-profile-reset]").forEach((button) => {
+    button.addEventListener("click", resetUserProfile);
+  });
+  document.querySelectorAll("[data-profile-avatar-reset]").forEach((button) => {
+    button.addEventListener("click", resetUserProfileAvatar);
+  });
+  document.querySelectorAll("[data-profile-visibility-toggle]").forEach((button) => {
+    button.addEventListener("click", toggleUserProfileVisibility);
+  });
+  document.querySelectorAll("[data-profile-name-input]").forEach((input) => {
+    input.addEventListener("keydown", (event) => {
     if (event.key === "Enter") saveUserProfileName();
   });
-  document.querySelector("[data-profile-avatar-input]")?.addEventListener("change", (event) => {
+  });
+  document.querySelectorAll("[data-profile-avatar-input]").forEach((input) => {
+    input.addEventListener("change", (event) => {
     readUserProfileAvatar(event.target.files?.[0]);
+  });
   });
 };
 
@@ -6889,10 +7444,20 @@ const clearSiteCache = () => {
     "profile-browser-usage-month-used-ms",
     "profile-browser-usage-reset-week-start-ms",
     "profile-browser-usage-reset-week-count",
+    "profile-browser-usage-accounting-version",
     activityLogKey,
     homeSubscriptionKey,
   ].forEach((key) => localStorage.removeItem(key));
   clearStorageConsent();
+  if (window.caches?.keys) {
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(keys.filter((key) => key.startsWith("profile-offline-")).map((key) => caches.delete(key))),
+      )
+      .then(updateStorageEstimate)
+      .catch(() => {});
+  }
 
   document.documentElement.dataset.theme = "dark";
   document.documentElement.dataset.accent = "neutral";
@@ -7357,7 +7922,7 @@ const showSubscribeWarning = (button) => {
   if (localStorage.getItem("profile-setting-payment-block") === "true") {
     pendingSubscribeUrl = "";
     if (!subscribeWarning) {
-      window.alert(translate("pricing.paymentBlockedBody"));
+      showCopyToast("pricing.paymentBlockedBody");
       return;
     }
 
@@ -7989,7 +8554,7 @@ const handleContextMenuAction = async (action) => {
   }
 
   if (action === "settings") {
-    window.location.href = "/settings";
+    if (!openSettingsDialog()) window.location.href = "/settings";
   }
 };
 
@@ -8246,6 +8811,11 @@ const setMobileMenuOpen = (isOpen) => {
 };
 
 const setSidebarCollapsed = (isCollapsed, persist = true) => {
+  if (document.body.classList.contains("official-home-body")) {
+    setMobileMenuOpen(false);
+    return;
+  }
+
   const resolved = Boolean(isCollapsed);
 
   document.documentElement.dataset.sidebarCollapsed = String(resolved);
@@ -8789,6 +9359,7 @@ document.addEventListener("keydown", (event) => {
 
   if (event.key === "Escape") {
     closeContextMenu();
+    closeSettingsDialog();
     closeSiteSearchDialog();
     closeShareDialog();
     closeQrDialog();
@@ -9030,6 +9601,35 @@ const setupSettingsControlRecovery = () => {
   );
 };
 
+const setupSettingsModalTabs = () => {
+  const tabs = [...document.querySelectorAll("[data-settings-modal-tab]")];
+  const panels = [...document.querySelectorAll("[data-settings-modal-panel]")];
+  if (!tabs.length || !panels.length) return;
+
+  const selectPanel = (panelName) => {
+    tabs.forEach((tab) => {
+      const isActive = tab.dataset.settingsModalTab === panelName;
+      tab.classList.toggle("is-active", isActive);
+      tab.setAttribute("aria-selected", String(isActive));
+    });
+
+    panels.forEach((panel) => {
+      const isActive = panel.dataset.settingsModalPanel === panelName;
+      panel.classList.toggle("is-active", isActive);
+      panel.hidden = !isActive;
+    });
+  };
+
+  tabs.forEach((tab) => {
+    tab.setAttribute("role", "tab");
+    tab.setAttribute("aria-selected", String(tab.classList.contains("is-active")));
+    tab.addEventListener("click", () => selectPanel(tab.dataset.settingsModalTab));
+  });
+
+  panels.forEach((panel) => panel.setAttribute("role", "tabpanel"));
+};
+
+setupSettingsModalTabs();
 setupSettingsControlRecovery();
 
 highlightTargets.forEach((target) => {

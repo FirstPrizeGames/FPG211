@@ -16698,7 +16698,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
   left: auto !important;
   z-index: 120 !important;
   display: grid !important;
-  grid-template-columns: auto minmax(0, 1fr) !important;
+  grid-template-columns: minmax(0, 1fr) !important;
   align-items: center !important;
   gap: 18px !important;
   width: min(1180px, calc(100vw - 28px)) !important;
@@ -16856,6 +16856,13 @@ html[lang="ko"] .faq-feedback-strip h2 {
   transform: translate(-50%, 0) !important;
 }
 
+.official-home-body .official-home-menu:hover .official-menu-item:focus-within:not(:hover) .official-mega-panel {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  transform: translate(-50%, 8px) !important;
+}
+
 .official-home-body .official-mega-panel section {
   display: grid !important;
   align-content: start !important;
@@ -16899,6 +16906,9 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
   .official-home-body .official-home-nav .mobile-menu-button {
     display: inline-flex !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    justify-self: end !important;
   }
 
   .official-home-body .official-home-menu,
@@ -16953,6 +16963,11 @@ html[lang="ko"] .faq-feedback-strip h2 {
   .official-home-body .official-menu-item:hover .official-mega-panel,
   .official-home-body .official-menu-item:focus-within .official-mega-panel {
     display: grid !important;
+    transform: none !important;
+  }
+
+  .official-home-body .official-home-menu:hover .official-menu-item:focus-within:not(:hover) .official-mega-panel {
+    display: none !important;
     transform: none !important;
   }
 

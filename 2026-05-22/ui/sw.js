@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260629-official-home-mega-nav-fix";
+const CACHE_NAME = "profile-offline-20260629-official-home-mobile-check";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

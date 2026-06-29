@@ -51,6 +51,228 @@ const navIconMarkup = {
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="6" y="10" width="12" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /><path d="M12 14v2" /></svg>',
 };
 
+const routeDocumentGuards = [
+  { path: "/settings", selector: ".settings-page", fallback: "/settings/index.html" },
+  { path: "/usage", selector: ".usage-page", fallback: "/usage/index.html" },
+];
+
+const repairRouteDocumentMismatch = () => {
+  const currentPath = window.location.pathname.replace(/\/index\.html$/i, "").replace(/\/+$/, "") || "/";
+  const guard = routeDocumentGuards.find((item) => currentPath === item.path);
+  if (!guard || document.querySelector(guard.selector)) return false;
+  if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
+
+  sessionStorage.setItem(`route-repair:${currentPath}`, "true");
+  const repairUrl = `${guard.fallback}?v=20260629-usage-early-recovery`;
+  window.location.replace(repairUrl);
+  return true;
+};
+
+repairRouteDocumentMismatch();
+
+const setupUsagePageEarlyRecovery = () => {
+  if (!document.querySelector(".usage-page")) return;
+
+  const now = Date.now();
+  const hourMs = 60 * 60 * 1000;
+  const dailyLimitMs = 5 * hourMs;
+  const weekMs = 7 * 24 * hourMs;
+  const monthMs = 30 * 24 * hourMs;
+  const weeklyLimitMs = 7 * dailyLimitMs;
+  const monthlyLimitMs = 30 * dailyLimitMs;
+  const resetLimit = 2;
+
+  const readNumber = (key, fallback) => {
+    const value = Number.parseInt(localStorage.getItem(key) || "", 10);
+    return Number.isFinite(value) && value >= 0 ? value : fallback;
+  };
+  const writeNumber = (key, value) => localStorage.setItem(key, String(value));
+  const formatTime = (timestamp) =>
+    `Resets at ${new Intl.DateTimeFormat(document.documentElement.lang === "ko" ? "ko-KR" : "en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+    }).format(new Date(timestamp))}`;
+  const formatDate = (timestamp) =>
+    `Resets on ${new Intl.DateTimeFormat(document.documentElement.lang === "ko" ? "ko-KR" : "en-US", {
+      month: "long",
+      day: "numeric",
+    }).format(new Date(timestamp))}`;
+
+  let dailyStart = readNumber("profile-browser-usage-window-start-ms", now);
+  let dailyUsed = readNumber("profile-browser-usage-used-ms", 0);
+  let weeklyStart = readNumber("profile-browser-usage-week-start-ms", now);
+  let weeklyUsed = readNumber("profile-browser-usage-week-used-ms", 0);
+  let monthlyStart = readNumber("profile-browser-usage-month-start-ms", now);
+  let monthlyUsed = readNumber("profile-browser-usage-month-used-ms", 0);
+  let resetStart = readNumber("profile-browser-usage-reset-week-start-ms", 0);
+  let resetCount = readNumber("profile-browser-usage-reset-week-count", 0);
+
+  if (now - dailyStart >= dailyLimitMs) {
+    dailyStart = now;
+    dailyUsed = 0;
+  }
+  if (now - weeklyStart >= weekMs) {
+    weeklyStart = now;
+    weeklyUsed = 0;
+  }
+  if (now - monthlyStart >= monthMs) {
+    monthlyStart = now;
+    monthlyUsed = 0;
+  }
+  if (resetStart > 0 && now - resetStart >= weekMs) {
+    resetStart = now;
+    resetCount = 0;
+  }
+  if (resetStart <= 0) {
+    resetStart = now;
+    resetCount = 0;
+  }
+
+  writeNumber("profile-browser-usage-window-start-ms", dailyStart);
+  writeNumber("profile-browser-usage-used-ms", dailyUsed);
+  writeNumber("profile-browser-usage-week-start-ms", weeklyStart);
+  writeNumber("profile-browser-usage-week-used-ms", weeklyUsed);
+  writeNumber("profile-browser-usage-month-start-ms", monthlyStart);
+  writeNumber("profile-browser-usage-month-used-ms", monthlyUsed);
+  writeNumber("profile-browser-usage-reset-week-start-ms", resetStart);
+  writeNumber("profile-browser-usage-reset-week-count", resetCount);
+
+  const updateRow = (resetSelector, remainingSelector, barSelector, start, used, limit, dateFormatter) => {
+    const elapsed = Math.max(0, now - start);
+    const total = Math.min(used + elapsed, limit);
+    const ratio = Math.max(1 - total / limit, 0);
+    const percent = Math.ceil(ratio * 100);
+    const reset = document.querySelector(resetSelector);
+    const remaining = document.querySelector(remainingSelector);
+    const bar = document.querySelector(barSelector);
+    if (reset) reset.textContent = dateFormatter(start + limit);
+    if (remaining) remaining.textContent = `${percent}% left`;
+    if (bar) bar.style.transform = `scaleX(${ratio})`;
+  };
+
+  const updateUsageUi = () => {
+    updateRow("[data-browser-daily-reset]", "[data-browser-daily-remaining]", "[data-browser-daily-bar]", dailyStart, dailyUsed, dailyLimitMs, formatTime);
+    updateRow("[data-browser-weekly-reset]", "[data-browser-weekly-remaining]", "[data-browser-weekly-bar]", weeklyStart, weeklyUsed, weekMs, formatDate);
+    updateRow("[data-browser-monthly-reset]", "[data-browser-monthly-remaining]", "[data-browser-monthly-bar]", monthlyStart, monthlyUsed, monthMs, formatDate);
+
+    const remaining = Math.max(resetLimit - resetCount, 0);
+    const status = document.querySelector("[data-usage-reset-status]");
+    const button = document.querySelector("[data-usage-reset-button]");
+    if (status) {
+      status.textContent =
+        remaining > 0
+          ? `${remaining} resets left this week. Resets on ${new Intl.DateTimeFormat(document.documentElement.lang === "ko" ? "ko-KR" : "en-US", { month: "long", day: "numeric" }).format(new Date(resetStart + weekMs))}.`
+          : "No resets left this week.";
+    }
+    if (button) button.disabled = remaining <= 0;
+  };
+
+  const ensureUsageResetDialog = () => {
+    let dialog = document.querySelector("[data-usage-reset-warning]");
+    if (dialog) return dialog;
+    dialog = document.createElement("div");
+    dialog.className = "cache-dialog";
+    dialog.dataset.usageResetWarning = "";
+    dialog.hidden = true;
+    dialog.innerHTML = `
+      <div class="cache-dialog-panel" role="dialog" aria-modal="true">
+        <button class="dialog-close-button" type="button" data-usage-reset-warning-close aria-label="Close">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+        </button>
+        <p class="eyebrow">Usage reset</p>
+        <h2>Reset usage limits?</h2>
+        <p>The 5-hour, weekly, and monthly usage limits will restart from now. This uses 1 reset from this week's allowance.</p>
+        <div class="cache-warning-actions">
+          <button class="button cache-cancel-button" type="button" data-usage-reset-warning-close>Cancel</button>
+          <button class="button cache-confirm-button usage-reset-confirm-button" type="button" data-usage-reset-warning-confirm>Reset</button>
+        </div>
+      </div>
+    `;
+    document.body.append(dialog);
+    return dialog;
+  };
+
+  const openResetDialog = () => {
+    const remaining = Math.max(resetLimit - resetCount, 0);
+    if (remaining <= 0) {
+      updateUsageUi();
+      return;
+    }
+    const dialog = ensureUsageResetDialog();
+    dialog.hidden = false;
+  };
+
+  const closeResetDialog = () => {
+    const dialog = document.querySelector("[data-usage-reset-warning]");
+    if (dialog) dialog.hidden = true;
+  };
+
+  const confirmReset = () => {
+    const current = Date.now();
+    dailyStart = current;
+    weeklyStart = current;
+    monthlyStart = current;
+    dailyUsed = 0;
+    weeklyUsed = 0;
+    monthlyUsed = 0;
+    resetCount = Math.min(resetCount + 1, resetLimit);
+    writeNumber("profile-browser-usage-window-start-ms", dailyStart);
+    writeNumber("profile-browser-usage-used-ms", 0);
+    writeNumber("profile-browser-usage-week-start-ms", weeklyStart);
+    writeNumber("profile-browser-usage-week-used-ms", 0);
+    writeNumber("profile-browser-usage-month-start-ms", monthlyStart);
+    writeNumber("profile-browser-usage-month-used-ms", 0);
+    writeNumber("profile-browser-usage-reset-week-start-ms", resetStart);
+    writeNumber("profile-browser-usage-reset-week-count", resetCount);
+    closeResetDialog();
+    updateUsageUi();
+  };
+
+  document.addEventListener(
+    "click",
+    (event) => {
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target) return;
+      if (target.closest("[data-usage-reset-button]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        openResetDialog();
+        return;
+      }
+      if (target.closest("[data-usage-reset-warning-close]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        closeResetDialog();
+        return;
+      }
+      if (target.closest("[data-usage-reset-warning-confirm]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        confirmReset();
+        return;
+      }
+      if (target.closest("[data-usage-learn-open]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const dialog = document.querySelector("[data-usage-learn-dialog]");
+        if (dialog) dialog.hidden = false;
+        return;
+      }
+      if (target.closest("[data-usage-learn-close]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const dialog = document.querySelector("[data-usage-learn-dialog]");
+        if (dialog) dialog.hidden = true;
+      }
+    },
+    true,
+  );
+
+  updateUsageUi();
+};
+
+setupUsagePageEarlyRecovery();
+
 const createPageLoader = () => {
   if (document.querySelector("[data-page-loader]")) {
     return document.querySelector("[data-page-loader]");
@@ -8164,6 +8386,149 @@ document.addEventListener(
   },
   true,
 );
+
+const setupSettingsControlRecovery = () => {
+  if (!document.body.classList.contains("settings-body")) return;
+
+  const closeSettingMenus = (except = null) => {
+    [
+      [themeSelect, themeTrigger, themeMenu],
+      [languageSelect, languageTrigger, languageMenu],
+      [densitySelect, densityTrigger, densityMenu],
+      [kidModeSelect, kidModeTrigger, kidModeMenu],
+    ].forEach(([select, trigger, menu]) => {
+      if (select !== except) setSettingSelectOpen(select, trigger, menu, false);
+    });
+    if (except !== accentSelect) setAccentMenuOpen(false);
+  };
+
+  const toggleSelect = (select, trigger, menu) => {
+    const isOpen = Boolean(select?.classList.contains("is-open"));
+    closeSettingMenus(select);
+    setSettingSelectOpen(select, trigger, menu, !isOpen);
+  };
+
+  document.addEventListener(
+    "click",
+    async (event) => {
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target) return;
+
+      const toggle = target.closest("[data-toggle-key]");
+      if (toggle instanceof HTMLButtonElement && document.body.contains(toggle)) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        let nextValue = !toggle.classList.contains("is-on");
+        if (toggle.dataset.toggleKey === "notifications") {
+          toggle.disabled = true;
+          nextValue = await resolveNotificationToggle(nextValue);
+          toggle.disabled = false;
+          showNotificationPermissionMessage(getNotificationPermissionState(), nextValue, nextValue);
+        }
+
+        localStorage.setItem(`profile-setting-${toggle.dataset.toggleKey}`, String(nextValue));
+        if (toggle.dataset.toggleKey === "payment-block") {
+          updatePaymentBlockSummary(nextValue);
+        }
+        if (toggle.dataset.toggleKey === "profile-public") {
+          localStorage.setItem(USER_PROFILE_VISIBILITY_KEY, String(nextValue));
+          syncUserProfileUI();
+        }
+        updateSettingToggle(toggle, nextValue);
+        return;
+      }
+
+      if (target.closest("[data-theme-trigger]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        toggleSelect(themeSelect, themeTrigger, themeMenu);
+        return;
+      }
+
+      if (target.closest("[data-language-trigger]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        toggleSelect(languageSelect, languageTrigger, languageMenu);
+        return;
+      }
+
+      if (target.closest("[data-density-trigger]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        toggleSelect(densitySelect, densityTrigger, densityMenu);
+        return;
+      }
+
+      if (target.closest("[data-kid-mode-trigger]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        toggleSelect(kidModeSelect, kidModeTrigger, kidModeMenu);
+        return;
+      }
+
+      if (target.closest("[data-accent-trigger]")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const isOpen = Boolean(accentSelect?.classList.contains("is-open"));
+        closeSettingMenus(accentSelect);
+        setAccentMenuOpen(!isOpen);
+        return;
+      }
+
+      const themeChoice = target.closest("[data-theme-choice]");
+      if (themeChoice instanceof HTMLButtonElement) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        setTheme(themeChoice.dataset.themeChoice);
+        closeSettingMenus();
+        return;
+      }
+
+      const languageChoice = target.closest("[data-language-choice]");
+      if (languageChoice instanceof HTMLButtonElement) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        setLanguage(languageChoice.dataset.languageChoice);
+        closeSettingMenus();
+        return;
+      }
+
+      const densityChoice = target.closest("[data-density-choice]");
+      if (densityChoice instanceof HTMLButtonElement) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        setDensity(densityChoice.dataset.densityChoice);
+        closeSettingMenus();
+        return;
+      }
+
+      const kidModeChoice = target.closest("[data-kid-mode-choice]");
+      if (kidModeChoice instanceof HTMLButtonElement) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        setKidMode(kidModeChoice.dataset.kidModeChoice);
+        closeSettingMenus();
+        return;
+      }
+
+      const accentChoice = target.closest("[data-accent-choice]");
+      if (accentChoice instanceof HTMLButtonElement) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (accentChoice.dataset.premiumPlan) showPremiumNote();
+        else setAccent(accentChoice.dataset.accentChoice);
+        closeSettingMenus();
+        return;
+      }
+
+      if (!target.closest(".setting-select, .accent-select")) closeSettingMenus();
+    },
+    true,
+  );
+};
+
+setupSettingsControlRecovery();
 
 highlightTargets.forEach((target) => {
   target.addEventListener("pointerdown", addRipple);

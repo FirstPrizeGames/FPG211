@@ -63,7 +63,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260630-render-fast`;
+  const repairUrl = `${guard.fallback}?v=20260630-language-auto`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -333,9 +333,16 @@ const setupSettingsPageEarlyRecovery = () => {
       dataKey: "languageChoice",
       storageKey: "profile-language",
       apply: (value) => {
-        const resolved = value === "en" ? "en" : "ko";
+        const preference = value === "auto" || value === "en" || value === "ko" ? value : "auto";
+        const resolved = preference === "auto"
+          ? ((((navigator.languages || [navigator.language]) || [])
+              .map((language) => String(language || "").toLowerCase())
+              .find((language) => language.startsWith("ko") || language.startsWith("en")) || "ko").startsWith("en")
+              ? "en"
+              : "ko")
+          : preference;
         document.documentElement.lang = resolved;
-        localStorage.setItem("profile-language", resolved);
+        localStorage.setItem("profile-language", preference);
       },
     },
     {
@@ -650,7 +657,11 @@ const setupSettingsPageEarlyRecovery = () => {
           if (note) note.hidden = false;
         } else {
           const value = choice.dataset[choiceConfig.dataKey];
-          choiceConfig.apply(value);
+          if (choiceConfig.storageKey === "profile-language") {
+            setLanguage(value);
+          } else {
+            choiceConfig.apply(value);
+          }
           setChoiceActive(choiceConfig, value);
           showCopyToast("settings.saved");
         }
@@ -1036,11 +1047,12 @@ const createSettingsDialog = () => {
             </div>
             <div class="setting-select" data-language-select>
               <button class="setting-select-trigger" type="button" aria-expanded="false" data-language-trigger>
-                <span data-language-label data-i18n="settings.languageKorean">한국어</span>
+                <span data-language-label data-i18n="settings.languageAuto">자동 감지</span>
                 <span class="setting-select-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg></span>
               </button>
               <div class="setting-select-menu" role="listbox" data-language-menu hidden>
-                <button class="is-active" type="button" role="option" aria-selected="true" data-language-choice="ko" data-i18n="settings.languageKorean">한국어</button>
+                <button class="is-active" type="button" role="option" aria-selected="true" data-language-choice="auto" data-i18n="settings.languageAuto">자동 감지</button>
+                <button type="button" role="option" aria-selected="false" data-language-choice="ko" data-i18n="settings.languageKorean">한국어</button>
                 <button type="button" role="option" aria-selected="false" data-language-choice="en" data-i18n="settings.languageEnglish">English</button>
               </div>
             </div>
@@ -3362,6 +3374,7 @@ const translations = {
     "settings.navigationBody": "데스크톱 화면에서 상단 메뉴를 왼쪽 세로 버튼 리스트로 표시합니다.",
     "settings.languageTitle": "언어",
     "settings.languageBody": "프로필과 설정 화면에 표시되는 언어를 선택합니다.",
+    "settings.languageAuto": "자동 감지",
     "settings.languageKorean": "한국어",
     "settings.languageEnglish": "English",
     "settings.fastRenderTitle": "빠른 렌더링",
@@ -4836,6 +4849,7 @@ const translations = {
     "settings.navigationBody": "Show the desktop menu as a vertical button list on the left side.",
     "settings.languageTitle": "Language",
     "settings.languageBody": "Choose the language used across the profile and settings pages.",
+    "settings.languageAuto": "Auto-detect",
     "settings.languageKorean": "Korean",
     "settings.languageEnglish": "English",
     "settings.fastRenderTitle": "Fast rendering",
@@ -5367,6 +5381,12 @@ const normalizeLanguage = (language) => {
   return "";
 };
 
+const normalizeLanguagePreference = (language) => {
+  const value = String(language || "").toLowerCase();
+  if (value === "auto" || value === "system" || value === "browser" || value === "detect") return "auto";
+  return normalizeLanguage(value);
+};
+
 const detectBrowserLanguage = () => {
   const languages = Array.isArray(navigator.languages) && navigator.languages.length ? navigator.languages : [navigator.language];
   return languages.map(normalizeLanguage).find(Boolean) || "ko";
@@ -5392,9 +5412,16 @@ const getInitialTheme = () => {
   return "dark";
 };
 
-const getInitialLanguage = () => normalizeLanguage(localStorage.getItem("profile-language")) || detectBrowserLanguage();
+const getResolvedLanguage = (preference) =>
+  normalizeLanguagePreference(preference) === "auto"
+    ? detectBrowserLanguage()
+    : normalizeLanguage(preference) || detectBrowserLanguage();
 
-let currentLanguage = getInitialLanguage();
+const getInitialLanguagePreference = () => normalizeLanguagePreference(localStorage.getItem("profile-language")) || "auto";
+const getInitialLanguage = () => getResolvedLanguage(getInitialLanguagePreference());
+
+let currentLanguagePreference = getInitialLanguagePreference();
+let currentLanguage = getResolvedLanguage(currentLanguagePreference);
 
 const translate = (key) => translations[currentLanguage][key] || translations.ko[key] || key;
 
@@ -5943,14 +5970,17 @@ const setTheme = (theme) => {
 
 const setLanguage = (language) => {
   const languageLabelKeys = {
+    auto: "settings.languageAuto",
     ko: "settings.languageKorean",
     en: "settings.languageEnglish",
   };
-  const resolvedLanguage = normalizeLanguage(language) || detectBrowserLanguage();
+  const languagePreference = normalizeLanguagePreference(language) || "auto";
+  const resolvedLanguage = getResolvedLanguage(languagePreference);
 
+  currentLanguagePreference = languagePreference;
   currentLanguage = resolvedLanguage;
   document.documentElement.lang = resolvedLanguage;
-  localStorage.setItem("profile-language", resolvedLanguage);
+  localStorage.setItem("profile-language", languagePreference);
 
   document.querySelectorAll("[data-i18n]").forEach((element) => {
     element.textContent = translate(element.dataset.i18n);
@@ -5975,13 +6005,13 @@ const setLanguage = (language) => {
   if (clipboardDialog && !clipboardDialog.hidden) renderClipboardCenter();
 
   languageChoices.forEach((button) => {
-    const isActive = button.dataset.languageChoice === resolvedLanguage;
+    const isActive = button.dataset.languageChoice === languagePreference;
     button.classList.toggle("is-active", isActive);
     button.setAttribute("aria-selected", String(isActive));
   });
 
   if (languageLabel) {
-    languageLabel.textContent = translate(languageLabelKeys[resolvedLanguage] || "settings.languageEnglish");
+    languageLabel.textContent = translate(languageLabelKeys[languagePreference] || "settings.languageAuto");
   }
 
   shareLinkButton?.setAttribute("aria-label", translate("share.copy"));
@@ -9044,7 +9074,7 @@ createUsageResetWarningDialog();
 createWelcomeDialog();
 createMobileQuickActions();
 setupCookieNotice();
-setLanguage(currentLanguage);
+setLanguage(currentLanguagePreference);
 setupWelcomeDialog();
 recordPageActivity();
 setupActivityPage();

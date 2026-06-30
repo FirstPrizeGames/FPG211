@@ -43,11 +43,11 @@
       (() => {
         const b = (value, fallback = false) => [true, "true", "1", "on"].includes(value) ? true : [false, "false", "0", "off"].includes(value) ? false : fallback;
         document.documentElement.dataset.theme = ["dark", "lights-off"].includes(localStorage.getItem("profile-theme")) ? localStorage.getItem("profile-theme") : "dark";
-        const savedLanguage = ["ko", "en"].includes(localStorage.getItem("profile-language")) ? localStorage.getItem("profile-language") : "";
+        const savedLanguagePreference = ["auto", "ko", "en"].includes(localStorage.getItem("profile-language")) ? localStorage.getItem("profile-language") : "auto";
         const browserLanguage = (((navigator.languages || [navigator.language]) || [])
           .map((language) => String(language || "").toLowerCase())
           .find((language) => language.startsWith("ko") || language.startsWith("en")) || "ko").startsWith("en") ? "en" : "ko";
-        document.documentElement.lang = savedLanguage || browserLanguage;
+        document.documentElement.lang = savedLanguagePreference === "auto" ? browserLanguage : savedLanguagePreference;
         document.documentElement.dataset.initialLanguage = document.documentElement.lang;
         document.documentElement.dataset.accent = "neutral";
         document.documentElement.dataset.density = ["compact", "comfortable", "spacious"].includes(localStorage.getItem("profile-density")) ? localStorage.getItem("profile-density") : "comfortable";
@@ -58,7 +58,7 @@
         document.documentElement.dataset.sidebarCollapsed = sidebar && b(localStorage.getItem("profile-sidebar-collapsed"), false) ? "true" : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260630-render-fast" />
+    <link rel="stylesheet" href="../styles.css?v=20260630-language-auto" />
   </head>
   <body class="status-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -94,6 +94,6 @@
         <article><span></span><div><strong data-i18n="status.shareTitle">Sharing metadata</strong><p data-i18n="status.shareBody">Open Graph and Twitter card metadata are configured for public pages.</p></div></article>
       </section>
     </main>
-    <script src="../script.js?v=20260630-render-fast" defer></script>
+    <script src="../script.js?v=20260630-language-auto" defer></script>
   </body>
 </html>

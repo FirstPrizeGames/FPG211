@@ -56,11 +56,11 @@
         const normalizeKidMode = (mode) => mode === "true" ? "strong" : ["soft", "strong"].includes(mode) ? mode : "off";
         const normalizeAccent = (accent) => ["blue", "green", "rose", "orange", "purple"].includes(accent) ? accent : "neutral";
         document.documentElement.dataset.theme = normalizeTheme(localStorage.getItem("profile-theme"));
-        const savedLanguage = ["ko", "en"].includes(localStorage.getItem("profile-language")) ? localStorage.getItem("profile-language") : "";
+        const savedLanguagePreference = ["auto", "ko", "en"].includes(localStorage.getItem("profile-language")) ? localStorage.getItem("profile-language") : "auto";
         const browserLanguage = (((navigator.languages || [navigator.language]) || [])
           .map((language) => String(language || "").toLowerCase())
           .find((language) => language.startsWith("ko") || language.startsWith("en")) || "ko").startsWith("en") ? "en" : "ko";
-        document.documentElement.lang = savedLanguage || browserLanguage;
+        document.documentElement.lang = savedLanguagePreference === "auto" ? browserLanguage : savedLanguagePreference;
         document.documentElement.dataset.initialLanguage = document.documentElement.lang;
         document.documentElement.dataset.accent = normalizeAccent(localStorage.getItem("profile-accent"));
         document.documentElement.dataset.density = ["compact", "comfortable", "spacious"].includes(localStorage.getItem("profile-density")) ? localStorage.getItem("profile-density") : "comfortable";
@@ -71,7 +71,7 @@
         document.documentElement.dataset.sidebarCollapsed = sidebarNavEnabled && normalizeBoolean(localStorage.getItem("profile-sidebar-collapsed"), false) ? "true" : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260630-render-fast" />
+    <link rel="stylesheet" href="../styles.css?v=20260630-language-auto" />
   </head>
   <body class="trust-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -142,6 +142,6 @@
         </a>
       </section>
     </main>
-    <script src="../script.js?v=20260630-render-fast" defer></script>
+    <script src="../script.js?v=20260630-language-auto" defer></script>
   </body>
 </html>

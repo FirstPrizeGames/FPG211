@@ -101,7 +101,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260630-context-layer" />
+    <link rel="stylesheet" href="../styles.css?v=20260630-layout-audit-fix5" />
   </head>
   <body class="search-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -142,27 +142,44 @@
 
       <section class="search-page-hero" aria-labelledby="search-page-title">
         <div class="search-page-copy">
-          <p class="eyebrow" data-i18n="search.eyebrow">Search</p>
-          <h1 id="search-page-title" data-i18n="search.title">사이트 검색</h1>
+          <h1 id="search-page-title" data-i18n="search.title">First Prize Games 검색</h1>
           <p data-i18n="search.pageLead">
-            사이트 안의 주요 페이지를 한 화면에서 검색하고 바로 이동합니다.
+            필요한 페이지, 설정, 정책을 빠르게 찾아 이동합니다.
           </p>
         </div>
+      </section>
+
+      <section class="search-command-board" aria-label="사이트 검색" data-i18n-aria-label="search.title">
         <label class="search-page-field">
-          <span data-i18n="search.label">검색어</span>
+          <span class="sr-only" data-i18n="search.label">검색어</span>
           <input
             type="search"
             data-search-page-input
             data-i18n-placeholder="search.placeholder"
-            placeholder="Unity, 요금제, FAQ처럼 입력하세요"
+            placeholder="페이지, 설정, 정책 검색"
             autocomplete="off"
           />
         </label>
+        <div class="search-filter-row" role="listbox" aria-label="검색 범위" data-i18n-aria-label="search.filterLabel">
+          <button class="is-active" type="button" data-search-page-filter="all" aria-selected="true" role="option" data-i18n="search.filterAll">전체</button>
+          <button type="button" data-search-page-filter="pages" aria-selected="false" role="option" data-i18n="search.filterPages">페이지</button>
+          <button type="button" data-search-page-filter="settings" aria-selected="false" role="option" data-i18n="search.filterSettings">설정</button>
+          <button type="button" data-search-page-filter="help" aria-selected="false" role="option" data-i18n="search.filterHelp">도움말</button>
+          <button type="button" data-search-page-filter="legal" aria-selected="false" role="option" data-i18n="search.filterLegal">정책</button>
+        </div>
+        <div class="search-suggestion-block" aria-label="추천 검색어" data-i18n-aria-label="search.recentTitle">
+          <p data-i18n="search.recentTitle">추천 검색어</p>
+          <div class="search-recent-list" data-search-recent-list></div>
+        </div>
       </section>
 
-      <section class="search-page-results-panel" aria-label="검색 결과" data-i18n-aria-label="search.title">
-        <p data-i18n="search.pageHint">검색어를 입력하면 Home, Settings, Privacy, FAQ 같은 페이지가 즉시 정리됩니다.</p>
-        <div class="search-results search-page-results" data-search-page-results></div>
+      <section class="search-page-layout" aria-label="검색 결과" data-i18n-aria-label="search.resultsLabel">
+        <div class="search-page-results-panel">
+          <div class="search-section-heading">
+            <h2 data-i18n="search.resultsTitle">검색 결과</h2>
+          </div>
+          <div class="search-results search-page-results" data-search-page-results></div>
+        </div>
       </section>
     </main>
     <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
@@ -173,6 +190,6 @@
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 19 5 12" /><path d="m12 19 7-7" /><path d="M12 18V5" /></svg>
       </button>
     </div>
-    <script src="../script.js?v=20260630-context-layer" defer></script>
+    <script src="../script.js?v=20260630-layout-audit-fix5" defer></script>
   </body>
 </html>

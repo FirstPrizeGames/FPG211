@@ -104,7 +104,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260630-context-layer" />
+    <link rel="stylesheet" href="../styles.css?v=20260630-layout-audit-fix5" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -143,95 +143,125 @@
         </div>
       </nav>
 
-      <section class="feedback-hero">
-        <div class="feedback-intro">
-          <p class="eyebrow" data-i18n="feedback.eyebrow">Feedback</p>
-          <h1 data-i18n="feedback.title">사이트를 더 정확하게 만드는 신호.</h1>
+      <section class="updates-hero logboard-hero" aria-labelledby="feedback-title">
+        <div class="updates-hero-copy">
+          <h1 id="feedback-title" data-i18n="feedback.title">사이트를 더 정확하게 만드는 신호.</h1>
           <p data-i18n="feedback.lead">
             깨진 화면, 어색한 문장, 결제나 설정에서 막히는 흐름을 남겨주세요. 짧은 제보도 다음 수정의 기준점이 됩니다.
           </p>
-          <button class="feedback-cta" type="button" data-feedback-open>
+        </div>
+        <div class="updates-hero-actions" aria-label="피드백 액션" data-i18n-aria-label="feedback.actionsLabel">
+          <button class="updates-action-link logboard-action-button" type="button" data-feedback-open>
             <span data-i18n="feedback.cta">Google Forms로 피드백 남기기</span>
             <svg aria-hidden="true" viewBox="0 0 24 24">
               <path d="M7 17 17 7" />
               <path d="M8 7h9v9" />
             </svg>
           </button>
+          <a class="updates-action-link" href="/privacy">
+            <span data-i18n="feedback.privacyAction">개인정보 안내</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7" /><path d="M9 7h8v8" /></svg>
+          </a>
         </div>
-        <aside class="feedback-panel" aria-label="피드백 안내" data-i18n-aria-label="aria.feedbackGuide">
-          <div class="feedback-panel-top">
-            <span data-i18n="feedback.panelEyebrow">Signal desk</span>
-            <strong data-i18n="feedback.panelMetric">3 queues</strong>
-          </div>
-          <figure class="feedback-visual">
-            <img src="../assets/feedback-signal-desk.jpg" alt="" width="1280" height="799" loading="eager" decoding="async" />
-          </figure>
-          <h2 data-i18n="feedback.panelTitle">짧아도 괜찮습니다.</h2>
-          <p data-i18n="feedback.panelBody">페이지, 기대한 결과, 실제로 보인 결과만 적어도 충분합니다.</p>
-          <div class="feedback-status-list">
-            <span data-i18n="feedback.statusOne">Bug report</span>
-            <span data-i18n="feedback.statusTwo">Design issue</span>
-            <span data-i18n="feedback.statusThree">Feature idea</span>
-          </div>
-          <div class="feedback-signal-meter" aria-hidden="true">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
+      </section>
+
+      <section class="updates-release-meta logboard-meta" aria-label="피드백 요약" data-i18n-aria-label="feedback.summaryLabel">
+        <article>
+          <span data-i18n="feedback.metaQueueLabel">Queue</span>
+          <strong data-i18n="feedback.metaQueueValue">3 intake lanes</strong>
+        </article>
+        <article>
+          <span data-i18n="feedback.metaChannelLabel">Channel</span>
+          <strong data-i18n="feedback.metaChannelValue">Google Forms</strong>
+        </article>
+        <article>
+          <span data-i18n="feedback.metaPrivacyLabel">Privacy</span>
+          <strong data-i18n="feedback.metaPrivacyValue">Optional contact details</strong>
+        </article>
+      </section>
+
+      <section class="updates-release-board logboard-board" aria-label="피드백 접수 보드" data-i18n-aria-label="feedback.boardLabel">
+        <aside class="updates-release-rail" aria-label="피드백 분류" data-i18n-aria-label="feedback.categoriesLabel">
+          <strong data-i18n="updates.categoriesTitle">Categories</strong>
+          <a href="#feedback-bugs" data-i18n="feedback.statusOne">버그 제보</a>
+          <a href="#feedback-copy" data-i18n="feedback.statusTwo">디자인 문제</a>
+          <a href="#feedback-features" data-i18n="feedback.statusThree">기능 제안</a>
+          <a href="#feedback-privacy" data-i18n="feedback.privacyEyebrow">Privacy</a>
         </aside>
-      </section>
 
-      <section class="feedback-topics" aria-label="피드백 주제" data-i18n-aria-label="aria.feedbackTopics">
-        <article>
-          <span aria-hidden="true">01</span>
-          <h2 data-i18n="feedback.topicOneTitle">버그와 깨진 화면</h2>
-          <p data-i18n="feedback.topicOneBody">버튼이 반응하지 않거나, 모바일에서 레이아웃이 이상하거나, 페이지 이동이 막히는 문제를 알려주세요.</p>
-        </article>
-        <article>
-          <span aria-hidden="true">02</span>
-          <h2 data-i18n="feedback.topicTwoTitle">읽기 불편한 문구</h2>
-          <p data-i18n="feedback.topicTwoBody">어색한 영어/한국어 문장, 너무 딱딱한 안내, 이해하기 어려운 설정 이름을 보낼 수 있습니다.</p>
-        </article>
-        <article>
-          <span aria-hidden="true">03</span>
-          <h2 data-i18n="feedback.topicThreeTitle">다음에 필요한 기능</h2>
-          <p data-i18n="feedback.topicThreeBody">공유, 접근성, 가격 페이지, 설정, 우클릭 메뉴처럼 더 개선되면 좋은 부분을 제안해 주세요.</p>
-        </article>
-      </section>
+        <div class="updates-release-list">
+          <article class="release-group" id="feedback-bugs">
+            <header>
+              <time datetime="2026-06-30" data-i18n="feedback.queueNow">Active intake</time>
+              <span data-i18n="updates.releaseLatest">Latest</span>
+            </header>
+            <div class="release-entry">
+              <span class="release-badge" data-i18n="support.routeOneLabel">Bug</span>
+              <div>
+                <h2 data-i18n="feedback.topicOneTitle">버그와 깨진 화면</h2>
+                <p data-i18n="feedback.topicOneBody">버튼이 반응하지 않거나, 모바일에서 레이아웃이 이상하거나, 페이지 이동이 막히는 문제를 알려주세요.</p>
+              </div>
+            </div>
+            <div class="release-entry">
+              <span class="release-badge" data-i18n="feedback.deviceBadge">Device</span>
+              <div>
+                <h2 data-i18n="feedback.deviceTitle">페이지와 브라우저를 같이 남겨주세요.</h2>
+                <p data-i18n="feedback.deviceBody">문제가 생긴 페이지, 사용한 기기, 브라우저 이름이 있으면 같은 화면을 더 빨리 재현할 수 있습니다.</p>
+              </div>
+            </div>
+          </article>
 
-      <section class="support-desk" aria-label="지원 안내" data-i18n-aria-label="aria.supportDesk">
-        <div class="support-desk-copy">
-          <p class="eyebrow" data-i18n="support.eyebrow">Support</p>
-          <h2 data-i18n="support.title">문의 유형을 고르면 더 빨리 정리할 수 있습니다.</h2>
-          <p data-i18n="support.lead">
-            급하지 않은 문의, 결제 접근 문제, 개인정보 요청을 같은 양식으로 받되 목적을 분명히 적어 주세요.
-          </p>
+          <article class="release-group" id="feedback-copy">
+            <header>
+              <time datetime="2026-06-30" data-i18n="feedback.reviewQueue">Review queue</time>
+            </header>
+            <div class="release-entry">
+              <span class="release-badge" data-i18n="support.routeThreeLabel">Policy</span>
+              <div>
+                <h2 data-i18n="feedback.topicTwoTitle">읽기 불편한 문구</h2>
+                <p data-i18n="feedback.topicTwoBody">어색한 영어/한국어 문장, 너무 딱딱한 안내, 이해하기 어려운 설정 이름을 보낼 수 있습니다.</p>
+              </div>
+            </div>
+            <div class="release-entry" id="feedback-privacy">
+              <span class="release-badge" data-i18n="feedback.privacyEyebrow">Privacy</span>
+              <div>
+                <h2 data-i18n="feedback.privacyTitle">개인정보는 필요한 만큼만 입력하세요.</h2>
+                <p data-i18n="feedback.privacyBody">피드백 양식은 외부 Google Forms에서 열립니다. 답장을 원하지 않는다면 이름, 이메일, 연락처를 비워두는 편이 좋습니다.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="release-group" id="feedback-features">
+            <header>
+              <time datetime="2026-06-30" data-i18n="feedback.planningQueue">Planning queue</time>
+            </header>
+            <div class="release-entry">
+              <span class="release-badge" data-i18n="support.routeTwoLabel">Payment</span>
+              <div>
+                <h2 data-i18n="support.routeTwoTitle">결제와 플랜 접근</h2>
+                <p data-i18n="support.routeTwoBody">Pricing, Stripe 링크, 결제 차단 설정에서 막힌 흐름을 알려주세요.</p>
+              </div>
+            </div>
+            <div class="release-entry">
+              <span class="release-badge" data-i18n="feedback.statusThree">기능 제안</span>
+              <div>
+                <h2 data-i18n="feedback.topicThreeTitle">다음에 필요한 기능</h2>
+                <p data-i18n="feedback.topicThreeBody">공유, 접근성, 가격 페이지, 설정, 우클릭 메뉴처럼 더 개선되면 좋은 부분을 제안해 주세요.</p>
+              </div>
+            </div>
+          </article>
         </div>
-        <div class="support-desk-list">
-          <article>
-            <span data-i18n="support.routeOneLabel">Bug</span>
-            <strong data-i18n="support.routeOneTitle">화면이나 버튼 문제</strong>
-            <p data-i18n="support.routeOneBody">문제가 생긴 페이지, 눌렀던 버튼, 기대한 결과를 함께 남겨 주세요.</p>
-          </article>
-          <article>
-            <span data-i18n="support.routeTwoLabel">Payment</span>
-            <strong data-i18n="support.routeTwoTitle">결제와 플랜 접근</strong>
-            <p data-i18n="support.routeTwoBody">Pricing, Stripe 링크, 결제 차단 설정에서 막힌 흐름을 알려주세요.</p>
-          </article>
-          <article>
-            <span data-i18n="support.routeThreeLabel">Policy</span>
-            <strong data-i18n="support.routeThreeTitle">개인정보와 약관 요청</strong>
-            <p data-i18n="support.routeThreeBody">Privacy, License, Terms에서 더 명확해야 할 문장을 알려주세요.</p>
-          </article>
-        </div>
       </section>
 
-      <section class="feedback-note" aria-label="개인정보 안내" data-i18n-aria-label="aria.feedbackPrivacy">
+      <section class="updates-help-band logboard-help-band" aria-label="지원 안내" data-i18n-aria-label="aria.supportDesk">
         <div>
-          <p class="eyebrow" data-i18n="feedback.privacyEyebrow">Privacy</p>
-          <h2 data-i18n="feedback.privacyTitle">개인정보는 필요한 만큼만 입력하세요.</h2>
+          <h2 data-i18n="support.title">문의 유형을 고르면 더 빨리 정리할 수 있습니다.</h2>
+          <p data-i18n="support.lead">급하지 않은 문의, 결제 접근 문제, 개인정보 요청을 같은 양식으로 받되 목적을 분명히 적어 주세요.</p>
         </div>
-        <p data-i18n="feedback.privacyBody">피드백 양식은 외부 Google Forms에서 열립니다. 답장을 원하지 않는다면 이름, 이메일, 연락처를 비워두는 편이 좋습니다.</p>
+        <button class="updates-action-link logboard-action-button" type="button" data-feedback-open>
+          <span data-i18n="feedback.cta">Google Forms로 피드백 남기기</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7" /><path d="M9 7h8v8" /></svg>
+        </button>
       </section>
 
       <div class="cache-dialog feedback-dialog" data-feedback-warning hidden>
@@ -355,7 +385,7 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260630-context-layer" defer></script>
+    <script src="../script.js?v=20260630-layout-audit-fix5" defer></script>
   </body>
 </html>
 

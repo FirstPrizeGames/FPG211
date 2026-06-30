@@ -101,7 +101,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260630-context-layer" />
+    <link rel="stylesheet" href="../styles.css?v=20260630-layout-audit-fix5" />
   </head>
   <body class="updates-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -142,63 +142,127 @@
 
       <section class="updates-hero" aria-labelledby="updates-title">
         <div class="updates-hero-copy">
-          <p class="eyebrow" data-i18n="updates.eyebrow">Latest updates</p>
-          <h1 id="updates-title" data-i18n="updates.title">최근 바뀐 내용을 한눈에 봅니다.</h1>
+          <h1 id="updates-title" data-i18n="updates.title">Latest updates</h1>
           <p data-i18n="updates.lead">
-            사이드바, 접근성, 쿠키 설정처럼 바로 체감되는 변경 사항을 최신 순서로 정리했습니다.
+            사이트의 디자인, 기능, 접근성, 신뢰 정보를 변경 기록 형식으로 정리합니다.
           </p>
-          <div class="updates-actions">
-            <a class="button" href="/settings" data-i18n="updates.openSettings">설정 열기</a>
-            <a class="button secondary-button" href="/accessibility" data-i18n="updates.openAccessibility">Accessibility 열기</a>
-          </div>
         </div>
-        <div class="updates-visual" aria-hidden="true"></div>
-      </section>
-
-      <section class="updates-summary" aria-label="최신 업데이트 요약" data-i18n-aria-label="aria.updatesSummary">
-        <div>
-          <span data-i18n="updates.summaryNav">Sidebar</span>
-          <strong data-i18n="updates.summaryNavValue">최신 업데이트 추가</strong>
-        </div>
-        <div>
-          <span data-i18n="updates.summaryPrivacy">Privacy</span>
-          <strong data-i18n="updates.summaryPrivacyValue">쿠키 설정 팝업</strong>
-        </div>
-        <div>
-          <span data-i18n="updates.summaryAccess">Access</span>
-          <strong data-i18n="updates.summaryAccessValue">Accessibility 페이지</strong>
+        <div class="updates-hero-actions" aria-label="업데이트 관련 링크" data-i18n-aria-label="aria.updatesActions">
+          <a class="updates-action-link" href="/status">
+            <span data-i18n="updates.statusAction">상태 보기</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7" /><path d="M9 7h8v8" /></svg>
+          </a>
+          <a class="updates-action-link" href="/feedback">
+            <span data-i18n="updates.feedbackAction">문제 신고</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7" /><path d="M9 7h8v8" /></svg>
+          </a>
         </div>
       </section>
 
-      <section class="updates-timeline" aria-label="최신 업데이트 목록" data-i18n-aria-label="aria.updatesTimeline">
-        <article class="update-item is-latest">
-          <time datetime="2026-06-10" data-i18n="updates.latestLabel">2026.06.10</time>
-          <div>
-            <h2 data-i18n="updates.latestTitle">사이드바에 최신 업데이트를 추가했습니다.</h2>
-            <p data-i18n="updates.latestBody">모든 페이지의 사이드바 상단에서 최신 업데이트 페이지로 바로 이동할 수 있게 했습니다.</p>
-          </div>
+      <section class="updates-release-meta" aria-label="릴리스 요약" data-i18n-aria-label="aria.updatesSummary">
+        <article>
+          <span data-i18n="updates.metaCurrentLabel">Current release</span>
+          <strong data-i18n="updates.metaCurrentValue">2026.06 stabilization</strong>
         </article>
-        <article class="update-item">
-          <time datetime="2026-06-10" data-i18n="updates.latestLabel">2026.06.10</time>
-          <div>
-            <h2 data-i18n="updates.cookieTitle">쿠키 설정 팝업을 넣었습니다.</h2>
-            <p data-i18n="updates.cookieBody">설정 페이지에서 필수 쿠키와 설정 저장 쿠키 상태를 확인하고, 설정 저장 쿠키를 직접 켜거나 끌 수 있습니다.</p>
-          </div>
+        <article>
+          <span data-i18n="updates.metaFocusLabel">Focus</span>
+          <strong data-i18n="updates.metaFocusValue">UI polish and reliability</strong>
         </article>
-        <article class="update-item">
-          <time datetime="2026-06-09" data-i18n="accessibility.updated">마지막 업데이트: 2026년 6월 9일</time>
-          <div>
-            <h2 data-i18n="updates.accessTitle">Accessibility 페이지를 추가했습니다.</h2>
-            <p data-i18n="updates.accessBody">키보드 이동, 대비, 언어, 표시 밀도, Kid mode 같은 접근성 지원 범위를 별도 페이지로 정리했습니다.</p>
-          </div>
+        <article>
+          <span data-i18n="updates.metaScopeLabel">Scope</span>
+          <strong data-i18n="updates.metaScopeValue">Desktop and mobile</strong>
         </article>
-        <article class="update-item">
-          <time datetime="2026-06-10" data-i18n="updates.latestLabel">2026.06.10</time>
-          <div>
-            <h2 data-i18n="updates.nextTitle">다음 점검</h2>
-            <p data-i18n="updates.nextBody">사이드바 항목이 늘어난 만큼 모바일 메뉴와 접힌 사이드바 상태의 간격을 계속 점검합니다.</p>
-          </div>
-        </article>
+      </section>
+
+      <section class="updates-release-board" aria-label="최신 업데이트 목록" data-i18n-aria-label="aria.updatesTimeline">
+        <aside class="updates-release-rail" aria-label="업데이트 분류" data-i18n-aria-label="aria.updatesCategories">
+          <strong data-i18n="updates.categoriesTitle">Categories</strong>
+          <a href="#release-2026-06-30" data-i18n="updates.categoryProduct">Product</a>
+          <a href="#release-2026-06-30" data-i18n="updates.categoryDesign">Design</a>
+          <a href="#release-2026-06-29" data-i18n="updates.categoryReliability">Reliability</a>
+          <a href="#release-2026-06-28" data-i18n="updates.categoryTrust">Trust</a>
+        </aside>
+
+        <div class="updates-release-list">
+          <article class="release-group" id="release-2026-06-30">
+            <header>
+              <time datetime="2026-06-30">2026.06.30</time>
+              <span data-i18n="updates.releaseLatest">Latest</span>
+            </header>
+            <div class="release-entry">
+              <span class="release-badge" data-i18n="updates.categoryDesign">Design</span>
+              <div>
+                <h2 data-i18n="updates.releaseErrorTitle">Error pages redesigned</h2>
+                <p data-i18n="updates.releaseErrorBody">Offline, 404, and 500 pages now share a quieter recovery layout with clearer actions.</p>
+              </div>
+            </div>
+            <div class="release-entry">
+              <span class="release-badge" data-i18n="updates.categoryProduct">Product</span>
+              <div>
+                <h2 data-i18n="updates.releaseSettingsTitle">Settings simplified</h2>
+                <p data-i18n="updates.releaseSettingsBody">Settings moved into a focused modal with theme, language, accessibility, security, profile, and context menu controls.</p>
+              </div>
+            </div>
+            <div class="release-entry">
+              <span class="release-badge" data-i18n="updates.categoryReliability">Reliability</span>
+              <div>
+                <h2 data-i18n="updates.releasePerformanceTitle">Rendering optimized</h2>
+                <p data-i18n="updates.releasePerformanceBody">A smaller avatar asset and lighter service-worker precache reduce unnecessary first-load work.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="release-group" id="release-2026-06-29">
+            <header>
+              <time datetime="2026-06-29">2026.06.29</time>
+            </header>
+            <div class="release-entry">
+              <span class="release-badge" data-i18n="updates.categoryDesign">Design</span>
+              <div>
+                <h2 data-i18n="updates.releaseHomeTitle">Official home rebuilt</h2>
+                <p data-i18n="updates.releaseHomeBody">The public home page now uses a top navigation model instead of the internal sidebar layout.</p>
+              </div>
+            </div>
+            <div class="release-entry">
+              <span class="release-badge" data-i18n="updates.categoryReliability">Reliability</span>
+              <div>
+                <h2 data-i18n="updates.releaseContextTitle">Context menu layer fixed</h2>
+                <p data-i18n="updates.releaseContextBody">The custom right-click menu now appears above dialogs and remains available during modal workflows.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="release-group" id="release-2026-06-28">
+            <header>
+              <time datetime="2026-06-28">2026.06.28</time>
+            </header>
+            <div class="release-entry">
+              <span class="release-badge" data-i18n="updates.categoryProduct">Product</span>
+              <div>
+                <h2 data-i18n="updates.releaseUsageTitle">Usage limits expanded</h2>
+                <p data-i18n="updates.releaseUsageBody">Usage now includes 5-hour, weekly, and monthly limits with reset controls and clearer warning dialogs.</p>
+              </div>
+            </div>
+            <div class="release-entry">
+              <span class="release-badge" data-i18n="updates.categoryTrust">Trust</span>
+              <div>
+                <h2 data-i18n="updates.releaseLegalTitle">Trust pages refined</h2>
+                <p data-i18n="updates.releaseLegalBody">Privacy, Terms, License, Security, and Trust Center pages were adjusted for a more official tone.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="updates-help-band" aria-label="업데이트 도움말" data-i18n-aria-label="aria.updatesHelp">
+        <div>
+          <h2 data-i18n="updates.helpTitle">Need more detail?</h2>
+          <p data-i18n="updates.helpBody">If an update looks wrong on your device, send feedback with the page name and browser you used.</p>
+        </div>
+        <a class="updates-action-link" href="/feedback">
+          <span data-i18n="updates.feedbackAction">문제 신고</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7" /><path d="M9 7h8v8" /></svg>
+        </a>
       </section>
     </main>
     <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
@@ -209,6 +273,6 @@
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 19 5 12" /><path d="m12 19 7-7" /><path d="M12 18V5" /></svg>
       </button>
     </div>
-    <script src="../script.js?v=20260630-context-layer" defer></script>
+    <script src="../script.js?v=20260630-layout-audit-fix5" defer></script>
   </body>
 </html>

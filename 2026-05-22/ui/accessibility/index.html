@@ -21,14 +21,14 @@
     <title>Accessibility · First Prize Games</title>
     <meta
       name="description"
-      content="Accessibility support for keyboard navigation, contrast, language, readable display settings, and reduced motion."
+      content="Official accessibility standard page for First Prize Games, including keyboard navigation, contrast, language, motion, and mobile access targets."
     />
     <meta name="theme-color" content="#101010" />
     <link rel="canonical" href="https://firstprizegames.info/accessibility" />
     <meta property="og:title" content="Accessibility · First Prize Games" />
     <meta
       property="og:description"
-      content="Review keyboard navigation, contrast, language, display density, Kid mode, and reduced motion support."
+      content="Review the accessibility standard and current support scope for First Prize Games."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="First Prize Games" />
@@ -40,7 +40,7 @@
     <meta name="twitter:title" content="Accessibility · First Prize Games" />
     <meta
       name="twitter:description"
-      content="Review keyboard navigation, contrast, language, display density, Kid mode, and reduced motion support."
+      content="Review the accessibility standard and current support scope for First Prize Games."
     />
     <meta name="twitter:image" content="https://firstprizegames.info/assets/accessibility-firetruck-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -104,7 +104,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260630-context-layer" />
+    <link rel="stylesheet" href="../styles.css?v=20260630-layout-audit-fix5" />
   </head>
   <body class="accessibility-body legal-document-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -143,82 +143,118 @@
         </div>
       </nav>
 
-      <section class="accessibility-hero">
+      <section class="accessibility-hero accessibility-official-hero">
         <div class="accessibility-hero-copy">
-          <h1 data-i18n="accessibility.title">접근성을 사이트의 기본 기능으로 관리합니다.</h1>
+          <p class="eyebrow" data-i18n="accessibility.eyebrow">Accessibility Standard</p>
+          <h1 data-i18n="accessibility.title">접근성 기준</h1>
           <p class="accessibility-lead" data-i18n="accessibility.lead">
-            이 사이트는 키보드 이동, 명확한 포커스 표시, 언어 전환, 읽기 모드, 화면 밀도 조정을 통해 더 편하게 탐색할 수 있게 설계했습니다.
+            First Prize Games는 키보드 이동, 명확한 초점 표시, 읽기 대비, 언어 선택, 움직임 감소를 핵심 접근성 기준으로 관리합니다.
           </p>
-          <p class="accessibility-updated" data-i18n="accessibility.updated">마지막 업데이트: 2026년 6월 9일</p>
-          <div class="accessibility-actions">
-            <a href="/settings#kid-mode" data-i18n="accessibility.settingsLink">Accessibility settings 열기</a>
-            <a href="/feedback" data-i18n="accessibility.feedbackLink">Support로 문제 알리기</a>
-          </div>
+          <p class="accessibility-updated" data-i18n="accessibility.updated">마지막 업데이트: 2026년 6월 30일</p>
         </div>
-        <figure class="accessibility-hero-media">
-          <img src="../assets/accessibility-firetruck-hero.jpg" alt="" width="1280" height="720" loading="eager" decoding="async" />
-          <figcaption>
-            <span data-i18n="accessibility.mediaLabel">Accessibility</span>
-            <strong data-i18n="accessibility.mediaValue">Keyboard, contrast, readable controls</strong>
-          </figcaption>
-        </figure>
+        <aside class="accessibility-scope-panel" aria-label="접근성 기준 범위" data-i18n-aria-label="accessibility.scopeLabel">
+          <span data-i18n="accessibility.scopeEyebrow">Target standard</span>
+          <strong data-i18n="accessibility.scopeValue">WCAG 2.2 AA oriented</strong>
+          <p data-i18n="accessibility.scopeBody">
+            이 페이지는 공식 인증서가 아니라 사이트가 목표로 삼는 접근성 기준과 현재 지원 범위를 설명합니다.
+          </p>
+        </aside>
       </section>
 
       <section class="accessibility-ledger" aria-label="접근성 요약" data-i18n-aria-label="aria.accessibilitySummary">
         <div>
           <span data-i18n="accessibility.summaryKeyboard">Keyboard</span>
-          <strong data-i18n="accessibility.summaryKeyboardValue">Skip link and focus</strong>
+          <strong data-i18n="accessibility.summaryKeyboardValue">Skip link and visible focus</strong>
         </div>
         <div>
           <span data-i18n="accessibility.summaryContrast">Contrast</span>
-          <strong data-i18n="accessibility.summaryContrastValue">Dark readable UI</strong>
+          <strong data-i18n="accessibility.summaryContrastValue">Readable dark UI</strong>
         </div>
         <div>
           <span data-i18n="accessibility.summaryLanguage">Language</span>
-          <strong data-i18n="accessibility.summaryLanguageValue">Korean and English</strong>
+          <strong data-i18n="accessibility.summaryLanguageValue">Auto, Korean, English</strong>
         </div>
         <div>
           <span data-i18n="accessibility.summaryControls">Controls</span>
-          <strong data-i18n="accessibility.summaryControlsValue">Settings page</strong>
+          <strong data-i18n="accessibility.summaryControlsValue">Settings modal</strong>
         </div>
+      </section>
+
+      <section class="accessibility-compliance-board" aria-label="접근성 기준 상태" data-i18n-aria-label="accessibility.complianceLabel">
+        <article>
+          <span data-i18n="accessibility.compliancePerceivable">Perceivable</span>
+          <strong data-i18n="accessibility.complianceSupported">Supported</strong>
+          <p data-i18n="accessibility.perceivableBody">텍스트 대비, 이미지 대체 처리, 페이지 제목, 명확한 콘텐츠 구조를 우선 기준으로 둡니다.</p>
+        </article>
+        <article>
+          <span data-i18n="accessibility.complianceOperable">Operable</span>
+          <strong data-i18n="accessibility.complianceImproving">Improving</strong>
+          <p data-i18n="accessibility.operableBody">키보드 이동, skip link, 포커스 표시, 모달 닫기와 메뉴 버튼 접근성을 지속적으로 점검합니다.</p>
+        </article>
+        <article>
+          <span data-i18n="accessibility.complianceUnderstandable">Understandable</span>
+          <strong data-i18n="accessibility.complianceSupported">Supported</strong>
+          <p data-i18n="accessibility.understandableBody">한국어/영어 전환, 자동 언어 감지, 일관된 버튼 이름, 간결한 안내 문구를 유지합니다.</p>
+        </article>
+        <article>
+          <span data-i18n="accessibility.complianceRobust">Robust</span>
+          <strong data-i18n="accessibility.complianceImproving">Improving</strong>
+          <p data-i18n="accessibility.robustBody">정적 HTML 구조, 의미 있는 링크, 표준 버튼, ARIA 라벨을 사용해 다양한 브라우저에서 동작하도록 관리합니다.</p>
+        </article>
       </section>
 
       <section class="accessibility-dossier" aria-label="접근성 세부 정보" data-i18n-aria-label="aria.accessibilityDetails">
         <article>
           <span>01</span>
-          <h2 data-i18n="accessibility.keyboardTitle">키보드로 이동할 수 있습니다.</h2>
+          <h2 data-i18n="accessibility.keyboardTitle">키보드와 초점 기준</h2>
           <p data-i18n="accessibility.keyboardBody">
-            각 페이지에는 본문으로 바로 이동하는 skip link가 있고, 버튼과 링크에는 focus-visible 표시가 적용됩니다. 우클릭 메뉴와 공유, QR, 인쇄 같은 대화상자도 버튼 기반으로 열립니다.
+            각 페이지에는 본문으로 바로 이동하는 skip link가 있고, 주요 링크와 버튼에는 focus-visible 표시가 적용됩니다. 설정 모달, 공유, QR, 인쇄, 우클릭 메뉴는 버튼 기반으로 열고 닫을 수 있게 관리합니다.
           </p>
         </article>
         <article>
           <span>02</span>
-          <h2 data-i18n="accessibility.contrastTitle">기본 화면은 어두운 고대비 구성을 사용합니다.</h2>
+          <h2 data-i18n="accessibility.contrastTitle">색 대비와 읽기 기준</h2>
           <p data-i18n="accessibility.contrastBody">
-            다크와 밝기 끄기 테마는 텍스트와 컨트롤이 보이도록 공통 토큰으로 관리됩니다. 사이드바는 색 장식을 줄이고 단색 회색 배경으로 정리했습니다.
+            기본 화면은 어두운 고대비 구성을 사용하며, 텍스트와 컨트롤은 공통 색상 토큰으로 관리합니다. 중요한 안내, 버튼, 선택 상태는 배경과 구분되도록 밝기와 굵기를 조정합니다.
           </p>
         </article>
         <article>
           <span>03</span>
-          <h2 data-i18n="accessibility.readingTitle">읽기 편한 표시 설정을 제공합니다.</h2>
-          <p data-i18n="accessibility.readingBody">
-            Settings에서 언어, 화면 밀도, Kid mode, 빠른 렌더링을 조정할 수 있습니다. Kid mode는 글자 크기와 움직임 감소 정도를 단계별로 바꿉니다.
+          <h2 data-i18n="accessibility.languageTitle">언어와 이해 가능성 기준</h2>
+          <p data-i18n="accessibility.languageBody">
+            기본 언어는 브라우저 언어를 감지해 자동으로 선택할 수 있고, 사용자는 한국어와 영어 중 원하는 언어를 설정할 수 있습니다. 페이지 제목, 버튼, 도움말 문구는 같은 의미가 유지되도록 번역합니다.
           </p>
         </article>
         <article>
           <span>04</span>
-          <h2 data-i18n="accessibility.motionTitle">움직임과 무거운 효과를 줄일 수 있습니다.</h2>
+          <h2 data-i18n="accessibility.motionTitle">움직임과 시각 효과 기준</h2>
           <p data-i18n="accessibility.motionBody">
-            빠른 렌더링을 켜면 블러, 그림자, 애니메이션 부담을 줄입니다. 기기의 reduced motion 설정도 존중하도록 애니메이션 사용을 제한합니다.
+            빠른 렌더링 또는 움직임 감소 환경에서는 블러, 그림자, 애니메이션 부담을 줄입니다. 기기의 reduced motion 설정도 존중하도록 과한 전환 효과를 제한합니다.
           </p>
         </article>
         <article>
           <span>05</span>
-          <h2 data-i18n="accessibility.feedbackTitle">불편한 부분은 Support로 알려주세요.</h2>
-          <p data-i18n="accessibility.feedbackBody">
-            키보드 이동, 읽기 대비, 언어 전환, 모바일 표시에서 문제가 보이면 Feedback 페이지로 알려주세요. 접근성 개선 요청은 다음 수정의 우선 신호로 봅니다.
+          <h2 data-i18n="accessibility.mobileTitle">모바일 접근성 기준</h2>
+          <p data-i18n="accessibility.mobileBody">
+            모바일에서는 하단 빠른 액션, 메뉴 버튼, 설정 모달, 주요 CTA가 손가락으로 누르기 쉬운 크기를 유지하도록 점검합니다. 텍스트가 버튼 밖으로 넘치거나 서로 겹치지 않도록 반응형 폭을 제한합니다.
           </p>
         </article>
+        <article>
+          <span>06</span>
+          <h2 data-i18n="accessibility.reviewTitle">검토와 문제 신고</h2>
+          <p data-i18n="accessibility.reviewBody">
+            접근성 문제는 일반 피드백보다 우선적으로 검토합니다. 키보드 이동, 읽기 대비, 언어 전환, 모바일 표시에서 문제가 보이면 사용한 브라우저와 페이지 이름을 함께 알려주세요.
+            <a href="/feedback" data-i18n="accessibility.feedbackLink">Support로 문제 알리기</a>
+          </p>
+        </article>
+      </section>
+
+      <section class="accessibility-standard-actions" aria-label="접근성 관련 링크" data-i18n-aria-label="accessibility.actionsLabel">
+        <div>
+          <h2 data-i18n="accessibility.actionsTitle">접근성 설정을 조정할 수 있습니다.</h2>
+          <p data-i18n="accessibility.actionsBody">테마, 언어, Kid mode, 빠른 렌더링, 표시 밀도는 설정 모달에서 관리합니다.</p>
+        </div>
+        <a href="/settings" data-i18n="accessibility.settingsLink">Accessibility settings 열기</a>
       </section>
     </main>
     <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
@@ -237,6 +273,6 @@
         </svg>
       </button>
     </div>
-    <script src="../script.js?v=20260630-context-layer" defer></script>
+    <script src="../script.js?v=20260630-layout-audit-fix5" defer></script>
   </body>
 </html>

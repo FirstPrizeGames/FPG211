@@ -63,7 +63,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260630-context-layer`;
+  const repairUrl = `${guard.fallback}?v=20260630-layout-audit-fix5`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -760,6 +760,7 @@ const createNavFlyout = ({ icon, labelKey, fallback, items = [] }) => {
 const createTopSearchButton = () => {
   if (isSystemRecoveryPage) return;
   if (document.body.classList.contains("official-home-body")) return;
+  if (document.body.classList.contains("search-body")) return;
   if (document.querySelector("[data-top-search]")) return;
 
   const button = document.createElement("button");
@@ -906,14 +907,13 @@ const createUserProfileDialog = () => {
         <div class="user-profile-summary">
           <p class="eyebrow" data-i18n="profileDialog.eyebrow">Profile</p>
           <h2 id="user-profile-title" data-profile-name>My name</h2>
-          <p data-i18n="profileDialog.body">Customize the account surface used by this site.</p>
+          <p data-i18n="profileDialog.body">Name, photo, visibility, and plan.</p>
           <span class="user-profile-plan-pill" data-profile-plan>Free</span>
         </div>
       </div>
       <div class="user-profile-section">
         <div class="user-profile-section-copy">
           <h3 data-i18n="profileDialog.accountSection">Account details</h3>
-          <p data-i18n="profileDialog.accountBody">Set the public name shown in account surfaces.</p>
         </div>
         <label class="user-profile-control">
           <span data-i18n="profileDialog.nameControl">User name</span>
@@ -923,10 +923,7 @@ const createUserProfileDialog = () => {
       <div class="user-profile-section">
         <div class="user-profile-section-copy">
           <h3 data-i18n="profileDialog.photoSection">Profile photo</h3>
-          <p>
-            <span data-i18n="profileDialog.photoBody">Use a custom image or return to the default ambulance image.</span>
-            <strong data-profile-avatar-status data-i18n="profileDialog.avatarDefault">Ambulance image</strong>
-          </p>
+          <strong data-profile-avatar-status data-i18n="profileDialog.avatarDefault">Ambulance image</strong>
         </div>
         <div class="user-profile-photo-actions">
           <label class="user-profile-upload">
@@ -939,7 +936,6 @@ const createUserProfileDialog = () => {
       <div class="user-profile-section">
         <div class="user-profile-section-copy">
           <h3 data-i18n="profileDialog.privacySection">Privacy</h3>
-          <p data-i18n="profileDialog.visibilityBody">Control whether this profile appears as visible in site settings.</p>
         </div>
         <div class="user-profile-visibility-field">
           <span data-i18n="profileDialog.visibility">Profile visibility</span>
@@ -2548,7 +2544,7 @@ const translations = {
     "toast.notificationsUnsupported": "이 브라우저는 사이트 알림을 지원하지 않습니다.",
     "toast.notificationsDismissed": "알림 권한 요청이 완료되지 않았습니다.",
     "search.eyebrow": "Search",
-    "search.title": "사이트 검색",
+    "search.title": "First Prize Games 검색",
     "search.label": "검색어",
     "clipboard.eyebrow": "Clipboard",
     "clipboard.title": "Clipboard Center",
@@ -2570,13 +2566,30 @@ const translations = {
     "clipboard.itemQr": "QR 링크",
     "clipboard.itemShare": "공유 링크",
     "clipboard.itemManual": "직접 복사",
-    "search.placeholder": "Unity, 요금제, FAQ처럼 입력하세요",
+    "search.placeholder": "페이지, 설정, 정책 검색",
     "search.empty": "검색어를 입력하면 관련 페이지가 표시됩니다.",
     "search.noResults": "일치하는 결과가 없습니다.",
     "search.close": "닫기",
     "search.open": "열기",
-    "search.pageLead": "사이트 안의 주요 페이지를 한 화면에서 검색하고 바로 이동합니다.",
-    "search.pageHint": "검색어를 입력하면 Home, Settings, Privacy, FAQ 같은 페이지가 즉시 정리됩니다.",
+    "search.pageLead": "필요한 페이지, 설정, 정책을 빠르게 찾아 이동합니다.",
+    "search.pageHint": "검색어를 입력하면 관련 페이지가 바로 표시됩니다.",
+    "search.resultsLabel": "검색 결과",
+    "search.resultsKicker": "Results",
+    "search.resultsTitle": "검색 결과",
+    "search.assistLabel": "검색 보조 정보",
+    "search.recentKicker": "Recent",
+    "search.recentTitle": "추천 검색어",
+    "search.tipsKicker": "Tips",
+    "search.tipsTitle": "검색 팁",
+    "search.tipOne": "페이지 이름, 기능, 또는 설정 이름으로 검색하세요.",
+    "search.tipTwo": "예: Pricing, Privacy, Accessibility",
+    "search.tipThree": "검색 결과는 현재 사이트 페이지로만 제한됩니다.",
+    "search.filterLabel": "검색 범위",
+    "search.filterAll": "전체",
+    "search.filterPages": "페이지",
+    "search.filterSettings": "설정",
+    "search.filterHelp": "도움말",
+    "search.filterLegal": "정책",
     "activity.eyebrow": "Activity",
     "activity.title": "최근 활동",
     "activity.lead": "이 브라우저에서 열어본 페이지와 주요 동작을 로컬에만 기록합니다.",
@@ -2585,6 +2598,13 @@ const translations = {
     "activity.visits": "방문",
     "activity.actions": "동작",
     "activity.latest": "최근",
+    "activity.localLabel": "저장 위치",
+    "activity.categoriesTitle": "분류",
+    "activity.typeVisit": "페이지 방문",
+    "activity.typeAction": "동작",
+    "activity.typeLocal": "로컬 저장",
+    "activity.helpTitle": "기록을 지우고 싶으신가요?",
+    "activity.helpBody": "활동 기록은 이 브라우저의 localStorage에만 저장되며, 계정이나 서버로 전송되지 않습니다.",
     "activity.emptyTitle": "아직 활동이 없습니다.",
     "activity.emptyBody": "페이지를 둘러보거나 공유, 검색 같은 기능을 사용하면 여기에 표시됩니다.",
     "activity.clear": "활동 지우기",
@@ -3094,6 +3114,23 @@ const translations = {
     "feedback.statusOne": "버그 제보",
     "feedback.statusTwo": "디자인 문제",
     "feedback.statusThree": "기능 제안",
+    "feedback.actionsLabel": "피드백 액션",
+    "feedback.privacyAction": "개인정보 안내",
+    "feedback.summaryLabel": "피드백 요약",
+    "feedback.boardLabel": "피드백 접수 보드",
+    "feedback.categoriesLabel": "피드백 분류",
+    "feedback.metaQueueLabel": "Queue",
+    "feedback.metaQueueValue": "3개 접수 라인",
+    "feedback.metaChannelLabel": "Channel",
+    "feedback.metaChannelValue": "Google Forms",
+    "feedback.metaPrivacyLabel": "Privacy",
+    "feedback.metaPrivacyValue": "연락처 입력 선택",
+    "feedback.queueNow": "접수 중",
+    "feedback.reviewQueue": "검토 큐",
+    "feedback.planningQueue": "계획 큐",
+    "feedback.deviceBadge": "Device",
+    "feedback.deviceTitle": "페이지와 브라우저를 같이 남겨주세요.",
+    "feedback.deviceBody": "문제가 생긴 페이지, 사용한 기기, 브라우저 이름이 있으면 같은 화면을 더 빨리 재현할 수 있습니다.",
     "feedback.topicOneTitle": "버그와 깨진 화면",
     "feedback.topicOneBody": "버튼이 반응하지 않거나, 모바일에서 레이아웃이 이상하거나, 페이지 이동이 막히는 문제를 알려주세요.",
     "feedback.topicTwoTitle": "읽기 불편한 문구",
@@ -3115,37 +3152,56 @@ const translations = {
     "feedback.privacyEyebrow": "Privacy",
     "feedback.privacyTitle": "개인정보는 필요한 만큼만 입력하세요.",
     "feedback.privacyBody": "피드백 양식은 외부 Google Forms에서 열립니다. 답장을 원하지 않는다면 이름, 이메일, 연락처를 비워두는 편이 좋습니다.",
-    "accessibility.title": "접근성을 사이트의 기본 기능으로 관리합니다.",
+    "accessibility.eyebrow": "접근성 기준",
+    "accessibility.title": "접근성 기준",
     "accessibility.lead":
-      "이 사이트는 키보드 이동, 명확한 포커스 표시, 언어 전환, 읽기 모드, 화면 밀도 조정을 통해 더 편하게 탐색할 수 있게 설계했습니다.",
+      "First Prize Games는 키보드 이동, 명확한 초점 표시, 읽기 대비, 언어 선택, 움직임 감소를 핵심 접근성 기준으로 관리합니다.",
+    "accessibility.scopeLabel": "접근성 기준 범위",
+    "accessibility.scopeEyebrow": "Target standard",
+    "accessibility.scopeValue": "WCAG 2.2 AA 지향",
+    "accessibility.scopeBody": "이 페이지는 공식 인증서가 아니라 사이트가 목표로 삼는 접근성 기준과 현재 지원 범위를 설명합니다.",
     "accessibility.mediaLabel": "Accessibility",
     "accessibility.mediaValue": "Keyboard, contrast, readable controls",
     "accessibility.summaryKeyboard": "Keyboard",
-    "accessibility.summaryKeyboardValue": "Skip link and focus",
+    "accessibility.summaryKeyboardValue": "Skip link와 명확한 초점",
     "accessibility.summaryContrast": "Contrast",
-    "accessibility.summaryContrastValue": "Dark readable UI",
+    "accessibility.summaryContrastValue": "읽기 쉬운 다크 UI",
     "accessibility.summaryLanguage": "Language",
-    "accessibility.summaryLanguageValue": "Korean and English",
+    "accessibility.summaryLanguageValue": "자동, 한국어, 영어",
     "accessibility.summaryControls": "Controls",
-    "accessibility.summaryControlsValue": "Settings page",
-    "accessibility.keyboardTitle": "키보드로 이동할 수 있습니다.",
+    "accessibility.summaryControlsValue": "설정 모달",
+    "accessibility.complianceLabel": "접근성 기준 상태",
+    "accessibility.compliancePerceivable": "Perceivable",
+    "accessibility.complianceOperable": "Operable",
+    "accessibility.complianceUnderstandable": "Understandable",
+    "accessibility.complianceRobust": "Robust",
+    "accessibility.complianceSupported": "Supported",
+    "accessibility.complianceImproving": "Improving",
+    "accessibility.perceivableBody": "텍스트 대비, 이미지 대체 처리, 페이지 제목, 명확한 콘텐츠 구조를 우선 기준으로 둡니다.",
+    "accessibility.operableBody": "키보드 이동, skip link, 포커스 표시, 모달 닫기와 메뉴 버튼 접근성을 지속적으로 점검합니다.",
+    "accessibility.understandableBody": "한국어/영어 전환, 자동 언어 감지, 일관된 버튼 이름, 간결한 안내 문구를 유지합니다.",
+    "accessibility.robustBody": "정적 HTML 구조, 의미 있는 링크, 표준 버튼, ARIA 라벨을 사용해 다양한 브라우저에서 동작하도록 관리합니다.",
+    "accessibility.keyboardTitle": "키보드와 초점 기준",
     "accessibility.keyboardBody":
-      "각 페이지에는 본문으로 바로 이동하는 skip link가 있고, 버튼과 링크에는 focus-visible 표시가 적용됩니다. 우클릭 메뉴와 공유, QR, 인쇄 같은 대화상자도 버튼 기반으로 열립니다.",
-    "accessibility.contrastTitle": "기본 화면은 어두운 고대비 구성을 사용합니다.",
+      "각 페이지에는 본문으로 바로 이동하는 skip link가 있고, 주요 링크와 버튼에는 focus-visible 표시가 적용됩니다. 설정 모달, 공유, QR, 인쇄, 우클릭 메뉴는 버튼 기반으로 열고 닫을 수 있게 관리합니다.",
+    "accessibility.contrastTitle": "색 대비와 읽기 기준",
     "accessibility.contrastBody":
-      "다크와 밝기 끄기 테마는 텍스트와 컨트롤이 보이도록 공통 토큰으로 관리됩니다. 사이드바는 색 장식을 줄이고 단색 회색 배경으로 정리했습니다.",
-    "accessibility.readingTitle": "읽기 편한 표시 설정을 제공합니다.",
-    "accessibility.readingBody":
-      "Settings에서 언어, 화면 밀도, Kid mode, 빠른 렌더링을 조정할 수 있습니다. Kid mode는 글자 크기와 움직임 감소 정도를 단계별로 바꿉니다.",
-    "accessibility.motionTitle": "움직임과 무거운 효과를 줄일 수 있습니다.",
+      "기본 화면은 어두운 고대비 구성을 사용하며, 텍스트와 컨트롤은 공통 색상 토큰으로 관리합니다. 중요한 안내, 버튼, 선택 상태는 배경과 구분되도록 밝기와 굵기를 조정합니다.",
+    "accessibility.languageTitle": "언어와 이해 가능성 기준",
+    "accessibility.languageBody": "기본 언어는 브라우저 언어를 감지해 자동으로 선택할 수 있고, 사용자는 한국어와 영어 중 원하는 언어를 설정할 수 있습니다. 페이지 제목, 버튼, 도움말 문구는 같은 의미가 유지되도록 번역합니다.",
+    "accessibility.motionTitle": "움직임과 시각 효과 기준",
     "accessibility.motionBody":
-      "빠른 렌더링을 켜면 블러, 그림자, 애니메이션 부담을 줄입니다. 기기의 reduced motion 설정도 존중하도록 애니메이션 사용을 제한합니다.",
-    "accessibility.feedbackTitle": "불편한 부분은 Support로 알려주세요.",
-    "accessibility.feedbackBody":
-      "키보드 이동, 읽기 대비, 언어 전환, 모바일 표시에서 문제가 보이면 Feedback 페이지로 알려주세요. 접근성 개선 요청은 다음 수정의 우선 신호로 봅니다.",
+      "빠른 렌더링 또는 움직임 감소 환경에서는 블러, 그림자, 애니메이션 부담을 줄입니다. 기기의 reduced motion 설정도 존중하도록 과한 전환 효과를 제한합니다.",
+    "accessibility.mobileTitle": "모바일 접근성 기준",
+    "accessibility.mobileBody": "모바일에서는 하단 빠른 액션, 메뉴 버튼, 설정 모달, 주요 CTA가 손가락으로 누르기 쉬운 크기를 유지하도록 점검합니다. 텍스트가 버튼 밖으로 넘치거나 서로 겹치지 않도록 반응형 폭을 제한합니다.",
+    "accessibility.reviewTitle": "검토와 문제 신고",
+    "accessibility.reviewBody": "접근성 문제는 일반 피드백보다 우선적으로 검토합니다. 키보드 이동, 읽기 대비, 언어 전환, 모바일 표시에서 문제가 보이면 사용한 브라우저와 페이지 이름을 함께 알려주세요.",
+    "accessibility.actionsLabel": "접근성 관련 링크",
+    "accessibility.actionsTitle": "접근성 설정을 조정할 수 있습니다.",
+    "accessibility.actionsBody": "테마, 언어, Kid mode, 빠른 렌더링, 표시 밀도는 설정 모달에서 관리합니다.",
     "accessibility.settingsLink": "Accessibility settings 열기",
     "accessibility.feedbackLink": "Support로 문제 알리기",
-    "accessibility.updated": "마지막 업데이트: 2026년 6월 9일",
+    "accessibility.updated": "마지막 업데이트: 2026년 6월 30일",
     "privacy.eyebrow": "Privacy Policy",
     "privacy.title": "개인정보 처리 기준",
     "privacy.lead":
@@ -3253,25 +3309,38 @@ const translations = {
     "feedback.cancel": "취소",
     "feedback.continue": "계속하기",
     "updates.eyebrow": "Latest updates",
-    "updates.title": "최근 바뀐 내용을 한눈에 봅니다.",
-    "updates.lead": "사이드바, 접근성, 쿠키 설정처럼 바로 체감되는 변경 사항을 최신 순서로 정리했습니다.",
-    "updates.summaryNav": "Sidebar",
-    "updates.summaryNavValue": "최신 업데이트 추가",
-    "updates.summaryPrivacy": "Privacy",
-    "updates.summaryPrivacyValue": "쿠키 설정 팝업",
-    "updates.summaryAccess": "Access",
-    "updates.summaryAccessValue": "Accessibility 페이지",
-    "updates.latestLabel": "2026.06.10",
-    "updates.latestTitle": "사이드바에 최신 업데이트를 추가했습니다.",
-    "updates.latestBody": "모든 페이지의 사이드바 상단에서 최신 업데이트 페이지로 바로 이동할 수 있게 했습니다.",
-    "updates.cookieTitle": "쿠키 설정 팝업을 넣었습니다.",
-    "updates.cookieBody": "설정 페이지에서 필수 쿠키와 설정 저장 쿠키 상태를 확인하고, 설정 저장 쿠키를 직접 켜거나 끌 수 있습니다.",
-    "updates.accessTitle": "Accessibility 페이지를 추가했습니다.",
-    "updates.accessBody": "키보드 이동, 대비, 언어, 표시 밀도, Kid mode 같은 접근성 지원 범위를 별도 페이지로 정리했습니다.",
-    "updates.nextTitle": "다음 점검",
-    "updates.nextBody": "사이드바 항목이 늘어난 만큼 모바일 메뉴와 접힌 사이드바 상태의 간격을 계속 점검합니다.",
-    "updates.openSettings": "설정 열기",
-    "updates.openAccessibility": "Accessibility 열기",
+    "updates.title": "Latest updates",
+    "updates.lead": "사이트의 디자인, 기능, 접근성, 신뢰 정보를 변경 기록 형식으로 정리합니다.",
+    "updates.statusAction": "상태 보기",
+    "updates.feedbackAction": "문제 신고",
+    "updates.metaCurrentLabel": "Current release",
+    "updates.metaCurrentValue": "2026.06 안정화",
+    "updates.metaFocusLabel": "Focus",
+    "updates.metaFocusValue": "UI 정리와 안정성",
+    "updates.metaScopeLabel": "Scope",
+    "updates.metaScopeValue": "데스크톱과 모바일",
+    "updates.categoriesTitle": "Categories",
+    "updates.categoryProduct": "Product",
+    "updates.categoryDesign": "Design",
+    "updates.categoryReliability": "Reliability",
+    "updates.categoryTrust": "Trust",
+    "updates.releaseLatest": "Latest",
+    "updates.releaseErrorTitle": "오류 페이지를 재디자인했습니다.",
+    "updates.releaseErrorBody": "Offline, 404, 500 페이지가 더 차분한 복구 화면과 명확한 액션을 공유합니다.",
+    "updates.releaseSettingsTitle": "설정을 단순화했습니다.",
+    "updates.releaseSettingsBody": "테마, 언어, 접근성, 보안, 프로필, 우클릭 메뉴만 남긴 집중형 설정 모달로 정리했습니다.",
+    "updates.releasePerformanceTitle": "렌더링을 최적화했습니다.",
+    "updates.releasePerformanceBody": "작은 아바타 이미지와 가벼운 서비스 워커 캐시로 초기 로드 부담을 줄였습니다.",
+    "updates.releaseHomeTitle": "공식 홈을 재구성했습니다.",
+    "updates.releaseHomeBody": "공개 홈 화면은 내부 사이드바 대신 상단 내비게이션 중심 구조로 표시됩니다.",
+    "updates.releaseContextTitle": "우클릭 메뉴 레이어를 수정했습니다.",
+    "updates.releaseContextBody": "커스텀 우클릭 메뉴가 설정 같은 팝업 위에서도 가려지지 않게 정리했습니다.",
+    "updates.releaseUsageTitle": "Usage 한도를 확장했습니다.",
+    "updates.releaseUsageBody": "5시간, 주간, 월간 한도와 초기화 버튼, 경고 팝업을 더 명확하게 정리했습니다.",
+    "updates.releaseLegalTitle": "신뢰 페이지를 다듬었습니다.",
+    "updates.releaseLegalBody": "Privacy, Terms, License, Security, Trust Center 페이지를 더 공식적인 톤으로 정리했습니다.",
+    "updates.helpTitle": "더 자세한 내용이 필요하신가요?",
+    "updates.helpBody": "특정 업데이트가 기기에서 이상하게 보이면 페이지 이름과 사용한 브라우저를 함께 보내주세요.",
     "settings.title": "설정 관리 콘솔",
     "settings.lead":
       "공개 상태, 표시 방식, 성능, 저장소 설정을 한 화면에서 관리합니다.",
@@ -3429,6 +3498,19 @@ const translations = {
     "settings.storageUsageLoading": "저장용량을 확인하는 중입니다.",
     "settings.storageUsageUnsupported": "이 브라우저에서는 저장용량 표시를 지원하지 않습니다.",
     "usage.limitsTitle": "일반 사용 한도",
+    "usage.boardLead": "현재 브라우저 기준의 5시간, 주간, 월간 한도와 초기화 가능 상태를 로그보드 형식으로 확인합니다.",
+    "usage.actionsLabel": "사용량 액션",
+    "usage.metaModelLabel": "Model",
+    "usage.metaModelValue": "로컬 브라우저",
+    "usage.metaWindowsLabel": "Windows",
+    "usage.metaWindowsValue": "5시간, 주간, 월간",
+    "usage.metaResetLabel": "Reset allowance",
+    "usage.categoriesLabel": "사용량 분류",
+    "usage.categoryCurrent": "현재 한도",
+    "usage.categoryReset": "초기화 관리",
+    "usage.categoryDetails": "한도 설명",
+    "usage.categoryUpgrade": "요금제",
+    "usage.currentWindow": "현재 창",
     "usage.dailyLimitTitle": "5시간 사용 한도",
     "usage.weeklyLimitTitle": "주간 사용 한도",
     "usage.monthlyLimitTitle": "월간 사용 한도",
@@ -3454,6 +3536,7 @@ const translations = {
     "usage.resetStatusLoading": "초기화 가능 횟수를 확인하는 중입니다.",
     "usage.resetStatus": "이번 주 {count}번 더 초기화할 수 있습니다.",
     "usage.resetStatusEmpty": "{date}에 다시 사용할 수 있습니다.",
+    "usage.resetBoardBody": "한도 초기화는 이번 주 허용 횟수를 사용하며, 5시간, 주간, 월간 한도를 지금부터 다시 시작합니다.",
     "usage.resetWarningEyebrow": "Usage reset",
     "usage.resetWarningTitle": "한도를 초기화할까요?",
     "usage.resetWarningBody": "5시간, 주간, 월간 사용 한도가 모두 지금부터 다시 시작됩니다. 이번 주 초기화 가능 횟수 1회가 사용됩니다.",
@@ -3463,6 +3546,7 @@ const translations = {
     "usage.settingsBody": "5시간, 주간, 월간 한도를 Usage 페이지에서 확인합니다.",
     "usage.open": "Usage 열기",
     "usage.summaryValue": "페이지 이동",
+    "usage.upgradeBody": "무료 한도가 부족하면 요금제 페이지에서 더 큰 사용 범위를 확인할 수 있습니다.",
     "settings.accentTitle": "강조 컬러",
     "settings.accentBody": "버튼, 진행 바, 포커스 표시, 지원되는 페이지의 링크 색상에 사용할 포인트 컬러를 선택합니다.",
     "settings.accentScopeLabel": "적용 범위",
@@ -3493,9 +3577,9 @@ const translations = {
     "plans.free": "Free",
     "plans.freePrice": "₩0",
     "plans.pro": "Pro",
-    "plans.proPrice": "Stripe에서 확인",
+    "plans.proPrice": "$20 / 약 ₩28,000",
     "plans.team": "Team",
-    "plans.teamPrice": "Stripe에서 확인",
+    "plans.teamPrice": "예약 필요",
     "plans.ultra": "Ultra",
     "plans.ultraPrice": "Stripe에서 확인",
     "plans.monthly": "월간",
@@ -3506,12 +3590,13 @@ const translations = {
     "pricing.lead":
       "Free는 첫 접속 기준 5시간 한도와 주간 한도를 제공합니다. 한도 이후에는 필요한 경우 유료 checkout을 선택할 수 있습니다.",
     "pricing.simpleTitle": "필요한 만큼만 선택하세요.",
-    "pricing.simpleLead": "Free로 시작하고, 더 많은 한도나 우선 처리가 필요할 때 Pro 또는 Ultra로 올리면 됩니다.",
+    "pricing.simpleLead": "Free로 시작하고, 더 많은 한도나 팀 단위 구성이 필요할 때 Pro 또는 Team으로 올리면 됩니다.",
     "pricing.simpleStart": "Start",
     "pricing.simpleMost": "Most users",
-    "pricing.simplePriority": "Priority",
+    "pricing.simplePriority": "Team",
     "pricing.simpleFreePill": "Start",
     "pricing.simpleProPill": "Upgrade",
+    "pricing.simpleTeamPill": "Team",
     "pricing.simpleUltraPill": "Priority",
     "pricing.simpleFreeBody": "개인용으로 사이트를 둘러보고 기본 기능을 쓰기에 충분합니다.",
     "pricing.simpleFreeOne": "기본 프로필과 공유 기능",
@@ -3555,12 +3640,12 @@ const translations = {
     "pricing.proThree": "Pro 전용 강조 컬러",
     "pricing.proFour": "개인 프로필 확장용 구성",
     "pricing.choosePro": "Pro 선택",
-    "pricing.teamBody": "무료 한도 이후 팀 단위 프로필, 공동 소개, 활동 정리를 선택할 수 있는 checkout 플랜입니다.",
+    "pricing.teamBody": "팀, 기관, 공동 프로필 구성을 위한 예약형 플랜입니다. 필요한 범위를 먼저 확인한 뒤 진행합니다.",
     "pricing.teamOne": "팀 소개와 공동 프로필 구성",
     "pricing.teamTwo": "구성원별 역할 및 활동 정리",
     "pricing.teamThree": "교육, 프로젝트, 운영 정보 구조화",
     "pricing.teamFour": "Team 전용 컬러와 우선 피드백 흐름",
-    "pricing.chooseTeam": "Team 선택",
+    "pricing.chooseTeam": "예약하기",
     "pricing.ultraBody": "무료 한도 이후 가장 높은 우선순위와 공동 기획 참여를 원하는 사용자를 위한 최상위 checkout 플랜입니다.",
     "pricing.ultraOne": "First, the response",
     "pricing.ultraTwo": "Request priority processing",
@@ -3615,7 +3700,7 @@ const translations = {
     "pricing.faqEyebrow": "FAQ",
     "pricing.faqTitle": "자주 묻는 질문",
     "pricing.faqOneQuestion": "결제는 어디에서 진행되나요?",
-    "pricing.faqOneAnswer": "Pro, Team, Ultra 플랜은 Stripe checkout 링크를 통해 진행됩니다.",
+    "pricing.faqOneAnswer": "Pro는 Stripe checkout 링크로 진행되고, Team은 예약 문의 흐름으로 진행됩니다.",
     "pricing.faqTwoQuestion": "무료 사용 한도를 모두 쓰면 어떻게 되나요?",
     "pricing.faqTwoAnswer":
       "Free 한도를 모두 사용하면 Usage 페이지가 Pricing으로 이동합니다. 현재 유료 플랜은 Stripe checkout 링크 방식이며, 결제 후 자동 한도 해제는 아직 연결되어 있지 않습니다.",
@@ -4020,7 +4105,7 @@ const translations = {
     "toast.notificationsUnsupported": "This browser does not support site notifications.",
     "toast.notificationsDismissed": "Notification permission was not completed.",
     "search.eyebrow": "Search",
-    "search.title": "Search site",
+    "search.title": "Search First Prize Games",
     "search.label": "Search query",
     "clipboard.eyebrow": "Clipboard",
     "clipboard.title": "Clipboard Center",
@@ -4042,13 +4127,30 @@ const translations = {
     "clipboard.itemQr": "QR link",
     "clipboard.itemShare": "Share link",
     "clipboard.itemManual": "Manual copy",
-    "search.placeholder": "Try Unity, pricing, or FAQ",
+    "search.placeholder": "Search pages, settings, or policies",
     "search.empty": "Type a query to show related pages.",
     "search.noResults": "No matching results.",
     "search.close": "Close",
     "search.open": "Open",
-    "search.pageLead": "Search the main pages from one full-screen surface and jump directly where you need to go.",
-    "search.pageHint": "Type a query to sort pages such as Home, Settings, Privacy, and FAQ instantly.",
+    "search.pageLead": "Find pages, settings, and policy information quickly.",
+    "search.pageHint": "Matching pages appear as soon as you type.",
+    "search.resultsLabel": "Search results",
+    "search.resultsKicker": "Results",
+    "search.resultsTitle": "Results",
+    "search.assistLabel": "Search assist",
+    "search.recentKicker": "Recent",
+    "search.recentTitle": "Suggested searches",
+    "search.tipsKicker": "Tips",
+    "search.tipsTitle": "Search tips",
+    "search.tipOne": "Search by page name, feature, or setting.",
+    "search.tipTwo": "Try Pricing, Privacy, or Accessibility.",
+    "search.tipThree": "Results are limited to pages on this site.",
+    "search.filterLabel": "Search scope",
+    "search.filterAll": "All",
+    "search.filterPages": "Pages",
+    "search.filterSettings": "Settings",
+    "search.filterHelp": "Help",
+    "search.filterLegal": "Legal",
     "activity.eyebrow": "Activity",
     "activity.title": "Recent activity",
     "activity.lead": "Review page visits and key actions saved only in this browser.",
@@ -4057,6 +4159,13 @@ const translations = {
     "activity.visits": "Visits",
     "activity.actions": "Actions",
     "activity.latest": "Latest",
+    "activity.localLabel": "Storage",
+    "activity.categoriesTitle": "Categories",
+    "activity.typeVisit": "Page visits",
+    "activity.typeAction": "Actions",
+    "activity.typeLocal": "Local only",
+    "activity.helpTitle": "Want to clear the log?",
+    "activity.helpBody": "Activity is saved only in this browser's localStorage and is not sent to an account or server.",
     "activity.emptyTitle": "No activity yet.",
     "activity.emptyBody": "Visit pages or use actions such as share and search to see them here.",
     "activity.clear": "Clear activity",
@@ -4566,6 +4675,23 @@ const translations = {
     "feedback.statusOne": "Bug report",
     "feedback.statusTwo": "Design issue",
     "feedback.statusThree": "Feature idea",
+    "feedback.actionsLabel": "Feedback actions",
+    "feedback.privacyAction": "Privacy note",
+    "feedback.summaryLabel": "Feedback summary",
+    "feedback.boardLabel": "Feedback intake board",
+    "feedback.categoriesLabel": "Feedback categories",
+    "feedback.metaQueueLabel": "Queue",
+    "feedback.metaQueueValue": "3 intake lanes",
+    "feedback.metaChannelLabel": "Channel",
+    "feedback.metaChannelValue": "Google Forms",
+    "feedback.metaPrivacyLabel": "Privacy",
+    "feedback.metaPrivacyValue": "Optional contact details",
+    "feedback.queueNow": "Active intake",
+    "feedback.reviewQueue": "Review queue",
+    "feedback.planningQueue": "Planning queue",
+    "feedback.deviceBadge": "Device",
+    "feedback.deviceTitle": "Include the page and browser.",
+    "feedback.deviceBody": "The page, device, and browser name help reproduce the same screen faster.",
     "feedback.topicOneTitle": "Bugs and broken screens",
     "feedback.topicOneBody": "Report buttons that do not respond, mobile layouts that look wrong, or page navigation that gets blocked.",
     "feedback.topicTwoTitle": "Text that feels unclear",
@@ -4587,37 +4713,56 @@ const translations = {
     "feedback.privacyEyebrow": "Privacy",
     "feedback.privacyTitle": "Only enter the personal details you need.",
     "feedback.privacyBody": "The feedback form opens in Google Forms. If you do not need a reply, it is better to leave your name, email, and contact details blank.",
-    "accessibility.title": "Accessibility is managed as a core site feature.",
+    "accessibility.eyebrow": "Accessibility Standard",
+    "accessibility.title": "Accessibility standard",
     "accessibility.lead":
-      "This site is designed for easier navigation through keyboard access, visible focus states, language switching, reading modes, and display density controls.",
+      "First Prize Games manages keyboard navigation, visible focus, readable contrast, language choice, and reduced motion as core accessibility standards.",
+    "accessibility.scopeLabel": "Accessibility standard scope",
+    "accessibility.scopeEyebrow": "Target standard",
+    "accessibility.scopeValue": "WCAG 2.2 AA oriented",
+    "accessibility.scopeBody": "This page is not a formal certification. It explains the accessibility standard this site targets and the current support scope.",
     "accessibility.mediaLabel": "Accessibility",
     "accessibility.mediaValue": "Keyboard, contrast, readable controls",
     "accessibility.summaryKeyboard": "Keyboard",
-    "accessibility.summaryKeyboardValue": "Skip link and focus",
+    "accessibility.summaryKeyboardValue": "Skip link and visible focus",
     "accessibility.summaryContrast": "Contrast",
-    "accessibility.summaryContrastValue": "Dark readable UI",
+    "accessibility.summaryContrastValue": "Readable dark UI",
     "accessibility.summaryLanguage": "Language",
-    "accessibility.summaryLanguageValue": "Korean and English",
+    "accessibility.summaryLanguageValue": "Auto, Korean, English",
     "accessibility.summaryControls": "Controls",
-    "accessibility.summaryControlsValue": "Settings page",
-    "accessibility.keyboardTitle": "You can navigate with the keyboard.",
+    "accessibility.summaryControlsValue": "Settings modal",
+    "accessibility.complianceLabel": "Accessibility standard status",
+    "accessibility.compliancePerceivable": "Perceivable",
+    "accessibility.complianceOperable": "Operable",
+    "accessibility.complianceUnderstandable": "Understandable",
+    "accessibility.complianceRobust": "Robust",
+    "accessibility.complianceSupported": "Supported",
+    "accessibility.complianceImproving": "Improving",
+    "accessibility.perceivableBody": "Text contrast, alternative image handling, page titles, and clear content structure are treated as baseline requirements.",
+    "accessibility.operableBody": "Keyboard flow, skip links, focus states, modal closing, and menu button access are checked continuously.",
+    "accessibility.understandableBody": "Korean and English switching, automatic language detection, consistent button names, and concise guidance are maintained.",
+    "accessibility.robustBody": "Static HTML structure, meaningful links, standard buttons, and ARIA labels help the site work across browsers.",
+    "accessibility.keyboardTitle": "Keyboard and focus standard",
     "accessibility.keyboardBody":
-      "Every page includes a skip link to the main content, and buttons and links use focus-visible states. Context menu, share, QR, and print dialogs are opened through button controls.",
-    "accessibility.contrastTitle": "The default interface uses a dark high-contrast layout.",
+      "Each page includes a skip link to main content, and primary links and buttons use focus-visible styling. Settings modals, share, QR, print, and the custom context menu are managed with button-based controls.",
+    "accessibility.contrastTitle": "Contrast and readability standard",
     "accessibility.contrastBody":
-      "Dark and lights-off themes are managed with shared tokens so text and controls stay visible. The sidebar now uses a solid gray rail with reduced decorative color.",
-    "accessibility.readingTitle": "Readable display settings are available.",
-    "accessibility.readingBody":
-      "Settings can adjust language, density, Kid mode, and fast rendering. Kid mode changes readable scale and motion reduction by level.",
-    "accessibility.motionTitle": "Motion and heavy effects can be reduced.",
+      "The default interface uses a dark high-contrast layout, and text plus controls are managed through shared color tokens. Important notices, buttons, and selected states are tuned for separation from the background.",
+    "accessibility.languageTitle": "Language and understandability standard",
+    "accessibility.languageBody": "The default language can follow the browser language, and users can choose Korean or English. Page titles, buttons, and guidance copy are translated to preserve the same meaning.",
+    "accessibility.motionTitle": "Motion and visual effects standard",
     "accessibility.motionBody":
-      "Fast rendering lowers blur, shadow, and animation load. Motion is also limited when the device asks for reduced motion.",
-    "accessibility.feedbackTitle": "Tell Support when something is uncomfortable.",
-    "accessibility.feedbackBody":
-      "If keyboard flow, reading contrast, language switching, or mobile layout feels wrong, report it through Feedback. Accessibility reports are treated as priority signals for the next fix.",
+      "Fast rendering or reduced-motion environments reduce blur, shadow, and animation work. The site also respects device reduced motion preferences by limiting heavy transitions.",
+    "accessibility.mobileTitle": "Mobile accessibility standard",
+    "accessibility.mobileBody": "On mobile, bottom quick actions, menu buttons, settings modals, and primary CTAs are checked for tap-friendly sizing. Responsive width limits help prevent button text overflow and overlapping content.",
+    "accessibility.reviewTitle": "Review and issue reporting",
+    "accessibility.reviewBody": "Accessibility issues are reviewed before general polish requests. If keyboard flow, contrast, language switching, or mobile display feels wrong, include the browser and page name when reporting it.",
+    "accessibility.actionsLabel": "Accessibility related links",
+    "accessibility.actionsTitle": "Accessibility settings can be adjusted.",
+    "accessibility.actionsBody": "Theme, language, Kid mode, fast rendering, and display density are managed in the settings modal.",
     "accessibility.settingsLink": "Open accessibility settings",
     "accessibility.feedbackLink": "Report issue to Support",
-    "accessibility.updated": "Last updated: June 9, 2026",
+    "accessibility.updated": "Last updated: June 30, 2026",
     "privacy.eyebrow": "Privacy Policy",
     "privacy.title": "Privacy processing terms",
     "privacy.lead":
@@ -4726,25 +4871,38 @@ const translations = {
     "feedback.cancel": "Cancel",
     "feedback.continue": "Continue",
     "updates.eyebrow": "Latest updates",
-    "updates.title": "See what changed recently.",
-    "updates.lead": "Recent visible changes such as the sidebar, accessibility page, and cookie settings are collected in one place.",
-    "updates.summaryNav": "Sidebar",
-    "updates.summaryNavValue": "Latest updates added",
-    "updates.summaryPrivacy": "Privacy",
-    "updates.summaryPrivacyValue": "Cookie settings popup",
-    "updates.summaryAccess": "Access",
-    "updates.summaryAccessValue": "Accessibility page",
-    "updates.latestLabel": "2026.06.10",
-    "updates.latestTitle": "Latest updates was added to the sidebar.",
-    "updates.latestBody": "Every page now has a sidebar link near the top that opens this updates page.",
-    "updates.cookieTitle": "Cookie settings popup was added.",
-    "updates.cookieBody": "The Settings page lets visitors review required cookies and turn the preference cookie on or off.",
-    "updates.accessTitle": "Accessibility page was added.",
-    "updates.accessBody": "Keyboard navigation, contrast, language, density, and Kid mode support now live on a dedicated page.",
-    "updates.nextTitle": "Next check",
-    "updates.nextBody": "As the sidebar grows, mobile menu spacing and collapsed-sidebar spacing will stay on the polish list.",
-    "updates.openSettings": "Open settings",
-    "updates.openAccessibility": "Open Accessibility",
+    "updates.title": "Latest updates",
+    "updates.lead": "A release-note view of design, product, accessibility, and trust changes across the site.",
+    "updates.statusAction": "View status",
+    "updates.feedbackAction": "Report an issue",
+    "updates.metaCurrentLabel": "Current release",
+    "updates.metaCurrentValue": "2026.06 stabilization",
+    "updates.metaFocusLabel": "Focus",
+    "updates.metaFocusValue": "UI polish and reliability",
+    "updates.metaScopeLabel": "Scope",
+    "updates.metaScopeValue": "Desktop and mobile",
+    "updates.categoriesTitle": "Categories",
+    "updates.categoryProduct": "Product",
+    "updates.categoryDesign": "Design",
+    "updates.categoryReliability": "Reliability",
+    "updates.categoryTrust": "Trust",
+    "updates.releaseLatest": "Latest",
+    "updates.releaseErrorTitle": "Error pages redesigned",
+    "updates.releaseErrorBody": "Offline, 404, and 500 pages now share a quieter recovery layout with clearer actions.",
+    "updates.releaseSettingsTitle": "Settings simplified",
+    "updates.releaseSettingsBody": "Settings moved into a focused modal with theme, language, accessibility, security, profile, and context menu controls.",
+    "updates.releasePerformanceTitle": "Rendering optimized",
+    "updates.releasePerformanceBody": "A smaller avatar asset and lighter service-worker precache reduce unnecessary first-load work.",
+    "updates.releaseHomeTitle": "Official home rebuilt",
+    "updates.releaseHomeBody": "The public home page now uses a top navigation model instead of the internal sidebar layout.",
+    "updates.releaseContextTitle": "Context menu layer fixed",
+    "updates.releaseContextBody": "The custom right-click menu now appears above dialogs and remains available during modal workflows.",
+    "updates.releaseUsageTitle": "Usage limits expanded",
+    "updates.releaseUsageBody": "Usage now includes 5-hour, weekly, and monthly limits with reset controls and clearer warning dialogs.",
+    "updates.releaseLegalTitle": "Trust pages refined",
+    "updates.releaseLegalBody": "Privacy, Terms, License, Security, and Trust Center pages were adjusted for a more official tone.",
+    "updates.helpTitle": "Need more detail?",
+    "updates.helpBody": "If an update looks wrong on your device, send feedback with the page name and browser you used.",
     "settings.title": "Settings management console",
     "settings.lead":
       "Manage public status, display behavior, performance, and storage settings from one screen.",
@@ -4906,6 +5064,19 @@ const translations = {
     "settings.storageUsageLoading": "Checking storage usage.",
     "settings.storageUsageUnsupported": "This browser does not support storage usage details.",
     "usage.limitsTitle": "General usage limits",
+    "usage.boardLead": "Review the 5-hour, weekly, and monthly limits plus reset availability in a corporate logboard layout.",
+    "usage.actionsLabel": "Usage actions",
+    "usage.metaModelLabel": "Model",
+    "usage.metaModelValue": "Local browser",
+    "usage.metaWindowsLabel": "Windows",
+    "usage.metaWindowsValue": "5-hour, weekly, monthly",
+    "usage.metaResetLabel": "Reset allowance",
+    "usage.categoriesLabel": "Usage categories",
+    "usage.categoryCurrent": "Current limits",
+    "usage.categoryReset": "Reset control",
+    "usage.categoryDetails": "Limit details",
+    "usage.categoryUpgrade": "Upgrade",
+    "usage.currentWindow": "Current window",
     "usage.dailyLimitTitle": "5-hour usage limit",
     "usage.weeklyLimitTitle": "Weekly usage limit",
     "usage.monthlyLimitTitle": "Monthly usage limit",
@@ -4931,6 +5102,7 @@ const translations = {
     "usage.resetStatusLoading": "Checking reset availability.",
     "usage.resetStatus": "{count} resets left this week.",
     "usage.resetStatusEmpty": "Available again on {date}.",
+    "usage.resetBoardBody": "Resetting limits uses this week's allowance and restarts the 5-hour, weekly, and monthly windows from now.",
     "usage.resetWarningEyebrow": "Usage reset",
     "usage.resetWarningTitle": "Reset usage limits?",
     "usage.resetWarningBody": "The 5-hour, weekly, and monthly usage limits will restart from now. This uses 1 reset from this week's allowance.",
@@ -4940,6 +5112,7 @@ const translations = {
     "usage.settingsBody": "Review the 5-hour, weekly, and monthly usage limits on the Usage page.",
     "usage.open": "Open Usage",
     "usage.summaryValue": "Open page",
+    "usage.upgradeBody": "If the free limits are not enough, review larger usage ranges on the pricing page.",
     "settings.accentTitle": "Accent color",
     "settings.accentBody": "Choose the point color used for buttons, progress bars, focus states, and supported page links.",
     "settings.accentScopeLabel": "Applies to",
@@ -4970,9 +5143,9 @@ const translations = {
     "plans.free": "Free",
     "plans.freePrice": "$0",
     "plans.pro": "Pro",
-    "plans.proPrice": "Confirm in Stripe",
+    "plans.proPrice": "$20 / approx. ₩28,000",
     "plans.team": "Team",
-    "plans.teamPrice": "Confirm in Stripe",
+    "plans.teamPrice": "Reservation required",
     "plans.ultra": "Ultra",
     "plans.ultraPrice": "Confirm in Stripe",
     "plans.monthly": "Monthly",
@@ -4983,12 +5156,13 @@ const translations = {
     "pricing.lead":
       "Free includes a 5-hour limit and a weekly limit starting from the first visit. Paid checkout remains optional after the limit.",
     "pricing.simpleTitle": "Choose only what you need.",
-    "pricing.simpleLead": "Start with Free, then move to Pro or Ultra when you need more limits or priority handling.",
+    "pricing.simpleLead": "Start with Free, then move to Pro or Team when you need more limits or a shared profile setup.",
     "pricing.simpleStart": "Start",
     "pricing.simpleMost": "Most users",
-    "pricing.simplePriority": "Priority",
+    "pricing.simplePriority": "Team",
     "pricing.simpleFreePill": "Start",
     "pricing.simpleProPill": "Upgrade",
+    "pricing.simpleTeamPill": "Team",
     "pricing.simpleUltraPill": "Priority",
     "pricing.simpleFreeBody": "Enough for personal use, browsing the site, and using the basic features.",
     "pricing.simpleFreeOne": "Basic profile and sharing",
@@ -5033,12 +5207,12 @@ const translations = {
     "pricing.proFour": "Expanded personal profile structure",
     "pricing.choosePro": "Choose Pro",
     "pricing.teamBody":
-      "A checkout option for team profiles, shared introductions, and organized activity records after the free limit.",
+      "A reservation-based plan for teams, organizations, and shared profile setups. Scope is confirmed before moving forward.",
     "pricing.teamOne": "Team intro and shared profile structure",
     "pricing.teamTwo": "Member roles and activity summaries",
     "pricing.teamThree": "Training, project, and operation structure",
     "pricing.teamFour": "Team-only color and priority feedback flow",
-    "pricing.chooseTeam": "Choose Team",
+    "pricing.chooseTeam": "Reserve Team",
     "pricing.ultraBody": "The top-tier checkout option after the free limit, with the highest priority and joint planning participation.",
     "pricing.ultraOne": "First, the response",
     "pricing.ultraTwo": "Request priority processing",
@@ -5093,7 +5267,7 @@ const translations = {
     "pricing.faqEyebrow": "FAQ",
     "pricing.faqTitle": "Frequently asked questions",
     "pricing.faqOneQuestion": "Where does payment happen?",
-    "pricing.faqOneAnswer": "The Pro, Team, and Ultra plans are handled through Stripe checkout links.",
+    "pricing.faqOneAnswer": "Pro uses a Stripe checkout link. Team uses a reservation inquiry flow.",
     "pricing.faqTwoQuestion": "What happens after the free usage limit is used?",
     "pricing.faqTwoAnswer":
       "When the Free limit is used, the Usage page opens Pricing. Paid plans currently use direct Stripe checkout links, and automatic limit unlocking is not connected yet.",
@@ -5729,14 +5903,14 @@ const playContextMenuClickSound = () => {
 const prices = {
   krw: {
     free: "₩0",
-    pro: "Stripe에서 확인",
-    team: "Stripe에서 확인",
+    pro: "$20 / 약 ₩28,000",
+    team: "예약 필요",
     ultra: "Stripe에서 확인",
   },
   usd: {
     free: "$0",
-    pro: "Confirm in Stripe",
-    team: "Confirm in Stripe",
+    pro: "$20 / approx. ₩28,000",
+    team: "Reservation required",
     ultra: "Confirm in Stripe",
   },
 };
@@ -6925,6 +7099,11 @@ const setupWelcomeDialog = () => {
   const welcomeSeenKey = "profile-welcome-seen";
   const dialog = document.querySelector("[data-welcome-dialog]");
   if (!dialog || localStorage.getItem(welcomeSeenKey) === "true") return;
+  if (!document.body.classList.contains("official-home-body")) {
+    dialog.hidden = true;
+    return;
+  }
+  if (!hasStorageConsent()) return;
 
   const closeWelcome = () => {
     localStorage.setItem(welcomeSeenKey, "true");
@@ -7125,9 +7304,46 @@ const selectHomeTab = (selectedTab) => {
   });
 };
 
+const searchRecentKey = "profile-search-recent";
+const searchFilterLabels = {
+  pages: "search.filterPages",
+  settings: "search.filterSettings",
+  help: "search.filterHelp",
+  legal: "search.filterLegal",
+};
+
 const normalizeSearchText = (value) => value.toLowerCase().replace(/\s+/g, " ").trim();
 
-const getSearchResultsMarkup = (query = "") => {
+const getSearchCategory = (item) => {
+  const url = item.url || "";
+  if (["/settings", "/accessibility"].includes(url)) return "settings";
+  if (["/FAQ", "/feedback", "/updates", "/activity"].includes(url)) return "help";
+  if (["/privacy", "/license", "/terms", "/trust", "/security", "/status"].includes(url)) return "legal";
+  return "pages";
+};
+
+const getStoredRecentSearches = () => {
+  try {
+    const values = JSON.parse(localStorage.getItem(searchRecentKey) || "[]");
+    return Array.isArray(values) ? values.filter(Boolean).slice(0, 5) : [];
+  } catch (error) {
+    return [];
+  }
+};
+
+const saveRecentSearch = (query) => {
+  const normalizedQuery = normalizeSearchText(query);
+  if (!normalizedQuery) return;
+
+  const displayQuery = String(query || "").trim().slice(0, 48);
+  const nextValues = [
+    displayQuery,
+    ...getStoredRecentSearches().filter((item) => normalizeSearchText(item) !== normalizedQuery),
+  ].slice(0, 5);
+  localStorage.setItem(searchRecentKey, JSON.stringify(nextValues));
+};
+
+const getSearchResultsMarkup = (query = "", filter = "all") => {
   const normalizedQuery = normalizeSearchText(query);
   if (!normalizedQuery) {
     return `<p class="search-empty">${translate("search.empty")}</p>`;
@@ -7144,9 +7360,10 @@ const getSearchResultsMarkup = (query = "") => {
         ].join(" "),
       );
       const score = searchable.includes(normalizedQuery) ? normalizedQuery.length : 0;
-      return { ...item, score };
+      return { ...item, category: getSearchCategory(item), score };
     })
     .filter((item) => item.score > 0)
+    .filter((item) => filter === "all" || item.category === filter)
     .sort((a, b) => b.score - a.score);
 
   if (!results.length) {
@@ -7157,6 +7374,7 @@ const getSearchResultsMarkup = (query = "") => {
     .map(
       (item) => `
         <button type="button" class="search-result" data-search-url="${item.url}">
+          <span class="search-result-meta">${translate(searchFilterLabels[item.category] || "search.filterPages")}</span>
           <strong>${translate(item.titleKey)}</strong>
           <span>${translate(item.bodyKey)}</span>
         </button>
@@ -7172,11 +7390,30 @@ const renderSearchResults = (query = "") => {
   resultsContainer.innerHTML = getSearchResultsMarkup(query);
 };
 
-const renderSearchPageResults = (query = "") => {
+const renderSearchPageResults = (query = "", filter = "all") => {
   const resultsContainer = document.querySelector("[data-search-page-results]");
   if (!resultsContainer) return;
 
-  resultsContainer.innerHTML = getSearchResultsMarkup(query);
+  resultsContainer.innerHTML = getSearchResultsMarkup(query, filter);
+};
+
+const renderRecentSearches = () => {
+  const recentContainer = document.querySelector("[data-search-recent-list]");
+  if (!recentContainer) return;
+
+  const recentSearches = getStoredRecentSearches();
+  const suggestions = ["Pricing", "Privacy", "Accessibility", "FAQ"];
+  const values = recentSearches.length ? recentSearches : suggestions;
+
+  recentContainer.innerHTML = values
+    .map(
+      (value) => `
+        <button type="button" data-search-recent-query="${value}">
+          <span>${value}</span>
+        </button>
+      `,
+    )
+    .join("");
 };
 
 const showSiteSearchDialog = () => {
@@ -7248,20 +7485,52 @@ const setupMobileQuickActions = () => {
 const setupSearchPage = () => {
   const input = document.querySelector("[data-search-page-input]");
   const resultsContainer = document.querySelector("[data-search-page-results]");
+  const filterButtons = [...document.querySelectorAll("[data-search-page-filter]")];
+  const recentContainer = document.querySelector("[data-search-recent-list]");
   if (!input || !resultsContainer) return;
 
   const params = new URLSearchParams(window.location.search);
+  let activeFilter = "all";
   input.value = params.get("q") || "";
-  renderSearchPageResults(input.value);
+  renderSearchPageResults(input.value, activeFilter);
+  renderRecentSearches();
 
   input.addEventListener("input", () => {
-    renderSearchPageResults(input.value);
+    renderSearchPageResults(input.value, activeFilter);
+  });
+
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      saveRecentSearch(input.value);
+      renderRecentSearches();
+    }
+  });
+
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      activeFilter = button.dataset.searchPageFilter || "all";
+      filterButtons.forEach((item) => {
+        const isActive = item === button;
+        item.classList.toggle("is-active", isActive);
+        item.setAttribute("aria-selected", String(isActive));
+      });
+      renderSearchPageResults(input.value, activeFilter);
+    });
   });
 
   resultsContainer.addEventListener("click", (event) => {
     const result = event.target.closest?.("[data-search-url]");
     if (!result) return;
+    saveRecentSearch(input.value || result.innerText || "");
     window.location.href = result.dataset.searchUrl;
+  });
+
+  recentContainer?.addEventListener("click", (event) => {
+    const recentButton = event.target.closest?.("[data-search-recent-query]");
+    if (!recentButton) return;
+    input.value = recentButton.dataset.searchRecentQuery || "";
+    input.focus();
+    renderSearchPageResults(input.value, activeFilter);
   });
 };
 
@@ -7386,6 +7655,15 @@ const formatActivityTime = (createdAt) => {
   return formatter.format(new Date(createdAt));
 };
 
+const formatActivityDate = (createdAt) => {
+  const formatter = new Intl.DateTimeFormat(currentLanguage === "ko" ? "ko-KR" : "en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  return formatter.format(new Date(createdAt));
+};
+
 const escapeActivityText = (value) =>
   String(value ?? "").replace(/[&<>"']/g, (character) => {
     const entities = {
@@ -7432,18 +7710,37 @@ const renderActivityPage = () => {
     return;
   }
 
-  list.innerHTML = items
-    .map((item) => {
-      const typeLabel = item.type === "action" ? translate("activity.actions") : translate("activity.visits");
-      const href = getSafeActivityUrl(item.url);
+  const activityGroups = items.reduce((groups, item) => {
+    const key = formatActivityDate(item.createdAt);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(item);
+    return groups;
+  }, new Map());
+
+  list.innerHTML = Array.from(activityGroups.entries())
+    .map(([dateLabel, groupItems], groupIndex) => {
       return `
-        <article class="activity-item">
-          <span class="activity-dot" aria-hidden="true"></span>
-          <div>
-            <strong>${escapeActivityText(item.label)}</strong>
-            <span>${escapeActivityText(typeLabel)} · ${escapeActivityText(formatActivityTime(item.createdAt))}</span>
-          </div>
-          <a href="${escapeActivityText(href)}">${escapeActivityText(href)}</a>
+        <article class="activity-date-group">
+          <header>
+            <time>${escapeActivityText(dateLabel)}</time>
+            ${groupIndex === 0 ? `<span>${translate("activity.latest")}</span>` : ""}
+          </header>
+          ${groupItems
+            .map((item) => {
+              const typeLabel = item.type === "action" ? translate("activity.typeAction") : translate("activity.typeVisit");
+              const href = getSafeActivityUrl(item.url);
+              return `
+                <div class="activity-item">
+                  <span class="activity-type-badge">${escapeActivityText(typeLabel)}</span>
+                  <div>
+                    <strong>${escapeActivityText(item.label)}</strong>
+                    <span>${escapeActivityText(formatActivityTime(item.createdAt))}</span>
+                  </div>
+                  <a href="${escapeActivityText(href)}">${escapeActivityText(href)}</a>
+                </div>
+              `;
+            })
+            .join("")}
         </article>
       `;
     })
@@ -7451,11 +7748,10 @@ const renderActivityPage = () => {
 };
 
 const setupActivityPage = () => {
-  const clearButton = document.querySelector("[data-activity-clear]");
-  clearButton?.addEventListener("click", () => {
+  document.querySelectorAll("[data-activity-clear]").forEach((clearButton) => clearButton.addEventListener("click", () => {
     localStorage.removeItem(activityLogKey);
     renderActivityPage();
-  });
+  }));
   renderActivityPage();
 };
 

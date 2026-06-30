@@ -21,14 +21,14 @@
     <title>Pricing · First Prize Games</title>
     <meta
       name="description"
-      content="Compare Free, Pro, Team, and Ultra profile options with Stripe checkout links."
+      content="Compare Free, Pro, and Team profile options with Stripe checkout links."
     />
     <meta name="theme-color" content="#151514" />
     <link rel="canonical" href="https://firstprizegames.info/Pricing" />
     <meta property="og:title" content="Pricing · First Prize Games" />
     <meta
       property="og:description"
-      content="Compare Free, Pro, Team, and Ultra profile options with final pricing confirmed in Stripe checkout."
+      content="Compare Free, Pro, and Team profile options with final pricing confirmed in Stripe checkout."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="First Prize Games" />
@@ -40,7 +40,7 @@
     <meta name="twitter:title" content="Pricing · First Prize Games" />
     <meta
       name="twitter:description"
-      content="Compare Free, Pro, Team, and Ultra profile options with final pricing confirmed in Stripe checkout."
+      content="Compare Free, Pro, and Team profile options with final pricing confirmed in Stripe checkout."
     />
     <meta name="twitter:image" content="https://firstprizegames.info/assets/profile-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -104,9 +104,9 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260630-context-layer" />
+    <link rel="stylesheet" href="../styles.css?v=20260630-layout-audit-fix5" />
   </head>
-  <body>
+  <body class="pricing-body">
     <div class="loading-bar" aria-hidden="true"></div>
     <div class="scroll-progress" aria-hidden="true"></div>
     <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
@@ -147,7 +147,7 @@
         <div>
           <p class="eyebrow" data-i18n="pricing.eyebrow">Pricing</p>
           <h1 data-i18n="pricing.simpleTitle">필요한 만큼만 선택하세요.</h1>
-          <p data-i18n="pricing.simpleLead">Free로 시작하고, 더 많은 한도나 우선 처리가 필요할 때 Pro 또는 Ultra로 올리면 됩니다.</p>
+          <p data-i18n="pricing.simpleLead">Free로 시작하고, 더 많은 한도나 팀 단위 구성이 필요할 때 Pro 또는 Team으로 올리면 됩니다.</p>
         </div>
         <aside class="pricing-hero-panel pricing-decision-panel" aria-label="요금제 선택 요약">
           <div>
@@ -159,8 +159,8 @@
             <strong>Pro</strong>
           </div>
           <div>
-            <span data-i18n="pricing.simplePriority">Priority</span>
-            <strong>Ultra</strong>
+            <span data-i18n="pricing.simplePriority">Team</span>
+            <strong>Team</strong>
           </div>
         </aside>
       </section>
@@ -191,7 +191,7 @@
             <span class="plan-badge" data-i18n="plans.recommended">추천</span>
           </div>
           <div class="plan-price-line">
-            <h2 data-i18n="plans.proPrice" data-price-plan="pro">Stripe에서 확인</h2>
+            <h2 data-i18n="plans.proPrice" data-price-plan="pro">$20 / 약 ₩28,000</h2>
             <span class="billing-pill" data-i18n="pricing.simpleProPill">Upgrade</span>
           </div>
           <p data-i18n="pricing.simpleProBody">한도 이후에도 계속 쓰고, 프로필을 더 정돈해서 보여주고 싶을 때 적합합니다.</p>
@@ -210,46 +210,29 @@
           </button>
         </article>
 
-        <article class="pricing-card ultra-card plan-ultra">
+        <article class="pricing-card plan-team">
           <div class="plan-card-top">
-            <p class="eyebrow" data-i18n="plans.ultra">Ultra</p>
-            <span class="plan-badge ultra-badge" data-i18n="plans.topTier">최상위</span>
+            <p class="eyebrow" data-i18n="plans.team">Team</p>
           </div>
           <div class="plan-price-line">
-            <h2 data-i18n="plans.ultraPrice" data-price-plan="ultra">Stripe에서 확인</h2>
-            <span class="billing-pill" data-i18n="pricing.simpleUltraPill">Priority</span>
+            <h2 data-i18n="plans.teamPrice" data-price-plan="team">예약 필요</h2>
+            <span class="billing-pill" data-i18n="pricing.simpleTeamPill">Team</span>
           </div>
-          <p data-i18n="pricing.simpleUltraBody">가장 높은 우선 처리와 더 적극적인 개선 요청이 필요한 경우에 맞습니다.</p>
+          <p data-i18n="pricing.teamBody">팀, 기관, 공동 프로필 구성을 위한 예약형 플랜입니다. 필요한 범위를 먼저 확인한 뒤 진행합니다.</p>
           <ul>
-            <li data-i18n="pricing.simpleUltraOne">최우선 요청 처리</li>
-            <li data-i18n="pricing.simpleUltraTwo">공동 기획 참여</li>
-            <li data-i18n="pricing.simpleUltraThree">미공개 업데이트 접근</li>
+            <li data-i18n="pricing.teamOne">팀 소개와 공동 프로필 구성</li>
+            <li data-i18n="pricing.teamTwo">구성원별 역할 및 활동 정리</li>
+            <li data-i18n="pricing.teamThree">교육, 프로젝트, 운영 정보 구조화</li>
           </ul>
           <button
-            class="button primary ultra-button"
+            class="button ghost"
             type="button"
-            data-subscribe-url="https://buy.stripe.com/test_bJeeVd5L9aQ87Qm7tBbwk02"
-            data-i18n="pricing.chooseUltra"
+            data-go-url="/feedback"
+            data-i18n="pricing.chooseTeam"
           >
-            Ultra 선택
+            예약하기
           </button>
         </article>
-      </section>
-
-      <section class="pricing-team-strip" aria-label="Team plan">
-        <div>
-          <p class="eyebrow" data-i18n="plans.team">Team</p>
-          <h2 data-i18n="pricing.teamStripTitle">팀 단위 프로필이 필요하세요?</h2>
-          <p data-i18n="pricing.teamStripBody">구성원별 역할, 공동 활동, 기관 소개가 필요하면 Team 플랜으로 확장할 수 있습니다.</p>
-        </div>
-        <button
-          class="button ghost"
-          type="button"
-          data-subscribe-url="https://buy.stripe.com/test_aFaaEXddB1fy0nUdRZbwk01"
-          data-i18n="pricing.chooseTeam"
-        >
-          Team 선택
-        </button>
       </section>
 
       <div class="cache-dialog subscribe-dialog" data-subscribe-warning hidden>
@@ -296,11 +279,6 @@
             <strong data-i18n="pricing.compareTeamTitle">여러 사람 또는 기관</strong>
             <p data-i18n="pricing.compareTeamBodySimple">팀 소개, 구성원 역할, 공동 활동 정리.</p>
           </article>
-          <article>
-            <span>Ultra</span>
-            <strong data-i18n="pricing.compareUltraTitle">우선 처리</strong>
-            <p data-i18n="pricing.compareUltraBodySimple">최우선 요청, 공동 기획, 미공개 업데이트.</p>
-          </article>
         </div>
       </section>
 
@@ -313,7 +291,7 @@
           <details>
             <summary data-i18n="pricing.faqOneQuestion">결제는 어디에서 진행되나요?</summary>
             <p data-i18n="pricing.faqOneAnswer">
-              Pro, Team, Ultra 플랜은 Stripe checkout 링크를 통해 진행됩니다.
+              Pro는 Stripe checkout 링크로 진행되고, Team은 예약 문의 흐름으로 진행됩니다.
             </p>
           </details>
           <details>
@@ -434,7 +412,7 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../script.js?v=20260630-context-layer" defer></script>
+    <script src="../script.js?v=20260630-layout-audit-fix5" defer></script>
   </body>
 </html>
 

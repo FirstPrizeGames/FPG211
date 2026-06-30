@@ -98,7 +98,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260630-context-layer" />
+    <link rel="stylesheet" href="../styles.css?v=20260630-layout-audit-fix5" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -138,68 +138,142 @@
         </div>
       </nav>
 
-      <section class="usage-console" aria-label="일반 사용 한도" data-i18n-aria-label="usage.limitsTitle">
-        <h1 data-i18n="usage.limitsTitle">일반 사용 한도</h1>
-        <div class="usage-limit-console">
-          <article class="usage-limit-row">
-            <div class="usage-limit-copy">
-              <strong data-i18n="usage.dailyLimitTitle">5시간 사용 한도</strong>
-              <span data-browser-daily-reset>-- 초기화</span>
-            </div>
-            <div class="usage-limit-state">
-              <div class="usage-limit-bar" aria-hidden="true">
-                <span data-browser-daily-bar></span>
-              </div>
-              <strong data-browser-daily-remaining>100% 남음</strong>
+      <section class="updates-hero logboard-hero usage-log-hero" aria-labelledby="usage-title">
+        <div class="updates-hero-copy">
+          <h1 id="usage-title" data-i18n="usage.limitsTitle">일반 사용 한도</h1>
+          <p data-i18n="usage.boardLead">
+            현재 브라우저 기준의 5시간, 주간, 월간 한도와 초기화 가능 상태를 로그보드 형식으로 확인합니다.
+          </p>
+        </div>
+        <div class="updates-hero-actions" aria-label="사용량 액션" data-i18n-aria-label="usage.actionsLabel">
+          <button class="updates-action-link logboard-action-button" type="button" data-usage-learn-open>
+            <span data-i18n="usage.learnMore">Learn more about usage limits</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
+          </button>
+          <a class="updates-action-link" href="/Pricing">
+            <span data-i18n="usage.upgradeButton">요금제 업그레이드</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7" /><path d="M9 7h8v8" /></svg>
+          </a>
+        </div>
+      </section>
+
+      <section class="updates-release-meta logboard-meta" aria-label="사용량 요약" data-i18n-aria-label="aria.usageSummary">
+        <article>
+          <span data-i18n="usage.metaModelLabel">Model</span>
+          <strong data-i18n="usage.metaModelValue">Local browser</strong>
+        </article>
+        <article>
+          <span data-i18n="usage.metaWindowsLabel">Windows</span>
+          <strong data-i18n="usage.metaWindowsValue">5-hour, weekly, monthly</strong>
+        </article>
+        <article>
+          <span data-i18n="usage.metaResetLabel">Reset allowance</span>
+          <strong data-usage-reset-status data-i18n="usage.resetStatusLoading">초기화 가능 횟수를 확인하는 중입니다.</strong>
+        </article>
+      </section>
+
+      <section class="updates-release-board logboard-board usage-release-board" aria-label="일반 사용 한도" data-i18n-aria-label="usage.limitsTitle">
+        <aside class="updates-release-rail" aria-label="사용량 분류" data-i18n-aria-label="usage.categoriesLabel">
+          <strong data-i18n="updates.categoriesTitle">Categories</strong>
+          <a href="#usage-current" data-i18n="usage.categoryCurrent">Current limits</a>
+          <a href="#usage-reset" data-i18n="usage.categoryReset">Reset control</a>
+          <a href="#usage-details" data-i18n="usage.categoryDetails">Limit details</a>
+          <a href="#usage-upgrade" data-i18n="usage.categoryUpgrade">Upgrade</a>
+        </aside>
+
+        <div class="updates-release-list">
+          <article class="release-group usage-limits-group" id="usage-current">
+            <header>
+              <time datetime="2026-06-30" data-i18n="usage.currentWindow">Current window</time>
+              <span data-i18n="updates.releaseLatest">Latest</span>
+            </header>
+            <div class="usage-limit-console usage-log-console">
+              <article class="usage-limit-row">
+                <div class="usage-limit-copy">
+                  <strong data-i18n="usage.dailyLimitTitle">5시간 사용 한도</strong>
+                  <span data-browser-daily-reset>-- 초기화</span>
+                </div>
+                <div class="usage-limit-state">
+                  <div class="usage-limit-bar" aria-hidden="true">
+                    <span data-browser-daily-bar></span>
+                  </div>
+                  <strong data-browser-daily-remaining>100% 남음</strong>
+                </div>
+              </article>
+              <article class="usage-limit-row">
+                <div class="usage-limit-copy">
+                  <strong data-i18n="usage.weeklyLimitTitle">주간 사용 한도</strong>
+                  <span data-browser-weekly-reset>-- 초기화</span>
+                </div>
+                <div class="usage-limit-state">
+                  <div class="usage-limit-bar" aria-hidden="true">
+                    <span data-browser-weekly-bar></span>
+                  </div>
+                  <strong data-browser-weekly-remaining>100% 남음</strong>
+                </div>
+              </article>
+              <article class="usage-limit-row">
+                <div class="usage-limit-copy">
+                  <strong data-i18n="usage.monthlyLimitTitle">월간 사용 한도</strong>
+                  <span data-browser-monthly-reset>-- 초기화</span>
+                </div>
+                <div class="usage-limit-state">
+                  <div class="usage-limit-bar" aria-hidden="true">
+                    <span data-browser-monthly-bar></span>
+                  </div>
+                  <strong data-browser-monthly-remaining>100% 남음</strong>
+                </div>
+              </article>
             </div>
           </article>
-          <article class="usage-limit-row">
-            <div class="usage-limit-copy">
-              <strong data-i18n="usage.weeklyLimitTitle">주간 사용 한도</strong>
-              <span data-browser-weekly-reset>-- 초기화</span>
-            </div>
-            <div class="usage-limit-state">
-              <div class="usage-limit-bar" aria-hidden="true">
-                <span data-browser-weekly-bar></span>
+
+          <article class="release-group" id="usage-reset">
+            <header>
+              <time datetime="2026-06-30" data-i18n="usage.categoryReset">Reset control</time>
+            </header>
+            <div class="release-entry usage-control-entry">
+              <span class="release-badge" data-i18n="usage.resetWarningEyebrow">Usage reset</span>
+              <div>
+                <h2 data-i18n="usage.resetPanelTitle">한도 초기화</h2>
+                <p data-i18n="usage.resetBoardBody">한도 초기화는 이번 주 허용 횟수를 사용하며, 5시간, 주간, 월간 한도를 지금부터 다시 시작합니다.</p>
               </div>
-              <strong data-browser-weekly-remaining>100% 남음</strong>
+              <button class="usage-reset-button" type="button" data-usage-reset-button>
+                <span data-i18n="usage.resetButton">한도 초기화</span>
+              </button>
             </div>
           </article>
-          <article class="usage-limit-row">
-            <div class="usage-limit-copy">
-              <strong data-i18n="usage.monthlyLimitTitle">월간 사용 한도</strong>
-              <span data-browser-monthly-reset>-- 초기화</span>
-            </div>
-            <div class="usage-limit-state">
-              <div class="usage-limit-bar" aria-hidden="true">
-                <span data-browser-monthly-bar></span>
+
+          <article class="release-group" id="usage-details">
+            <header>
+              <time datetime="2026-06-30" data-i18n="usage.categoryDetails">Limit details</time>
+            </header>
+            <div class="release-entry">
+              <span class="release-badge" data-i18n="usage.learnPointLocalTitle">브라우저 기준</span>
+              <div>
+                <h2 data-i18n="usage.learnPointResetTitle">자동 초기화</h2>
+                <p data-i18n="usage.learnDialogBody">이 한도는 서버 계정이 아니라 현재 브라우저에서만 계산됩니다. 처음 접속한 순간부터 5시간, 주간, 월간 한도가 시작되고, 기간이 지나면 자동으로 새 한도로 초기화됩니다.</p>
               </div>
-              <strong data-browser-monthly-remaining>100% 남음</strong>
+            </div>
+            <div class="release-entry">
+              <span class="release-badge" data-i18n="usage.learnPointPrivateTitle">서버 저장 없음</span>
+              <div>
+                <h2 data-i18n="usage.metaModelValue">Local browser</h2>
+                <p data-i18n="usage.learnPointPrivateBody">로그인 계정이나 결제 기록과 연결되지 않습니다.</p>
+              </div>
             </div>
           </article>
         </div>
-        <button class="usage-learn-button" type="button" data-usage-learn-open>
-          <span data-i18n="usage.learnMore">Learn more about usage limits</span>
-          <svg aria-hidden="true" viewBox="0 0 24 24">
-            <path d="M5 12h14" />
-            <path d="m13 6 6 6-6 6" />
-          </svg>
-        </button>
       </section>
 
-      <section class="usage-reset-panel" aria-label="한도 초기화" data-i18n-aria-label="usage.resetPanelTitle">
+      <section class="updates-help-band logboard-help-band" id="usage-upgrade" aria-label="더 많은 한도" data-i18n-aria-label="usage.upgradeTitle">
         <div>
-          <h2 data-i18n="usage.resetPanelTitle">한도 초기화</h2>
-          <p data-usage-reset-status data-i18n="usage.resetStatusLoading">초기화 가능 횟수를 확인하는 중입니다.</p>
+          <h2 data-i18n="usage.upgradeTitle">Get more limits?</h2>
+          <p data-i18n="usage.upgradeBody">무료 한도가 부족하면 요금제 페이지에서 더 큰 사용 범위를 확인할 수 있습니다.</p>
         </div>
-        <button class="usage-reset-button" type="button" data-usage-reset-button>
-          <span data-i18n="usage.resetButton">한도 초기화</span>
-        </button>
-      </section>
-
-      <section class="usage-upgrade-panel" aria-label="더 많은 한도" data-i18n-aria-label="usage.upgradeTitle">
-        <h2 data-i18n="usage.upgradeTitle">Get more limits?</h2>
-        <a class="usage-upgrade-button" href="/Pricing" data-i18n="usage.upgradeButton">Upgrade to plan</a>
+        <a class="updates-action-link" href="/Pricing">
+          <span data-i18n="usage.upgradeButton">요금제 업그레이드</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7" /><path d="M9 7h8v8" /></svg>
+        </a>
       </section>
 
       <div class="cache-dialog usage-learn-dialog" data-usage-learn-dialog hidden>
@@ -230,7 +304,7 @@
       </div>
 
     </main>
-    <script src="../script.js?v=20260630-context-layer" defer></script>
+    <script src="../script.js?v=20260630-layout-audit-fix5" defer></script>
   </body>
 </html>
 

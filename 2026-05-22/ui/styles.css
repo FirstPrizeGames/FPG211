@@ -11647,7 +11647,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
 
 .context-menu {
   position: fixed;
-  z-index: 150;
+  z-index: 4400;
   display: grid;
   gap: 2px;
   width: min(306px, calc(100vw - 20px));

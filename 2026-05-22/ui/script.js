@@ -63,7 +63,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260630-language-auto`;
+  const repairUrl = `${guard.fallback}?v=20260630-context-layer`;
   window.location.replace(repairUrl);
   return true;
 };

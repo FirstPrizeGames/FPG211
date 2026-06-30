@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260629-toast-above-modal";
+const CACHE_NAME = "profile-offline-20260630-render-fast";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
@@ -36,11 +36,8 @@ const PRECACHE_URLS = [
   "/assets/apple-touch-icon.png",
   "/assets/icon-192.png",
   "/assets/icon-512.png",
-  "/assets/well.png",
+  "/assets/well-avatar.webp",
   "/assets/logo.png",
-  "/assets/official-home-operations-hero.jpg",
-  "/assets/accessibility-firetruck-hero.jpg",
-  "/assets/profile-hero.jpg",
 ];
 
 self.addEventListener("install", (event) => {

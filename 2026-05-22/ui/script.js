@@ -63,12 +63,17 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260629-toast-above-modal`;
+  const repairUrl = `${guard.fallback}?v=20260630-render-fast`;
   window.location.replace(repairUrl);
   return true;
 };
 
 repairRouteDocumentMismatch();
+
+const isOfflinePage =
+  document.body.classList.contains("offline-body") ||
+  window.location.pathname.replace(/\/index\.html$/i, "").replace(/\/+$/, "") === "/offline";
+const isSystemRecoveryPage = isOfflinePage || document.body.classList.contains("error-body");
 
 const setupUsagePageEarlyRecovery = () => {
   if (!document.querySelector(".usage-page")) return;
@@ -742,6 +747,7 @@ const createNavFlyout = ({ icon, labelKey, fallback, items = [] }) => {
 };
 
 const createTopSearchButton = () => {
+  if (isSystemRecoveryPage) return;
   if (document.body.classList.contains("official-home-body")) return;
   if (document.querySelector("[data-top-search]")) return;
 
@@ -824,6 +830,7 @@ const createSidebarHelpMenu = () => {
 };
 
 const createSidebarAccountMenu = () => {
+  if (isSystemRecoveryPage) return;
   if (document.querySelector("[data-sidebar-account]")) return;
 
   document.querySelectorAll(".topbar:not([data-official-home-nav])").forEach((topbar, index) => {
@@ -854,7 +861,7 @@ const createSidebarAccountMenu = () => {
     trigger.setAttribute("aria-haspopup", "menu");
     trigger.setAttribute("aria-controls", menuId);
     trigger.innerHTML = `
-      <img class="sidebar-account-avatar" src="/assets/well.png" alt="" />
+      <img class="sidebar-account-avatar" src="/assets/well-avatar.webp" alt="" width="192" height="192" loading="lazy" decoding="async" />
       <span class="sidebar-account-copy">
         <strong data-profile-name>My name</strong>
         <small data-profile-plan>Free</small>
@@ -883,7 +890,7 @@ const createUserProfileDialog = () => {
       </button>
       <div class="user-profile-head">
         <div class="user-profile-avatar-wrap">
-          <img class="user-profile-avatar" src="/assets/well.png" alt="" data-profile-avatar-preview />
+          <img class="user-profile-avatar" src="/assets/well-avatar.webp" alt="" width="192" height="192" loading="lazy" decoding="async" data-profile-avatar-preview />
         </div>
         <div class="user-profile-summary">
           <p class="eyebrow" data-i18n="profileDialog.eyebrow">Profile</p>
@@ -1086,7 +1093,7 @@ const createSettingsDialog = () => {
         <section class="settings-modal-panel" data-settings-modal-panel="profile" hidden>
           <h2>Profile</h2>
           <div class="settings-modal-profile">
-            <img class="settings-modal-avatar" src="/assets/well.png" alt="" data-profile-avatar-preview />
+            <img class="settings-modal-avatar" src="/assets/well-avatar.webp" alt="" width="192" height="192" loading="lazy" decoding="async" data-profile-avatar-preview />
             <div>
               <strong data-profile-name>My name</strong>
               <span>Plan: <span data-profile-plan>Free</span></span>
@@ -1208,6 +1215,7 @@ const createMobileQuickActionButton = ({ type = "button", href, action, icon, la
 };
 
 const createMobileQuickActions = () => {
+  if (isSystemRecoveryPage) return;
   if (document.querySelector("[data-mobile-quick-actions]")) return;
 
   const bar = document.createElement("nav");
@@ -1248,6 +1256,7 @@ const createMobileQuickActions = () => {
 };
 
 const enhanceSidebarNavigation = () => {
+  if (isSystemRecoveryPage) return;
   const navGroups = [
     {
       label: "MAIN",
@@ -1336,6 +1345,7 @@ createKeyboardShortcutsDialog();
 createSettingsDialog();
 
 const createStandardFooter = () => {
+  if (isSystemRecoveryPage) return;
   if (document.querySelector("[data-site-footer]")) return;
 
   const footer = document.createElement("footer");
@@ -3613,14 +3623,15 @@ const translations = {
     "error.statusLabel": "Last check",
     "error.statusValue": "일치하는 경로 없음",
     "offline.eyebrow": "Offline",
+    "offline.topbarStatus": "오프라인 모드",
     "offline.code": "NETWORK_OFFLINE",
-    "offline.title": "네트워크 또는 Wi-Fi 연결이 없습니다.",
-    "offline.body": "기기가 오프라인 상태라 페이지를 불러올 수 없습니다. 연결을 확인한 뒤 다시 시도해 주세요.",
+    "offline.title": "오프라인 상태입니다.",
+    "offline.body": "연결이 복구되면 다시 시도해 주세요. 최근 방문한 일부 페이지는 캐시로 열릴 수 있습니다.",
     "offline.retry": "다시 시도",
-    "offline.home": "캐시된 홈 열기",
-    "offline.panelLabel": "Connection status",
+    "offline.home": "홈으로 이동",
+    "offline.panelLabel": "연결 상태",
     "offline.panelValue": "네트워크 대기 중",
-    "offline.panelHint": "이 페이지는 사이트를 한 번 방문한 뒤부터 오프라인 상태에서 표시될 수 있습니다.",
+    "offline.panelHint": "사이트가 연결을 다시 확인할 때까지 이 화면이 표시됩니다.",
     "offline.tipOneTitle": "Wi-Fi 또는 모바일 데이터를 확인하세요",
     "offline.tipOneBody": "Wi-Fi에 다시 연결하거나 모바일 데이터를 켜고, 비행기 모드가 꺼져 있는지 확인해 주세요.",
     "offline.tipTwoTitle": "연결 후 다시 불러오세요",
@@ -5089,14 +5100,15 @@ const translations = {
     "error.statusLabel": "Last check",
     "error.statusValue": "No matching route found",
     "offline.eyebrow": "Offline",
+    "offline.topbarStatus": "Offline mode",
     "offline.code": "NETWORK_OFFLINE",
-    "offline.title": "No network or Wi-Fi connection.",
-    "offline.body": "The page could not be loaded because the device appears to be offline. Check your connection, then try again.",
+    "offline.title": "You're offline.",
+    "offline.body": "Try again after the connection returns. Some recently visited pages may still open from cache.",
     "offline.retry": "Try again",
-    "offline.home": "Open cached home",
+    "offline.home": "Go home",
     "offline.panelLabel": "Connection status",
     "offline.panelValue": "Waiting for network",
-    "offline.panelHint": "This page can appear after the site has been visited once.",
+    "offline.panelHint": "This screen stays here until the site can check the network again.",
     "offline.tipOneTitle": "Check Wi-Fi or mobile data",
     "offline.tipOneBody": "Reconnect to Wi-Fi, enable mobile data, or turn off airplane mode before trying again.",
     "offline.tipTwoTitle": "Reload after reconnecting",
@@ -5390,7 +5402,7 @@ const USER_PROFILE_NAME_KEY = "profile-user-name";
 const USER_PROFILE_AVATAR_KEY = "profile-user-avatar";
 const USER_PROFILE_VISIBILITY_KEY = "profile-setting-profile-public";
 const DEFAULT_USER_PROFILE_NAME = "My name";
-const DEFAULT_USER_PROFILE_AVATAR = "/assets/well.png";
+const DEFAULT_USER_PROFILE_AVATAR = "/assets/well-avatar.webp";
 const USER_PROFILE_PLAN = "Free";
 
 const getUserProfileName = () => {
@@ -6831,6 +6843,7 @@ const createUsageResetWarningDialog = () => {
 };
 
 const createWelcomeDialog = () => {
+  if (isSystemRecoveryPage) return;
   if (document.querySelector("[data-welcome-dialog]")) return;
 
   const dialog = document.createElement("div");
@@ -6878,6 +6891,7 @@ const createWelcomeDialog = () => {
 };
 
 const setupWelcomeDialog = () => {
+  if (isSystemRecoveryPage) return;
   const welcomeSeenKey = "profile-welcome-seen";
   const dialog = document.querySelector("[data-welcome-dialog]");
   if (!dialog || localStorage.getItem(welcomeSeenKey) === "true") return;
@@ -6960,6 +6974,7 @@ const clearStorageConsent = () => {
 };
 
 const createCookieNotice = () => {
+  if (isSystemRecoveryPage) return;
   if (
     hasStorageConsent() ||
     localStorage.getItem(cookiePreferenceKey) ||

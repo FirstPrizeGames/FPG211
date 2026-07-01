@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260701-settings-modal-no-ripple";
+const CACHE_NAME = "profile-offline-20260701-sidebar-text-logo";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

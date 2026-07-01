@@ -1086,10 +1086,10 @@ summary {
   [data-nav-layout="sidebar"] .brand-logo::before {
     content: "";
     display: block;
-    width: 124px;
+    width: 168px;
     height: 52px;
     margin-left: 0;
-    background: url("assets/logo-v2-sidebar.png") left 8px center / 106px auto no-repeat;
+    background: url("../../firstprizegames_text_logo.webp") left 8px center / 154px auto no-repeat;
     filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.3));
     opacity: 1;
     transform: none;

@@ -19516,11 +19516,18 @@ html[lang="ko"] .faq-archive-copy h1 {
   color: var(--bg);
 }
 
-.trust-status-card.is-operational strong,
 .status-list article > span {
   color: var(--ink);
   background: var(--ink);
   box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.09);
+}
+
+.trust-status-card.is-operational strong {
+  max-width: 100%;
+  color: var(--ink);
+  background: transparent;
+  box-shadow: none;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 760px) {

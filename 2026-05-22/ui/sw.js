@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260701-status-card-fix";
+const CACHE_NAME = "profile-offline-20260701-settings-modal-no-ripple";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
@@ -27,6 +27,12 @@ const PRECACHE_URLS = [
   "/terms",
   "/feedback",
   "/assets/css/styles.css",
+  "/assets/css/sections/00-foundation.css",
+  "/assets/css/sections/10-layout-navigation.css",
+  "/assets/css/sections/20-pages-components.css",
+  "/assets/css/sections/30-dialogs-usage.css",
+  "/assets/css/sections/40-responsive-polish.css",
+  "/assets/js/translations.js",
   "/assets/js/script.js",
   "/favicon.ico",
   "/site.webmanifest",

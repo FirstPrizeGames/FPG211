@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -99,8 +99,6 @@
           if (mode === "true") return "strong";
           return ["soft", "strong"].includes(mode) ? mode : "off";
         };
-        const normalizeAccent = (accent) =>
-          ["blue", "green", "rose", "orange", "purple"].includes(accent) ? accent : "neutral";
         const savedTheme = normalizeTheme(localStorage.getItem("profile-theme"));
         document.documentElement.dataset.theme = savedTheme || "dark";
         const savedLanguagePreference = ["auto", "ko", "en"].includes(localStorage.getItem("profile-language")) ? localStorage.getItem("profile-language") : "auto";
@@ -109,31 +107,14 @@
           .find((language) => language.startsWith("ko") || language.startsWith("en")) || "ko").startsWith("en") ? "en" : "ko";
         document.documentElement.lang = savedLanguagePreference === "auto" ? browserLanguage : savedLanguagePreference;
         document.documentElement.dataset.initialLanguage = document.documentElement.lang;
-        document.documentElement.dataset.accent = normalizeAccent(localStorage.getItem("profile-accent"));
-        document.documentElement.dataset.density = ["compact", "comfortable", "spacious"].includes(localStorage.getItem("profile-density"))
-          ? localStorage.getItem("profile-density")
-          : "comfortable";
-        document.documentElement.dataset.fastRender = normalizeBoolean(
-          localStorage.getItem("profile-setting-fast-render") || localStorage.getItem("profile-fast-render"),
-          false,
-        )
-          ? "true"
-          : "false";
         document.documentElement.dataset.kidMode = normalizeKidMode(localStorage.getItem("profile-setting-kid-mode"));
-        const sidebarNavEnabled = normalizeBoolean(
-          localStorage.getItem("profile-setting-sidebar-nav"),
-          true,
-        );
-        document.documentElement.dataset.navLayout = sidebarNavEnabled ? "sidebar" : "top";
-        document.documentElement.dataset.sidebarCollapsed = sidebarNavEnabled && normalizeBoolean(
-          localStorage.getItem("profile-sidebar-collapsed"),
-          false,
-        )
+        document.documentElement.dataset.navLayout = "sidebar";
+        document.documentElement.dataset.sidebarCollapsed = normalizeBoolean(localStorage.getItem("profile-sidebar-collapsed"), false)
           ? "true"
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../assets/css/styles.css?v=20260701-accessibility-board" />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260701-settings-modal-no-ripple" />
   </head>
   <body class="home-body portal-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -263,7 +244,7 @@
             <span>04</span>
             <div>
               <strong data-i18n="home.routeSettingsTitle">Your control</strong>
-              <p data-i18n="home.routeSettingsBody">언어, 테마, 결제 차단 설정.</p>
+              <p data-i18n="home.routeSettingsBody">언어, 테마, 접근성, 프로필 설정.</p>
             </div>
             <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
           </a>
@@ -319,7 +300,7 @@
           <article>
             <span data-i18n="home.latestThreeDate">June 3, 2026</span>
             <strong data-i18n="home.latestThreeTitle">Payment controls</strong>
-            <p data-i18n="home.latestThreeBody">설정에서 결제 차단과 Stripe 링크 상태를 관리할 수 있습니다.</p>
+            <p data-i18n="home.latestThreeBody">설정에서 테마, 언어, 접근성, 프로필 정보를 관리할 수 있습니다.</p>
           </article>
         </div>
       </section>
@@ -509,7 +490,9 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../assets/js/script.js?v=20260701-accessibility-board" defer></script>
+    <script src="../assets/js/translations.js?v=20260701-settings-modal-no-ripple" defer></script>
+
+    <script src="../assets/js/script.js?v=20260701-settings-modal-no-ripple" defer></script>
   </body>
 </html>
 

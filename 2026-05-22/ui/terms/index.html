@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -70,8 +70,6 @@
           if (mode === "true") return "strong";
           return ["soft", "strong"].includes(mode) ? mode : "off";
         };
-        const normalizeAccent = (accent) =>
-          ["blue", "green", "rose", "orange", "purple"].includes(accent) ? accent : "neutral";
         const savedTheme = normalizeTheme(localStorage.getItem("profile-theme"));
         document.documentElement.dataset.theme = savedTheme || "dark";
         const savedLanguagePreference = ["auto", "ko", "en"].includes(localStorage.getItem("profile-language")) ? localStorage.getItem("profile-language") : "auto";
@@ -80,31 +78,14 @@
           .find((language) => language.startsWith("ko") || language.startsWith("en")) || "ko").startsWith("en") ? "en" : "ko";
         document.documentElement.lang = savedLanguagePreference === "auto" ? browserLanguage : savedLanguagePreference;
         document.documentElement.dataset.initialLanguage = document.documentElement.lang;
-        document.documentElement.dataset.accent = normalizeAccent(localStorage.getItem("profile-accent"));
-        document.documentElement.dataset.density = ["compact", "comfortable", "spacious"].includes(localStorage.getItem("profile-density"))
-          ? localStorage.getItem("profile-density")
-          : "comfortable";
-        document.documentElement.dataset.fastRender = normalizeBoolean(
-          localStorage.getItem("profile-setting-fast-render") || localStorage.getItem("profile-fast-render"),
-          false,
-        )
-          ? "true"
-          : "false";
         document.documentElement.dataset.kidMode = normalizeKidMode(localStorage.getItem("profile-setting-kid-mode"));
-        const sidebarNavEnabled = normalizeBoolean(
-          localStorage.getItem("profile-setting-sidebar-nav"),
-          true,
-        );
-        document.documentElement.dataset.navLayout = sidebarNavEnabled ? "sidebar" : "top";
-        document.documentElement.dataset.sidebarCollapsed = sidebarNavEnabled && normalizeBoolean(
-          localStorage.getItem("profile-sidebar-collapsed"),
-          false,
-        )
+        document.documentElement.dataset.navLayout = "sidebar";
+        document.documentElement.dataset.sidebarCollapsed = normalizeBoolean(localStorage.getItem("profile-sidebar-collapsed"), false)
           ? "true"
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../assets/css/styles.css?v=20260701-accessibility-board" />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260701-settings-modal-no-ripple" />
   </head>
   <body class="terms-body legal-document-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -204,7 +185,7 @@
           <span>04</span>
           <h2 data-i18n="terms.localTitle">사용자 설정은 브라우저 기준으로 관리됩니다.</h2>
           <p data-i18n="terms.localBody">
-            테마, 언어, 표시 밀도, 결제 차단 같은 설정은 같은 브라우저의 localStorage에 저장됩니다. Settings 또는 Usage 페이지에서 사이트 데이터를 정리할 수 있습니다.
+            테마, 언어, 접근성, 프로필, 우클릭 메뉴 같은 설정은 같은 브라우저의 localStorage에 저장됩니다. Settings 또는 Usage 페이지에서 사이트 데이터를 정리할 수 있습니다.
           </p>
         </article>
         <article>
@@ -239,6 +220,8 @@
         </svg>
       </button>
     </div>
-    <script src="../assets/js/script.js?v=20260701-accessibility-board" defer></script>
+    <script src="../assets/js/translations.js?v=20260701-settings-modal-no-ripple" defer></script>
+
+    <script src="../assets/js/script.js?v=20260701-settings-modal-no-ripple" defer></script>
   </body>
 </html>

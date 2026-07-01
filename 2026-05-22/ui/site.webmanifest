@@ -1,7 +1,7 @@
 {
-  "name": "First Prize Games",
+  "name": "First PrizeGames",
   "short_name": "FPG",
-  "description": "A modern First Prize Games profile site with bio, FAQ, pricing, feedback, and display settings.",
+  "description": "A modern First PrizeGames profile site with bio, FAQ, pricing, feedback, and display settings.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

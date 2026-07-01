@@ -63,7 +63,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260701-sidebar-text-logo`;
+  const repairUrl = `${guard.fallback}?v=20260701-brand-name-tight`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -1199,7 +1199,7 @@ const createStandardFooter = () => {
   footer.dataset.siteFooter = "";
   footer.innerHTML = `
     <div class="site-footer-brand">
-      <strong data-i18n="footer.brand">First Prize Games</strong>
+      <strong data-i18n="footer.brand">First PrizeGames</strong>
       <span data-i18n="footer.tagline">Trust, status, privacy, and support links in one place.</span>
     </div>
     <nav class="site-footer-links" aria-label="Footer links" data-i18n-aria-label="aria.footerLinks">
@@ -3325,7 +3325,7 @@ const createWelcomeDialog = () => {
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
       </button>
       <p class="eyebrow" data-i18n="welcome.eyebrow">Welcome</p>
-      <h2 id="welcome-dialog-title" data-i18n="welcome.title">First Prize Games에 오신 것을 환영합니다</h2>
+      <h2 id="welcome-dialog-title" data-i18n="welcome.title">First PrizeGames에 오신 것을 환영합니다</h2>
       <p data-i18n="welcome.body">처음 방문했다면 여기서 주요 페이지와 설정을 빠르게 둘러볼 수 있습니다.</p>
       <div class="welcome-feature-list" aria-label="Welcome highlights" data-i18n-aria-label="welcome.highlightsLabel">
         <article>
@@ -5223,7 +5223,7 @@ const copyShareLink = async () => {
 
 const shareToExternalTarget = async (target) => {
   const url = shareUrl?.value || window.location.href;
-  const title = document.title || "First Prize Games";
+  const title = document.title || "First PrizeGames";
 
   if (target === "native") {
     if (navigator.share) {

@@ -1089,7 +1089,7 @@ summary {
     width: 168px;
     height: 52px;
     margin-left: 0;
-    background: url("../../firstprizegames_text_logo.webp") left 8px center / 154px auto no-repeat;
+    background: url("../../firstprizegames_text_logo.webp") left -14px center / 154px auto no-repeat;
     filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.3));
     opacity: 1;
     transform: none;

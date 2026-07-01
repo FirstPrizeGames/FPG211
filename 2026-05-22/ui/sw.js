@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260630-layout-audit-fix5";
+const CACHE_NAME = "profile-offline-20260701-accessibility-claims";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
@@ -26,8 +26,8 @@ const PRECACHE_URLS = [
   "/coming-soon",
   "/terms",
   "/feedback",
-  "/styles.css",
-  "/script.js",
+  "/assets/css/styles.css",
+  "/assets/js/script.js",
   "/favicon.ico",
   "/site.webmanifest",
   "/assets/favicon-32.png",

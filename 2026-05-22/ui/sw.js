@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260704-font-assets-not-applied";
+const CACHE_NAME = "profile-offline-20260704-feedback-form-requests";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

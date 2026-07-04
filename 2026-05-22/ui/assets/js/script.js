@@ -63,7 +63,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260704-font-assets-not-applied`;
+  const repairUrl = `${guard.fallback}?v=20260704-feedback-form-requests`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -2188,11 +2188,11 @@ const mobileMenuButton = document.querySelector("[data-mobile-menu-toggle]");
 const mobileMenu = document.querySelector("[data-mobile-menu]");
 const brandLogoImage = document.querySelector(".brand-logo img");
 const desktopSidebarQuery = window.matchMedia("(min-width: 1024px)");
-const feedbackOpen = document.querySelector("[data-feedback-open]");
+const feedbackOpenButtons = [...document.querySelectorAll("[data-feedback-open]")];
 const feedbackWarning = document.querySelector("[data-feedback-warning]");
 const feedbackCancel = document.querySelector("[data-feedback-cancel]");
 const feedbackConfirm = document.querySelector("[data-feedback-confirm]");
-const feedbackFormUrl = "https://forms.gle/214q7yY6gbTUwK9u7";
+const feedbackFormUrl = "https://forms.gle/4B7C5gK2NEvpzc1v7";
 let pendingSubscribeUrl = "";
 let contextMenuCloseTimeoutId = 0;
 let copyToastTimeoutId = 0;
@@ -5719,7 +5719,9 @@ document.addEventListener("visibilitychange", () => {
   browserUsageActiveStartedAt = Date.now();
   updateBrowserUsage();
 });
-feedbackOpen?.addEventListener("click", showFeedbackWarning);
+feedbackOpenButtons.forEach((button) => {
+  button.addEventListener("click", showFeedbackWarning);
+});
 feedbackCancel?.addEventListener("click", closeFeedbackWarning);
 feedbackConfirm?.addEventListener("click", openFeedbackForm);
 feedbackWarning?.addEventListener("click", (event) => {

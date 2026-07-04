@@ -63,7 +63,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260701-brand-name-tight`;
+  const repairUrl = `${guard.fallback}?v=20260704-font-assets-not-applied`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -266,6 +266,7 @@ const setupUsagePageEarlyRecovery = () => {
     (event) => {
       const target = event.target instanceof Element ? event.target : null;
       if (!target) return;
+      if (window.__profileUsageMainReady) return;
       if (target.closest("[data-usage-reset-button]")) {
         event.preventDefault();
         event.stopImmediatePropagation();
@@ -5747,6 +5748,7 @@ usageResetWarningConfirm?.addEventListener("click", confirmUsageResetWarningDial
 usageResetWarningDialog?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === usageResetWarningDialog) closeUsageResetWarningDialog();
 });
+window.__profileUsageMainReady = true;
 shareLinkButton?.addEventListener("click", showShareDialog);
 shareClose?.addEventListener("click", closeShareDialog);
 shareCopy?.addEventListener("click", copyShareLink);

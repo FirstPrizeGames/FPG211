@@ -3909,7 +3909,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
   height: 8px;
   overflow: hidden;
   border-radius: 999px;
-  background: var(--segment-bg);
+  background: var(--progress-track);
 }
 
 .storage-meter-track span {
@@ -3917,7 +3917,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
   width: 100%;
   height: 100%;
   border-radius: inherit;
-  background: var(--accent);
+  background: var(--progress-color);
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform 240ms ease;

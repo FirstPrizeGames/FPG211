@@ -27,6 +27,8 @@
   --dark: #f4f3ee;
   --soft: #252520;
   --accent: #c7c0b4;
+  --progress-color: #f4f3ee;
+  --progress-track: #353535;
   --scrollbar-thumb: #FF6A00;
   --action-bg: #f4f3ee;
   --action-ink: #151514;
@@ -67,6 +69,8 @@
   --dark: #f4f3ee;
   --soft: #252520;
   --accent: #c7c0b4;
+  --progress-color: #f4f3ee;
+  --progress-track: #353535;
   --action-bg: #f4f3ee;
   --action-ink: #151514;
   --action-border: rgba(244, 243, 238, 0.32);
@@ -106,6 +110,8 @@
   --dark: #f2f1ec;
   --soft: #11110f;
   --accent: #bdb5a7;
+  --progress-color: #f2f1ec;
+  --progress-track: #242424;
   --action-bg: #f2f1ec;
   --action-ink: #060606;
   --action-border: rgba(242, 241, 236, 0.28);
@@ -301,7 +307,7 @@ body {
   z-index: 120;
   height: 4px;
   overflow: hidden;
-  background: var(--segment-bg);
+  background: var(--progress-track);
   opacity: 1;
   --loading-progress: 0.18;
   transition: opacity 260ms ease;
@@ -311,9 +317,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(90deg, var(--accent), var(--ink), var(--accent));
-  background-size: 180% 100%;
+  background: var(--progress-color);
   transform: scaleX(var(--loading-progress));
   transform-origin: left center;
   transition: transform 460ms cubic-bezier(0.2, 0, 0, 1);
@@ -325,7 +329,7 @@ body {
   position: absolute;
   inset: -7px 0;
   background:
-    linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 42%, transparent), transparent);
+    linear-gradient(90deg, transparent, color-mix(in srgb, var(--progress-color) 42%, transparent), transparent);
   filter: blur(8px);
   opacity: 0.8;
   transform: translateX(-100%);
@@ -388,8 +392,28 @@ body {
 
 .scroll-progress {
   width: 100%;
-  background: var(--accent);
+  top: 4px;
+  height: 6px;
+  overflow: visible;
+  border-radius: 0 999px 999px 0;
+  background: var(--scrollbar-thumb);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--scrollbar-thumb) 18%, transparent),
+    0 4px 18px color-mix(in srgb, var(--scrollbar-thumb) 34%, transparent);
   transform: scaleX(0);
+}
+
+.scroll-progress::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--scrollbar-thumb);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--scrollbar-thumb) 70%, transparent);
+  transform: translateY(-50%);
 }
 
 .scroll-actions {
@@ -3784,7 +3808,7 @@ html[lang="ko"] .home-subscribe h2 {
   display: block;
   height: 12px;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 10%, transparent));
+  background: var(--progress-color);
 }
 
 .feedback-signal-meter span:nth-child(1) {

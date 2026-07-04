@@ -365,7 +365,7 @@ window.profileTranslations = {
     "search.privacyTitle": "Privacy Policy",
     "search.privacyBody": "로컬 설정 저장, 외부 링크, 피드백 개인정보 기준을 확인합니다.",
     "search.licenseTitle": "Open Source License",
-    "search.licenseBody": "사이트 코드, 이미지, 로고, 시스템 글꼴의 라이선스 기준을 확인합니다.",
+    "search.licenseBody": "사이트 코드, 디자인, 이미지, 로고, 전용 글꼴의 라이선스 기준을 확인합니다.",
     "search.termsTitle": "Terms of Use",
     "search.termsBody": "사이트 이용, 외부 결제, 피드백, 로컬 설정 기준을 확인합니다.",
     "search.feedbackTitle": "Feedback",
@@ -835,25 +835,28 @@ window.profileTranslations = {
     "license.mediaValue": "Public reference",
     "license.scopeBody": "코드는 재사용 가능 범위와 조건을 따르고, 로고와 브랜드 자산은 별도 허가가 필요합니다.",
     "license.summaryCode": "Code",
-    "license.summaryCodeValue": "Reusable with notice",
+    "license.summaryCodeValue": "MIT License",
     "license.summaryAssets": "Assets",
-    "license.summaryAssetsValue": "Permission required",
+    "license.summaryAssetsValue": "CC BY 4.0",
     "license.summaryFonts": "Fonts",
-    "license.summaryFontsValue": "Device terms",
+    "license.summaryFontsValue": "Protected font assets",
     "license.summaryNotice": "Notice",
     "license.summaryNoticeValue": "Required on copies",
-    "license.mitTitle": "사이트 코드는 고지와 함께 재사용할 수 있습니다.",
+    "license.mitTitle": "사이트 코드는 MIT License로 공개됩니다.",
     "license.mitBody":
-      "기본 HTML, CSS, JavaScript 구조는 학습, 수정, 배포에 활용할 수 있는 재사용 가능 영역입니다. 공개 또는 수정 배포 시에는 원 저작권 고지와 이 라이선스 안내를 함께 유지해야 합니다.",
-    "license.assetsTitle": "브랜드와 미디어 자산은 소유자에게 권리가 있습니다.",
+      "기본 HTML, CSS, JavaScript 구조는 MIT License에 따라 사용, 수정, 배포할 수 있습니다. 공개 또는 수정 배포 시에는 원 저작권 고지와 MIT License 전문을 함께 유지해야 합니다.",
+    "license.assetsTitle": "디자인, 화면 구성, 이미지, 문구는 CC BY 4.0으로 공개됩니다.",
     "license.assetsBody":
-      "로고, 사이트 이름, 프로필 이미지, 생성 이미지, 브랜드 문구, 결제 문구는 First PrizeGames 또는 각 권리자에게 귀속됩니다. 코드를 재사용하더라도 해당 자산을 그대로 복제, 재배포, 상업적으로 사용할 수 없습니다.",
-    "license.fontsTitle": "시스템 글꼴은 각 플랫폼의 조건을 따릅니다.",
+      "사이트의 원본 디자인, 화면 구성, 이미지, 문구는 Creative Commons Attribution 4.0 International에 따라 사용할 수 있습니다. 사용할 때는 First PrizeGames 출처, 라이선스 링크, 변경 여부를 표시해야 합니다.",
+    "license.trademarkTitle": "First PrizeGames 이름과 로고는 별도로 보호됩니다.",
+    "license.trademarkBody":
+      "First PrizeGames 이름, 로고, 시각적 아이덴티티, 관련 브랜드 자산은 MIT License에 포함되지 않습니다. 사전 허가 없이 다른 프로젝트에서 사용, 복제, 재배포하거나 해당 프로젝트의 일부처럼 표시할 수 없습니다.",
+    "license.fontsTitle": "포함된 글꼴 파일은 별도 자산으로 관리됩니다.",
     "license.fontsBody":
-      "이 사이트는 외부 웹폰트 파일을 배포하지 않고 기기에서 제공하는 시스템 글꼴을 사용합니다. 글꼴 사용 권한은 Windows, macOS, Android, iOS 등 각 플랫폼의 라이선스 조건을 따릅니다.",
+      "이 사이트는 FirstPrizeGames Sans 글꼴 파일을 포함합니다. 이 글꼴 파일은 MIT License 또는 CC BY 4.0에 자동 포함되지 않으며, 다른 프로젝트에서 사용하려면 별도 허가가 필요합니다.",
     "license.noticeTitle": "고지와 출처는 제거하지 마세요.",
     "license.noticeBody":
-      "사이트 코드를 공개, 수정, 배포하거나 일부를 재사용하는 경우 원 저작권 표시, 라이선스 안내, 주요 변경 사항을 함께 남겨야 합니다. 이는 사용자와 기여자가 사용 조건을 확인할 수 있게 하기 위한 기준입니다.",
+      "사이트 코드를 공개, 수정, 배포하거나 일부를 재사용하는 경우 루트 LICENSE 파일의 MIT License 전문과 원 저작권 표시를 함께 남겨야 합니다. 이는 사용자와 기여자가 사용 조건을 확인할 수 있게 하기 위한 기준입니다.",
     "license.permissionTitle": "허가가 필요한 사용은 사전에 문의하세요.",
     "license.permissionBody": "로고, 이미지, 이름, 소개 문구, 결제 안내, 홍보용 문구처럼 소유자 식별과 연결되는 자료를 사용하려면 먼저 허가를 받아야 합니다. 명확하지 않은 경우에는 사용 전에 문의하는 것을 원칙으로 합니다.",
     "license.updated": "마지막 업데이트: 2026년 6월 3일",
@@ -1099,7 +1102,7 @@ window.profileTranslations = {
     "info.privacyTab": "개인정보처리방침",
     "info.copyrightTab": "저작권 정보",
     "info.licensesBody":
-      "이 프로필 템플릿은 외부 프레임워크 없이 HTML, CSS, JavaScript로 제작되었습니다. 사용된 시스템 글꼴은 각 운영체제의 라이선스를 따릅니다.",
+      "이 프로필 템플릿은 외부 프레임워크 없이 HTML, CSS, JavaScript로 제작되었습니다. 코드는 MIT, 디자인과 문구는 CC BY 4.0, 전용 글꼴과 브랜드 자산은 별도 보호 기준을 따릅니다.",
     "info.privacyBody":
       "이 사이트는 별도의 서버 저장 없이 브라우저의 로컬 저장소를 사용해 테마, 언어, 설정 상태만 보관합니다.",
     "info.copyrightBody":
@@ -1862,7 +1865,7 @@ window.profileTranslations = {
     "search.privacyTitle": "Privacy Policy",
     "search.privacyBody": "Review local preference storage, external links, and feedback privacy notes.",
     "search.licenseTitle": "Open Source License",
-    "search.licenseBody": "Review the license rules for the site code, images, logo, and system fonts.",
+    "search.licenseBody": "Review the license rules for the site code, design, images, logo, and custom font files.",
     "search.termsTitle": "Terms of Use",
     "search.termsBody": "Review site use, external checkout, feedback, and local settings terms.",
     "search.feedbackTitle": "Feedback",
@@ -2332,25 +2335,28 @@ window.profileTranslations = {
     "license.mediaValue": "Public reference",
     "license.scopeBody": "Code may be reused within the stated scope and conditions; logos and brand assets require separate permission.",
     "license.summaryCode": "Code",
-    "license.summaryCodeValue": "Reusable with notice",
+    "license.summaryCodeValue": "MIT License",
     "license.summaryAssets": "Assets",
-    "license.summaryAssetsValue": "Permission required",
+    "license.summaryAssetsValue": "CC BY 4.0",
     "license.summaryFonts": "Fonts",
-    "license.summaryFontsValue": "Device terms",
+    "license.summaryFontsValue": "Protected font assets",
     "license.summaryNotice": "Notice",
     "license.summaryNoticeValue": "Required on copies",
-    "license.mitTitle": "Site code may be reused with notice.",
+    "license.mitTitle": "Site code is released under the MIT License.",
     "license.mitBody":
-      "The base HTML, CSS, and JavaScript structure is reusable for learning, modification, and deployment. Published or modified copies must retain the original copyright notice and this license guidance.",
-    "license.assetsTitle": "Brand and media assets remain owner-controlled.",
+      "The base HTML, CSS, and JavaScript structure may be used, modified, and distributed under the MIT License. Published or modified copies must retain the original copyright notice and the full MIT License text.",
+    "license.assetsTitle": "Design, screen composition, images, and copy are released under CC BY 4.0.",
     "license.assetsBody":
-      "The logo, site name, profile images, generated images, brand copy, and payment copy belong to First PrizeGames or their respective rights holders. Reusing the code does not grant permission to copy, redistribute, or commercially use those assets as-is.",
-    "license.fontsTitle": "System fonts follow each platform's terms.",
+      "The site's original design, screen composition, images, and written copy may be used under the Creative Commons Attribution 4.0 International license. Uses must credit First PrizeGames, link to the license, and indicate if changes were made.",
+    "license.trademarkTitle": "The First PrizeGames name and logo are separately protected.",
+    "license.trademarkBody":
+      "The First PrizeGames name, logo, visual identity, and related brand assets are not licensed under the MIT License. They may not be used, copied, redistributed, or presented as part of another project without prior permission.",
+    "license.fontsTitle": "Included font files are managed as separate assets.",
     "license.fontsBody":
-      "This site does not distribute external webfont files. It uses fonts provided by each device, so font usage follows the license terms of Windows, macOS, Android, iOS, and other platforms.",
+      "This site includes FirstPrizeGames Sans font files. These font files are not automatically included under the MIT License or CC BY 4.0, and separate permission is required before using them in another project.",
     "license.noticeTitle": "Do not remove notices or attribution.",
     "license.noticeBody":
-      "If you publish, modify, distribute, or reuse part of the site code, keep the copyright notice, license guidance, and significant change notes visible so users and contributors can understand the applicable terms.",
+      "If you publish, modify, distribute, or reuse part of the site code, keep the full MIT License text from the root LICENSE file and the original copyright notice so users and contributors can understand the applicable terms.",
     "license.permissionTitle": "Ask before uses that require permission.",
     "license.permissionBody":
       "Ask for permission before using owner-identifying materials such as logos, images, names, introduction copy, payment guidance, or promotional copy. When the scope is unclear, ask before using it.",
@@ -2601,7 +2607,7 @@ window.profileTranslations = {
     "info.privacyTab": "Privacy Policy",
     "info.copyrightTab": "Copyright",
     "info.licensesBody":
-      "This profile template is built with plain HTML, CSS, and JavaScript without external frameworks. System fonts follow the license of each operating system.",
+      "This profile template is built with plain HTML, CSS, and JavaScript without external frameworks. Code uses MIT, design and copy use CC BY 4.0, and custom font and brand assets remain separately protected.",
     "info.privacyBody":
       "This site stores only theme, language, and setting preferences in your browser local storage. No separate server-side profile data is collected.",
     "info.copyrightBody":

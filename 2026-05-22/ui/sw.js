@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260701-brand-name-tight";
+const CACHE_NAME = "profile-offline-20260704-font-assets-not-applied";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

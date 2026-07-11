@@ -174,6 +174,7 @@
 }
 
 .context-menu button[hidden],
+.context-menu-flyout button[hidden],
 .mobile-quick-action[hidden] {
   display: none !important;
 }
@@ -2592,14 +2593,6 @@ html[lang="ko"] .faq-archive-copy h1 {
   box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.09);
 }
 
-.trust-status-card.is-operational strong {
-  max-width: 100%;
-  color: var(--ink);
-  background: transparent;
-  box-shadow: none;
-  overflow-wrap: anywhere;
-}
-
 @media (max-width: 760px) {
   .faq-archive-hero {
     grid-template-columns: 1fr;
@@ -2634,7 +2627,6 @@ html[lang="ko"] .faq-archive-copy h1 {
   max-height: min(86dvh, 620px);
   gap: 16px;
   padding: clamp(22px, 4vw, 34px);
-  overflow: auto;
 }
 
 .welcome-dialog-panel > h2 {
@@ -3944,6 +3936,109 @@ html[lang="ko"] .accessibility-official-hero h1 {
   }
 }
 
+/* 2026-07-10 audit fixes */
+.usage-page .logboard-hero {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+.usage-page .updates-hero h1 {
+  max-width: 900px;
+  font-size: clamp(44px, 5.2vw, 66px);
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.usage-page .updates-hero-copy p {
+  max-width: 680px;
+}
+
+.usage-page .updates-hero-actions {
+  justify-content: flex-start;
+}
+
+body.settings-dialog-open,
+body.welcome-dialog-open {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.settings-modal-body .top-search-button,
+body.settings-dialog-open .top-search-button {
+  display: none !important;
+}
+
+.welcome-dialog {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.welcome-dialog-panel {
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.welcome-dialog-panel::-webkit-scrollbar {
+  width: 4px;
+  height: 0;
+}
+
+.welcome-dialog-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.welcome-dialog-panel::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--muted) 62%, transparent);
+}
+
+@media (max-width: 760px) {
+  .settings-modal-nav {
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 54px 24px;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 24px), transparent 100%);
+    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 24px), transparent 100%);
+  }
+
+  .settings-modal-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .settings-modal-tab {
+    min-width: 96px;
+    scroll-snap-align: start;
+  }
+
+  .settings-modal-close {
+    position: sticky;
+    left: 0;
+    z-index: 4;
+    flex: 0 0 44px;
+    background: var(--panel-solid);
+    box-shadow: 12px 0 18px -16px rgba(0, 0, 0, 0.9);
+  }
+}
+
+@media (max-width: 480px) {
+  .usage-page .updates-hero h1 {
+    max-width: 100%;
+    font-size: clamp(36px, 11vw, 46px);
+    line-height: 1.04;
+  }
+
+  .welcome-dialog {
+    padding: 8px;
+  }
+
+  .welcome-dialog-panel {
+    width: 100%;
+    max-height: calc(100dvh - 16px);
+  }
+}
+
 @media print {
   :root {
     color-scheme: light;
@@ -3968,6 +4063,7 @@ html[lang="ko"] .accessibility-official-hero h1 {
   .page-loader,
   .scroll-progress,
   .context-menu,
+  .context-menu-flyout,
   .cache-dialog,
   .adblock-notice,
   .share-button,

@@ -18,12 +18,12 @@
         visibility: hidden;
       }
     </style>
-    <title>Status · First PrizeGames</title>
-    <meta name="description" content="Current operational status for the profile site, including routes, notifications, offline support, and sharing metadata." />
+    <title>상태 안내 · First PrizeGames</title>
+    <meta name="description" content="Status guidance for the profile site, including post-deployment route checks, browser permissions, local storage, and sharing metadata." />
     <meta name="theme-color" content="#151514" />
     <link rel="canonical" href="https://firstprizegames.info/status" />
     <meta property="og:title" content="Status · First PrizeGames" />
-    <meta property="og:description" content="Review current route, notification, offline, and sharing status." />
+    <meta property="og:description" content="Review post-deployment route checks, browser conditions, and sharing metadata guidance." />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="First PrizeGames" />
     <meta property="og:url" content="https://firstprizegames.info/status" />
@@ -32,7 +32,7 @@
     <meta property="og:image:height" content="992" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Status · First PrizeGames" />
-    <meta name="twitter:description" content="Review current route, notification, offline, and sharing status." />
+    <meta name="twitter:description" content="Review post-deployment route checks, browser conditions, and sharing metadata guidance." />
     <meta name="twitter:image" content="https://firstprizegames.info/assets/about-system-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
@@ -54,14 +54,14 @@
         document.documentElement.dataset.sidebarCollapsed = b(localStorage.getItem("profile-sidebar-collapsed"), false) ? "true" : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../assets/css/styles.css?v=20260704-feedback-form-requests" />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260711-release-cleanup" />
   </head>
   <body class="status-body">
     <div class="loading-bar" aria-hidden="true"></div>
     <div class="scroll-progress" aria-hidden="true"></div>
     <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
     <main class="shell trust-page status-page" id="main-content" tabindex="-1">
-      <nav class="topbar" aria-label="Status menu">
+      <nav class="topbar" aria-label="상태 안내 메뉴">
         <a class="brand-logo" href="/" aria-label="Home"><img src="/assets/logo.png" alt="" width="537" height="532" /><span>FP</span></a>
         <button class="mobile-menu-button" type="button" aria-expanded="false" data-mobile-menu-toggle><span data-i18n="nav.menu">Menu</span><svg class="mobile-menu-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg></button>
         <div class="nav-links" data-mobile-menu>
@@ -73,25 +73,25 @@
       </nav>
       <section class="trust-hero" aria-labelledby="status-title">
         <div>
-          <p class="eyebrow" data-i18n="status.eyebrow">Status</p>
-          <h1 id="status-title" data-i18n="status.title">현재 사이트 상태를 간단히 확인합니다.</h1>
-          <p data-i18n="status.lead">기업 사이트의 상태 페이지처럼 핵심 기능의 현재 운영 기준을 요약합니다.</p>
+          <p class="eyebrow" data-i18n="status.eyebrow">상태 안내</p>
+          <h1 id="status-title" data-i18n="status.title">사이트 상태 확인 기준을 안내합니다.</h1>
+          <p data-i18n="status.lead">이 페이지는 실시간 장애 감지나 가용성 측정을 수행하지 않습니다. 배포 후 확인할 항목과 브라우저별 조건을 정리합니다.</p>
         </div>
-        <div class="trust-status-card is-operational">
-          <span data-i18n="status.overallLabel">Overall status</span>
-          <strong data-i18n="status.overallValue">All core pages available</strong>
-          <p data-i18n="status.updated">마지막 내부 점검: 2026년 6월 15일</p>
+        <div class="trust-status-card">
+          <span data-i18n="status.overallLabel">상태 확인 방식</span>
+          <strong data-i18n="status.overallValue">실시간 모니터링 미연결</strong>
+          <p data-i18n="status.updated">배포 환경의 실제 상태는 접속 후 직접 확인해야 합니다.</p>
         </div>
       </section>
-      <section class="status-list" aria-label="Operational components">
-        <article><span></span><div><strong data-i18n="status.routesTitle">Public routes</strong><p data-i18n="status.routesBody">Home, Settings, Privacy, Updates, Search, Activity, Sitemap, Trust routes are expected to serve normally.</p></div></article>
-        <article><span></span><div><strong data-i18n="status.notificationsTitle">Notifications</strong><p data-i18n="status.notificationsBody">Browser notification support depends on user permission and browser platform rules.</p></div></article>
-        <article><span></span><div><strong data-i18n="status.storageTitle">Local storage</strong><p data-i18n="status.storageBody">Theme, language, consent, activity, and subscription preferences stay in this browser.</p></div></article>
-        <article><span></span><div><strong data-i18n="status.shareTitle">Sharing metadata</strong><p data-i18n="status.shareBody">Open Graph and Twitter card metadata are configured for public pages.</p></div></article>
+      <section class="status-list" aria-label="상태 확인 항목">
+        <article><span></span><div><strong data-i18n="status.routesTitle">공개 경로</strong><p data-i18n="status.routesBody">홈, 설정, 개인정보 처리방침, 업데이트, 검색, 활동, 사이트맵, 신뢰 센터 경로는 배포 후 직접 열어 확인해야 합니다.</p></div></article>
+        <article><span></span><div><strong data-i18n="status.notificationsTitle">알림</strong><p data-i18n="status.notificationsBody">브라우저 알림 지원 여부는 사용자의 권한 선택과 브라우저·기기 정책에 따라 달라집니다.</p></div></article>
+        <article><span></span><div><strong data-i18n="status.storageTitle">로컬 저장소</strong><p data-i18n="status.storageBody">테마, 언어, 동의, 활동, 구독 관련 선택은 현재 브라우저에만 저장됩니다.</p></div></article>
+        <article><span></span><div><strong data-i18n="status.shareTitle">공유 메타데이터</strong><p data-i18n="status.shareBody">공개 페이지에는 Open Graph와 Twitter Card 메타 태그가 포함되도록 구성되어 있습니다.</p></div></article>
       </section>
     </main>
-    <script src="../assets/js/translations.js?v=20260704-feedback-form-requests" defer></script>
+    <script src="../assets/js/translations.js?v=20260711-release-cleanup" defer></script>
 
-    <script src="../assets/js/script.js?v=20260704-feedback-form-requests" defer></script>
+    <script src="../assets/js/script.js?v=20260711-release-cleanup" defer></script>
   </body>
 </html>

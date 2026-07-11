@@ -63,7 +63,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260704-feedback-form-requests`;
+  const repairUrl = `${guard.fallback}?v=20260711-release-cleanup`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -836,7 +836,7 @@ const createSettingsDialog = () => {
         </button>
         <button class="settings-modal-tab is-active" type="button" data-settings-modal-tab="general">
           ${navIconMarkup.settings}
-          <span>General</span>
+          <span data-i18n="settings.generalTab">일반</span>
         </button>
         <button class="settings-modal-tab" type="button" data-settings-modal-tab="accessibility">
           ${navIconMarkup.accessibility}
@@ -848,17 +848,17 @@ const createSettingsDialog = () => {
         </button>
         <button class="settings-modal-tab" type="button" data-settings-modal-tab="profile">
           ${navIconMarkup.bio}
-          <span>Profile</span>
+          <span data-i18n="settings.profileTab">프로필</span>
         </button>
         <button class="settings-modal-tab" type="button" data-settings-modal-tab="context">
           ${navIconMarkup.terms}
-          <span>Context menu</span>
+          <span data-i18n="settings.contextMenuTab">우클릭 메뉴</span>
         </button>
       </aside>
 
       <div class="settings-modal-content">
         <section class="settings-modal-panel is-active" data-settings-modal-panel="general" aria-labelledby="settings-dialog-title">
-          <h2 id="settings-dialog-title">General</h2>
+          <h2 id="settings-dialog-title" data-i18n="settings.generalTab">일반</h2>
           <div class="settings-modal-row">
             <div>
               <strong data-i18n="settings.themeTitle">테마 모드</strong>
@@ -898,7 +898,7 @@ const createSettingsDialog = () => {
           <h2 data-i18n="nav.accessibility">Accessibility</h2>
           <div class="settings-modal-row">
             <div>
-              <strong>Reduced motion</strong>
+              <strong data-i18n="settings.kidModeTitle">모션 줄이기</strong>
               <span data-i18n="settings.kidModeBody">과한 전환 효과와 애니메이션 부담을 줄여 화면을 차분하게 표시합니다.</span>
             </div>
             <button class="toggle" type="button" aria-pressed="false" data-toggle-key="kid-mode"></button>
@@ -931,51 +931,51 @@ const createSettingsDialog = () => {
           <div class="settings-modal-row">
             <div>
               <strong data-i18n="nav.security">Security</strong>
-              <span>Review public security and privacy information.</span>
+              <span data-i18n="search.securityBody">브라우저 저장소, 쿠키, 외부 결제, 알림 권한의 보안 경계를 확인합니다.</span>
             </div>
             <a class="settings-modal-link" href="/security" data-i18n="nav.security">Security</a>
           </div>
         </section>
 
         <section class="settings-modal-panel" data-settings-modal-panel="profile" hidden>
-          <h2>Profile</h2>
+          <h2 data-i18n="settings.profileTab">프로필</h2>
           <div class="settings-modal-profile">
             <img class="settings-modal-avatar" src="/assets/well-avatar.webp" alt="" width="192" height="192" loading="lazy" decoding="async" data-profile-avatar-preview />
             <div>
               <strong data-profile-name>My name</strong>
-              <span>Plan: <span data-profile-plan>Free</span></span>
+              <span><span data-i18n="profileDialog.plan">요금제</span>: <span data-profile-plan>Free</span></span>
             </div>
           </div>
           <label class="settings-modal-field">
-            <span>Username</span>
+            <span data-i18n="profileDialog.nameControl">사용자 이름 변경</span>
             <input type="text" value="My name" maxlength="40" data-profile-name-input />
           </label>
           <div class="settings-modal-row">
             <div>
-              <strong>Profile photo</strong>
-              <span data-profile-avatar-status>Ambulance image</span>
+              <strong data-i18n="profileDialog.photoSection">프로필 사진</strong>
+              <span data-profile-avatar-status data-i18n="profileDialog.avatarDefault">구급차 이미지</span>
             </div>
             <label class="settings-modal-button">
-              Add photo
+              <span data-i18n="profileDialog.photoControl">프로필 사진 추가</span>
               <input class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" data-profile-avatar-input />
             </label>
           </div>
           <div class="settings-modal-row">
             <div>
-              <strong>Profile visibility</strong>
-              <span data-profile-visibility-status>Visible</span>
+              <strong data-i18n="profileDialog.visibility">프로필 표시</strong>
+              <span data-profile-visibility-status data-i18n="profileDialog.visibilityOn">표시 중</span>
             </div>
             <button class="toggle is-on" type="button" aria-pressed="true" data-profile-visibility-toggle></button>
           </div>
           <div class="settings-modal-actions">
-            <button class="settings-modal-button" type="button" data-profile-avatar-reset>Reset photo</button>
+            <button class="settings-modal-button" type="button" data-profile-avatar-reset data-i18n="profileDialog.photoReset">사진 초기화</button>
             <button class="settings-modal-button" type="button" data-profile-reset data-i18n="profileDialog.reset">Reset</button>
             <button class="settings-modal-button is-primary" type="button" data-profile-save data-i18n="profileDialog.save">Save</button>
           </div>
         </section>
 
         <section class="settings-modal-panel" data-settings-modal-panel="context" hidden>
-          <h2>Context menu</h2>
+          <h2 data-i18n="settings.contextMenuTab">우클릭 메뉴</h2>
           <div class="settings-modal-row">
             <div>
               <strong data-i18n="settings.contextMenuTitle">커스텀 우클릭 메뉴</strong>
@@ -1361,6 +1361,7 @@ const openSettingsDialog = () => {
   if (!dialog) return false;
   dialog.hidden = false;
   dialog.classList.remove("is-closing");
+  document.body.classList.add("settings-dialog-open");
   closeSidebarHelpMenus();
   closeSidebarAccountMenus();
   closeContextMenu();
@@ -1375,6 +1376,7 @@ const closeSettingsDialog = () => {
   window.setTimeout(() => {
     dialog.hidden = true;
     dialog.classList.remove("is-closing");
+    document.body.classList.remove("settings-dialog-open");
   }, 160);
 };
 
@@ -1727,18 +1729,85 @@ const enhanceContextMenuActions = (menu) => {
     const firstLabel = sortLabels[first.dataset.contextAction] || first.dataset.contextAction || "";
     const secondLabel = sortLabels[second.dataset.contextAction] || second.dataset.contextAction || "";
     return firstLabel.localeCompare(secondLabel, "en", { sensitivity: "base" });
+    });
+
+  const primaryActions = new Set(["copy", "share", "search", "print", "settings"]);
+  const contextualActions = new Set(["open-link", "copy-link", "save-image", "copy-selection", "cut", "paste"]);
+  const primaryButtons = [];
+  const contextualButtons = [];
+  const secondaryButtons = [];
+
+  sortedButtons.forEach((button) => {
+    const action = button.dataset.contextAction;
+    button.removeAttribute("data-context-secondary");
+    if (primaryActions.has(action)) {
+      primaryButtons.push(button);
+    } else if (contextualActions.has(action)) {
+      contextualButtons.push(button);
+    } else {
+      button.dataset.contextSecondary = "true";
+      secondaryButtons.push(button);
+    }
   });
 
+  let moreToggle = menu.querySelector("[data-context-more-toggle]");
+  if (!moreToggle) {
+    moreToggle = document.createElement("button");
+    moreToggle.type = "button";
+    moreToggle.dataset.contextMoreToggle = "true";
+    moreToggle.setAttribute("aria-expanded", "false");
+    moreToggle.innerHTML = `
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></svg>
+      <span data-i18n="context.more">More actions</span>
+    `;
+  }
+
+  let moreMenu = document.querySelector("[data-context-more-menu]");
+  if (!moreMenu) {
+    moreMenu = document.createElement("div");
+    moreMenu.className = "context-menu-flyout";
+    moreMenu.dataset.contextMoreMenu = "true";
+    moreMenu.setAttribute("aria-label", "More actions");
+    moreMenu.hidden = true;
+    document.body.append(moreMenu);
+  }
+
   menu.querySelectorAll(".context-menu-separator").forEach((separator) => separator.remove());
+  moreMenu.querySelectorAll(".context-menu-separator").forEach((separator) => separator.remove());
+  primaryButtons.forEach((button) => menu.append(button));
+  contextualButtons.forEach((button) => menu.append(button));
+  menu.append(moreToggle);
+  secondaryButtons.forEach((button) => moreMenu.append(button));
   if (closeButton) {
-    menu.append(closeButton);
     const separator = document.createElement("div");
     separator.className = "context-menu-separator";
     separator.setAttribute("role", "separator");
     separator.setAttribute("aria-hidden", "true");
-    menu.append(separator);
+    menu.append(separator, closeButton);
   }
-  sortedButtons.forEach((button) => menu.append(button));
+
+  if (menu.dataset.contextMoreReady !== "true") {
+    menu.dataset.contextMoreReady = "true";
+    menu.addEventListener("click", (event) => {
+      const toggle = event.target.closest?.("[data-context-more-toggle]");
+      if (!toggle) return;
+      const isOpen = menu.classList.toggle("is-more-open");
+      toggle.setAttribute("aria-expanded", String(isOpen));
+      moreMenu.hidden = !isOpen;
+      if (isOpen) {
+        const menuRect = menu.getBoundingClientRect();
+        const flyoutRect = moreMenu.getBoundingClientRect();
+        const gap = 10;
+        const x = menuRect.right + gap + flyoutRect.width <= window.innerWidth - gap
+          ? menuRect.right + gap
+          : menuRect.left - flyoutRect.width - gap;
+        const y = Math.min(Math.max(gap, menuRect.top), window.innerHeight - flyoutRect.height - gap);
+        moreMenu.style.left = `${Math.max(gap, x)}px`;
+        moreMenu.style.top = `${Math.max(gap, y)}px`;
+      }
+      updateContextMenuSeparators();
+    });
+  }
 
   return menu;
 };
@@ -2183,6 +2252,7 @@ const scrollActions = document.querySelector("[data-scroll-actions]");
 const scrollActionButtons = [...document.querySelectorAll("[data-scroll-to]")];
 const actionButtons = [...document.querySelectorAll("[data-go-url]")];
 const contextMenu = ensureContextMenu();
+const contextMoreMenu = document.querySelector("[data-context-more-menu]");
 const contextMenuActions = [...document.querySelectorAll("[data-context-action]")];
 const mobileMenuButton = document.querySelector("[data-mobile-menu-toggle]");
 const mobileMenu = document.querySelector("[data-mobile-menu]");
@@ -2863,6 +2933,7 @@ const setLanguage = (language) => {
 
   shareLinkButton?.setAttribute("aria-label", translate("share.copy"));
   document.documentElement.dataset.i18nReady = "true";
+  syncNavigationToggleLabel();
 
   setTheme(document.documentElement.dataset.theme || getInitialTheme());
   setCurrency(localStorage.getItem("profile-currency") || (resolvedLanguage === "ko" ? "krw" : "usd"));
@@ -3373,6 +3444,7 @@ const setupWelcomeDialog = () => {
 
   const closeWelcome = () => {
     localStorage.setItem(welcomeSeenKey, "true");
+    document.body.classList.remove("welcome-dialog-open");
     dialog.classList.add("is-closing");
     window.setTimeout(() => {
       dialog.hidden = true;
@@ -3386,6 +3458,7 @@ const setupWelcomeDialog = () => {
 
   dialog.querySelector("[data-welcome-primary]")?.addEventListener("click", () => {
     localStorage.setItem(welcomeSeenKey, "true");
+    document.body.classList.remove("welcome-dialog-open");
   });
 
   dialog.addEventListener("click", (event) => {
@@ -3394,6 +3467,7 @@ const setupWelcomeDialog = () => {
 
   window.setTimeout(() => {
     if (localStorage.getItem(welcomeSeenKey) === "true") return;
+    document.body.classList.add("welcome-dialog-open");
     dialog.hidden = false;
     dialog.querySelector("[data-welcome-close]")?.focus({ preventScroll: true });
   }, 900);
@@ -4716,6 +4790,9 @@ const clearClipboardHistory = () => {
 const closeContextMenu = () => {
   if (!contextMenu || contextMenu.hidden) return;
   window.clearTimeout(contextMenuCloseTimeoutId);
+  contextMenu.classList.remove("is-more-open");
+  contextMenu.querySelector("[data-context-more-toggle]")?.setAttribute("aria-expanded", "false");
+  if (contextMoreMenu) contextMoreMenu.hidden = true;
   contextMenu.classList.add("is-closing");
   contextMenuCloseTimeoutId = window.setTimeout(() => {
     contextMenu.hidden = true;
@@ -4791,27 +4868,27 @@ const readClipboardText = async () => {
 };
 
 const updateContextMenuSeparators = () => {
-  if (!contextMenu) return;
+  [contextMenu, contextMoreMenu].filter(Boolean).forEach((menu) => {
+    let hasVisibleActionBefore = false;
+    let pendingSeparator = null;
 
-  let hasVisibleActionBefore = false;
-  let pendingSeparator = null;
+    Array.from(menu.children).forEach((item) => {
+      if (item.classList?.contains("context-menu-separator")) {
+        item.hidden = true;
+        pendingSeparator = item;
+        return;
+      }
 
-  Array.from(contextMenu.children).forEach((item) => {
-    if (item.classList?.contains("context-menu-separator")) {
-      item.hidden = true;
-      pendingSeparator = item;
-      return;
-    }
+      const isVisibleAction = item.matches?.("button") && !item.hidden;
+      if (!isVisibleAction) return;
 
-    const isVisibleAction = item.matches?.("button") && !item.hidden;
-    if (!isVisibleAction) return;
+      if (pendingSeparator && hasVisibleActionBefore) {
+        pendingSeparator.hidden = false;
+      }
 
-    if (pendingSeparator && hasVisibleActionBefore) {
-      pendingSeparator.hidden = false;
-    }
-
-    pendingSeparator = null;
-    hasVisibleActionBefore = true;
+      pendingSeparator = null;
+      hasVisibleActionBefore = true;
+    });
   });
 };
 
@@ -4866,6 +4943,9 @@ const showContextMenu = (event) => {
   contextTargetImage = getContextImageTarget(event.target);
   window.clearTimeout(contextMenuCloseTimeoutId);
   contextMenu.classList.remove("is-closing");
+  contextMenu.classList.remove("is-more-open");
+  contextMenu.querySelector("[data-context-more-toggle]")?.setAttribute("aria-expanded", "false");
+  if (contextMoreMenu) contextMoreMenu.hidden = true;
   contextMenu.hidden = false;
 
   const selectedText = getSelectedText();
@@ -5372,11 +5452,34 @@ const setActiveLink = () => {
   });
 };
 
+const syncNavigationToggleLabel = () => {
+  if (!mobileMenuButton) return;
+
+  const isDesktopSidebar =
+    desktopSidebarQuery.matches &&
+    document.documentElement.dataset.navLayout === "sidebar" &&
+    !document.body.classList.contains("official-home-body");
+
+  if (isDesktopSidebar) {
+    const isCollapsed = document.documentElement.dataset.sidebarCollapsed === "true";
+    mobileMenuButton.setAttribute("aria-expanded", String(!isCollapsed));
+    mobileMenuButton.setAttribute(
+      "aria-label",
+      translate(isCollapsed ? "nav.expandSidebar" : "nav.collapseSidebar"),
+    );
+    return;
+  }
+
+  const isOpen = mobileMenuButton.closest(".topbar")?.classList.contains("is-open") ?? false;
+  mobileMenuButton.setAttribute("aria-expanded", String(isOpen));
+  mobileMenuButton.setAttribute("aria-label", translate(isOpen ? "nav.closeMenu" : "nav.menu"));
+};
+
 const setMobileMenuOpen = (isOpen) => {
   const topbar = mobileMenuButton?.closest(".topbar");
 
   topbar?.classList.toggle("is-open", isOpen);
-  mobileMenuButton?.setAttribute("aria-expanded", String(isOpen));
+  syncNavigationToggleLabel();
 };
 
 const setSidebarCollapsed = (isCollapsed, persist = true) => {
@@ -5390,11 +5493,7 @@ const setSidebarCollapsed = (isCollapsed, persist = true) => {
   document.documentElement.dataset.sidebarCollapsed = String(resolved);
   if (persist) localStorage.setItem("profile-sidebar-collapsed", String(resolved));
 
-  mobileMenuButton?.setAttribute("aria-expanded", String(!resolved));
-  mobileMenuButton?.setAttribute(
-    "aria-label",
-    resolved ? translate("nav.expandSidebar") : translate("nav.collapseSidebar"),
-  );
+  syncNavigationToggleLabel();
 };
 
 const toggleSidebarCollapsed = () => {
@@ -5663,6 +5762,7 @@ homeTabs.forEach((tab) => {
 
 window.addEventListener("resize", positionOpenSelectMenus);
 window.addEventListener("scroll", positionOpenSelectMenus, { passive: true });
+desktopSidebarQuery.addEventListener("change", syncNavigationToggleLabel);
 
 mobileMenuButton?.addEventListener("click", () => {
   if (
@@ -5824,7 +5924,7 @@ document.addEventListener("contextmenu", showContextMenu);
 window.__fpgFullContextMenuReady = true;
 
 document.addEventListener("click", (event) => {
-  if (!contextMenu?.contains(event.target)) closeContextMenu();
+  if (!contextMenu?.contains(event.target) && !contextMoreMenu?.contains(event.target)) closeContextMenu();
   if (!themeSelect?.contains(event.target)) {
     setSettingSelectOpen(themeSelect, themeTrigger, themeMenu, false);
   }
@@ -6043,6 +6143,9 @@ const setupSettingsModalTabs = () => {
       const isActive = tab.dataset.settingsModalTab === panelName;
       tab.classList.toggle("is-active", isActive);
       tab.setAttribute("aria-selected", String(isActive));
+      if (isActive && window.matchMedia("(max-width: 760px)").matches) {
+        tab.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+      }
     });
 
     panels.forEach((panel) => {

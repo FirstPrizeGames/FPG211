@@ -3428,10 +3428,6 @@ html[lang="ko"] .faq-feedback-strip h2 {
   line-height: 1.05;
 }
 
-.trust-status-card.is-operational strong {
-  color: color-mix(in srgb, #5ed38b 70%, var(--ink));
-}
-
 .trust-grid,
 .security-checklist {
   display: grid;
@@ -3553,11 +3549,13 @@ html[lang="ko"] .faq-feedback-strip h2 {
   color: var(--panel-solid);
 }
 
-.context-menu[hidden] {
+.context-menu[hidden],
+.context-menu-flyout[hidden] {
   display: none;
 }
 
-.context-menu {
+.context-menu,
+.context-menu-flyout {
   position: fixed;
   z-index: 4400;
   display: grid;
@@ -3578,30 +3576,42 @@ html[lang="ko"] .faq-feedback-strip h2 {
   transform-origin: top left;
 }
 
+.context-menu-flyout {
+  z-index: 4401;
+  width: min(280px, calc(100vw - 20px));
+  max-height: min(520px, calc(100vh - 20px));
+  transform-origin: top center;
+}
+
 .context-menu.is-closing {
   animation: contextMenuOut 130ms ease-in forwards;
 }
 
-.context-menu {
+.context-menu,
+.context-menu-flyout {
   scrollbar-color: var(--scrollbar-thumb) transparent;
 }
 
-.context-menu::-webkit-scrollbar {
+.context-menu::-webkit-scrollbar,
+.context-menu-flyout::-webkit-scrollbar {
   width: 8px;
 }
 
-.context-menu::-webkit-scrollbar-track {
+.context-menu::-webkit-scrollbar-track,
+.context-menu-flyout::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.context-menu::-webkit-scrollbar-thumb {
+.context-menu::-webkit-scrollbar-thumb,
+.context-menu-flyout::-webkit-scrollbar-thumb {
   border: 2px solid transparent;
   border-radius: 999px;
   background: var(--scrollbar-thumb);
   background-clip: padding-box;
 }
 
-.context-menu button {
+.context-menu button,
+.context-menu-flyout button {
   position: relative;
   overflow: hidden;
   display: grid;
@@ -3626,7 +3636,8 @@ html[lang="ko"] .faq-feedback-strip h2 {
     transform 140ms ease;
 }
 
-.context-menu button > span {
+.context-menu button > span,
+.context-menu-flyout button > span {
   min-width: 0;
 }
 
@@ -3645,7 +3656,8 @@ html[lang="ko"] .faq-feedback-strip h2 {
   white-space: nowrap;
 }
 
-.context-menu svg {
+.context-menu svg,
+.context-menu-flyout svg {
   justify-self: center;
   width: 17px;
   height: 17px;
@@ -3666,17 +3678,29 @@ html[lang="ko"] .faq-feedback-strip h2 {
   display: none !important;
 }
 
+.context-menu [data-context-more-toggle] svg {
+  transition: transform 160ms ease;
+}
+
+.context-menu.is-more-open [data-context-more-toggle] svg {
+  transform: rotate(90deg);
+}
+
 .context-menu button:hover,
-.context-menu button:focus-visible {
+.context-menu button:focus-visible,
+.context-menu-flyout button:hover,
+.context-menu-flyout button:focus-visible {
   background: color-mix(in srgb, var(--ink) 8%, transparent);
   color: var(--ink);
 }
 
-.context-menu button:hover {
+.context-menu button:hover,
+.context-menu-flyout button:hover {
   transform: translateX(1px);
 }
 
-.context-menu button:focus-visible {
+.context-menu button:focus-visible,
+.context-menu-flyout button:focus-visible {
   outline: 2px solid color-mix(in srgb, var(--ink) 22%, transparent);
   outline-offset: 1px;
 }
@@ -3694,14 +3718,18 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 .context-menu button:disabled,
-.context-menu button[aria-disabled="true"] {
+.context-menu button[aria-disabled="true"],
+.context-menu-flyout button:disabled,
+.context-menu-flyout button[aria-disabled="true"] {
   color: var(--muted);
   cursor: not-allowed;
   opacity: 0.52;
 }
 
 .context-menu button:disabled:hover,
-.context-menu button[aria-disabled="true"]:hover {
+.context-menu button[aria-disabled="true"]:hover,
+.context-menu-flyout button:disabled:hover,
+.context-menu-flyout button[aria-disabled="true"]:hover {
   background: transparent;
   color: var(--muted);
   transform: none;

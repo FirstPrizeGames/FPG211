@@ -87,7 +87,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../assets/css/styles.css?v=20260704-feedback-form-requests" />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260711-release-cleanup" />
   </head>
   <body class="settings-body settings-modal-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -102,7 +102,7 @@
           </a>
           <button class="settings-modal-tab is-active" type="button" data-settings-modal-tab="general">
             <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3h.1A1.7 1.7 0 0 0 10 3.1V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1A1.7 1.7 0 0 0 20.9 10h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" /></svg>
-            <span>General</span>
+            <span data-i18n="settings.generalTab">일반</span>
           </button>
           <button class="settings-modal-tab" type="button" data-settings-modal-tab="accessibility">
             <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2" /><path d="M4 8h16" /><path d="M12 6v6" /><path d="m8 21 4-9 4 9" /></svg>
@@ -114,17 +114,17 @@
           </button>
           <button class="settings-modal-tab" type="button" data-settings-modal-tab="profile">
             <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></svg>
-            <span>Profile</span>
+            <span data-i18n="settings.profileTab">프로필</span>
           </button>
           <button class="settings-modal-tab" type="button" data-settings-modal-tab="context">
             <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 4h9l5 5v11H5z" /><path d="M14 4v5h5" /><path d="M8 13h8" /><path d="M8 17h5" /></svg>
-            <span>Context menu</span>
+            <span data-i18n="settings.contextMenuTab">우클릭 메뉴</span>
           </button>
         </aside>
 
         <div class="settings-modal-content">
           <section class="settings-modal-panel is-active" data-settings-modal-panel="general" aria-labelledby="settings-modal-title">
-            <h1 id="settings-modal-title">General</h1>
+            <h1 id="settings-modal-title" data-i18n="settings.generalTab">일반</h1>
             <div class="settings-modal-row">
               <div>
                 <strong data-i18n="settings.themeTitle">테마 모드</strong>
@@ -164,7 +164,7 @@
             <h2 data-i18n="nav.accessibility">Accessibility</h2>
             <div class="settings-modal-row">
               <div>
-                <strong>Reduced motion</strong>
+                <strong data-i18n="settings.kidModeTitle">모션 줄이기</strong>
                 <span data-i18n="settings.kidModeBody">과한 전환 효과와 애니메이션 부담을 줄여 화면을 차분하게 표시합니다.</span>
               </div>
               <button class="toggle" type="button" aria-pressed="false" data-toggle-key="kid-mode"></button>
@@ -197,51 +197,51 @@
             <div class="settings-modal-row">
               <div>
                 <strong data-i18n="nav.security">Security</strong>
-                <span>Review public security and privacy information.</span>
+                <span data-i18n="search.securityBody">브라우저 저장소, 쿠키, 외부 결제, 알림 권한의 보안 경계를 확인합니다.</span>
               </div>
               <a class="settings-modal-link" href="/security" data-i18n="nav.security">Security</a>
             </div>
           </section>
 
           <section class="settings-modal-panel" data-settings-modal-panel="profile" hidden>
-            <h2>Profile</h2>
+            <h2 data-i18n="settings.profileTab">프로필</h2>
             <div class="settings-modal-profile">
               <img class="settings-modal-avatar" src="/assets/well-avatar.webp" alt="" width="192" height="192" loading="lazy" decoding="async" data-profile-avatar-preview />
               <div>
                 <strong data-profile-name>My name</strong>
-                <span>Plan: <span data-profile-plan>Free</span></span>
+                <span><span data-i18n="profileDialog.plan">요금제</span>: <span data-profile-plan>Free</span></span>
               </div>
             </div>
             <label class="settings-modal-field">
-              <span>Username</span>
+              <span data-i18n="profileDialog.nameControl">사용자 이름 변경</span>
               <input type="text" value="My name" maxlength="40" data-profile-name-input />
             </label>
             <div class="settings-modal-row">
               <div>
-                <strong>Profile photo</strong>
-                <span data-profile-avatar-status>Ambulance image</span>
+                <strong data-i18n="profileDialog.photoSection">프로필 사진</strong>
+                <span data-profile-avatar-status data-i18n="profileDialog.avatarDefault">구급차 이미지</span>
               </div>
               <label class="settings-modal-button">
-                Add photo
+                <span data-i18n="profileDialog.photoControl">프로필 사진 추가</span>
                 <input class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" data-profile-avatar-input />
               </label>
             </div>
             <div class="settings-modal-row">
               <div>
-                <strong>Profile visibility</strong>
-                <span data-profile-visibility-status>Visible</span>
+                <strong data-i18n="profileDialog.visibility">프로필 표시</strong>
+                <span data-profile-visibility-status data-i18n="profileDialog.visibilityOn">표시 중</span>
               </div>
               <button class="toggle is-on" type="button" aria-pressed="true" data-profile-visibility-toggle></button>
             </div>
             <div class="settings-modal-actions">
-              <button class="settings-modal-button" type="button" data-profile-avatar-reset>Reset photo</button>
+              <button class="settings-modal-button" type="button" data-profile-avatar-reset data-i18n="profileDialog.photoReset">사진 초기화</button>
               <button class="settings-modal-button" type="button" data-profile-reset data-i18n="profileDialog.reset">Reset</button>
               <button class="settings-modal-button is-primary" type="button" data-profile-save data-i18n="profileDialog.save">Save</button>
             </div>
           </section>
 
           <section class="settings-modal-panel" data-settings-modal-panel="context" hidden>
-            <h2>Context menu</h2>
+            <h2 data-i18n="settings.contextMenuTab">우클릭 메뉴</h2>
             <div class="settings-modal-row">
               <div>
                 <strong data-i18n="settings.contextMenuTitle">커스텀 우클릭 메뉴</strong>
@@ -308,9 +308,9 @@
       </div>
     </main>
 
-    <script src="../assets/js/translations.js?v=20260704-feedback-form-requests" defer></script>
+    <script src="../assets/js/translations.js?v=20260711-release-cleanup" defer></script>
 
 
-    <script src="../assets/js/script.js?v=20260704-feedback-form-requests" defer></script>
+    <script src="../assets/js/script.js?v=20260711-release-cleanup" defer></script>
   </body>
 </html>

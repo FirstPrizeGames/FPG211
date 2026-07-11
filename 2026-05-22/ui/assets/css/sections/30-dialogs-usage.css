@@ -1031,7 +1031,8 @@
     color: var(--ink);
   }
 
-  .context-menu button {
+  .context-menu button,
+  .context-menu-flyout button {
     grid-template-columns: 22px minmax(0, 1fr);
   }
 

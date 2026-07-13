@@ -4103,6 +4103,12 @@ body.accessibility-body .legal-document-page {
   max-width: none;
 }
 
+@media (min-width: 1024px) {
+  [data-nav-layout="sidebar"] .activity-page {
+    padding-left: 248px;
+  }
+}
+
 :is(
   .portal-page,
   .creator-page,
@@ -4210,6 +4216,59 @@ main.shell :is(
   border-radius: 6px;
 }
 
+:is(
+  .home-hero-actions,
+  .about-hero-actions,
+  .bio-hero-actions,
+  .creator-studio-actions,
+  .faq-archive-actions,
+  .updates-hero-actions,
+  .activity-hero-actions,
+  .home-subscribe-actions
+) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  justify-self: start;
+  gap: 10px;
+  width: auto;
+}
+
+:is(
+  .updates-page .updates-hero,
+  .activity-page .activity-hero,
+  .feedback-page .updates-hero,
+  .usage-page .updates-hero
+) {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+:is(
+  .home-hero-actions,
+  .about-hero-actions,
+  .bio-hero-actions,
+  .creator-studio-actions,
+  .faq-archive-actions,
+  .updates-hero-actions,
+  .activity-hero-actions
+) > :is(a, button),
+:is(
+  .home-hero-actions,
+  .about-hero-actions,
+  .bio-hero-actions,
+  .creator-studio-actions,
+  .faq-archive-actions,
+  .updates-hero-actions,
+  .activity-hero-actions
+) .button {
+  width: auto;
+  min-width: 0;
+  min-height: var(--site-control-height);
+  padding-inline: 18px;
+}
+
 main.shell .eyebrow {
   color: var(--muted);
   font-size: 11px;
@@ -4268,6 +4327,45 @@ main.shell .eyebrow {
   .bio-body > .shell {
     width: calc(100% - 20px) !important;
     max-width: none;
+  }
+
+  :is(
+    .home-hero-actions,
+    .about-hero-actions,
+    .bio-hero-actions,
+    .creator-studio-actions,
+    .faq-archive-actions,
+    .updates-hero-actions,
+    .activity-hero-actions,
+    .home-subscribe-actions
+  ) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-self: stretch;
+    width: 100%;
+  }
+
+  :is(
+    .home-hero-actions,
+    .about-hero-actions,
+    .bio-hero-actions,
+    .creator-studio-actions,
+    .faq-archive-actions,
+    .updates-hero-actions,
+    .activity-hero-actions,
+    .home-subscribe-actions
+  ) > :is(a, button),
+  :is(
+    .home-hero-actions,
+    .about-hero-actions,
+    .bio-hero-actions,
+    .creator-studio-actions,
+    .faq-archive-actions,
+    .updates-hero-actions,
+    .activity-hero-actions,
+    .home-subscribe-actions
+  ) .button {
+    width: 100%;
   }
 
   :is(

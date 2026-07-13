@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260713-button-alignment2";
+const CACHE_NAME = "profile-offline-20260713-stabilization1";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

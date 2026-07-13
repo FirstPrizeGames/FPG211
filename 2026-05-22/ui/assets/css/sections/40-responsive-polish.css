@@ -4329,6 +4329,11 @@ main.shell .eyebrow {
     max-width: none;
   }
 
+  .search-filter-row button {
+    min-height: 40px;
+    padding-inline: 14px;
+  }
+
   :is(
     .home-hero-actions,
     .about-hero-actions,

@@ -63,7 +63,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260713-popup-system`;
+  const repairUrl = `${guard.fallback}?v=20260713-design-system`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -637,6 +637,21 @@ const createSidebarHelpMenu = () => {
   trigger.setAttribute("aria-expanded", "false");
   trigger.setAttribute("aria-haspopup", "menu");
   trigger.innerHTML = `${navIconMarkup.help}<span data-i18n="nav.help">Help</span>${navIconMarkup.chevron}`;
+  trigger.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const willOpen = !wrapper.classList.contains("is-open");
+    closeSidebarHelpMenus(wrapper);
+    closeNavFlyouts();
+    setSidebarHelpOpen(wrapper, willOpen);
+  });
+  trigger.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    closeContextMenu();
+    closeSidebarHelpMenus(wrapper);
+    setSidebarHelpOpen(wrapper, true);
+  });
 
   const panel = document.createElement("div");
   panel.className = "sidebar-help-panel";
@@ -1425,16 +1440,6 @@ document.addEventListener("click", (event) => {
     return;
   }
 
-  const helpTrigger = event.target.closest?.("[data-sidebar-help-trigger]");
-  if (helpTrigger) {
-    const activeHelpMenu = helpTrigger.closest(".sidebar-help-menu");
-    const willOpen = !activeHelpMenu?.classList.contains("is-open");
-    closeSidebarHelpMenus(activeHelpMenu);
-    closeNavFlyouts();
-    setSidebarHelpOpen(activeHelpMenu, willOpen);
-    return;
-  }
-
   if (!account) {
     closeSidebarHelpMenus();
     closeSidebarAccountMenus();
@@ -1504,17 +1509,6 @@ document.addEventListener("click", (event) => {
   const group = trigger.closest(".nav-menu-group");
   const isOpen = group.classList.toggle("is-open");
   trigger.setAttribute("aria-expanded", String(isOpen));
-});
-
-document.addEventListener("contextmenu", (event) => {
-  const helpTrigger = event.target.closest?.("[data-sidebar-help-trigger]");
-  if (!helpTrigger) return;
-
-  event.preventDefault();
-  closeContextMenu();
-  const activeHelpMenu = helpTrigger.closest(".sidebar-help-menu");
-  closeSidebarHelpMenus(activeHelpMenu);
-  setSidebarHelpOpen(activeHelpMenu, true);
 });
 
 document.addEventListener("keydown", (event) => {

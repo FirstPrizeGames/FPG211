@@ -19,11 +19,11 @@
       }
     </style>
     <title>Status · First PrizeGames</title>
-    <meta name="description" content="Status guidance for the profile site, including post-deployment route checks, browser permissions, local storage, and sharing metadata." />
+    <meta name="description" content="Live browser-based checks for First PrizeGames site responses, core routes, shared assets, and connectivity." />
     <meta name="theme-color" content="#151514" />
     <link rel="canonical" href="https://firstprizegames.info/status" />
     <meta property="og:title" content="Status · First PrizeGames" />
-    <meta property="og:description" content="Review post-deployment route checks, browser conditions, and sharing metadata guidance." />
+    <meta property="og:description" content="Check current First PrizeGames site responses, core routes, shared assets, and browser connectivity." />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="First PrizeGames" />
     <meta property="og:url" content="https://firstprizegames.info/status" />
@@ -32,7 +32,7 @@
     <meta property="og:image:height" content="992" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Status · First PrizeGames" />
-    <meta name="twitter:description" content="Review post-deployment route checks, browser conditions, and sharing metadata guidance." />
+    <meta name="twitter:description" content="Check current First PrizeGames site responses, core routes, shared assets, and browser connectivity." />
     <meta name="twitter:image" content="https://firstprizegames.info/assets/about-system-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
@@ -54,7 +54,7 @@
         document.documentElement.dataset.sidebarCollapsed = b(localStorage.getItem("profile-sidebar-collapsed"), false) ? "true" : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../assets/css/styles.css?v=20260713-stabilization1" />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260714-unified-theme2" />
   </head>
   <body class="status-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -71,27 +71,73 @@
           <a href="/settings"><span data-i18n="nav.settings">Settings</span></a>
         </div>
       </nav>
-      <section class="trust-hero" aria-labelledby="status-title">
+      <section class="trust-hero status-live-hero" aria-labelledby="status-title">
         <div>
           <p class="eyebrow" data-i18n="status.eyebrow">상태 안내</p>
-          <h1 id="status-title" data-i18n="status.title">사이트 상태 확인 기준을 안내합니다.</h1>
-          <p data-i18n="status.lead">이 페이지는 실시간 장애 감지나 가용성 측정을 수행하지 않습니다. 배포 후 확인할 항목과 브라우저별 조건을 정리합니다.</p>
+          <h1 id="status-title" data-i18n="status.title">실시간 사이트 상태를 확인합니다.</h1>
+          <p data-i18n="status.lead">이 페이지가 열려 있는 동안 사이트 응답과 주요 경로를 30초마다 확인합니다.</p>
+          <button class="button ghost status-check-button" type="button" data-status-refresh>
+            <span data-i18n="status.checkNow">지금 확인</span>
+          </button>
         </div>
-        <div class="trust-status-card">
-          <span data-i18n="status.overallLabel">상태 확인 방식</span>
-          <strong data-i18n="status.overallValue">실시간 모니터링 미연결</strong>
-          <p data-i18n="status.updated">배포 환경의 실제 상태는 접속 후 직접 확인해야 합니다.</p>
+        <div class="trust-status-card status-overall-card" data-status-state="checking" aria-live="polite" aria-atomic="true">
+          <div class="status-overall-heading">
+            <span data-i18n="status.overallLabel">현재 상태</span>
+            <span class="status-live-label"><i aria-hidden="true"></i><span data-i18n="status.live">실시간</span></span>
+          </div>
+          <strong data-status-overall data-i18n="status.stateChecking">확인 중</strong>
+          <p data-status-summary data-i18n="status.checkingBody">사이트에서 최신 응답을 확인하고 있습니다.</p>
+          <dl class="status-overall-meta">
+            <div>
+              <dt data-i18n="status.lastChecked">마지막 확인</dt>
+              <dd data-status-checked>--</dd>
+            </div>
+            <div>
+              <dt data-i18n="status.responseTime">응답 시간</dt>
+              <dd data-status-latency>--</dd>
+            </div>
+          </dl>
         </div>
       </section>
-      <section class="status-list" aria-label="상태 확인 항목">
-        <article><span></span><div><strong data-i18n="status.routesTitle">공개 경로</strong><p data-i18n="status.routesBody">홈, 설정, 개인정보 처리방침, 업데이트, 검색, 활동, 사이트맵, 신뢰 센터 경로는 배포 후 직접 열어 확인해야 합니다.</p></div></article>
-        <article><span></span><div><strong data-i18n="status.notificationsTitle">알림</strong><p data-i18n="status.notificationsBody">브라우저 알림 지원 여부는 사용자의 권한 선택과 브라우저·기기 정책에 따라 달라집니다.</p></div></article>
-        <article><span></span><div><strong data-i18n="status.storageTitle">로컬 저장소</strong><p data-i18n="status.storageBody">테마, 언어, 동의, 활동, 구독 관련 선택은 현재 브라우저에만 저장됩니다.</p></div></article>
-        <article><span></span><div><strong data-i18n="status.shareTitle">공유 메타데이터</strong><p data-i18n="status.shareBody">공개 페이지에는 Open Graph와 Twitter Card 메타 태그가 포함되도록 구성되어 있습니다.</p></div></article>
+      <section class="status-list" aria-label="상태 확인 항목" data-i18n-aria-label="status.checksLabel">
+        <article data-status-item="health" data-status-state="checking">
+          <span class="status-indicator" aria-hidden="true"></span>
+          <div>
+            <div class="status-item-heading"><strong data-i18n="status.healthTitle">사이트 응답</strong><span data-status-label data-i18n="status.stateChecking">확인 중</span></div>
+            <p data-i18n="status.healthBody">배포 환경의 상태 응답이 정상적으로 도착하는지 확인합니다.</p>
+            <small data-status-detail>--</small>
+          </div>
+        </article>
+        <article data-status-item="routes" data-status-state="checking">
+          <span class="status-indicator" aria-hidden="true"></span>
+          <div>
+            <div class="status-item-heading"><strong data-i18n="status.routesTitle">주요 공개 경로</strong><span data-status-label data-i18n="status.stateChecking">확인 중</span></div>
+            <p data-i18n="status.routesBody">홈, 요금제, 사용량, 개인정보 처리방침 경로의 응답을 확인합니다.</p>
+            <small data-status-detail>--</small>
+          </div>
+        </article>
+        <article data-status-item="assets" data-status-state="checking">
+          <span class="status-indicator" aria-hidden="true"></span>
+          <div>
+            <div class="status-item-heading"><strong data-i18n="status.assetsTitle">화면 자산</strong><span data-status-label data-i18n="status.stateChecking">확인 중</span></div>
+            <p data-i18n="status.assetsBody">공통 스타일과 스크립트 파일을 불러올 수 있는지 확인합니다.</p>
+            <small data-status-detail>--</small>
+          </div>
+        </article>
+        <article data-status-item="network" data-status-state="checking">
+          <span class="status-indicator" aria-hidden="true"></span>
+          <div>
+            <div class="status-item-heading"><strong data-i18n="status.networkTitle">브라우저 연결</strong><span data-status-label data-i18n="status.stateChecking">확인 중</span></div>
+            <p data-i18n="status.networkBody">현재 브라우저에서 실제 사이트에 연결할 수 있는지 확인합니다.</p>
+            <small data-status-detail>--</small>
+          </div>
+        </article>
       </section>
+      <p class="status-monitor-note" data-i18n="status.monitorNote">이 검사는 현재 브라우저에서 수행됩니다. 24시간 장애 기록과 알림은 별도의 외부 모니터링 연결이 필요합니다.</p>
     </main>
-    <script src="../assets/js/translations.js?v=20260713-stabilization1" defer></script>
+    <script src="../assets/js/translations.js?v=20260714-unified-theme2" defer></script>
 
-    <script src="../assets/js/script.js?v=20260713-stabilization1" defer></script>
+    <script src="../assets/js/script.js?v=20260714-unified-theme2" defer></script>
+    <script src="../assets/js/status.js?v=20260714-unified-theme2" defer></script>
   </body>
 </html>

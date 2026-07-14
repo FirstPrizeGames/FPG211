@@ -42,6 +42,21 @@ const resolveFile = (urlPath) => {
 
 http
   .createServer((req, res) => {
+    const requestPath = new URL(req.url, `http://${req.headers.host || "127.0.0.1"}`).pathname;
+
+    if (requestPath === "/api/health") {
+      res.writeHead(200, {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "no-store, max-age=0",
+      });
+      res.end(JSON.stringify({
+        status: "operational",
+        service: "First PrizeGames",
+        checkedAt: new Date().toISOString(),
+      }));
+      return;
+    }
+
     const resolved = resolveFile(req.url);
 
     if (!resolved) {

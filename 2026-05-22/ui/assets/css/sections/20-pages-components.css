@@ -2904,7 +2904,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 32px;
+  min-height: 40px;
   padding: 0 12px;
   border: 1px solid color-mix(in srgb, var(--line) 68%, transparent);
   border-radius: 999px;
@@ -3029,7 +3029,7 @@ html[lang="ko"] .faq-feedback-strip h2 {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 38px;
+  min-height: 40px;
   padding: 0 13px;
   border: 1px solid color-mix(in srgb, var(--line) 88%, transparent);
   border-radius: 7px;

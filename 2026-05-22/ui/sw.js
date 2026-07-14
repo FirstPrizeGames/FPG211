@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260713-stabilization1";
+const CACHE_NAME = "profile-offline-20260714-unified-theme2";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
@@ -34,6 +34,7 @@ const PRECACHE_URLS = [
   "/assets/css/sections/40-responsive-polish.css",
   "/assets/js/translations.js",
   "/assets/js/script.js",
+  "/assets/js/status.js",
   "/favicon.ico",
   "/site.webmanifest",
   "/assets/favicon-32.png",
@@ -75,6 +76,11 @@ self.addEventListener("fetch", (event) => {
 
   const requestUrl = new URL(event.request.url);
   if (requestUrl.origin !== self.location.origin) return;
+
+  if (requestUrl.searchParams.has("__status_probe") || event.request.headers.get("X-Status-Probe") === "1") {
+    event.respondWith(fetch(event.request, { cache: "no-store" }));
+    return;
+  }
 
   if (event.request.mode === "navigate") {
     event.respondWith(

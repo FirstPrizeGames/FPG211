@@ -65,7 +65,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260717-checkout-auth1`;
+  const repairUrl = `${guard.fallback}?v=20260717-bottom-bg1`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -6411,7 +6411,7 @@ infoTabs.forEach((tab) => {
   });
 });
 
-import("/assets/js/firebase-auth.js?v=20260717-checkout-auth1").catch(() => {
+import("/assets/js/firebase-auth.js?v=20260717-bottom-bg1").catch(() => {
   document.documentElement.dataset.authState = "unavailable";
   window.profileAuthUser = null;
   window.dispatchEvent(new CustomEvent("profile-auth-change"));

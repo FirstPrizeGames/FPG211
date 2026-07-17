@@ -223,6 +223,8 @@
 }
 
 html {
+  min-height: 100%;
+  background: var(--page-bg);
   scroll-behavior: smooth;
   scrollbar-color: var(--scrollbar-thumb) var(--soft);
   scrollbar-width: thin;
@@ -282,6 +284,8 @@ html {
 body {
   margin: 0;
   min-width: 320px;
+  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--page-bg);
   color: var(--ink);
   font-family:

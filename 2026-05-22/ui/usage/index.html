@@ -79,7 +79,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../assets/css/styles.css?v=20260714-unified-theme2" />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260717-checkout-auth1" />
   </head>
   <body>
     <div class="loading-bar" aria-hidden="true"></div>
@@ -123,7 +123,7 @@
         <div class="updates-hero-copy">
           <h1 id="usage-title" data-i18n="usage.limitsTitle">일반 사용 한도</h1>
           <p data-i18n="usage.boardLead">
-            현재 브라우저 기준의 5시간, 주간, 월간 한도와 초기화 가능 상태를 로그보드 형식으로 확인합니다.
+            Google 로그인 후 활성 사용 시간을 기준으로 5시간, 주간, 월간 한도와 초기화 가능 상태를 확인합니다.
           </p>
         </div>
         <div class="updates-hero-actions" aria-label="사용량 액션" data-i18n-aria-label="usage.actionsLabel">
@@ -141,13 +141,13 @@
       <section class="updates-release-meta logboard-meta" aria-label="사용량 요약" data-i18n-aria-label="aria.usageSummary">
         <article>
           <span data-i18n="usage.metaModelLabel">Model</span>
-          <strong data-i18n="usage.metaModelValue">Local browser</strong>
+          <strong data-i18n="usage.metaModelValue">로그인된 브라우저</strong>
         </article>
         <article>
           <span data-i18n="usage.metaWindowsLabel">Windows</span>
           <strong data-i18n="usage.metaWindowsValue">5-hour, weekly, monthly</strong>
         </article>
-        <article>
+        <article data-usage-auth-content hidden>
           <span data-i18n="usage.metaResetLabel">Reset allowance</span>
           <strong data-usage-reset-status data-i18n="usage.resetStatusLoading">초기화 가능 횟수를 확인하는 중입니다.</strong>
         </article>
@@ -156,14 +156,28 @@
       <section class="updates-release-board logboard-board usage-release-board" aria-label="일반 사용 한도" data-i18n-aria-label="usage.limitsTitle">
         <aside class="updates-release-rail" aria-label="사용량 분류" data-i18n-aria-label="usage.categoriesLabel">
           <strong data-i18n="updates.categoriesTitle">Categories</strong>
-          <a href="#usage-current" data-i18n="usage.categoryCurrent">Current limits</a>
-          <a href="#usage-reset" data-i18n="usage.categoryReset">Reset control</a>
+          <a href="#usage-current" data-usage-auth-content data-i18n="usage.categoryCurrent" hidden>Current limits</a>
+          <a href="#usage-reset" data-usage-auth-content data-i18n="usage.categoryReset" hidden>Reset control</a>
           <a href="#usage-details" data-i18n="usage.categoryDetails">Limit details</a>
           <a href="#usage-upgrade" data-i18n="usage.categoryUpgrade">Upgrade</a>
         </aside>
 
         <div class="updates-release-list">
-          <article class="release-group usage-limits-group" id="usage-current">
+          <article class="release-group usage-auth-gate" data-usage-auth-gate hidden>
+            <header>
+              <time datetime="2026-07-17" data-i18n="usage.signInEyebrow">Account required</time>
+            </header>
+            <div class="release-entry usage-control-entry usage-auth-entry">
+              <span class="release-badge" data-i18n="usage.signInBadge">Google account</span>
+              <div>
+                <h2 data-i18n="usage.signInTitle">Sign in to track usage</h2>
+                <p data-i18n="usage.signInBody">Usage starts only after sign-in and pauses whenever this site is not visible.</p>
+              </div>
+              <button class="updates-action-link" type="button" data-profile-auth-action data-i18n="auth.signIn">Google로 로그인</button>
+            </div>
+          </article>
+
+          <article class="release-group usage-limits-group" id="usage-current" data-usage-auth-content hidden>
             <header>
               <time datetime="2026-06-30" data-i18n="usage.currentWindow">Current window</time>
               <span data-i18n="updates.releaseLatest">Latest</span>
@@ -208,7 +222,7 @@
             </div>
           </article>
 
-          <article class="release-group" id="usage-reset">
+          <article class="release-group" id="usage-reset" data-usage-auth-content hidden>
             <header>
               <time datetime="2026-06-30" data-i18n="usage.categoryReset">Reset control</time>
             </header>
@@ -232,14 +246,14 @@
               <span class="release-badge" data-i18n="usage.learnPointLocalTitle">브라우저 기준</span>
               <div>
                 <h2 data-i18n="usage.learnPointResetTitle">자동 초기화</h2>
-                <p data-i18n="usage.learnDialogBody">이 한도는 서버 계정이 아니라 현재 브라우저에서만 계산됩니다. 처음 접속한 순간부터 5시간, 주간, 월간 한도가 시작되고, 기간이 지나면 자동으로 새 한도로 초기화됩니다.</p>
+                <p data-i18n="usage.learnDialogBody">이 한도는 Google 로그인 후 사이트가 화면에 보이는 동안에만 현재 브라우저에서 계산됩니다. 각 기간이 지나면 자동으로 새 한도로 초기화됩니다.</p>
               </div>
             </div>
             <div class="release-entry">
               <span class="release-badge" data-i18n="usage.learnPointPrivateTitle">서버 저장 없음</span>
               <div>
                 <h2 data-i18n="usage.metaModelValue">Local browser</h2>
-                <p data-i18n="usage.learnPointPrivateBody">로그인 계정이나 결제 기록과 연결되지 않습니다.</p>
+                <p data-i18n="usage.learnPointPrivateBody">사용량 기록은 Firebase 계정이나 결제 기록으로 전송되지 않습니다.</p>
               </div>
             </div>
           </article>
@@ -265,7 +279,7 @@
           <p class="eyebrow" data-i18n="usage.nav">Usage</p>
           <h2 id="usage-learn-title" data-i18n="usage.learnDialogTitle">사용 한도 작동 방식</h2>
           <p data-i18n="usage.learnDialogBody">
-            이 한도는 서버 계정이 아니라 현재 브라우저에서만 계산됩니다. 처음 접속한 순간부터 5시간, 주간, 월간 한도가 시작되고, 기간이 지나면 자동으로 새 한도로 초기화됩니다.
+            이 한도는 Google 로그인 후 사이트가 화면에 보이는 동안에만 현재 브라우저에서 계산됩니다. 각 기간이 지나면 자동으로 새 한도로 초기화됩니다.
           </p>
           <div class="usage-learn-points" aria-label="사용 한도 설명" data-i18n-aria-label="usage.learnDialogTitle">
             <div>
@@ -278,16 +292,16 @@
             </div>
             <div>
               <strong data-i18n="usage.learnPointPrivateTitle">서버 저장 없음</strong>
-              <span data-i18n="usage.learnPointPrivateBody">로그인 계정이나 결제 기록과 연결되지 않습니다.</span>
+              <span data-i18n="usage.learnPointPrivateBody">사용량 기록은 Firebase 계정이나 결제 기록으로 전송되지 않습니다.</span>
             </div>
           </div>
         </div>
       </div>
 
     </main>
-    <script src="../assets/js/translations.js?v=20260714-unified-theme2" defer></script>
+    <script src="../assets/js/translations.js?v=20260717-checkout-auth1" defer></script>
 
-    <script src="../assets/js/script.js?v=20260714-unified-theme2" defer></script>
+    <script src="../assets/js/script.js?v=20260717-checkout-auth1" defer></script>
   </body>
 </html>
 

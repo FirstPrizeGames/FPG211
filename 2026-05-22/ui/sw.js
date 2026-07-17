@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260714-unified-theme2";
+const CACHE_NAME = "profile-offline-20260717-checkout-auth1";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
@@ -34,6 +34,7 @@ const PRECACHE_URLS = [
   "/assets/css/sections/40-responsive-polish.css",
   "/assets/js/translations.js",
   "/assets/js/script.js",
+  "/assets/js/firebase-auth.js",
   "/assets/js/status.js",
   "/favicon.ico",
   "/site.webmanifest",

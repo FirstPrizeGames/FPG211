@@ -2180,6 +2180,37 @@ html[lang="ko"] .creator-page .creator-guide > article h2 {
   color: #ffd1c8;
 }
 
+.settings-auth-view {
+  display: grid;
+}
+
+.settings-auth-view[hidden] {
+  display: none;
+}
+
+.settings-auth-intro {
+  padding: 4px 0 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.settings-auth-intro strong {
+  display: block;
+  color: #f6f5ef;
+  font-size: 16px;
+  font-weight: 780;
+  line-height: 1.35;
+}
+
+.settings-auth-intro span {
+  display: block;
+  max-width: 36rem;
+  margin-top: 6px;
+  color: rgba(244, 243, 238, 0.62);
+  font-size: 13px;
+  font-weight: 620;
+  line-height: 1.5;
+}
+
 .settings-modal-profile {
   display: flex;
   align-items: center;
@@ -4955,6 +4986,237 @@ main.shell .eyebrow {
 
 [data-theme] .home-body .home-subscribe-topics input {
   accent-color: var(--accent);
+}
+
+/* Unified command buttons across pages and dialogs. */
+:root {
+  --site-button-height: 42px;
+  --site-button-accessibility-height: 0px;
+  --site-button-font-size: 13px;
+  --site-button-accessibility-font-size: 0px;
+  --site-button-padding: 16px;
+  --site-button-radius: 6px;
+}
+
+[data-kid-mode="soft"] {
+  --site-button-accessibility-height: 58px;
+  --site-button-accessibility-font-size: 16px;
+}
+
+[data-kid-mode="strong"] {
+  --site-button-accessibility-height: 64px;
+  --site-button-accessibility-font-size: 17px;
+}
+
+[data-theme] body :is(
+  main .button,
+  main .updates-action-link,
+  main .activity-action-link,
+  main .logboard-action-button,
+  main .usage-limit-notice a,
+  main .usage-learn-button,
+  main .usage-reset-button,
+  main .usage-upgrade-button,
+  main .pricing-button,
+  main .feedback-cta,
+  main .home-feedback-link,
+  main .status-check-button,
+  .cache-dialog .button,
+  .cache-dialog .cache-confirm-button,
+  .cache-dialog .cache-cancel-button,
+  .cache-dialog .share-socials button,
+  .cache-dialog .share-copy-button,
+  .cache-dialog .notification-test-button,
+  .user-profile-mini-button,
+  .user-profile-upload,
+  .user-profile-actions button,
+  .settings-modal-button,
+  .settings-modal-link,
+  .welcome-actions button,
+  .cookie-notice-actions button,
+  .cookie-notice-actions a,
+  .adblock-notice button
+) {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: auto;
+  min-height: max(var(--site-button-height), var(--site-button-accessibility-height));
+  max-height: none;
+  padding: 0 var(--site-button-padding);
+  border: 1px solid var(--action-border);
+  border-radius: var(--site-button-radius);
+  background: var(--action-muted-bg);
+  color: var(--ink);
+  box-shadow: none;
+  font-family: inherit;
+  font-size: max(var(--site-button-font-size), var(--site-button-accessibility-font-size));
+  font-weight: 760;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    border-color 140ms ease,
+    background-color 140ms ease,
+    color 140ms ease,
+    transform 140ms ease;
+}
+
+[data-theme] body :is(
+  main .button,
+  main .updates-action-link,
+  main .activity-action-link,
+  main .logboard-action-button,
+  main .usage-limit-notice a,
+  main .usage-learn-button,
+  main .usage-upgrade-button,
+  main .pricing-button,
+  main .feedback-cta,
+  main .home-feedback-link,
+  main .status-check-button,
+  .cache-dialog .button,
+  .cache-dialog .cache-confirm-button,
+  .cache-dialog .cache-cancel-button,
+  .cache-dialog .share-socials button,
+  .cache-dialog .share-copy-button,
+  .cache-dialog .notification-test-button,
+  .user-profile-mini-button,
+  .user-profile-upload,
+  .user-profile-actions button,
+  .settings-modal-button,
+  .settings-modal-link,
+  .welcome-actions button,
+  .cookie-notice-actions button,
+  .cookie-notice-actions a,
+  .adblock-notice button
+):is(:hover, :focus-visible) {
+  border-color: color-mix(in srgb, var(--ink) 28%, var(--line));
+  background: color-mix(in srgb, var(--ink) 10%, var(--panel-solid));
+  color: var(--ink);
+  outline: 2px solid transparent;
+  transform: translateY(-1px);
+}
+
+[data-theme] body :is(
+  main .button.primary,
+  main .feedback-cta,
+  .cache-dialog .cache-confirm-button:not(.usage-reset-confirm-button):not(.site-data-confirm-button),
+  .cache-dialog .share-copy-button,
+  .feedback-confirm-button,
+  .subscribe-confirm-button,
+  .settings-modal-button.is-primary,
+  .user-profile-actions [data-profile-save]
+) {
+  border-color: var(--action-bg);
+  background: var(--action-bg);
+  color: var(--action-ink);
+}
+
+[data-theme] body :is(
+  main .button.primary,
+  main .feedback-cta,
+  .cache-dialog .cache-confirm-button:not(.usage-reset-confirm-button):not(.site-data-confirm-button),
+  .cache-dialog .share-copy-button,
+  .feedback-confirm-button,
+  .subscribe-confirm-button,
+  .settings-modal-button.is-primary,
+  .user-profile-actions [data-profile-save]
+):is(:hover, :focus-visible) {
+  border-color: color-mix(in srgb, var(--action-bg) 82%, var(--panel-solid));
+  background: color-mix(in srgb, var(--action-bg) 88%, var(--panel-solid));
+  color: var(--action-ink);
+}
+
+[data-theme] body :is(
+  main .usage-reset-button,
+  main .activity-action-link[data-activity-clear]
+) {
+  border-color: color-mix(in srgb, var(--danger-action-border) 72%, var(--line));
+  background: color-mix(in srgb, var(--danger-action-bg) 22%, var(--panel-solid));
+  color: color-mix(in srgb, #ffffff 84%, var(--danger-action-hover));
+}
+
+[data-theme] body :is(
+  .cache-dialog .usage-reset-confirm-button,
+  .cache-dialog .site-data-confirm-button,
+  .site-data-delete-button,
+  .settings-modal-button.is-danger
+) {
+  border-color: var(--danger-action-border);
+  background: var(--danger-action-bg);
+  color: var(--danger-action-ink);
+}
+
+[data-theme] body :is(
+  main .usage-reset-button,
+  main .activity-action-link[data-activity-clear],
+  .cache-dialog .usage-reset-confirm-button,
+  .cache-dialog .site-data-confirm-button,
+  .site-data-delete-button,
+  .settings-modal-button.is-danger
+):is(:hover, :focus-visible) {
+  border-color: var(--danger-action-border-hover);
+  background: var(--danger-action-hover);
+  color: #ffffff;
+}
+
+[data-theme] body :is(button, .button, [role="button"]):disabled,
+[data-theme] body :is(button, .button, [role="button"])[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.46;
+  transform: none;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --site-button-height: 44px;
+  }
+}
+
+/* Keep shared navigation controls on the same surface and radius system. */
+[data-theme][data-nav-layout="sidebar"] .top-search-button {
+  border-color: var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--nav-bg) 90%, transparent);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+[data-theme][data-nav-layout="sidebar"] .top-search-button:is(:hover, :focus-visible) {
+  border-color: color-mix(in srgb, var(--ink) 28%, var(--line));
+  background: color-mix(in srgb, var(--ink) 8%, var(--nav-bg));
+  color: var(--ink);
+}
+
+[data-theme][data-nav-layout="sidebar"] .top-search-button .nav-icon {
+  color: var(--muted);
+}
+
+[data-theme][data-nav-layout="sidebar"] .top-search-button kbd {
+  border-color: var(--line);
+  background: var(--highlight-subtle);
+  color: var(--muted);
+}
+
+[data-theme] .official-home-body .official-home-nav,
+[data-theme][data-nav-layout="sidebar"] .official-home-body .official-home-nav,
+[data-theme][data-nav-layout="sidebar"][data-sidebar-collapsed="true"] .official-home-body .official-home-nav {
+  border-radius: 8px !important;
+  background: color-mix(in srgb, var(--nav-bg) 90%, transparent) !important;
+}
+
+[data-theme] .official-home-body .official-home-nav .brand-logo,
+[data-theme][data-nav-layout="sidebar"] .official-home-body .official-home-nav .brand-logo,
+[data-theme] .official-home-body .official-home-nav .mobile-menu-button {
+  border-radius: var(--site-button-radius) !important;
+}
+
+[data-theme] .official-home-body .official-home-nav .mobile-menu-icon {
+  border-radius: var(--site-button-radius) !important;
 }
 
 /* Live status monitor */

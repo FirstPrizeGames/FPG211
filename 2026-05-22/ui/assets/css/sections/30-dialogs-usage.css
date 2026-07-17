@@ -448,6 +448,11 @@
   justify-self: end;
 }
 
+.usage-auth-entry .updates-action-link {
+  justify-self: end;
+  min-width: 156px;
+}
+
 #usage-details .release-entry {
   grid-template-columns: minmax(136px, 148px) minmax(0, 1fr);
   align-items: start;
@@ -482,6 +487,11 @@
   }
 
   .usage-control-entry .usage-reset-button {
+    justify-self: stretch;
+    width: 100%;
+  }
+
+  .usage-auth-entry .updates-action-link {
     justify-self: stretch;
     width: 100%;
   }
@@ -2045,12 +2055,12 @@
   }
 
   .cookie-choice {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) auto;
     min-height: 0;
   }
 
-  .cookie-choice .toggle {
-    justify-self: start;
+  .cookie-choice .cookie-switch {
+    justify-self: end;
   }
 
   .nav-layout-choice .nav-layout-preview,

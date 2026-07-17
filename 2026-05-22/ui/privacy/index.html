@@ -21,14 +21,14 @@
     <title>Privacy Policy · First PrizeGames</title>
     <meta
       name="description"
-      content="Privacy policy for the profile site, including local preferences, feedback links, Stripe checkout, and external services."
+      content="Privacy notice covering optional Google sign-in, local browser data, cookies, notifications, Google Forms, Stripe checkout, and deletion controls."
     />
-    <meta name="theme-color" content="#02070b" />
+    <meta name="theme-color" content="#151514" />
     <link rel="canonical" href="https://firstprizegames.info/privacy" />
     <meta property="og:title" content="Privacy Policy · First PrizeGames" />
     <meta
       property="og:description"
-      content="Review how this profile site handles local preferences, feedback links, Stripe checkout, and external services."
+      content="Review how this site handles optional Google sign-in, browser data, cookies, notifications, external forms, checkout, and deletion controls."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="First PrizeGames" />
@@ -40,7 +40,7 @@
     <meta name="twitter:title" content="Privacy Policy · First PrizeGames" />
     <meta
       name="twitter:description"
-      content="Review how this profile site handles local preferences, feedback links, Stripe checkout, and external services."
+      content="Review how this site handles optional Google sign-in, browser data, cookies, notifications, external forms, checkout, and deletion controls."
     />
     <meta name="twitter:image" content="https://firstprizegames.info/assets/about-system-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -51,7 +51,7 @@
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="application-name" content="First PrizeGames" />
-    <meta name="msapplication-TileColor" content="#02070b" />
+    <meta name="msapplication-TileColor" content="#151514" />
     <script>
       (() => {
         const normalizeTheme = (theme) => {
@@ -85,7 +85,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../assets/css/styles.css?v=20260714-unified-theme2" />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260717-checkout-auth1" />
   </head>
   <body class="privacy-body legal-document-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -127,72 +127,72 @@
       <section class="policy-hero privacy-official-hero">
         <div class="policy-hero-copy">
           <p class="eyebrow" data-i18n="privacy.eyebrow">Privacy Policy</p>
-          <h1 data-i18n="privacy.title">개인정보 처리 기준</h1>
+          <h1 data-i18n="privacy.title">개인정보 처리 안내</h1>
           <p class="policy-lead" data-i18n="privacy.lead">
-            First PrizeGames는 계정 생성 없이 읽을 수 있는 사이트이며, 결제 정보와 외부 양식 데이터는 해당 서비스에서 처리됩니다.
+            이 사이트는 로그인 없이 이용할 수 있으며 Google 로그인은 선택 사항입니다. 화면 설정과 직접 입력한 일부 값은 현재 브라우저에 저장되고, 로그인·양식·결제 정보는 연결된 외부 서비스에서 처리됩니다.
           </p>
-          <p class="policy-updated" data-i18n="privacy.updated">마지막 업데이트: 2026년 6월 3일</p>
+          <p class="policy-updated" data-i18n="privacy.updated">시행일 및 마지막 업데이트: 2026년 7월 17일</p>
         </div>
         <aside class="privacy-scope-panel" aria-label="개인정보 처리 범위" data-i18n-aria-label="aria.privacySummary">
           <span data-i18n="privacy.mediaLabel">Processing model</span>
           <strong data-i18n="privacy.mediaValue">Local-first, external services</strong>
-          <p data-i18n="privacy.scopeBody">테마와 표시 설정은 브라우저에 저장되고, 결제와 피드백은 Stripe 및 외부 양식의 정책을 따릅니다.</p>
+          <p data-i18n="privacy.scopeBody">사이트는 비밀번호를 직접 수집하지 않습니다. 브라우저 저장소, Firebase Authentication, Google Forms와 Stripe는 각각 별도의 처리 범위를 가집니다.</p>
         </aside>
       </section>
 
       <section class="policy-ledger" aria-label="개인정보 요약" data-i18n-aria-label="aria.privacySummary">
         <div>
-          <span data-i18n="privacy.summaryStorage">Storage</span>
-          <strong data-i18n="privacy.summaryStorageValue">Browser only</strong>
+          <span data-i18n="privacy.summaryStorage">저장 위치</span>
+          <strong data-i18n="privacy.summaryStorageValue">현재 브라우저</strong>
         </div>
         <div>
-          <span data-i18n="privacy.summaryAccount">Accounts</span>
-          <strong data-i18n="privacy.summaryAccountValue">Not required</strong>
+          <span data-i18n="privacy.summaryAccount">계정</span>
+          <strong data-i18n="privacy.summaryAccountValue">Google 로그인 선택 사항</strong>
         </div>
         <div>
-          <span data-i18n="privacy.summaryPayments">Payments</span>
-          <strong data-i18n="privacy.summaryPaymentsValue">External checkout</strong>
+          <span data-i18n="privacy.summaryPayments">외부 처리</span>
+          <strong data-i18n="privacy.summaryPaymentsValue">Firebase · Google Forms · Stripe</strong>
         </div>
         <div>
-          <span data-i18n="privacy.summaryControl">Control</span>
-          <strong data-i18n="privacy.summaryControlValue">User controlled</strong>
+          <span data-i18n="privacy.summaryControl">삭제</span>
+          <strong data-i18n="privacy.summaryControlValue">사용자 직접 관리</strong>
         </div>
       </section>
 
       <section class="policy-dossier" aria-label="개인정보 세부 정보" data-i18n-aria-label="aria.privacyDetails">
         <article id="cookies">
           <span>01</span>
-          <h2 data-i18n="privacy.localTitle">쿠키와 브라우저 저장소는 최소한으로 사용합니다.</h2>
+          <h2 data-i18n="privacy.localTitle">브라우저에 저장되는 항목을 구분합니다.</h2>
           <p data-i18n="privacy.localBody">
-            이 사이트는 로그인 추적 쿠키나 광고 쿠키를 사용하지 않습니다. 테마, 언어, 접근성, 프로필, 우클릭 메뉴 설정은 이 브라우저의 저장소에 남고, 쿠키 안내 확인 여부만 필요한 경우 쿠키로 저장합니다.
+            테마, 언어, 접근성, 프로필 이름과 사진, 사이드바, 우클릭 메뉴, 사용량과 활동 기록, 포털의 구독 이메일과 주제는 localStorage에 저장됩니다. 사용량 기록은 Google 로그인 상태에서 사이트가 화면에 보이는 동안만 늘어나며 Firebase 계정으로 동기화되지 않습니다. 오프라인 표시를 위해 Cache Storage가 사용될 수 있습니다.
           </p>
           <ul class="privacy-cookie-list">
             <li>
-              <strong data-i18n="privacy.cookieEssentialTitle">필수 항목</strong>
-              <span data-i18n="privacy.cookieEssentialBody">사이트 로딩, 보안, 기본 동작에 필요한 항목이며 끌 수 없습니다.</span>
+              <strong data-i18n="privacy.cookieEssentialTitle">기본 동작</strong>
+              <span data-i18n="privacy.cookieEssentialBody">페이지 스크립트와 오프라인 캐시는 사이트 기능을 위한 기술 항목이며 광고 프로필을 만들지 않습니다. 로그인 상태는 Firebase Authentication이 별도로 관리합니다.</span>
             </li>
             <li>
-              <strong data-i18n="privacy.cookiePreferenceTitle">설정 저장</strong>
-              <span data-i18n="privacy.cookiePreferenceBody">쿠키 안내 확인 여부와 보기 설정을 저장하며 Settings의 쿠키 설정 팝업에서 관리할 수 있습니다.</span>
+              <strong data-i18n="privacy.cookiePreferenceTitle">안내 확인 쿠키</strong>
+              <span data-i18n="privacy.cookiePreferenceBody">안내에서 확인을 누르면 profile_storage_consent 쿠키가 SameSite=Lax로 최대 1년간 저장됩니다. Settings의 쿠키 설정에서 끌 수 있습니다.</span>
             </li>
             <li>
               <strong data-i18n="privacy.cookieAdsTitle">광고 및 분석</strong>
-              <span data-i18n="privacy.cookieAdsBody">현재 사용하지 않습니다.</span>
+              <span data-i18n="privacy.cookieAdsBody">현재 광고 쿠키와 분석 쿠키를 사용하지 않습니다.</span>
             </li>
           </ul>
         </article>
         <article>
           <span>02</span>
-          <h2 data-i18n="privacy.noAccountTitle">계정 없이 읽는 사이트</h2>
+          <h2 data-i18n="privacy.noAccountTitle">Google 로그인은 선택 사항입니다.</h2>
           <p data-i18n="privacy.noAccountBody">
-            현재 이 사이트는 자체 로그인, 회원가입, 사용자 프로필 데이터베이스를 운영하지 않습니다. 이름, 비밀번호, 계정 식별자를 만들거나 보관하지 않습니다.
+            로그인하지 않아도 공개 페이지를 이용할 수 있으며 사용 한도는 소모되지 않습니다. Google 로그인을 선택하면 Firebase Authentication이 사용자 식별자, 이름, 이메일 주소, 프로필 사진, 로그인 제공자와 인증 상태를 처리합니다. Google 비밀번호는 이 사이트가 보거나 저장하지 않습니다. 로그인하지 않은 상태의 로컬 프로필과 구독 설정은 현재 브라우저에만 저장됩니다.
           </p>
         </article>
         <article>
           <span>03</span>
           <h2 data-i18n="privacy.externalTitle">외부 서비스로 넘어가는 순간</h2>
           <p data-i18n="privacy.externalBody">
-            Feedback 양식, Stripe 결제, 외부 공유 링크를 누르면 해당 서비스의 화면으로 이동할 수 있습니다. 그곳에서 입력하거나 처리되는 정보는 해당 서비스의 정책과 보안 기준이 적용됩니다.
+            일반 피드백, 기능 요청, 질문 및 Team 예약은 Google Forms로 연결될 수 있습니다. 양식에 입력한 내용은 Google의 설정에 따라 저장·처리되고 사이트 운영자가 응답을 검토할 수 있습니다. 외부 공유 링크에는 해당 플랫폼의 정책이 적용됩니다.
           </p>
         </article>
         <article>
@@ -200,7 +200,7 @@
           <h2 data-i18n="privacy.stripeTitle">결제 정보는 Stripe에서 처리합니다.</h2>
           <p>
             <span data-i18n="privacy.stripeBody">
-              Pro, Teams, Ultra 플랜 결제는 Stripe Checkout을 통해 처리됩니다. 이 사이트는 카드 번호, 보안 코드, 결제 인증 정보를 직접 저장하지 않습니다.
+              Pro 결제 버튼은 Stripe Checkout으로 연결될 수 있으며 Team은 Google Forms 예약 방식입니다. 카드 번호, 보안 코드와 결제 인증 정보는 이 사이트가 직접 저장하지 않습니다. 최종 통화와 금액은 Stripe 화면에서 확인해야 합니다.
             </span>
             <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer" data-i18n="privacy.stripeLink">
               Stripe Privacy Policy
@@ -211,7 +211,22 @@
           <span>05</span>
           <h2 data-i18n="privacy.clearTitle">언제든지 지울 수 있습니다.</h2>
           <p data-i18n="privacy.clearBody">
-            저장된 사이트 설정은 Settings 페이지의 정리 기능이나 브라우저의 사이트 데이터 삭제 메뉴에서 지울 수 있습니다. 삭제하면 테마와 표시 설정이 기본값으로 돌아갑니다.
+            Settings의 보안 항목에서 사이트 데이터를 삭제하면 localStorage, 안내 확인 쿠키와 오프라인 캐시가 지워집니다. Google 로그아웃은 현재 브라우저의 로그인 상태를 종료하지만 Firebase Authentication 계정 자체를 삭제하지는 않습니다. 계정 삭제 요청은 Feedback으로 보낼 수 있으며, 알림 권한과 Google Forms·Stripe 데이터는 각 서비스에서 별도로 관리해야 합니다.
+          </p>
+        </article>
+        <article>
+          <span>06</span>
+          <h2 data-i18n="privacy.notificationTitle">알림 권한은 브라우저가 관리합니다.</h2>
+          <p data-i18n="privacy.notificationBody">
+            알림을 허용하거나 거부한 상태는 브라우저와 운영체제가 관리합니다. 현재 이 사이트는 푸시 구독 서버나 기기 토큰 데이터베이스를 운영하지 않으며, 권한 상태를 사이트 서버로 전송하지 않습니다.
+          </p>
+        </article>
+        <article>
+          <span>07</span>
+          <h2 data-i18n="privacy.contactTitle">문의와 변경 사항을 공개합니다.</h2>
+          <p>
+            <span data-i18n="privacy.contactBody">개인정보 관련 질문, Firebase Authentication 계정 삭제 요청 또는 문구 수정 요청은 Feedback 페이지에서 보낼 수 있습니다. 처리 방식이 달라지면 이 페이지의 업데이트 날짜와 관련 설명을 함께 변경합니다.</span>
+            <a href="/feedback" data-i18n="privacy.contactLink">Feedback 열기</a>
           </p>
         </article>
       </section>
@@ -303,9 +318,9 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../assets/js/translations.js?v=20260714-unified-theme2" defer></script>
+    <script src="../assets/js/translations.js?v=20260717-checkout-auth1" defer></script>
 
-    <script src="../assets/js/script.js?v=20260714-unified-theme2" defer></script>
+    <script src="../assets/js/script.js?v=20260717-checkout-auth1" defer></script>
   </body>
 </html>
 

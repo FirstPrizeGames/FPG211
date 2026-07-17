@@ -36,9 +36,13 @@
     <meta name="twitter:image" content="https://firstprizegames.info/assets/about-system-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="application-name" content="First PrizeGames" />
+    <meta name="msapplication-TileColor" content="#151514" />
     <script>
       (() => {
         const b = (value, fallback = false) => [true, "true", "1", "on"].includes(value) ? true : [false, "false", "0", "off"].includes(value) ? false : fallback;
@@ -54,7 +58,7 @@
         document.documentElement.dataset.sidebarCollapsed = b(localStorage.getItem("profile-sidebar-collapsed"), false) ? "true" : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../assets/css/styles.css?v=20260714-unified-theme2" />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260717-checkout-auth1" />
   </head>
   <body class="status-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -135,9 +139,9 @@
       </section>
       <p class="status-monitor-note" data-i18n="status.monitorNote">이 검사는 현재 브라우저에서 수행됩니다. 24시간 장애 기록과 알림은 별도의 외부 모니터링 연결이 필요합니다.</p>
     </main>
-    <script src="../assets/js/translations.js?v=20260714-unified-theme2" defer></script>
+    <script src="../assets/js/translations.js?v=20260717-checkout-auth1" defer></script>
 
-    <script src="../assets/js/script.js?v=20260714-unified-theme2" defer></script>
-    <script src="../assets/js/status.js?v=20260714-unified-theme2" defer></script>
+    <script src="../assets/js/script.js?v=20260717-checkout-auth1" defer></script>
+    <script src="../assets/js/status.js?v=20260717-checkout-auth1" defer></script>
   </body>
 </html>

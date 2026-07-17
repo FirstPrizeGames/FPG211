@@ -49,6 +49,8 @@ const navIconMarkup = {
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 13h4l3-7 4 13 3-6h2" /><path d="M4 20h16" /></svg>',
   security:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="6" y="10" width="12" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /><path d="M12 14v2" /></svg>',
+  login:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" /><path d="m10 17 5-5-5-5" /><path d="M15 12H3" /></svg>',
 };
 
 const routeDocumentGuards = [
@@ -63,7 +65,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260714-unified-theme2`;
+  const repairUrl = `${guard.fallback}?v=20260717-checkout-auth1`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -86,8 +88,8 @@ const setupUsagePageEarlyRecovery = () => {
   const weeklyLimitMs = 7 * dailyLimitMs;
   const monthlyLimitMs = 30 * dailyLimitMs;
   const resetLimit = 2;
-  const activeStartedAt = document.visibilityState === "visible" ? now : 0;
-  const accountingVersion = "visible-session-v1";
+  const activeStartedAt = 0;
+  const accountingVersion = "signed-in-visible-v2";
   if (localStorage.getItem("profile-browser-usage-accounting-version") !== accountingVersion) {
     localStorage.setItem("profile-browser-usage-window-start-ms", String(now));
     localStorage.setItem("profile-browser-usage-used-ms", "0");
@@ -96,6 +98,7 @@ const setupUsagePageEarlyRecovery = () => {
     localStorage.setItem("profile-browser-usage-month-start-ms", String(now));
     localStorage.setItem("profile-browser-usage-month-used-ms", "0");
     localStorage.removeItem("profile-browser-usage-total-ms");
+    localStorage.removeItem("profile-browser-usage-auth-started");
     localStorage.setItem("profile-browser-usage-accounting-version", accountingVersion);
   }
 
@@ -196,7 +199,10 @@ const setupUsagePageEarlyRecovery = () => {
             ? `이번 주 초기화 횟수를 모두 사용했습니다. ${new Intl.DateTimeFormat("ko-KR", { month: "long", day: "numeric" }).format(new Date(resetStart + weekMs))}에 다시 사용할 수 있습니다.`
             : `No resets left this week. Resets on ${new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric" }).format(new Date(resetStart + weekMs))}.`;
     }
-    if (button) button.disabled = remaining <= 0;
+    if (button) {
+      const isSignedIn = document.documentElement.dataset.authState === "signed-in" && Boolean(window.profileAuthUser);
+      button.disabled = !isSignedIn || remaining <= 0;
+    }
   };
 
   const ensureUsageResetDialog = () => {
@@ -226,6 +232,7 @@ const setupUsagePageEarlyRecovery = () => {
   };
 
   const openResetDialog = () => {
+    if (document.documentElement.dataset.authState !== "signed-in" || !window.profileAuthUser) return;
     const remaining = Math.max(resetLimit - resetCount, 0);
     if (remaining <= 0) {
       updateUsageUi();
@@ -241,6 +248,7 @@ const setupUsagePageEarlyRecovery = () => {
   };
 
   const confirmReset = () => {
+    if (document.documentElement.dataset.authState !== "signed-in" || !window.profileAuthUser) return;
     const current = Date.now();
     dailyStart = current;
     weeklyStart = current;
@@ -712,8 +720,9 @@ const createSidebarAccountMenu = () => {
     panel.setAttribute("role", "menu");
 
     [
-      { href: "/Pricing", icon: navIconMarkup.pricing, labelKey: "sidebar.upgrade", fallback: "Upgrade plan" },
-      { action: "profile", icon: navIconMarkup.bio, labelKey: "sidebar.profile", fallback: "Profile" },
+      { href: "/Pricing", icon: navIconMarkup.pricing, labelKey: "sidebar.upgrade", fallback: "Upgrade plan", className: "is-auth-required" },
+      { action: "profile", icon: navIconMarkup.bio, labelKey: "sidebar.profile", fallback: "Profile", className: "is-auth-required" },
+      { action: "google-auth", icon: navIconMarkup.login, labelKey: "auth.signIn", fallback: "Sign in with Google", className: "sidebar-auth-action" },
       { href: "/settings", icon: navIconMarkup.settings, labelKey: "nav.settings", fallback: "Settings" },
     ].forEach((item) => panel.append(createSidebarAccountItem(item)));
 
@@ -729,8 +738,8 @@ const createSidebarAccountMenu = () => {
     trigger.innerHTML = `
       <img class="sidebar-account-avatar" src="/assets/well-avatar.webp" alt="" width="192" height="192" loading="lazy" decoding="async" />
       <span class="sidebar-account-copy">
-        <strong data-profile-name>My name</strong>
-        <small data-profile-plan>Free</small>
+        <strong data-sidebar-account-name>Sign in with Google</strong>
+        <small data-sidebar-account-plan>Optional</small>
       </span>
     `;
 
@@ -765,7 +774,14 @@ const createUserProfileDialog = () => {
           <span class="user-profile-plan-pill" data-profile-plan>Free</span>
         </div>
       </div>
-      <div class="user-profile-section">
+      <div class="user-profile-section user-profile-auth-section">
+        <div class="user-profile-section-copy">
+          <h3 data-i18n="auth.sectionTitle">Google account</h3>
+          <p data-profile-auth-status data-i18n="auth.signedOutBody">Sign in to use your Google name and profile photo on this device.</p>
+        </div>
+        <button class="user-profile-mini-button" type="button" data-profile-auth-action data-i18n="auth.signIn">Sign in with Google</button>
+      </div>
+      <div class="user-profile-section" data-profile-local-control>
         <div class="user-profile-section-copy">
           <h3 data-i18n="profileDialog.accountSection">Account details</h3>
         </div>
@@ -774,7 +790,7 @@ const createUserProfileDialog = () => {
           <input type="text" value="My name" maxlength="40" data-profile-name-input />
         </label>
       </div>
-      <div class="user-profile-section">
+      <div class="user-profile-section" data-profile-local-control>
         <div class="user-profile-section-copy">
           <h3 data-i18n="profileDialog.photoSection">Profile photo</h3>
           <strong data-profile-avatar-status data-i18n="profileDialog.avatarDefault">Ambulance image</strong>
@@ -784,7 +800,7 @@ const createUserProfileDialog = () => {
             <span data-i18n="profileDialog.photoControl">Add profile photo</span>
             <input type="file" accept="image/png,image/jpeg,image/webp" data-profile-avatar-input />
           </label>
-          <button class="user-profile-mini-button" type="button" data-profile-avatar-reset data-i18n="profileDialog.photoReset">Reset photo</button>
+          <button class="user-profile-mini-button" type="button" data-profile-avatar-reset data-profile-local-control data-i18n="profileDialog.photoReset">Reset photo</button>
         </div>
       </div>
       <div class="user-profile-section">
@@ -799,8 +815,8 @@ const createUserProfileDialog = () => {
         </div>
       </div>
       <div class="user-profile-actions">
-        <button class="button" type="button" data-profile-reset data-i18n="profileDialog.reset">Reset</button>
-        <button class="button primary" type="button" data-profile-save data-i18n="profileDialog.save">Save</button>
+        <button class="button" type="button" data-profile-reset data-profile-local-control data-i18n="profileDialog.reset">Reset</button>
+        <button class="button primary" type="button" data-profile-save data-profile-local-control data-i18n="profileDialog.save">Save</button>
       </div>
     </div>
   `;
@@ -863,7 +879,7 @@ const createSettingsDialog = () => {
         </button>
         <button class="settings-modal-tab" type="button" data-settings-modal-tab="profile">
           ${navIconMarkup.bio}
-          <span data-i18n="settings.profileTab">프로필</span>
+          <span data-settings-profile-tab-label data-i18n="settings.loginTab">로그인</span>
         </button>
         <button class="settings-modal-tab" type="button" data-settings-modal-tab="context">
           ${navIconMarkup.terms}
@@ -953,39 +969,42 @@ const createSettingsDialog = () => {
         </section>
 
         <section class="settings-modal-panel" data-settings-modal-panel="profile" hidden>
-          <h2 data-i18n="settings.profileTab">프로필</h2>
-          <div class="settings-modal-profile">
-            <img class="settings-modal-avatar" src="/assets/well-avatar.webp" alt="" width="192" height="192" loading="lazy" decoding="async" data-profile-avatar-preview />
-            <div>
-              <strong data-profile-name>My name</strong>
-              <span><span data-i18n="profileDialog.plan">요금제</span>: <span data-profile-plan>Free</span></span>
+          <h2 data-settings-profile-heading data-i18n="settings.loginTab">로그인</h2>
+          <div class="settings-auth-view" data-settings-auth-signed-out>
+            <div class="settings-auth-intro">
+              <strong data-i18n="settings.loginTitle">Google 계정으로 계속하기</strong>
+              <span data-i18n="settings.loginBody">로그인하면 프로필, 사용량, 요금제 관련 계정 기능을 사용할 수 있습니다.</span>
+            </div>
+            <div class="settings-modal-row">
+              <div>
+                <strong data-i18n="auth.sectionTitle">Google 계정</strong>
+                <span data-profile-auth-status data-i18n="auth.signedOutBody">Google 계정으로 로그인하면 이 기기에서 이름과 프로필 사진을 사용할 수 있습니다.</span>
+              </div>
+              <button class="settings-modal-button is-primary" type="button" data-profile-auth-action data-i18n="auth.signIn">Google로 로그인</button>
             </div>
           </div>
-          <label class="settings-modal-field">
-            <span data-i18n="profileDialog.nameControl">사용자 이름 변경</span>
-            <input type="text" value="My name" maxlength="40" data-profile-name-input />
-          </label>
-          <div class="settings-modal-row">
-            <div>
-              <strong data-i18n="profileDialog.photoSection">프로필 사진</strong>
-              <span data-profile-avatar-status data-i18n="profileDialog.avatarDefault">구급차 이미지</span>
+          <div class="settings-auth-view" data-settings-auth-signed-in hidden>
+            <div class="settings-modal-profile">
+              <img class="settings-modal-avatar" src="/assets/well-avatar.webp" alt="" width="192" height="192" loading="lazy" decoding="async" data-profile-avatar-preview />
+              <div>
+                <strong data-profile-name>My name</strong>
+                <span><span data-i18n="profileDialog.plan">요금제</span>: <span data-profile-plan>Free</span></span>
+              </div>
             </div>
-            <label class="settings-modal-button">
-              <span data-i18n="profileDialog.photoControl">프로필 사진 추가</span>
-              <input class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" data-profile-avatar-input />
-            </label>
-          </div>
-          <div class="settings-modal-row">
-            <div>
-              <strong data-i18n="profileDialog.visibility">프로필 표시</strong>
-              <span data-profile-visibility-status data-i18n="profileDialog.visibilityOn">표시 중</span>
+            <div class="settings-modal-row">
+              <div>
+                <strong data-i18n="settings.profileAccountTitle">로그인된 프로필</strong>
+                <span data-profile-auth-status data-i18n="settings.profileAccountBody">이름과 사진은 Google 계정에서 가져옵니다.</span>
+              </div>
+              <button class="settings-modal-button" type="button" data-profile-auth-action data-i18n="auth.signOut">로그아웃</button>
             </div>
-            <button class="toggle is-on" type="button" aria-pressed="true" data-profile-visibility-toggle></button>
-          </div>
-          <div class="settings-modal-actions">
-            <button class="settings-modal-button" type="button" data-profile-avatar-reset data-i18n="profileDialog.photoReset">사진 초기화</button>
-            <button class="settings-modal-button" type="button" data-profile-reset data-i18n="profileDialog.reset">Reset</button>
-            <button class="settings-modal-button is-primary" type="button" data-profile-save data-i18n="profileDialog.save">Save</button>
+            <div class="settings-modal-row">
+              <div>
+                <strong data-i18n="profileDialog.visibility">프로필 표시</strong>
+                <span data-profile-visibility-status data-i18n="profileDialog.visibilityOn">표시 중</span>
+              </div>
+              <button class="toggle is-on" type="button" aria-pressed="true" data-profile-visibility-toggle></button>
+            </div>
           </div>
         </section>
 
@@ -1031,23 +1050,29 @@ const createSettingsDialog = () => {
         <p class="eyebrow" data-i18n="settings.storageTab">Storage</p>
         <h2 id="cookie-settings-dialog-title" data-i18n="settings.cookieDialogTitle">쿠키 설정</h2>
         <p data-i18n="settings.cookieDialogBody">
-          이 사이트에서 사용하는 쿠키 종류를 선택합니다. 현재 광고나 분석 쿠키는 사용하지 않습니다.
+          필수 사이트 기능은 항상 유지됩니다. 이 브라우저에 안내 확인 선택을 저장할지만 정할 수 있습니다.
         </p>
-        <a class="cookie-settings-more" href="/privacy#cookies" data-i18n="settings.cookieLearnMore">자세히 알아보기</a>
+        <a class="cookie-settings-more" href="/privacy#cookies">
+          <span data-i18n="settings.cookieLearnMore">자세히 알아보기</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7" /><path d="M9 7h8v8" /></svg>
+        </a>
         <div class="cookie-choice-list" aria-label="쿠키 종류 선택" data-i18n-aria-label="aria.cookieSettings">
           <div class="cookie-choice is-required">
             <span class="cookie-choice-copy">
-              <strong data-i18n="settings.cookieEssentialTitle">필수 쿠키</strong>
-              <small data-i18n="settings.cookieEssentialBody">보안과 기본 동작에 필요한 항목입니다. 이 항목은 끌 수 없습니다.</small>
+              <strong data-i18n="settings.cookieEssentialTitle">필수 사이트 기능</strong>
+              <small data-i18n="settings.cookieEssentialBody">보안과 기본 동작에 필요한 스크립트와 저장 기능입니다. 광고 프로필을 만들지 않습니다.</small>
             </span>
-            <button class="toggle is-on" type="button" aria-pressed="true" disabled data-i18n-aria-label="settings.cookieEssentialOn"></button>
+            <span class="cookie-required-status">
+              <span class="cookie-required-dot" aria-hidden="true"></span>
+              <span data-i18n="settings.cookieEssentialFixed">항상 켜짐</span>
+            </span>
           </div>
           <div class="cookie-choice">
             <span class="cookie-choice-copy">
               <strong data-i18n="settings.cookiePreferenceTitle">설정 저장 쿠키</strong>
               <small data-i18n="settings.cookiePreferenceBody">브라우저 저장 안내를 확인했다는 선택을 이 브라우저에 저장합니다.</small>
             </span>
-            <button class="toggle" type="button" aria-pressed="false" data-cookie-preference-toggle></button>
+            <button class="cookie-switch" type="button" aria-pressed="false" data-cookie-preference-toggle></button>
           </div>
         </div>
         <p class="cookie-settings-status" data-cookie-settings-status role="status" aria-live="polite"></p>
@@ -1450,6 +1475,12 @@ document.addEventListener("click", (event) => {
   if (accountAction?.dataset.sidebarAccountAction === "profile") {
     closeSidebarAccountMenus();
     openUserProfileDialog();
+    return;
+  }
+
+  if (accountAction?.dataset.sidebarAccountAction === "google-auth") {
+    closeSidebarAccountMenus();
+    window.dispatchEvent(new CustomEvent("profile-auth-request"));
     return;
   }
 
@@ -2230,6 +2261,8 @@ const browserUsageMonthlyRemaining = document.querySelector("[data-browser-month
 const browserUsageMonthlyBar = document.querySelector("[data-browser-monthly-bar]");
 const usageResetButton = document.querySelector("[data-usage-reset-button]");
 const usageResetStatus = document.querySelector("[data-usage-reset-status]");
+const usageAuthGate = document.querySelector("[data-usage-auth-gate]");
+const usageAuthContent = [...document.querySelectorAll("[data-usage-auth-content]")];
 let usageResetWarningDialog = document.querySelector("[data-usage-reset-warning]");
 let usageResetWarningCloseButtons = [...document.querySelectorAll("[data-usage-reset-warning-close]")];
 let usageResetWarningConfirm = document.querySelector("[data-usage-reset-warning-confirm]");
@@ -2258,6 +2291,7 @@ const feedbackCancel = document.querySelector("[data-feedback-cancel]");
 const feedbackConfirm = document.querySelector("[data-feedback-confirm]");
 const feedbackFormUrl = "https://forms.gle/4B7C5gK2NEvpzc1v7";
 let pendingSubscribeUrl = "";
+let pendingAuthenticatedSubscribeButton = null;
 let contextMenuCloseTimeoutId = 0;
 let copyToastTimeoutId = 0;
 let copyEventSuppressedUntil = 0;
@@ -2352,10 +2386,16 @@ const getUserProfileAvatar = () => localStorage.getItem(USER_PROFILE_AVATAR_KEY)
 const getUserProfileVisibility = () => normalizeBooleanSetting(localStorage.getItem(USER_PROFILE_VISIBILITY_KEY), true);
 
 const syncUserProfileUI = () => {
-  const name = getUserProfileName();
-  const avatar = getUserProfileAvatar();
-  const hasCustomAvatar = avatar !== DEFAULT_USER_PROFILE_AVATAR;
+  const authUser = window.profileAuthUser || null;
+  const localName = getUserProfileName();
+  const localAvatar = getUserProfileAvatar();
+  const name = authUser?.displayName?.trim() || authUser?.email?.split("@")[0] || localName;
+  const avatar = authUser?.photoURL || localAvatar;
+  const hasCustomAvatar = authUser ? Boolean(authUser.photoURL) : localAvatar !== DEFAULT_USER_PROFILE_AVATAR;
   const isVisible = getUserProfileVisibility();
+  const authState = document.documentElement.dataset.authState || "loading";
+  const isAuthLoading = authState === "loading" || authState === "unavailable";
+  const isSignedIn = Boolean(authUser);
 
   document.querySelectorAll("[data-profile-name]").forEach((element) => {
     element.textContent = name;
@@ -2363,15 +2403,75 @@ const syncUserProfileUI = () => {
   document.querySelectorAll("[data-profile-plan]").forEach((element) => {
     element.textContent = USER_PROFILE_PLAN;
   });
-  document.querySelectorAll(".sidebar-account-avatar, [data-profile-avatar-preview]").forEach((image) => {
+  document.querySelectorAll("[data-sidebar-account-name]").forEach((element) => {
+    element.textContent = isSignedIn ? name : translate("auth.signIn");
+  });
+  document.querySelectorAll("[data-sidebar-account-plan]").forEach((element) => {
+    element.textContent = isSignedIn ? USER_PROFILE_PLAN : translate("auth.optional");
+  });
+  document.querySelectorAll(".sidebar-account-avatar").forEach((image) => {
+    image.src = isSignedIn ? avatar : DEFAULT_USER_PROFILE_AVATAR;
+  });
+  document.querySelectorAll("[data-profile-avatar-preview]").forEach((image) => {
     image.src = avatar;
+  });
+  document.querySelectorAll(".sidebar-account-item.is-auth-required").forEach((item) => {
+    item.hidden = !isSignedIn;
+    item.setAttribute("aria-hidden", String(!isSignedIn));
+  });
+
+  const settingsProfileLabelKey = isSignedIn ? "settings.profileTab" : "settings.loginTab";
+  document.querySelectorAll("[data-settings-profile-tab-label], [data-settings-profile-heading]").forEach((element) => {
+    element.dataset.i18n = settingsProfileLabelKey;
+    element.textContent = translate(settingsProfileLabelKey);
+  });
+  document.querySelectorAll("[data-settings-auth-signed-out]").forEach((element) => {
+    element.hidden = isSignedIn;
+  });
+  document.querySelectorAll("[data-settings-auth-signed-in]").forEach((element) => {
+    element.hidden = !isSignedIn;
   });
 
   const nameInput = document.querySelector("[data-profile-name-input]");
-  if (nameInput) nameInput.value = name;
+  if (nameInput) {
+    nameInput.value = name;
+    nameInput.disabled = isSignedIn;
+  }
+
+  const profileDialog = document.querySelector("[data-user-profile-dialog]");
+  profileDialog?.classList.toggle("is-auth-managed", isSignedIn);
+  document.querySelectorAll("[data-profile-local-control]").forEach((element) => {
+    if (element instanceof HTMLButtonElement || element instanceof HTMLInputElement) {
+      element.disabled = isSignedIn;
+    }
+  });
+  const avatarInput = document.querySelector("[data-profile-avatar-input]");
+  if (avatarInput) avatarInput.disabled = isSignedIn;
+
+  document.querySelectorAll("[data-profile-auth-status]").forEach((element) => {
+    element.textContent = isSignedIn
+      ? `${translate("auth.signedInAs")} ${authUser.email || name}`
+      : translate("auth.signedOutBody");
+  });
+  document.querySelectorAll('[data-sidebar-account-action="google-auth"] span, [data-profile-auth-action]').forEach((element) => {
+    const labelKey = isSignedIn
+      ? "auth.signOut"
+      : authState === "unavailable"
+        ? "auth.unavailable"
+        : isAuthLoading
+          ? "auth.loading"
+          : "auth.signIn";
+    element.dataset.i18n = labelKey;
+    element.textContent = translate(labelKey);
+  });
+  document.querySelectorAll('[data-sidebar-account-action="google-auth"], [data-profile-auth-action]').forEach((button) => {
+    button.disabled = isAuthLoading;
+  });
 
   document.querySelectorAll("[data-profile-avatar-status]").forEach((element) => {
-    element.textContent = translate(hasCustomAvatar ? "profileDialog.avatarCustom" : "profileDialog.avatarDefault");
+    element.textContent = translate(
+      isSignedIn ? "auth.googlePhoto" : hasCustomAvatar ? "profileDialog.avatarCustom" : "profileDialog.avatarDefault",
+    );
   });
   document.querySelectorAll("[data-profile-visibility-status]").forEach((element) => {
     element.textContent = translate(isVisible ? "profileDialog.visibilityOn" : "profileDialog.visibilityOff");
@@ -2380,6 +2480,41 @@ const syncUserProfileUI = () => {
     button.setAttribute("aria-pressed", String(isVisible));
   });
 };
+
+const syncAuthenticatedCheckoutUI = () => {
+  const authState = document.documentElement.dataset.authState || "loading";
+  const isSignedIn = authState === "signed-in" && Boolean(window.profileAuthUser);
+  const isUnavailable = authState === "unavailable";
+
+  subscribeButtons.forEach((button) => {
+    if (!button.hasAttribute("data-auth-required-checkout")) return;
+
+    const labelKey = isSignedIn ? button.dataset.authenticatedI18n || "pricing.choosePro" : "pricing.signInToPay";
+    button.dataset.i18n = labelKey;
+    button.textContent = translate(labelKey);
+    button.disabled = authState === "loading" || isUnavailable;
+    button.setAttribute("aria-disabled", String(button.disabled));
+    button.title = isUnavailable ? translate("auth.unavailable") : "";
+  });
+};
+
+window.addEventListener("profile-auth-change", () => {
+  syncUserProfileUI();
+  syncAuthenticatedCheckoutUI();
+
+  const pendingButton = pendingAuthenticatedSubscribeButton;
+  const isSignedIn = document.documentElement.dataset.authState === "signed-in" && Boolean(window.profileAuthUser);
+  if (!pendingButton || !isSignedIn) return;
+
+  pendingAuthenticatedSubscribeButton = null;
+  showSubscribeWarning(pendingButton);
+});
+window.addEventListener("profile-auth-toast", (event) => {
+  if (["auth.popupBlocked", "auth.popupClosed", "auth.error"].includes(event.detail)) {
+    pendingAuthenticatedSubscribeButton = null;
+  }
+  showCopyToast(event.detail || "auth.error");
+});
 
 const saveUserProfileName = () => {
   const input = document.querySelector("[data-profile-name-input]");
@@ -2940,6 +3075,7 @@ const setLanguage = (language) => {
   renderActivityPage();
   syncQuickSettingsControls();
   syncUserProfileUI();
+  syncAuthenticatedCheckoutUI();
 };
 
 const getToggleLabelKey = (key, isOn) => {
@@ -4118,6 +4254,7 @@ const clearSiteCache = () => {
     "profile-browser-usage-reset-week-start-ms",
     "profile-browser-usage-reset-week-count",
     "profile-browser-usage-accounting-version",
+    "profile-browser-usage-auth-started",
     activityLogKey,
     homeSubscriptionKey,
   ].forEach((key) => localStorage.removeItem(key));
@@ -4178,7 +4315,8 @@ const browserUsageMonthlyLimitMs = 30 * browserUsageLimitMs;
 const browserUsageMonthMs = 30 * 24 * 60 * 60 * 1000;
 const browserUsageResetLimit = 2;
 const browserUsageStartedAt = Date.now();
-const browserUsageAccountingVersion = "visible-session-v1";
+const browserUsageAccountingVersion = "signed-in-visible-v2";
+const browserUsageAuthStartedKey = "profile-browser-usage-auth-started";
 if (localStorage.getItem("profile-browser-usage-accounting-version") !== browserUsageAccountingVersion) {
   localStorage.setItem("profile-browser-usage-window-start-ms", String(browserUsageStartedAt));
   localStorage.setItem("profile-browser-usage-used-ms", "0");
@@ -4187,9 +4325,10 @@ if (localStorage.getItem("profile-browser-usage-accounting-version") !== browser
   localStorage.setItem("profile-browser-usage-month-start-ms", String(browserUsageStartedAt));
   localStorage.setItem("profile-browser-usage-month-used-ms", "0");
   localStorage.removeItem("profile-browser-usage-total-ms");
+  localStorage.removeItem(browserUsageAuthStartedKey);
   localStorage.setItem("profile-browser-usage-accounting-version", browserUsageAccountingVersion);
 }
-let browserUsageActiveStartedAt = document.visibilityState === "visible" ? browserUsageStartedAt : 0;
+let browserUsageActiveStartedAt = 0;
 let browserUsageWindowStart = Number.parseInt(localStorage.getItem("profile-browser-usage-window-start-ms") || "0", 10);
 let browserUsageBaseMs = Number.parseInt(
   localStorage.getItem("profile-browser-usage-used-ms") || localStorage.getItem("profile-browser-usage-total-ms") || "0",
@@ -4213,6 +4352,35 @@ let browserUsageWeeklyWindowStateChanged = false;
 let browserUsageMonthlyWindowStateChanged = false;
 let browserUsageResetWindowStateChanged = false;
 let usageLimitNotice = null;
+let browserUsageAuthenticated = false;
+
+const isUsageAuthenticated = () =>
+  document.documentElement.dataset.authState === "signed-in" && Boolean(window.profileAuthUser);
+
+const initializeBrowserUsageForAuthentication = () => {
+  if (localStorage.getItem(browserUsageAuthStartedKey) === "true") return;
+
+  const now = Date.now();
+  browserUsageWindowStart = now;
+  browserUsageBaseMs = 0;
+  browserUsageWeeklyWindowStart = now;
+  browserUsageWeeklyBaseMs = 0;
+  browserUsageMonthlyWindowStart = now;
+  browserUsageMonthlyBaseMs = 0;
+  browserUsageResetWeekStart = now;
+  browserUsageResetWeekCount = 0;
+  browserUsageRedirected = false;
+  localStorage.setItem("profile-browser-usage-window-start-ms", String(now));
+  localStorage.setItem("profile-browser-usage-used-ms", "0");
+  localStorage.setItem("profile-browser-usage-week-start-ms", String(now));
+  localStorage.setItem("profile-browser-usage-week-used-ms", "0");
+  localStorage.setItem("profile-browser-usage-month-start-ms", String(now));
+  localStorage.setItem("profile-browser-usage-month-used-ms", "0");
+  localStorage.setItem("profile-browser-usage-reset-week-start-ms", String(now));
+  localStorage.setItem("profile-browser-usage-reset-week-count", "0");
+  localStorage.setItem(browserUsageAuthStartedKey, "true");
+  localStorage.removeItem("profile-browser-usage-total-ms");
+};
 if (!Number.isFinite(browserUsageWindowStart) || browserUsageWindowStart <= 0) {
   browserUsageWindowStart = browserUsageStartedAt;
   browserUsageWindowStateChanged = true;
@@ -4380,6 +4548,12 @@ const getUsageResetRemaining = () => {
 const updateUsageResetControl = () => {
   if (!usageResetButton && !usageResetStatus) return;
 
+  if (!isUsageAuthenticated()) {
+    if (usageResetButton) usageResetButton.disabled = true;
+    if (usageResetStatus) usageResetStatus.textContent = translate("usage.signInStatus");
+    return;
+  }
+
   const remaining = getUsageResetRemaining();
   const resetDate = formatUsageDateValue(browserUsageResetWeekStart + browserUsageWeekMs, true);
   if (usageResetButton) usageResetButton.disabled = remaining <= 0;
@@ -4392,6 +4566,7 @@ const updateUsageResetControl = () => {
 };
 
 const resetBrowserUsageLimits = () => {
+  if (!isUsageAuthenticated()) return;
   if (getUsageResetRemaining() <= 0) {
     updateUsageResetControl();
     return;
@@ -4426,6 +4601,7 @@ const resetBrowserUsageLimits = () => {
 };
 
 const showUsageResetWarningDialog = () => {
+  if (!isUsageAuthenticated()) return;
   if (getUsageResetRemaining() <= 0) {
     updateUsageResetControl();
     return;
@@ -4477,7 +4653,7 @@ const getCurrentMonthlyUsageMs = () => {
   return browserUsageMonthlyBaseMs + getBrowserUsageActiveElapsed(browserUsageMonthlyWindowStart);
 };
 
-const persistBrowserUsage = () => {
+const persistBrowserUsage = ({ restart = true } = {}) => {
   refreshBrowserUsageWindow();
   refreshBrowserUsageWeeklyWindow();
   refreshBrowserUsageMonthlyWindow();
@@ -4491,10 +4667,17 @@ const persistBrowserUsage = () => {
   localStorage.setItem("profile-browser-usage-month-start-ms", String(browserUsageMonthlyWindowStart));
   localStorage.setItem("profile-browser-usage-month-used-ms", String(browserUsageMonthlyBaseMs));
   localStorage.removeItem("profile-browser-usage-total-ms");
-  browserUsageActiveStartedAt = document.visibilityState === "visible" ? Date.now() : 0;
+  browserUsageActiveStartedAt =
+    restart && isUsageAuthenticated() && document.visibilityState === "visible" ? Date.now() : 0;
 };
 
 const updateBrowserUsage = () => {
+  if (!isUsageAuthenticated()) {
+    if (usageLimitNotice) setUsageLimitNoticeVisible(false);
+    updateUsageResetControl();
+    return;
+  }
+
   refreshBrowserUsageWindow();
   refreshBrowserUsageWeeklyWindow();
   refreshBrowserUsageMonthlyWindow();
@@ -4542,6 +4725,37 @@ const updateBrowserUsage = () => {
     persistBrowserUsage();
   }
 };
+
+const syncUsageAuthentication = () => {
+  const authState = document.documentElement.dataset.authState || "loading";
+  const isSignedIn = isUsageAuthenticated();
+  const isLoading = authState === "loading";
+
+  usageAuthContent.forEach((element) => {
+    element.hidden = !isSignedIn;
+  });
+  if (usageAuthGate) usageAuthGate.hidden = isSignedIn || isLoading;
+
+  if (browserUsageAuthenticated && !isSignedIn && browserUsageActiveStartedAt > 0) {
+    persistBrowserUsage({ restart: false });
+  }
+
+  browserUsageAuthenticated = isSignedIn;
+  if (isSignedIn) {
+    initializeBrowserUsageForAuthentication();
+    if (document.visibilityState === "visible" && browserUsageActiveStartedAt <= 0) {
+      browserUsageActiveStartedAt = Date.now();
+    }
+  } else {
+    browserUsageActiveStartedAt = 0;
+    if (usageLimitNotice) setUsageLimitNoticeVisible(false);
+    closeUsageResetWarningDialog();
+  }
+
+  updateBrowserUsage();
+};
+
+window.addEventListener("profile-auth-change", syncUsageAuthentication);
 
 const updateStorageEstimate = async () => {
   if (!storageMeter) return;
@@ -5710,7 +5924,7 @@ setCurrency(localStorage.getItem("profile-currency") || (currentLanguage === "ko
 updateStorageEstimate();
 updateBrowserUsage();
 const browserUsageIntervalId = window.setInterval(() => {
-  if (document.visibilityState !== "visible") return;
+  if (!isUsageAuthenticated() || document.visibilityState !== "visible") return;
   updateBrowserUsage();
   persistBrowserUsage();
 }, 1000);
@@ -5800,17 +6014,17 @@ clearCacheWarning?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === clearCacheWarning) closeClearCacheWarning();
 });
 window.addEventListener("pagehide", () => {
-  persistBrowserUsage();
+  if (browserUsageActiveStartedAt > 0) persistBrowserUsage({ restart: false });
   window.clearInterval(browserUsageIntervalId);
 });
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden") {
-    persistBrowserUsage();
+    if (browserUsageActiveStartedAt > 0) persistBrowserUsage({ restart: false });
     browserUsageActiveStartedAt = 0;
     return;
   }
 
-  browserUsageActiveStartedAt = Date.now();
+  browserUsageActiveStartedAt = isUsageAuthenticated() ? Date.now() : 0;
   updateBrowserUsage();
 });
 feedbackOpenButtons.forEach((button) => {
@@ -5822,7 +6036,19 @@ feedbackWarning?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === feedbackWarning) closeFeedbackWarning();
 });
 subscribeButtons.forEach((button) => {
-  button.addEventListener("click", () => showSubscribeWarning(button));
+  button.addEventListener("click", () => {
+    const requiresAuth = button.hasAttribute("data-auth-required-checkout");
+    const isSignedIn = document.documentElement.dataset.authState === "signed-in" && Boolean(window.profileAuthUser);
+
+    if (requiresAuth && !isSignedIn) {
+      pendingAuthenticatedSubscribeButton = button;
+      showCopyToast("pricing.signInRequired");
+      window.dispatchEvent(new CustomEvent("profile-auth-request"));
+      return;
+    }
+
+    showSubscribeWarning(button);
+  });
 });
 subscribeCancel?.addEventListener("click", closeSubscribeWarning);
 subscribeConfirm?.addEventListener("click", openSubscriptionCheckout);
@@ -6183,4 +6409,10 @@ infoTabs.forEach((tab) => {
       panel.hidden = !isActive;
     });
   });
+});
+
+import("/assets/js/firebase-auth.js?v=20260717-checkout-auth1").catch(() => {
+  document.documentElement.dataset.authState = "unavailable";
+  window.profileAuthUser = null;
+  window.dispatchEvent(new CustomEvent("profile-auth-change"));
 });

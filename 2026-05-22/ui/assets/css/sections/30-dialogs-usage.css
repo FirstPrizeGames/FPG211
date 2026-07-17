@@ -555,7 +555,7 @@
   --soft: #252520;
   --page-bg:
     radial-gradient(circle at 12% 8%, rgba(86, 84, 78, 0.28), transparent 32rem),
-    linear-gradient(135deg, #111110 0%, var(--bg) 52%, #24231f 100%);
+    linear-gradient(135deg, #111110 0%, var(--bg) 52%, #0f0f0e 100%);
 }
 
 [data-theme="lights-off"] .home-body,

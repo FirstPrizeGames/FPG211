@@ -1,4 +1,4 @@
-﻿const navIconMarkup = {
+const navIconMarkup = {
   search:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m16 16 5 5" /></svg>',
   chevron:
@@ -65,7 +65,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260718-cookie-first-visit3`;
+  const repairUrl = `${guard.fallback}?v=20260718-auth-feedback1`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -2509,8 +2509,13 @@ window.addEventListener("profile-auth-change", () => {
   pendingAuthenticatedSubscribeButton = null;
   showSubscribeWarning(pendingButton);
 });
+
+const SUCCESS_TOAST_KEYS = new Set(["settings.saved", "auth.signedIn", "auth.signedOut"]);
+const WARNING_TOAST_KEYS = new Set(["auth.popupClosed"]);
+const ERROR_TOAST_KEYS = new Set(["auth.popupBlocked", "auth.networkError", "auth.unavailable", "auth.error"]);
+
 window.addEventListener("profile-auth-toast", (event) => {
-  if (["auth.popupBlocked", "auth.popupClosed", "auth.error"].includes(event.detail)) {
+  if (WARNING_TOAST_KEYS.has(event.detail) || ERROR_TOAST_KEYS.has(event.detail)) {
     pendingAuthenticatedSubscribeButton = null;
   }
   showCopyToast(event.detail || "auth.error");
@@ -2669,8 +2674,18 @@ const showCopyToast = (messageKey = "toast.copyText") => {
   }
 
   window.clearTimeout(copyToastTimeoutId);
+  const tone = SUCCESS_TOAST_KEYS.has(messageKey)
+    ? "success"
+    : WARNING_TOAST_KEYS.has(messageKey)
+      ? "warning"
+      : ERROR_TOAST_KEYS.has(messageKey)
+        ? "error"
+        : "default";
+  const isImportant = tone === "warning" || tone === "error";
   toast.textContent = message;
-  toast.dataset.toastTone = messageKey === "settings.saved" ? "success" : "default";
+  toast.dataset.toastTone = tone;
+  toast.setAttribute("role", isImportant ? "alert" : "status");
+  toast.setAttribute("aria-live", isImportant ? "assertive" : "polite");
   toast.hidden = false;
   toast.classList.remove("is-hiding");
   toast.classList.add("is-visible");
@@ -2681,7 +2696,7 @@ const showCopyToast = (messageKey = "toast.copyText") => {
       toast.hidden = true;
       toast.classList.remove("is-hiding");
     }, 180);
-  }, 1700);
+  }, tone === "error" ? 3800 : tone === "warning" ? 3000 : tone === "success" ? 2200 : 1700);
 };
 
 const selectionContainsImage = () => {
@@ -3689,12 +3704,19 @@ const setCookiePreference = (isOn) => {
 
 const clearCookieFirstVisitState = () => {
   cookieSettingsDialog?.removeAttribute("data-cookie-first-visit");
+  cookieSettingsDialog
+    ?.querySelector(".cookie-settings-dialog-panel")
+    ?.setAttribute("aria-modal", "true");
 };
 
 const showCookieSettingsDialog = ({ firstVisit = false } = {}) => {
   if (!cookieSettingsDialog) return;
 
   if (firstVisit) cookieSettingsDialog.setAttribute("data-cookie-first-visit", "true");
+  else cookieSettingsDialog.removeAttribute("data-cookie-first-visit");
+  cookieSettingsDialog
+    .querySelector(".cookie-settings-dialog-panel")
+    ?.setAttribute("aria-modal", firstVisit ? "false" : "true");
   updateCookiePreferenceControls(getCookiePreferences().preferences);
   cookieSettingsDialog.classList.remove("is-closing");
   cookieSettingsDialog.hidden = false;
@@ -6483,7 +6505,7 @@ infoTabs.forEach((tab) => {
   });
 });
 
-import("/assets/js/firebase-auth.js?v=20260718-cookie-first-visit3").catch(() => {
+import("/assets/js/firebase-auth.js?v=20260718-auth-feedback1").catch(() => {
   document.documentElement.dataset.authState = "unavailable";
   window.profileAuthUser = null;
   window.dispatchEvent(new CustomEvent("profile-auth-change"));

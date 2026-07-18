@@ -6658,6 +6658,71 @@ body .cookie-settings-dialog .cookie-settings-dialog-panel .cookie-settings-acti
   color: #111110;
 }
 
+/* First-visit storage notice stays visible without blocking the page behind it. */
+.cookie-settings-dialog[data-cookie-first-visit="true"] {
+  display: block;
+  padding: 0;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  pointer-events: none;
+}
+
+.cookie-settings-dialog[data-cookie-first-visit="true"] .cookie-settings-dialog-panel {
+  position: fixed;
+  left: max(18px, env(safe-area-inset-left));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  width: min(420px, calc(100vw - 36px));
+  max-height: calc(100dvh - 36px);
+  padding: 22px;
+  pointer-events: auto;
+  transform-origin: left bottom;
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.52);
+}
+
+.cookie-settings-dialog[data-cookie-first-visit="true"] h2 {
+  font-size: 26px;
+}
+
+.cookie-settings-dialog[data-cookie-first-visit="true"] .cookie-settings-links {
+  margin-top: 14px;
+}
+
+.cookie-settings-dialog[data-cookie-first-visit="true"] .cookie-choice-list {
+  margin-top: 16px;
+}
+
+.cookie-settings-dialog[data-cookie-first-visit="true"] .cookie-choice {
+  min-height: 80px;
+  padding: 14px 0;
+}
+
+.cookie-settings-dialog[data-cookie-first-visit="true"] .cookie-settings-status {
+  min-height: 30px;
+  margin-top: 10px;
+}
+
+@media (min-width: 1024px) {
+  :root[data-nav-layout="sidebar"]
+    .cookie-settings-dialog[data-cookie-first-visit="true"]
+    .cookie-settings-dialog-panel {
+    left: 238px;
+  }
+
+  :root[data-nav-layout="sidebar"][data-sidebar-collapsed="true"]
+    .cookie-settings-dialog[data-cookie-first-visit="true"]
+    .cookie-settings-dialog-panel {
+    left: 90px;
+  }
+
+  :root[data-nav-layout="sidebar"]
+    .official-home-body
+    .cookie-settings-dialog[data-cookie-first-visit="true"]
+    .cookie-settings-dialog-panel {
+    left: max(18px, env(safe-area-inset-left));
+  }
+}
+
 @media (max-width: 560px) {
   .cookie-settings-dialog {
     padding: 8px;
@@ -6677,6 +6742,19 @@ body .cookie-settings-dialog .cookie-settings-dialog-panel .cookie-settings-acti
 
   .cookie-settings-dialog .cookie-required-status {
     padding: 0 8px;
+  }
+
+  .cookie-settings-dialog[data-cookie-first-visit="true"] {
+    padding: 0;
+  }
+
+  .cookie-settings-dialog[data-cookie-first-visit="true"] .cookie-settings-dialog-panel {
+    right: 8px;
+    bottom: max(8px, env(safe-area-inset-bottom));
+    left: 8px;
+    width: auto;
+    max-height: calc(100dvh - 16px);
+    padding: 20px 18px 18px;
   }
 }
 

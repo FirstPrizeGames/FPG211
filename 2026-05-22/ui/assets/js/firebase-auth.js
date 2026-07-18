@@ -45,6 +45,23 @@ const emitToast = (key) => {
   window.dispatchEvent(new CustomEvent("profile-auth-toast", { detail: key }));
 };
 
+const getAuthErrorMessageKey = (error) => {
+  switch (error?.code) {
+    case "auth/popup-blocked":
+      return "auth.popupBlocked";
+    case "auth/popup-closed-by-user":
+    case "auth/cancelled-popup-request":
+      return "auth.popupClosed";
+    case "auth/network-request-failed":
+      return "auth.networkError";
+    case "auth/unauthorized-domain":
+    case "auth/operation-not-supported-in-this-environment":
+      return "auth.unavailable";
+    default:
+      return "auth.error";
+  }
+};
+
 const runAuthAction = async () => {
   if (requestInProgress) return;
   requestInProgress = true;
@@ -62,13 +79,7 @@ const runAuthAction = async () => {
       emitToast("auth.signedIn");
     }
   } catch (error) {
-    const errorKey =
-      error?.code === "auth/popup-blocked"
-        ? "auth.popupBlocked"
-        : error?.code === "auth/popup-closed-by-user"
-          ? "auth.popupClosed"
-          : "auth.error";
-    emitToast(errorKey);
+    emitToast(getAuthErrorMessageKey(error));
   } finally {
     requestInProgress = false;
     emitAuthState(currentUser ? "signed-in" : "signed-out");

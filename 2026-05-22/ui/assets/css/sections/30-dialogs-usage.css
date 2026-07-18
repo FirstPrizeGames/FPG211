@@ -1470,6 +1470,19 @@
     max-width: 100%;
   }
 
+  .activity-date-toggle {
+    min-height: 54px;
+    padding: 0 14px;
+  }
+
+  .activity-date-toggle-main {
+    gap: 9px;
+  }
+
+  .activity-date-count {
+    padding-left: 9px;
+  }
+
   .release-entry {
     grid-template-columns: 1fr;
   }

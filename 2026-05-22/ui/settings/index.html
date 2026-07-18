@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -87,7 +87,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../assets/css/styles.css?v=20260717-bottom-bg1" />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260718-cookie-preferences5" />
   </head>
   <body class="settings-body settings-modal-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -164,15 +164,15 @@
             <h2 data-i18n="nav.accessibility">Accessibility</h2>
             <div class="settings-modal-row">
               <div>
-                <strong data-i18n="settings.kidModeTitle">모션 줄이기</strong>
-                <span data-i18n="settings.kidModeBody">과한 전환 효과와 애니메이션 부담을 줄여 화면을 차분하게 표시합니다.</span>
+                <strong data-i18n="settings.kidModeTitle">화면 표시 보조</strong>
+                <span data-i18n="settings.kidModeBody">글자와 버튼을 크게 하고 대비를 높이며 일부 전환 효과를 줄입니다.</span>
               </div>
               <button class="toggle" type="button" aria-pressed="false" data-toggle-key="kid-mode"></button>
             </div>
             <div class="settings-modal-row">
               <div>
                 <strong data-i18n="settings.accessibilityTitle">접근성 안내</strong>
-                <span data-i18n="settings.accessibilityBody">키보드 이동, 색 대비, 언어, 모바일 표시 기준을 확인합니다.</span>
+                <span data-i18n="settings.accessibilityBody">키보드 이동, 언어, 화면 표시 보조, 모바일 지원 범위를 확인합니다.</span>
               </div>
               <a class="settings-modal-link" href="/accessibility" data-i18n="settings.accessibilityOpen">Accessibility 열기</a>
             </div>
@@ -287,12 +287,12 @@
           <p class="eyebrow" data-i18n="settings.storageTab">Storage</p>
           <h2 id="cookie-settings-dialog-title" data-i18n="settings.cookieDialogTitle">쿠키 설정</h2>
           <p data-i18n="settings.cookieDialogBody">
-            필수 사이트 기능은 항상 유지됩니다. 이 브라우저에 안내 확인 선택을 저장할지만 정할 수 있습니다.
+            이 사이트는 광고 또는 분석 쿠키를 사용하지 않습니다. 필수 기능은 유지되며, 브라우저 저장 안내 확인 여부를 기억할지 선택할 수 있습니다.
           </p>
-          <a class="cookie-settings-more" href="/privacy#cookies">
-            <span data-i18n="settings.cookieLearnMore">자세히 알아보기</span>
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7" /><path d="M9 7h8v8" /></svg>
-          </a>
+          <div class="cookie-settings-links">
+            <a href="/privacy" data-i18n="nav.privacy">개인정보 처리방침</a>
+            <a href="/privacy#cookies" data-i18n="settings.cookieStorageDetails">브라우저 저장소 자세히 보기</a>
+          </div>
           <div class="cookie-choice-list" aria-label="쿠키 종류 선택" data-i18n-aria-label="aria.cookieSettings">
             <div class="cookie-choice is-required">
               <span class="cookie-choice-copy">
@@ -313,13 +313,17 @@
             </div>
           </div>
           <p class="cookie-settings-status" data-cookie-settings-status role="status" aria-live="polite"></p>
+          <div class="cookie-settings-actions">
+            <button class="button cookie-settings-save" type="button" data-cookie-settings-save data-i18n="settings.cookieSave">설정 저장</button>
+            <button class="button cookie-settings-essential" type="button" data-cookie-settings-essential data-i18n="settings.cookieEssentialOnly">필수 기능만 사용</button>
+          </div>
         </div>
       </div>
     </main>
 
-    <script src="../assets/js/translations.js?v=20260717-bottom-bg1" defer></script>
+    <script src="../assets/js/translations.js?v=20260718-cookie-preferences5" defer></script>
 
 
-    <script src="../assets/js/script.js?v=20260717-bottom-bg1" defer></script>
+    <script src="../assets/js/script.js?v=20260718-cookie-preferences5" defer></script>
   </body>
 </html>

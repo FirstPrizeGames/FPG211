@@ -1579,14 +1579,82 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 .release-group header {
+  min-height: 0;
+  padding: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  background: color-mix(in srgb, var(--ink) 3%, transparent);
+}
+
+.release-group:not(.is-expanded) header {
+  border-bottom-color: transparent;
+}
+
+.release-group-toggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 14px;
+  width: 100%;
   min-height: 58px;
-  padding: 0 20px;
-  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
-  background: color-mix(in srgb, var(--ink) 3%, transparent);
+  padding: 0 18px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+
+.release-group-toggle:hover {
+  background: color-mix(in srgb, var(--ink) 5%, transparent);
+}
+
+.release-group-toggle:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ink) 62%, transparent);
+  outline-offset: -3px;
+}
+
+.release-group-toggle-main,
+.release-group-toggle-meta {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.release-group-toggle-main {
+  gap: 12px;
+}
+
+.release-group-toggle-meta {
+  flex: 0 0 auto;
+  gap: 10px;
+}
+
+.release-count {
+  padding-left: 12px;
+  border-left: 1px solid color-mix(in srgb, var(--line) 78%, transparent);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.release-group-toggle svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 180ms ease;
+}
+
+.release-group.is-expanded .release-group-toggle svg {
+  transform: rotate(90deg);
+}
+
+[data-release-content][hidden] {
+  display: none;
 }
 
 .release-group time {
@@ -2316,29 +2384,21 @@ html[lang="ko"] .faq-feedback-strip h2 {
   border-bottom: 1px solid color-mix(in srgb, var(--line) 84%, transparent);
 }
 
-.cookie-settings-more {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  justify-self: start;
+.cookie-settings-links {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+}
+
+.cookie-settings-links a {
   color: var(--ink);
   font-size: 13px;
   font-weight: 780;
   text-decoration: none;
 }
 
-.cookie-settings-more svg {
-  width: 15px;
-  height: 15px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.cookie-settings-more:hover,
-.cookie-settings-more:focus-visible {
+.cookie-settings-links a:hover,
+.cookie-settings-links a:focus-visible {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -2439,6 +2499,12 @@ html[lang="ko"] .faq-feedback-strip h2 {
   color: var(--muted);
   font-size: 13px;
   font-weight: 650;
+}
+
+.cookie-settings-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
 }
 
 .context-mode-choice .context-mode-preview {
@@ -3236,13 +3302,82 @@ html[lang="ko"] .faq-feedback-strip h2 {
 }
 
 .activity-date-group header {
+  min-height: 0;
+  padding: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  background: color-mix(in srgb, var(--ink) 3%, transparent);
+}
+
+.activity-date-group:not(.is-expanded) header {
+  border-bottom-color: transparent;
+}
+
+.activity-date-toggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  min-height: 56px;
-  padding: 0 20px;
-  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  width: 100%;
+  min-height: 58px;
+  padding: 0 18px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+
+.activity-date-toggle:hover {
+  background: color-mix(in srgb, var(--ink) 5%, transparent);
+}
+
+.activity-date-toggle:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ink) 62%, transparent);
+  outline-offset: -3px;
+}
+
+.activity-date-toggle-main,
+.activity-date-toggle-meta {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.activity-date-toggle-main {
+  gap: 12px;
+}
+
+.activity-date-toggle-meta {
+  flex: 0 0 auto;
+  gap: 10px;
+}
+
+.activity-date-count {
+  padding-left: 12px;
+  border-left: 1px solid color-mix(in srgb, var(--line) 78%, transparent);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.activity-date-toggle svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 180ms ease;
+}
+
+.activity-date-group.is-expanded .activity-date-toggle svg {
+  transform: rotate(90deg);
+}
+
+[data-activity-date-content][hidden] {
+  display: none;
 }
 
 .activity-date-group time {

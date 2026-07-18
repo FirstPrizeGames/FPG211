@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -21,14 +21,14 @@
     <title>Accessibility · First PrizeGames</title>
     <meta
       name="description"
-      content="Official accessibility standard page for First PrizeGames, including keyboard navigation, contrast, language, motion, and mobile access targets."
+      content="Review the accessibility features currently implemented by First PrizeGames, along with known limits and reporting options."
     />
     <meta name="theme-color" content="#151514" />
     <link rel="canonical" href="https://firstprizegames.info/accessibility" />
     <meta property="og:title" content="Accessibility · First PrizeGames" />
     <meta
       property="og:description"
-      content="Review the accessibility standard and current support scope for First PrizeGames."
+      content="Review implemented accessibility support, current limitations, and reporting options for First PrizeGames."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="First PrizeGames" />
@@ -40,7 +40,7 @@
     <meta name="twitter:title" content="Accessibility · First PrizeGames" />
     <meta
       name="twitter:description"
-      content="Review the accessibility standard and current support scope for First PrizeGames."
+      content="Review implemented accessibility support, current limitations, and reporting options for First PrizeGames."
     />
     <meta name="twitter:image" content="https://firstprizegames.info/assets/accessibility-firetruck-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -85,7 +85,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../assets/css/styles.css?v=20260717-bottom-bg1" />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260718-cookie-preferences5" />
   </head>
   <body class="accessibility-body legal-document-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -124,20 +124,20 @@
         </div>
       </nav>
 
-      <section class="accessibility-hero accessibility-official-hero">
+      <section class="accessibility-hero accessibility-official-hero" aria-labelledby="accessibility-title">
         <div class="accessibility-hero-copy">
-          <p class="eyebrow" data-i18n="accessibility.eyebrow">Accessibility Standard</p>
-          <h1 data-i18n="accessibility.title">접근성 기준</h1>
+          <p class="eyebrow" data-i18n="accessibility.eyebrow">Accessibility</p>
+          <h1 id="accessibility-title" data-i18n="accessibility.title">접근성 지원 안내</h1>
           <p class="accessibility-lead" data-i18n="accessibility.lead">
-            First PrizeGames는 키보드 이동, 명확한 초점 표시, 읽기 대비, 언어 선택, 모바일 표시 기준을 핵심 접근성 기준으로 관리합니다.
+            현재 사이트에 실제로 적용된 키보드 이동, 언어 선택, 화면 표시 보조, 모바일 지원 범위와 제한 사항을 안내합니다.
           </p>
-          <p class="accessibility-updated" data-i18n="accessibility.updated">마지막 업데이트: 2026년 6월 30일</p>
+          <p class="accessibility-updated" data-i18n="accessibility.updated">마지막 업데이트: 2026년 7월 18일</p>
         </div>
         <aside class="accessibility-scope-panel" aria-label="접근성 기준 범위" data-i18n-aria-label="accessibility.scopeLabel">
-          <span data-i18n="accessibility.scopeEyebrow">Target standard</span>
-          <strong data-i18n="accessibility.scopeValue">WCAG 2.2 AA oriented</strong>
+          <span data-i18n="accessibility.scopeEyebrow">Reference</span>
+          <strong data-i18n="accessibility.scopeValue">WCAG 2.2 AA 참고</strong>
           <p data-i18n="accessibility.scopeBody">
-            이 페이지는 공식 인증서가 아니라 사이트가 목표로 삼는 접근성 기준과 현재 지원 범위를 설명합니다.
+            독립적인 접근성 인증이나 전체 적합성 감사를 완료했다는 의미는 아닙니다.
           </p>
         </aside>
       </section>
@@ -148,94 +148,80 @@
           <strong data-i18n="accessibility.summaryKeyboardValue">Skip link and visible focus</strong>
         </div>
         <div>
-          <span data-i18n="accessibility.summaryContrast">Contrast</span>
-          <strong data-i18n="accessibility.summaryContrastValue">Readable dark UI</strong>
+          <span data-i18n="accessibility.summaryContrast">Display</span>
+          <strong data-i18n="accessibility.summaryContrastValue">글자·버튼 크기 보조</strong>
         </div>
         <div>
           <span data-i18n="accessibility.summaryLanguage">Language</span>
           <strong data-i18n="accessibility.summaryLanguageValue">Auto, Korean, English</strong>
         </div>
         <div>
-          <span data-i18n="accessibility.summaryControls">Controls</span>
-          <strong data-i18n="accessibility.summaryControlsValue">Settings modal</strong>
+          <span data-i18n="accessibility.summaryControls">Mobile</span>
+          <strong data-i18n="accessibility.summaryControlsValue">반응형 메뉴와 빠른 액션</strong>
         </div>
-      </section>
-
-      <section class="accessibility-compliance-board" aria-label="접근성 기준 상태" data-i18n-aria-label="accessibility.complianceLabel">
-        <article>
-          <span data-i18n="accessibility.compliancePerceivable">Perceivable</span>
-          <strong data-i18n="accessibility.complianceSupported">Supported</strong>
-          <p data-i18n="accessibility.perceivableBody">텍스트 대비, 이미지 대체 처리, 페이지 제목, 명확한 콘텐츠 구조를 우선 기준으로 둡니다.</p>
-        </article>
-        <article>
-          <span data-i18n="accessibility.complianceOperable">Operable</span>
-          <strong data-i18n="accessibility.complianceImproving">Improving</strong>
-          <p data-i18n="accessibility.operableBody">키보드 이동, skip link, 포커스 표시, 모달 닫기와 메뉴 버튼 접근성을 지속적으로 점검합니다.</p>
-        </article>
-        <article>
-          <span data-i18n="accessibility.complianceUnderstandable">Understandable</span>
-          <strong data-i18n="accessibility.complianceSupported">Supported</strong>
-          <p data-i18n="accessibility.understandableBody">한국어/영어 전환, 자동 언어 감지, 일관된 버튼 이름, 간결한 안내 문구를 유지합니다.</p>
-        </article>
-        <article>
-          <span data-i18n="accessibility.complianceRobust">Robust</span>
-          <strong data-i18n="accessibility.complianceImproving">Improving</strong>
-          <p data-i18n="accessibility.robustBody">정적 HTML 구조, 의미 있는 링크, 표준 버튼, ARIA 라벨을 사용해 다양한 브라우저에서 동작하도록 관리합니다.</p>
-        </article>
       </section>
 
       <section class="accessibility-dossier" aria-label="접근성 세부 정보" data-i18n-aria-label="aria.accessibilityDetails">
         <article>
           <span>01</span>
-          <h2 data-i18n="accessibility.keyboardTitle">키보드와 초점 기준</h2>
+          <h2 data-i18n="accessibility.keyboardTitle">키보드와 초점</h2>
           <p data-i18n="accessibility.keyboardBody">
-            주요 페이지에는 본문으로 바로 이동하는 skip link가 있고, 주요 링크와 버튼에는 focus-visible 표시가 적용됩니다. 설정 모달, 공유, 인쇄, 우클릭 메뉴는 버튼 기반으로 열고 닫을 수 있게 관리합니다.
+            각 문서에는 본문으로 바로 이동하는 링크가 있으며, 주요 링크와 버튼에는 키보드 초점 표시를 적용합니다. 설정 탭과 날짜별 접기·펼치기는 표준 버튼을 사용합니다.
           </p>
         </article>
         <article>
           <span>02</span>
-          <h2 data-i18n="accessibility.contrastTitle">색 대비와 읽기 기준</h2>
-          <p data-i18n="accessibility.contrastBody">
-            기본 화면은 어두운 고대비 구성을 사용하며, 텍스트와 컨트롤은 공통 색상 토큰으로 관리합니다. 중요한 안내, 버튼, 선택 상태는 배경과 구분되도록 밝기와 굵기를 조정합니다.
+          <h2 data-i18n="accessibility.languageTitle">언어와 문서 구조</h2>
+          <p data-i18n="accessibility.languageBody">
+            브라우저 언어에 따라 한국어 또는 영어를 자동 선택하고, 설정에서 직접 변경할 수 있습니다. 페이지 언어와 제목, 버튼 이름도 선택한 언어에 맞춰 갱신합니다.
           </p>
         </article>
         <article>
           <span>03</span>
-          <h2 data-i18n="accessibility.languageTitle">언어와 이해 가능성 기준</h2>
-          <p data-i18n="accessibility.languageBody">
-            기본 언어는 브라우저 언어를 감지해 자동으로 선택할 수 있고, 사용자는 한국어와 영어 중 원하는 언어를 설정할 수 있습니다. 페이지 제목, 버튼, 도움말 문구는 같은 의미가 유지되도록 번역합니다.
+          <h2 data-i18n="accessibility.motionTitle">화면 표시와 움직임</h2>
+          <p data-i18n="accessibility.motionBody">
+            운영체제의 움직임 감소 설정이 켜지면 페이지 로더의 애니메이션을 줄입니다. 설정의 화면 표시 보조를 켜면 글자와 버튼이 커지고 일부 텍스트 대비가 높아지며 일부 효과가 짧아집니다.
           </p>
         </article>
         <article>
           <span>04</span>
-          <h2 data-i18n="accessibility.motionTitle">시각 효과 기준</h2>
-          <p data-i18n="accessibility.motionBody">
-            사이트는 과한 블러와 애니메이션을 기본 디자인에서 제한합니다. 기기의 reduced motion 설정을 존중하도록 무거운 전환 효과를 줄이는 방향으로 관리합니다.
-          </p>
-        </article>
-        <article>
-          <span>05</span>
-          <h2 data-i18n="accessibility.mobileTitle">모바일 접근성 기준</h2>
+          <h2 data-i18n="accessibility.mobileTitle">모바일과 반응형 화면</h2>
           <p data-i18n="accessibility.mobileBody">
-            모바일에서는 하단 빠른 액션, 메뉴 버튼, 설정 모달, 주요 CTA가 손가락으로 누르기 쉬운 크기를 유지하도록 점검합니다. 텍스트가 버튼 밖으로 넘치거나 서로 겹치지 않도록 반응형 폭을 제한합니다.
-          </p>
-        </article>
-        <article>
-          <span>06</span>
-          <h2 data-i18n="accessibility.reviewTitle">검토와 문제 신고</h2>
-          <p data-i18n="accessibility.reviewBody">
-            접근성 문제는 일반 피드백보다 우선적으로 검토합니다. 키보드 이동, 읽기 대비, 언어 전환, 모바일 표시에서 문제가 보이면 사용한 브라우저와 페이지 이름을 함께 알려주세요.
-            <a href="/feedback" data-i18n="accessibility.feedbackLink">Support로 문제 알리기</a>
+            모바일 메뉴와 하단 빠른 액션을 제공하며, 주요 버튼은 반응형 너비와 최소 높이를 사용합니다. 화면별 점검은 계속 진행되므로 특정 기기에서 문제가 생길 수 있습니다.
           </p>
         </article>
       </section>
 
+      <section class="accessibility-limitations" aria-labelledby="accessibility-limitations-title">
+        <div class="accessibility-section-heading">
+          <p class="eyebrow" data-i18n="accessibility.limitationsEyebrow">Current limits</p>
+          <h2 id="accessibility-limitations-title" data-i18n="accessibility.limitationsTitle">현재 제한 사항</h2>
+        </div>
+        <div class="accessibility-limitations-grid">
+          <article>
+            <strong data-i18n="accessibility.limitationAuditTitle">독립 인증 없음</strong>
+            <p data-i18n="accessibility.limitationAuditBody">전체 WCAG 적합성 감사나 외부 기관 인증은 아직 완료하지 않았습니다.</p>
+          </article>
+          <article>
+            <strong data-i18n="accessibility.limitationExternalTitle">외부 서비스</strong>
+            <p data-i18n="accessibility.limitationExternalBody">Google 로그인, Forms, Stripe 화면의 접근성은 각 서비스 제공자가 관리합니다.</p>
+          </article>
+          <article>
+            <strong data-i18n="accessibility.limitationTestingTitle">계속되는 점검</strong>
+            <p data-i18n="accessibility.limitationTestingBody">새 기능과 브라우저 변경으로 문제가 다시 생길 수 있어 실제 사용 환경을 계속 확인합니다.</p>
+          </article>
+        </div>
+      </section>
+
       <section class="accessibility-standard-actions" aria-label="접근성 관련 링크" data-i18n-aria-label="accessibility.actionsLabel">
         <div>
-          <h2 data-i18n="accessibility.actionsTitle">접근성 설정을 조정할 수 있습니다.</h2>
-          <p data-i18n="accessibility.actionsBody">테마, 언어, 접근성 안내, 보안, 프로필, 우클릭 메뉴 설정은 설정 모달에서 관리합니다.</p>
+          <h2 data-i18n="accessibility.actionsTitle">표시 설정을 조정하거나 문제를 알려주세요.</h2>
+          <p data-i18n="accessibility.actionsBody">설정 모달에서 언어와 화면 표시 보조를 조정할 수 있습니다. 문제를 신고할 때는 페이지, 브라우저, 조작 방법을 함께 적어주세요.</p>
         </div>
-        <a href="/settings" data-i18n="accessibility.settingsLink">Accessibility settings 열기</a>
+        <div class="accessibility-action-links">
+          <a href="/settings" data-i18n="accessibility.settingsLink">접근성 설정 열기</a>
+          <a href="/feedback" data-i18n="accessibility.feedbackLink">접근성 문제 알리기</a>
+        </div>
       </section>
     </main>
     <div class="scroll-actions" data-scroll-actions aria-label="Page scroll controls" data-i18n-aria-label="aria.scrollControls">
@@ -254,8 +240,8 @@
         </svg>
       </button>
     </div>
-    <script src="../assets/js/translations.js?v=20260717-bottom-bg1" defer></script>
+    <script src="../assets/js/translations.js?v=20260718-cookie-preferences5" defer></script>
 
-    <script src="../assets/js/script.js?v=20260717-bottom-bg1" defer></script>
+    <script src="../assets/js/script.js?v=20260718-cookie-preferences5" defer></script>
   </body>
 </html>

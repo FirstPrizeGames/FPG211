@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -21,14 +21,14 @@
     <title>Pricing · First PrizeGames</title>
     <meta
       name="description"
-      content="Compare Free, Pro, and Team profile options with Stripe checkout links."
+      content="Compare the Free plan, Pro test checkout, and Team reservation options for First PrizeGames."
     />
     <meta name="theme-color" content="#151514" />
     <link rel="canonical" href="https://firstprizegames.info/Pricing" />
     <meta property="og:title" content="Pricing · First PrizeGames" />
     <meta
       property="og:description"
-      content="Compare Free, Pro, and Team profile options with final pricing confirmed in Stripe checkout."
+      content="Compare Free, Pro, and Team with clear sign-in, checkout, and reservation requirements."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="First PrizeGames" />
@@ -40,7 +40,7 @@
     <meta name="twitter:title" content="Pricing · First PrizeGames" />
     <meta
       name="twitter:description"
-      content="Compare Free, Pro, and Team profile options with final pricing confirmed in Stripe checkout."
+      content="Compare Free, Pro, and Team with clear sign-in, checkout, and reservation requirements."
     />
     <meta name="twitter:image" content="https://firstprizegames.info/assets/profile-hero.jpg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -85,7 +85,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../assets/css/styles.css?v=20260717-bottom-bg1" />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260718-cookie-preferences5" />
   </head>
   <body class="pricing-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -124,46 +124,40 @@
         </div>
       </nav>
 
-      <section class="pricing-hero pricing-hero-simple">
+      <section class="pricing-hero pricing-hero-simple" aria-labelledby="pricing-title">
         <div>
           <p class="eyebrow" data-i18n="pricing.eyebrow">Pricing</p>
-          <h1 data-i18n="pricing.simpleTitle">필요한 만큼만 선택하세요.</h1>
-          <p data-i18n="pricing.simpleLead">Free로 시작하고, 더 많은 한도나 팀 단위 구성이 필요할 때 Pro 또는 Team으로 올리면 됩니다.</p>
+          <h1 id="pricing-title" data-i18n="pricing.simpleTitle">Free로 시작하고 필요할 때만 확장하세요.</h1>
+          <p data-i18n="pricing.simpleLead">개인 사용은 Free, 유료 Checkout은 Pro, 팀과 기관은 예약형 Team으로 구분했습니다.</p>
         </div>
-        <aside class="pricing-hero-panel pricing-decision-panel" aria-label="요금제 선택 요약">
-          <div>
-            <span data-i18n="pricing.simpleStart">Start</span>
-            <strong>Free</strong>
-          </div>
-          <div>
-            <span data-i18n="pricing.simpleMost">Most users</span>
-            <strong>Pro</strong>
-          </div>
-          <div>
-            <span data-i18n="pricing.simplePriority">Team</span>
-            <strong>Team</strong>
-          </div>
-        </aside>
       </section>
 
-      <p class="pricing-note" data-i18n="pricing.adaptiveNote">
-        유료 플랜의 최종 금액과 통화는 Stripe checkout에서 확인됩니다.
-      </p>
+      <div class="pricing-note" role="note">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-5" /></svg>
+        <p data-i18n="pricing.adaptiveNote">Pro는 Google 로그인 후 Stripe 테스트 Checkout으로 이동하며, Team은 Google Forms에서 예약 문의를 받습니다.</p>
+      </div>
 
       <section class="pricing-grid pricing-grid-simple" aria-label="요금제 정보" data-i18n-aria-label="aria.pricingInfo">
         <article class="pricing-card plan-free">
-          <p class="eyebrow" data-i18n="plans.free">Free</p>
+          <div class="plan-card-top">
+            <p class="eyebrow" data-i18n="plans.free">Free</p>
+          </div>
           <div class="plan-price-line">
             <h2 data-i18n="plans.freePrice" data-price-plan="free">₩0</h2>
-            <span class="billing-pill" data-i18n="pricing.simpleFreePill">Start</span>
+            <span class="billing-pill" data-i18n="pricing.simpleFreePill">기본</span>
           </div>
+          <span class="plan-price-detail" data-i18n="pricing.freePriceDetail">별도 결제 없음</span>
           <p data-i18n="pricing.simpleFreeBody">개인용으로 사이트를 둘러보고 기본 기능을 쓰기에 충분합니다.</p>
           <ul>
             <li data-i18n="pricing.simpleFreeOne">기본 프로필과 공유 기능</li>
             <li data-i18n="pricing.simpleFreeTwo">테마, 언어, 접근성 설정</li>
-            <li data-i18n="pricing.simpleFreeThree">5시간 및 주간 사용 한도</li>
+            <li data-i18n="pricing.simpleFreeThree">로그인 후 브라우저 사용량 확인</li>
+            <li data-i18n="pricing.simpleFreeFour">결제 없이 계속 사용</li>
           </ul>
-          <button class="button ghost" type="button" data-go-url="/settings" data-i18n="pricing.chooseFree">Free로 시작</button>
+          <div class="pricing-card-footer">
+            <span data-i18n="pricing.freeStatus">바로 사용할 수 있습니다.</span>
+            <button class="button ghost" type="button" data-go-url="/" data-i18n="pricing.chooseFree">Free 계속 사용</button>
+          </div>
         </article>
 
         <article class="pricing-card is-featured plan-pro">
@@ -172,25 +166,30 @@
             <span class="plan-badge" data-i18n="plans.recommended">추천</span>
           </div>
           <div class="plan-price-line">
-            <h2 data-i18n="plans.proPrice" data-price-plan="pro">$20 / 약 ₩28,000</h2>
-            <span class="billing-pill" data-i18n="pricing.simpleProPill">Upgrade</span>
+            <h2 data-i18n="plans.proPrice" data-price-plan="pro">$20</h2>
+            <span class="billing-pill" data-i18n="pricing.simpleProPill">개인</span>
           </div>
-          <p data-i18n="pricing.simpleProBody">한도 이후에도 계속 쓰고, 프로필을 더 정돈해서 보여주고 싶을 때 적합합니다.</p>
+          <span class="plan-price-detail" data-i18n="pricing.proPriceDetail">월 · 약 ₩28,000</span>
+          <p data-i18n="pricing.simpleProBody">개인 사용자를 위한 유료 Checkout 옵션입니다. 결제 단계는 외부 Stripe에서 진행됩니다.</p>
           <ul>
-            <li data-i18n="pricing.simpleProOne">한도 이후 checkout 경로</li>
-            <li data-i18n="pricing.simpleProTwo">교육/자격 정보 확장</li>
-            <li data-i18n="pricing.simpleProThree">우선 지원과 업데이트 안내</li>
+            <li data-i18n="pricing.simpleProOne">Google 로그인 필요</li>
+            <li data-i18n="pricing.simpleProTwo">Stripe 테스트 Checkout</li>
+            <li data-i18n="pricing.simpleProThree">최종 금액은 Checkout에서 확인</li>
+            <li data-i18n="pricing.simpleProFour">자동 플랜 적용은 아직 미연결</li>
           </ul>
-          <button
-            class="button primary"
-            type="button"
-            data-subscribe-url="https://buy.stripe.com/test_aFa5kD8XlbUc0nUg07bwk00"
-            data-auth-required-checkout
-            data-authenticated-i18n="pricing.choosePro"
-            data-i18n="pricing.choosePro"
-          >
-            Pro 선택
-          </button>
+          <div class="pricing-card-footer">
+            <span data-i18n="pricing.proStatus">현재 테스트 결제 단계입니다.</span>
+            <button
+              class="button primary"
+              type="button"
+              data-subscribe-url="https://buy.stripe.com/test_aFa5kD8XlbUc0nUg07bwk00"
+              data-auth-required-checkout
+              data-authenticated-i18n="pricing.choosePro"
+              data-i18n="pricing.choosePro"
+            >
+              Pro Checkout 열기
+            </button>
+          </div>
         </article>
 
         <article class="pricing-card plan-team">
@@ -198,24 +197,29 @@
             <p class="eyebrow" data-i18n="plans.team">Team</p>
           </div>
           <div class="plan-price-line">
-            <h2 data-i18n="plans.teamPrice" data-price-plan="team">예약 필요</h2>
-            <span class="billing-pill" data-i18n="pricing.simpleTeamPill">Team</span>
+            <h2 data-i18n="plans.teamPrice" data-price-plan="team">예약 문의</h2>
+            <span class="billing-pill" data-i18n="pricing.simpleTeamPill">팀·기관</span>
           </div>
+          <span class="plan-price-detail" data-i18n="pricing.teamPriceDetail">범위 확인 후 안내</span>
           <p data-i18n="pricing.teamBody">팀, 기관, 공동 프로필 구성을 위한 예약형 플랜입니다. 필요한 범위를 먼저 확인한 뒤 진행합니다.</p>
           <ul>
             <li data-i18n="pricing.teamOne">팀 소개와 공동 프로필 구성</li>
             <li data-i18n="pricing.teamTwo">구성원별 역할 및 활동 정리</li>
             <li data-i18n="pricing.teamThree">교육, 프로젝트, 운영 정보 구조화</li>
+            <li data-i18n="pricing.teamFour">상담 후 범위와 비용 결정</li>
           </ul>
-          <button
-            class="button ghost"
-            type="button"
-            data-go-url="https://forms.gle/tbcrSAyqaK76N9AF7"
-            data-go-target="_blank"
-            data-i18n="pricing.chooseTeam"
-          >
-            예약하기
-          </button>
+          <div class="pricing-card-footer">
+            <span data-i18n="pricing.teamStatus">로그인 없이 예약할 수 있습니다.</span>
+            <button
+              class="button ghost"
+              type="button"
+              data-go-url="https://forms.gle/tbcrSAyqaK76N9AF7"
+              data-go-target="_blank"
+              data-i18n="pricing.chooseTeam"
+            >
+              Team 예약 문의
+            </button>
+          </div>
         </article>
       </section>
 
@@ -242,30 +246,6 @@
         </div>
       </div>
 
-      <section class="comparison-section pricing-simple-compare" aria-label="요금제 비교" data-i18n-aria-label="aria.planComparison">
-        <div class="section-heading">
-          <p class="eyebrow" data-i18n="pricing.compareEyebrow">Compare</p>
-          <h2 data-i18n="pricing.simpleCompareTitle">간단 비교</h2>
-        </div>
-        <div class="pricing-compare-list">
-          <article>
-            <span>Free</span>
-            <strong data-i18n="pricing.compareFreeTitle">처음 써보기</strong>
-            <p data-i18n="pricing.compareFreeBodySimple">기본 프로필, 공유, 설정, 로컬 사용량 확인.</p>
-          </article>
-          <article>
-            <span>Pro</span>
-            <strong data-i18n="pricing.compareProTitle">대부분의 개인 사용자</strong>
-            <p data-i18n="pricing.compareProBodySimple">한도 이후 checkout, 자격/활동 정보 확장, Pro 색상.</p>
-          </article>
-          <article>
-            <span>Team</span>
-            <strong data-i18n="pricing.compareTeamTitle">여러 사람 또는 기관</strong>
-            <p data-i18n="pricing.compareTeamBodySimple">팀 소개, 구성원 역할, 공동 활동 정리.</p>
-          </article>
-        </div>
-      </section>
-
       <section class="faq-section" aria-label="자주 묻는 질문" data-i18n-aria-label="aria.faq">
         <div class="section-heading">
           <p class="eyebrow" data-i18n="pricing.faqEyebrow">FAQ</p>
@@ -275,13 +255,13 @@
           <details>
             <summary data-i18n="pricing.faqOneQuestion">결제는 어디에서 진행되나요?</summary>
             <p data-i18n="pricing.faqOneAnswer">
-              Pro는 Stripe checkout 링크로 진행되고, Team은 예약 문의 흐름으로 진행됩니다.
+              Pro는 Google 로그인 후 Stripe 테스트 Checkout으로 이동하며, Team은 Google Forms 예약 문의로 진행됩니다.
             </p>
           </details>
           <details>
-            <summary data-i18n="pricing.faqTwoQuestion">결제하면 프리미엄 컬러가 자동으로 풀리나요?</summary>
+            <summary data-i18n="pricing.faqTwoQuestion">결제하면 Pro가 자동으로 적용되나요?</summary>
             <p data-i18n="pricing.faqTwoAnswer">
-              현재는 링크 연결 방식이라 자동 잠금 해제는 아직 지원하지 않습니다. 나중에 결제 연동을 추가하면 자동으로 연결할 수 있습니다.
+              아직 테스트 Checkout 링크 단계이므로 결제 결과와 사이트 플랜은 자동으로 연결되지 않습니다.
             </p>
           </details>
           <details>
@@ -396,9 +376,9 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../assets/js/translations.js?v=20260717-bottom-bg1" defer></script>
+    <script src="../assets/js/translations.js?v=20260718-cookie-preferences5" defer></script>
 
-    <script src="../assets/js/script.js?v=20260717-bottom-bg1" defer></script>
+    <script src="../assets/js/script.js?v=20260718-cookie-preferences5" defer></script>
   </body>
 </html>
 

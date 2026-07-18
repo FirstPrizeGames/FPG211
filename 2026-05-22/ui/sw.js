@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260717-bottom-bg1";
+﻿const CACHE_NAME = "profile-offline-20260718-cookie-preferences5";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

@@ -1,4 +1,4 @@
-const navIconMarkup = {
+﻿const navIconMarkup = {
   search:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m16 16 5 5" /></svg>',
   chevron:
@@ -65,7 +65,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260717-bottom-bg1`;
+  const repairUrl = `${guard.fallback}?v=20260718-cookie-preferences5`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -445,7 +445,7 @@ const setupSettingsPageEarlyRecovery = () => {
       if (target.closest("[data-cookie-settings-open]")) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        openDialog("[data-cookie-settings-dialog]");
+        showCookieSettingsDialog();
         return;
       }
 
@@ -459,7 +459,7 @@ const setupSettingsPageEarlyRecovery = () => {
       if (target.closest("[data-cookie-settings-close]")) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        closeDialog("[data-cookie-settings-dialog]");
+        closeCookieSettingsDialog();
         return;
       }
 
@@ -469,19 +469,6 @@ const setupSettingsPageEarlyRecovery = () => {
         event.stopImmediatePropagation();
         setContextMenuModeEarly(contextMenuChoice.dataset.contextMenuChoice);
         showCopyToast("settings.saved");
-        return;
-      }
-
-      const cookiePreferenceToggle = target.closest("[data-cookie-preference-toggle]");
-      if (cookiePreferenceToggle instanceof HTMLButtonElement) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        const isOn = cookiePreferenceToggle.getAttribute("aria-pressed") === "true";
-        cookiePreferenceToggle.classList.toggle("is-on", !isOn);
-        cookiePreferenceToggle.setAttribute("aria-pressed", String(!isOn));
-        localStorage.setItem("profile-cookie-preferences", JSON.stringify({ preferences: !isOn }));
-        const status = document.querySelector("[data-cookie-settings-status]");
-        if (status) status.textContent = !isOn ? "Preference storage is on." : "Preference storage is off.";
         return;
       }
 
@@ -929,15 +916,15 @@ const createSettingsDialog = () => {
           <h2 data-i18n="nav.accessibility">Accessibility</h2>
           <div class="settings-modal-row">
             <div>
-              <strong data-i18n="settings.kidModeTitle">모션 줄이기</strong>
-              <span data-i18n="settings.kidModeBody">과한 전환 효과와 애니메이션 부담을 줄여 화면을 차분하게 표시합니다.</span>
+              <strong data-i18n="settings.kidModeTitle">화면 표시 보조</strong>
+              <span data-i18n="settings.kidModeBody">글자와 버튼을 크게 하고 대비를 높이며 일부 전환 효과를 줄입니다.</span>
             </div>
             <button class="toggle" type="button" aria-pressed="false" data-toggle-key="kid-mode"></button>
           </div>
           <div class="settings-modal-row">
             <div>
               <strong data-i18n="settings.accessibilityTitle">접근성 안내</strong>
-              <span data-i18n="settings.accessibilityBody">키보드 이동, 색 대비, 언어, 모바일 표시 기준을 확인합니다.</span>
+              <span data-i18n="settings.accessibilityBody">키보드 이동, 언어, 화면 표시 보조, 모바일 지원 범위를 확인합니다.</span>
             </div>
             <a class="settings-modal-link" href="/accessibility" data-i18n="settings.accessibilityOpen">Accessibility 열기</a>
           </div>
@@ -1050,12 +1037,12 @@ const createSettingsDialog = () => {
         <p class="eyebrow" data-i18n="settings.storageTab">Storage</p>
         <h2 id="cookie-settings-dialog-title" data-i18n="settings.cookieDialogTitle">쿠키 설정</h2>
         <p data-i18n="settings.cookieDialogBody">
-          필수 사이트 기능은 항상 유지됩니다. 이 브라우저에 안내 확인 선택을 저장할지만 정할 수 있습니다.
+          이 사이트는 광고 또는 분석 쿠키를 사용하지 않습니다. 필수 기능은 유지되며, 브라우저 저장 안내 확인 여부를 기억할지 선택할 수 있습니다.
         </p>
-        <a class="cookie-settings-more" href="/privacy#cookies">
-          <span data-i18n="settings.cookieLearnMore">자세히 알아보기</span>
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7" /><path d="M9 7h8v8" /></svg>
-        </a>
+        <div class="cookie-settings-links">
+          <a href="/privacy" data-i18n="nav.privacy">개인정보 처리방침</a>
+          <a href="/privacy#cookies" data-i18n="settings.cookieStorageDetails">브라우저 저장소 자세히 보기</a>
+        </div>
         <div class="cookie-choice-list" aria-label="쿠키 종류 선택" data-i18n-aria-label="aria.cookieSettings">
           <div class="cookie-choice is-required">
             <span class="cookie-choice-copy">
@@ -1076,6 +1063,10 @@ const createSettingsDialog = () => {
           </div>
         </div>
         <p class="cookie-settings-status" data-cookie-settings-status role="status" aria-live="polite"></p>
+        <div class="cookie-settings-actions">
+          <button class="button cookie-settings-save" type="button" data-cookie-settings-save data-i18n="settings.cookieSave">설정 저장</button>
+          <button class="button cookie-settings-essential" type="button" data-cookie-settings-essential data-i18n="settings.cookieEssentialOnly">필수 기능만 사용</button>
+        </div>
       </div>
     </div>
   `;
@@ -2250,6 +2241,8 @@ const cookieSettingsDialog = document.querySelector("[data-cookie-settings-dialo
 const cookieSettingsCloseButtons = [...document.querySelectorAll("[data-cookie-settings-close]")];
 const cookiePreferenceToggle = document.querySelector("[data-cookie-preference-toggle]");
 const cookieSettingsStatus = document.querySelector("[data-cookie-settings-status]");
+const cookieSettingsSave = document.querySelector("[data-cookie-settings-save]");
+const cookieSettingsEssential = document.querySelector("[data-cookie-settings-essential]");
 const browserUsageDailyReset = document.querySelector("[data-browser-daily-reset]");
 const browserUsageDailyRemaining = document.querySelector("[data-browser-daily-remaining]");
 const browserUsageDailyBar = document.querySelector("[data-browser-daily-bar]");
@@ -2489,10 +2482,14 @@ const syncAuthenticatedCheckoutUI = () => {
   subscribeButtons.forEach((button) => {
     if (!button.hasAttribute("data-auth-required-checkout")) return;
 
-    const labelKey = isSignedIn ? button.dataset.authenticatedI18n || "pricing.choosePro" : "pricing.signInToPay";
+    const labelKey = isUnavailable
+      ? "pricing.signInUnavailable"
+      : isSignedIn
+        ? button.dataset.authenticatedI18n || "pricing.choosePro"
+        : "pricing.signInToPay";
     button.dataset.i18n = labelKey;
     button.textContent = translate(labelKey);
-    button.disabled = authState === "loading" || isUnavailable;
+    button.disabled = authState === "loading";
     button.setAttribute("aria-disabled", String(button.disabled));
     button.title = isUnavailable ? translate("auth.unavailable") : "";
   });
@@ -2775,14 +2772,14 @@ const playContextMenuClickSound = () => {
 const prices = {
   krw: {
     free: "₩0",
-    pro: "$20 / 약 ₩28,000",
-    team: "예약 필요",
+    pro: "$20",
+    team: "예약 문의",
     ultra: "Stripe에서 확인",
   },
   usd: {
     free: "$0",
-    pro: "$20 / approx. ₩28,000",
-    team: "Reservation required",
+    pro: "$20",
+    team: "Reservation",
     ultra: "Confirm in Stripe",
   },
 };
@@ -2829,8 +2826,8 @@ const siteSearchIndex = [
     bodyKey: "search.aboutBody",
     url: "/about",
     keywords: {
-      ko: "about us 소개 사이트 목적 구성 운영 방향 공개 프로필 피드백",
-      en: "about us site purpose structure direction public profile feedback",
+      ko: "about first prizegames 소개 게임 크리에이터 운영 원칙 접근성 개인정보 브라우저 저장 구글 로그인 외부 서비스 피드백",
+      en: "about first prizegames games creator principles accessibility privacy browser storage google sign in external services feedback",
     },
   },
   {
@@ -2856,8 +2853,8 @@ const siteSearchIndex = [
     bodyKey: "search.updatesBody",
     url: "/updates",
     keywords: {
-      ko: "최신 업데이트 변경 사항 릴리스 사이드바 쿠키 설정 접근성 새 기능",
-      en: "latest updates changes release notes sidebar cookie settings accessibility new features",
+      ko: "최신 업데이트 변경 사항 릴리스 구글 로그인 사용량 결제 상태 개인정보 쿠키 화면 안정성",
+      en: "latest updates changes release notes google sign in usage checkout status privacy cookies interface reliability",
     },
   },
   {
@@ -3696,7 +3693,7 @@ const setupCookieNotice = () => {
   document.querySelector("[data-cookie-accept]")?.addEventListener("click", closeCookieNotice);
 };
 
-const updateCookiePreferenceControls = (isOn) => {
+const updateCookiePreferenceControls = (isOn, { pending = false } = {}) => {
   cookiePreferenceToggle?.classList.toggle("is-on", isOn);
   cookiePreferenceToggle?.setAttribute("aria-pressed", String(isOn));
   cookiePreferenceToggle?.setAttribute(
@@ -3705,7 +3702,11 @@ const updateCookiePreferenceControls = (isOn) => {
   );
   if (cookieSettingsStatus) {
     cookieSettingsStatus.textContent = translate(
-      isOn ? "settings.cookieStatusOn" : "settings.cookieStatusOff",
+      pending
+        ? "settings.cookieStatusPending"
+        : isOn
+          ? "settings.cookieStatusOn"
+          : "settings.cookieStatusOff",
     );
   }
 };
@@ -3754,7 +3755,19 @@ const setupCookieSettingsDialog = () => {
     if (event.button === 0 && event.target === cookieSettingsDialog) closeCookieSettingsDialog();
   });
   cookiePreferenceToggle?.addEventListener("click", () => {
-    setCookiePreference(!cookiePreferenceToggle.classList.contains("is-on"));
+    updateCookiePreferenceControls(!cookiePreferenceToggle.classList.contains("is-on"), {
+      pending: true,
+    });
+  });
+  cookieSettingsSave?.addEventListener("click", () => {
+    setCookiePreference(Boolean(cookiePreferenceToggle?.classList.contains("is-on")));
+    showCopyToast("settings.saved");
+    window.setTimeout(closeCookieSettingsDialog, 220);
+  });
+  cookieSettingsEssential?.addEventListener("click", () => {
+    setCookiePreference(false);
+    showCopyToast("settings.saved");
+    window.setTimeout(closeCookieSettingsDialog, 220);
   });
 };
 
@@ -4151,6 +4164,11 @@ const getSafeActivityUrl = (url) => {
   return value.startsWith("/") && !value.startsWith("//") ? value : "/";
 };
 
+const formatActivityCount = (count) => {
+  const key = count === 1 ? "activity.itemCountOne" : "activity.itemCount";
+  return translate(key).replace("{count}", String(count));
+};
+
 const renderActivityPage = () => {
   const list = document.querySelector("[data-activity-list]");
   if (!list) return;
@@ -4189,28 +4207,41 @@ const renderActivityPage = () => {
 
   list.innerHTML = Array.from(activityGroups.entries())
     .map(([dateLabel, groupItems], groupIndex) => {
+      const contentId = `activity-date-content-${groupIndex}`;
+      const isExpanded = groupIndex === 0;
+
       return `
-        <article class="activity-date-group">
+        <article class="activity-date-group${isExpanded ? " is-expanded" : ""}" data-activity-date-group>
           <header>
-            <time>${escapeActivityText(dateLabel)}</time>
-            ${groupIndex === 0 ? `<span>${translate("activity.latest")}</span>` : ""}
+            <button class="activity-date-toggle" type="button" data-activity-date-toggle aria-expanded="${isExpanded}" aria-controls="${contentId}">
+              <span class="activity-date-toggle-main">
+                <time>${escapeActivityText(dateLabel)}</time>
+                <span class="activity-date-count">${escapeActivityText(formatActivityCount(groupItems.length))}</span>
+              </span>
+              <span class="activity-date-toggle-meta">
+                ${groupIndex === 0 ? `<span>${translate("activity.latest")}</span>` : ""}
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></svg>
+              </span>
+            </button>
           </header>
-          ${groupItems
-            .map((item) => {
-              const typeLabel = item.type === "action" ? translate("activity.typeAction") : translate("activity.typeVisit");
-              const href = getSafeActivityUrl(item.url);
-              return `
-                <div class="activity-item">
-                  <span class="activity-type-badge">${escapeActivityText(typeLabel)}</span>
-                  <div>
-                    <strong>${escapeActivityText(item.label)}</strong>
-                    <span>${escapeActivityText(formatActivityTime(item.createdAt))}</span>
+          <div id="${contentId}" data-activity-date-content${isExpanded ? "" : " hidden"}>
+            ${groupItems
+              .map((item) => {
+                const typeLabel = item.type === "action" ? translate("activity.typeAction") : translate("activity.typeVisit");
+                const href = getSafeActivityUrl(item.url);
+                return `
+                  <div class="activity-item">
+                    <span class="activity-type-badge">${escapeActivityText(typeLabel)}</span>
+                    <div>
+                      <strong>${escapeActivityText(item.label)}</strong>
+                      <span>${escapeActivityText(formatActivityTime(item.createdAt))}</span>
+                    </div>
+                    <a href="${escapeActivityText(href)}">${escapeActivityText(href)}</a>
                   </div>
-                  <a href="${escapeActivityText(href)}">${escapeActivityText(href)}</a>
-                </div>
-              `;
-            })
-            .join("")}
+                `;
+              })
+              .join("")}
+          </div>
         </article>
       `;
     })
@@ -4218,11 +4249,75 @@ const renderActivityPage = () => {
 };
 
 const setupActivityPage = () => {
+  document.querySelectorAll("[data-activity-list]").forEach((list) => {
+    list.addEventListener("click", (event) => {
+      const toggle = event.target.closest("[data-activity-date-toggle]");
+      if (!toggle || !list.contains(toggle)) return;
+
+      const group = toggle.closest("[data-activity-date-group]");
+      const content = group?.querySelector("[data-activity-date-content]");
+      if (!group || !content) return;
+
+      const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+      group.classList.toggle("is-expanded", !isExpanded);
+      toggle.setAttribute("aria-expanded", String(!isExpanded));
+      content.hidden = isExpanded;
+    });
+
+    list.addEventListener("keydown", (event) => {
+      const toggle = event.target.closest("[data-activity-date-toggle]");
+      if (!toggle || !list.contains(toggle) || !["Enter", " "].includes(event.key)) return;
+
+      event.preventDefault();
+      toggle.click();
+    });
+  });
+
   document.querySelectorAll("[data-activity-clear]").forEach((clearButton) => clearButton.addEventListener("click", () => {
     localStorage.removeItem(activityLogKey);
     renderActivityPage();
   }));
   renderActivityPage();
+};
+
+const setReleaseGroupExpanded = (group, isExpanded) => {
+  const toggle = group?.querySelector("[data-release-toggle]");
+  const content = group?.querySelector("[data-release-content]");
+  if (!toggle || !content) return;
+
+  group.classList.toggle("is-expanded", isExpanded);
+  toggle.setAttribute("aria-expanded", String(isExpanded));
+  content.hidden = !isExpanded;
+};
+
+const setupReleaseGroups = () => {
+  const groups = [...document.querySelectorAll("[data-release-group]")];
+  if (!groups.length) return;
+
+  groups.forEach((group) => {
+    const toggle = group.querySelector("[data-release-toggle]");
+    if (!toggle) return;
+
+    setReleaseGroupExpanded(group, toggle.getAttribute("aria-expanded") === "true");
+    toggle.addEventListener("click", () => {
+      setReleaseGroupExpanded(group, toggle.getAttribute("aria-expanded") !== "true");
+    });
+  });
+
+  const revealHashGroup = () => {
+    const group = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+    if (group?.matches("[data-release-group]")) setReleaseGroupExpanded(group, true);
+  };
+
+  document.querySelectorAll('.updates-release-rail a[href^="#release-"]').forEach((link) => {
+    link.addEventListener("click", () => {
+      const group = document.getElementById(link.hash.slice(1));
+      if (group?.matches("[data-release-group]")) setReleaseGroupExpanded(group, true);
+    });
+  });
+
+  window.addEventListener("hashchange", revealHashGroup);
+  revealHashGroup();
 };
 
 const recordPageActivity = () => {
@@ -5901,6 +5996,7 @@ setLanguage(currentLanguagePreference);
 setupWelcomeDialog();
 recordPageActivity();
 setupActivityPage();
+setupReleaseGroups();
 if (homeTabs.length) {
   const activeHomeTab =
     homeTabs.find((button) => button.classList.contains("is-active"))?.dataset.homeTab ||
@@ -6039,8 +6135,13 @@ subscribeButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const requiresAuth = button.hasAttribute("data-auth-required-checkout");
     const isSignedIn = document.documentElement.dataset.authState === "signed-in" && Boolean(window.profileAuthUser);
+    const isAuthUnavailable = document.documentElement.dataset.authState === "unavailable";
 
     if (requiresAuth && !isSignedIn) {
+      if (isAuthUnavailable) {
+        showCopyToast("auth.unavailable");
+        return;
+      }
       pendingAuthenticatedSubscribeButton = button;
       showCopyToast("pricing.signInRequired");
       window.dispatchEvent(new CustomEvent("profile-auth-request"));
@@ -6411,7 +6512,7 @@ infoTabs.forEach((tab) => {
   });
 });
 
-import("/assets/js/firebase-auth.js?v=20260717-bottom-bg1").catch(() => {
+import("/assets/js/firebase-auth.js?v=20260718-cookie-preferences5").catch(() => {
   document.documentElement.dataset.authState = "unavailable";
   window.profileAuthUser = null;
   window.dispatchEvent(new CustomEvent("profile-auth-change"));

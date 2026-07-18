@@ -65,7 +65,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260718-auth-feedback1`;
+  const repairUrl = `${guard.fallback}?v=20260718-summary-reveal1`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -2271,7 +2271,19 @@ const infoTabs = [...document.querySelectorAll("[data-info-tab]")];
 const infoPanels = [...document.querySelectorAll("[data-info-panel]")];
 const loadingBar = document.querySelector(".loading-bar");
 const scrollProgress = document.querySelector(".scroll-progress");
-const scrollActions = document.querySelector("[data-scroll-actions]");
+const ensureScrollActions = () => {
+  const existingControls = document.querySelector("[data-scroll-actions]");
+  if (existingControls) return existingControls;
+
+  const controls = document.createElement("div");
+  controls.className = "scroll-actions";
+  controls.dataset.scrollActions = "";
+  controls.setAttribute("aria-label", "Page actions");
+  controls.setAttribute("data-i18n-aria-label", "aria.pageActions");
+  document.body.appendChild(controls);
+  return controls;
+};
+const scrollActions = ensureScrollActions();
 const scrollActionButtons = [...document.querySelectorAll("[data-scroll-to]")];
 const actionButtons = [...document.querySelectorAll("[data-go-url]")];
 const contextMenu = ensureContextMenu();
@@ -5831,8 +5843,9 @@ const updateScrollActions = () => {
   const canScroll = scrollableHeight > 120;
   const isPastTop = window.scrollY > 180;
   const isNearBottom = scrollableHeight - window.scrollY < 180;
+  const hasPageSummary = Boolean(scrollActions.querySelector("[data-page-summary-open]"));
 
-  scrollActions.classList.toggle("is-visible", canScroll && (isPastTop || !isNearBottom));
+  scrollActions.classList.toggle("is-visible", hasPageSummary || (canScroll && (isPastTop || !isNearBottom)));
   scrollActionButtons.forEach((button) => {
     const target = button.dataset.scrollTo;
     button.disabled =
@@ -5851,6 +5864,370 @@ const scrollPageTo = (target) => {
   window.scrollTo({
     top: Math.max(top, 0),
     behavior: "smooth",
+  });
+};
+
+const normalizePageSummaryText = (value = "", maxLength = 320) => {
+  const compact = value.replace(/\s+/g, " ").trim();
+  if (compact.length <= maxLength) return compact;
+  return `${compact.slice(0, maxLength - 1).trimEnd()}…`;
+};
+
+const PAGE_SUMMARY_GUIDES = {
+  "/": [
+    { titleKey: "summaryGuide.homeOneTitle", bodyKey: "summaryGuide.homeOneBody" },
+    { titleKey: "summaryGuide.homeTwoTitle", bodyKey: "summaryGuide.homeTwoBody" },
+    {
+      titleKey: "summaryGuide.homeThreeTitle",
+      bodyKey: "summaryGuide.homeThreeBody",
+      actionUrl: "/portal",
+      actionLabelKey: "summaryAction.openPortal",
+    },
+  ],
+  "/pricing": [
+    { titleKey: "summaryGuide.pricingOneTitle", bodyKey: "summaryGuide.pricingOneBody" },
+    { titleKey: "summaryGuide.pricingTwoTitle", bodyKey: "summaryGuide.pricingTwoBody" },
+    {
+      titleKey: "summaryGuide.pricingThreeTitle",
+      bodyKey: "summaryGuide.pricingThreeBody",
+      actionUrl: "/usage",
+      actionLabelKey: "summaryAction.viewUsage",
+    },
+  ],
+  "/usage": [
+    { titleKey: "summaryGuide.usageOneTitle", bodyKey: "summaryGuide.usageOneBody" },
+    { titleKey: "summaryGuide.usageTwoTitle", bodyKey: "summaryGuide.usageTwoBody" },
+    {
+      titleKey: "summaryGuide.usageThreeTitle",
+      bodyKey: "summaryGuide.usageThreeBody",
+      actionUrl: "/Pricing",
+      actionLabelKey: "summaryAction.viewPricing",
+    },
+  ],
+  "/updates": [
+    { titleKey: "summaryGuide.updatesOneTitle", bodyKey: "summaryGuide.updatesOneBody" },
+    { titleKey: "summaryGuide.updatesTwoTitle", bodyKey: "summaryGuide.updatesTwoBody" },
+    {
+      titleKey: "summaryGuide.updatesThreeTitle",
+      bodyKey: "summaryGuide.updatesThreeBody",
+      actionUrl: "/activity",
+      actionLabelKey: "summaryAction.viewActivity",
+    },
+  ],
+  "/privacy": [
+    { titleKey: "summaryGuide.privacyOneTitle", bodyKey: "summaryGuide.privacyOneBody" },
+    { titleKey: "summaryGuide.privacyTwoTitle", bodyKey: "summaryGuide.privacyTwoBody" },
+    {
+      titleKey: "summaryGuide.privacyThreeTitle",
+      bodyKey: "summaryGuide.privacyThreeBody",
+      actionUrl: "/security",
+      actionLabelKey: "summaryAction.viewSecurity",
+    },
+  ],
+  "/accessibility": [
+    { titleKey: "summaryGuide.accessibilityOneTitle", bodyKey: "summaryGuide.accessibilityOneBody" },
+    { titleKey: "summaryGuide.accessibilityTwoTitle", bodyKey: "summaryGuide.accessibilityTwoBody" },
+    {
+      titleKey: "summaryGuide.accessibilityThreeTitle",
+      bodyKey: "summaryGuide.accessibilityThreeBody",
+      actionUrl: "/settings",
+      actionLabelKey: "summaryAction.openSettings",
+    },
+  ],
+  "/faq": [
+    { titleKey: "summaryGuide.faqOneTitle", bodyKey: "summaryGuide.faqOneBody" },
+    { titleKey: "summaryGuide.faqTwoTitle", bodyKey: "summaryGuide.faqTwoBody" },
+    {
+      titleKey: "summaryGuide.faqThreeTitle",
+      bodyKey: "summaryGuide.faqThreeBody",
+      actionUrl: "/feedback",
+      actionLabelKey: "summaryAction.sendQuestion",
+    },
+  ],
+};
+
+const getCurrentPageSummaryGuide = () => {
+  const route = window.location.pathname.replace(/\/+$/, "").toLocaleLowerCase() || "/";
+  return PAGE_SUMMARY_GUIDES[route] || null;
+};
+
+const getPageSummaryData = () => {
+  const root = document.querySelector("main") || document.body;
+  const isVisibleContent = (element) =>
+    element instanceof HTMLElement &&
+    element.getClientRects().length > 0 &&
+    !element.closest(
+      "[hidden], [role='dialog'], dialog, nav, footer, .context-menu, .scroll-actions, .mobile-quick-actions",
+    );
+  const titleElement = [...root.querySelectorAll("h1")].find(isVisibleContent);
+  const title = normalizePageSummaryText(titleElement?.textContent || document.title || "First PrizeGames", 120);
+  const descriptionCandidates = [
+    ...root.querySelectorAll(
+      ".updates-hero-lead, .hero-lead, .hero-copy p, main > header p, section > header p, section > p, main > p, p",
+    ),
+  ];
+  const descriptionElement = descriptionCandidates.find((element) => {
+    const text = normalizePageSummaryText(element.textContent || "");
+    return isVisibleContent(element) && text.length >= 36;
+  });
+  const metaDescription = document.querySelector('meta[name="description"]')?.getAttribute("content") || "";
+  const description = normalizePageSummaryText(descriptionElement?.textContent || metaDescription);
+  const seenHeadings = new Set();
+  const topics = [...root.querySelectorAll("h2, h3, details > summary")]
+    .filter(isVisibleContent)
+    .map((element) => normalizePageSummaryText(element.textContent || "", 92))
+    .filter((text) => {
+      const normalized = text.toLocaleLowerCase();
+      if (!text || normalized === title.toLocaleLowerCase() || seenHeadings.has(normalized)) return false;
+      seenHeadings.add(normalized);
+      return true;
+    })
+    .slice(0, 5);
+
+  return { title, description, topics };
+};
+
+const setupPageSummary = () => {
+  if (!scrollActions || scrollActions.querySelector("[data-page-summary-open]")) return;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.dataset.pageSummaryOpen = "";
+  button.setAttribute("aria-label", translate("aria.pageSummary"));
+  button.setAttribute("data-i18n-aria-label", "aria.pageSummary");
+  button.setAttribute("aria-controls", "page-summary-popover");
+  button.setAttribute("aria-expanded", "false");
+  button.title = translate("summary.open");
+  button.innerHTML = `
+    <svg aria-hidden="true" viewBox="0 0 24 24">
+      <path d="m12 3 8 9-8 9-8-9 8-9Z"></path>
+    </svg>
+  `;
+  scrollActions.appendChild(button);
+
+  const panel = document.createElement("section");
+  panel.id = "page-summary-popover";
+  panel.className = "page-summary-popover";
+  panel.dataset.pageSummaryPanel = "";
+  panel.hidden = true;
+  panel.setAttribute("role", "dialog");
+  panel.setAttribute("aria-modal", "false");
+  panel.setAttribute("aria-labelledby", "page-summary-heading");
+  panel.innerHTML = `
+    <header class="page-summary-header">
+      <div>
+        <span class="page-summary-eyebrow" data-i18n="summary.badge">${translate("summary.badge")}</span>
+        <h2 id="page-summary-heading" data-i18n="summary.title">${translate("summary.title")}</h2>
+      </div>
+      <button class="page-summary-close" type="button" data-page-summary-close aria-label="${translate("summary.close")}" data-i18n-aria-label="summary.close">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </button>
+    </header>
+    <div class="page-summary-progress" data-page-summary-progress hidden>
+      <span data-page-summary-step>1 / 3</span>
+      <span data-i18n="summary.preparedGuide">${translate("summary.preparedGuide")}</span>
+    </div>
+    <div class="page-summary-content">
+      <span class="page-summary-label" data-page-summary-content-label data-i18n="summary.currentPage">${translate("summary.currentPage")}</span>
+      <strong data-page-summary-title></strong>
+      <p data-page-summary-description></p>
+    </div>
+    <div class="page-summary-topics">
+      <span class="page-summary-label" data-i18n="summary.keyTopics">${translate("summary.keyTopics")}</span>
+      <ul data-page-summary-topics></ul>
+    </div>
+    <div class="page-summary-actions" data-page-summary-actions hidden>
+      <button class="page-summary-previous" type="button" data-page-summary-previous aria-label="${translate("summary.previous")}" data-i18n-aria-label="summary.previous">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"></path></svg>
+      </button>
+      <button class="page-summary-next" type="button" data-page-summary-next>
+        <span data-i18n="summary.continue">${translate("summary.continue")}</span>
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg>
+      </button>
+      <a class="page-summary-link" data-page-summary-link hidden></a>
+    </div>
+    <p class="page-summary-note" data-page-summary-note data-i18n="summary.note">${translate("summary.note")}</p>
+  `;
+  document.body.appendChild(panel);
+
+  const closeButton = panel.querySelector("[data-page-summary-close]");
+  const contentLabel = panel.querySelector("[data-page-summary-content-label]");
+  const titleOutput = panel.querySelector("[data-page-summary-title]");
+  const descriptionOutput = panel.querySelector("[data-page-summary-description]");
+  const topicsOutput = panel.querySelector("[data-page-summary-topics]");
+  const topicsSection = panel.querySelector(".page-summary-topics");
+  const progress = panel.querySelector("[data-page-summary-progress]");
+  const stepOutput = panel.querySelector("[data-page-summary-step]");
+  const actions = panel.querySelector("[data-page-summary-actions]");
+  const previousButton = panel.querySelector("[data-page-summary-previous]");
+  const nextButton = panel.querySelector("[data-page-summary-next]");
+  const actionLink = panel.querySelector("[data-page-summary-link]");
+  const noteOutput = panel.querySelector("[data-page-summary-note]");
+  let activeGuide = null;
+  let activeGuideIndex = 0;
+  let guideTypingTimer = 0;
+  let guideAnimationToken = 0;
+
+  const stopGuideAnimation = () => {
+    window.clearInterval(guideTypingTimer);
+    guideTypingTimer = 0;
+    guideAnimationToken += 1;
+    titleOutput.classList.remove("is-revealing");
+    descriptionOutput.classList.remove("is-generating");
+    panel.setAttribute("aria-busy", "false");
+  };
+
+  const setGuideControlsBusy = (isBusy) => {
+    previousButton.disabled = isBusy || activeGuideIndex === 0;
+    nextButton.disabled = isBusy;
+    actionLink.classList.toggle("is-disabled", isBusy);
+    actionLink.setAttribute("aria-disabled", String(isBusy));
+    if (isBusy) actionLink.setAttribute("tabindex", "-1");
+    else actionLink.removeAttribute("tabindex");
+  };
+
+  const revealPreparedGuideText = (titleText, bodyText) => {
+    stopGuideAnimation();
+    const animationToken = guideAnimationToken;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    titleOutput.textContent = titleText;
+    descriptionOutput.textContent = reducedMotion ? bodyText : "";
+    setGuideControlsBusy(!reducedMotion);
+
+    if (reducedMotion) return;
+
+    panel.setAttribute("aria-busy", "true");
+    window.requestAnimationFrame(() => {
+      if (animationToken === guideAnimationToken && !panel.hidden) {
+        titleOutput.classList.add("is-revealing");
+      }
+    });
+    descriptionOutput.classList.add("is-generating");
+    const chunkSize = Math.max(2, Math.ceil(bodyText.length / 32));
+    let visibleLength = 0;
+
+    guideTypingTimer = window.setInterval(() => {
+      if (animationToken !== guideAnimationToken || panel.hidden) {
+        window.clearInterval(guideTypingTimer);
+        return;
+      }
+
+      visibleLength = Math.min(bodyText.length, visibleLength + chunkSize);
+      descriptionOutput.textContent = bodyText.slice(0, visibleLength);
+      if (visibleLength < bodyText.length) return;
+
+      window.clearInterval(guideTypingTimer);
+      guideTypingTimer = 0;
+      descriptionOutput.classList.remove("is-generating");
+      panel.setAttribute("aria-busy", "false");
+      setGuideControlsBusy(false);
+    }, 16);
+  };
+
+  const closePanel = (restoreFocus = false) => {
+    if (panel.hidden) return;
+    stopGuideAnimation();
+    panel.hidden = true;
+    button.setAttribute("aria-expanded", "false");
+    if (restoreFocus) button.focus();
+  };
+
+  const renderPreparedGuide = () => {
+    const step = activeGuide?.[activeGuideIndex];
+    if (!step) return;
+
+    titleOutput.dataset.i18n = step.titleKey;
+    descriptionOutput.dataset.i18n = step.bodyKey;
+    contentLabel.dataset.i18n = "summary.guideStep";
+    contentLabel.textContent = translate("summary.guideStep");
+    progress.hidden = false;
+    actions.hidden = false;
+    topicsSection.hidden = true;
+    stepOutput.textContent = `${activeGuideIndex + 1} / ${activeGuide.length}`;
+    previousButton.disabled = activeGuideIndex === 0;
+
+    const isLastStep = activeGuideIndex === activeGuide.length - 1;
+    nextButton.hidden = isLastStep;
+    actionLink.hidden = !isLastStep || !step.actionUrl;
+    if (isLastStep && step.actionUrl) {
+      actionLink.href = step.actionUrl;
+      actionLink.dataset.i18n = step.actionLabelKey;
+      actionLink.textContent = translate(step.actionLabelKey);
+    } else {
+      actionLink.removeAttribute("href");
+      delete actionLink.dataset.i18n;
+      actionLink.textContent = "";
+    }
+
+    noteOutput.dataset.i18n = "summary.guideNote";
+    noteOutput.textContent = translate("summary.guideNote");
+    revealPreparedGuideText(translate(step.titleKey), translate(step.bodyKey));
+  };
+
+  const renderAutomaticSummary = () => {
+    stopGuideAnimation();
+    const summary = getPageSummaryData();
+    contentLabel.dataset.i18n = "summary.currentPage";
+    contentLabel.textContent = translate("summary.currentPage");
+    titleOutput.removeAttribute("data-i18n");
+    descriptionOutput.removeAttribute("data-i18n");
+    titleOutput.textContent = summary.title;
+    descriptionOutput.textContent = summary.description || translate("summary.noDescription");
+    topicsOutput.replaceChildren();
+    progress.hidden = true;
+    actions.hidden = true;
+    topicsSection.hidden = false;
+
+    const topics = summary.topics.length ? summary.topics : [translate("summary.noTopics")];
+    topics.forEach((topic) => {
+      const item = document.createElement("li");
+      item.textContent = topic;
+      if (!summary.topics.length) item.className = "is-empty";
+      topicsOutput.appendChild(item);
+    });
+
+    noteOutput.dataset.i18n = "summary.note";
+    noteOutput.textContent = translate("summary.note");
+  };
+
+  const openPanel = () => {
+    activeGuide = getCurrentPageSummaryGuide();
+    activeGuideIndex = 0;
+    if (activeGuide) renderPreparedGuide();
+    else renderAutomaticSummary();
+
+    panel.hidden = false;
+    button.setAttribute("aria-expanded", "true");
+    closeButton.focus();
+  };
+
+  button.addEventListener("click", () => {
+    if (panel.hidden) openPanel();
+    else closePanel(true);
+  });
+  closeButton.addEventListener("click", () => closePanel(true));
+  previousButton.addEventListener("click", () => {
+    if (!activeGuide || activeGuideIndex === 0) return;
+    activeGuideIndex -= 1;
+    renderPreparedGuide();
+  });
+  nextButton.addEventListener("click", () => {
+    if (!activeGuide || activeGuideIndex >= activeGuide.length - 1) return;
+    activeGuideIndex += 1;
+    renderPreparedGuide();
+  });
+  actionLink.addEventListener("click", (event) => {
+    if (actionLink.getAttribute("aria-disabled") !== "true") return;
+    event.preventDefault();
+  });
+  document.addEventListener("pointerdown", (event) => {
+    if (panel.hidden || panel.contains(event.target) || button.contains(event.target)) return;
+    closePanel();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || panel.hidden) return;
+    event.preventDefault();
+    closePanel(true);
   });
 };
 
@@ -5963,6 +6340,7 @@ window.addEventListener("scroll", setActiveLink, { passive: true });
 updateScrollProgress();
 window.addEventListener("scroll", updateScrollProgress, { passive: true });
 window.addEventListener("resize", updateScrollProgress);
+setupPageSummary();
 updateScrollActions();
 window.addEventListener("scroll", updateScrollActions, { passive: true });
 window.addEventListener("resize", updateScrollActions);
@@ -6505,7 +6883,7 @@ infoTabs.forEach((tab) => {
   });
 });
 
-import("/assets/js/firebase-auth.js?v=20260718-auth-feedback1").catch(() => {
+import("/assets/js/firebase-auth.js?v=20260718-summary-reveal1").catch(() => {
   document.documentElement.dataset.authState = "unavailable";
   window.profileAuthUser = null;
   window.dispatchEvent(new CustomEvent("profile-auth-change"));

@@ -65,7 +65,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260718-cookie-preferences5`;
+  const repairUrl = `${guard.fallback}?v=20260718-cookie-first-visit3`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -1039,6 +1039,7 @@ const createSettingsDialog = () => {
         <p data-i18n="settings.cookieDialogBody">
           이 사이트는 광고 또는 분석 쿠키를 사용하지 않습니다. 필수 기능은 유지되며, 브라우저 저장 안내 확인 여부를 기억할지 선택할 수 있습니다.
         </p>
+        <p class="cookie-first-visit-note" data-i18n="settings.cookieFirstVisitNote">팝업을 닫으면 필수 기능만 사용합니다.</p>
         <div class="cookie-settings-links">
           <a href="/privacy" data-i18n="nav.privacy">개인정보 처리방침</a>
           <a href="/privacy#cookies" data-i18n="settings.cookieStorageDetails">브라우저 저장소 자세히 보기</a>
@@ -1071,6 +1072,8 @@ const createSettingsDialog = () => {
     </div>
   `;
   document.body.append(dialog);
+  const standaloneCookieDialog = dialog.querySelector("[data-cookie-settings-dialog]");
+  if (standaloneCookieDialog) document.body.append(standaloneCookieDialog);
 };
 
 const createMobileQuickActionButton = ({ type = "button", href, action, icon, labelKey, fallback }) => {
@@ -3649,48 +3652,10 @@ const clearStorageConsent = () => {
   document.cookie = `${storageConsentCookieName}=; Max-Age=0; Path=/; SameSite=Lax`;
 };
 
-const createCookieNotice = () => {
-  if (isSystemRecoveryPage) return;
-  if (
-    hasStorageConsent() ||
-    localStorage.getItem(cookiePreferenceKey) ||
-    document.querySelector("[data-cookie-notice]")
-  ) {
-    return;
-  }
-
-  const notice = document.createElement("section");
-  notice.className = "cookie-notice";
-  notice.dataset.cookieNotice = "";
-  notice.setAttribute("aria-label", "브라우저 저장 안내");
-  notice.setAttribute("data-i18n-aria-label", "cookie.title");
-  notice.innerHTML = `
-    <div class="cookie-notice-copy">
-      <p class="eyebrow" data-i18n="cookie.eyebrow">Privacy</p>
-      <h2 data-i18n="cookie.title">브라우저 저장 안내</h2>
-      <p data-i18n="cookie.body">이 사이트는 테마, 언어, 사이드바 상태처럼 화면을 편하게 보기 위한 설정을 이 브라우저에 저장합니다. 로그인 추적용 쿠키나 광고 쿠키는 사용하지 않습니다.</p>
-    </div>
-    <div class="cookie-notice-actions">
-      <a href="/privacy#cookies" data-i18n="cookie.learnMore">자세히 알아보기</a>
-      <a href="/settings#storage" data-i18n="cookie.settings">Settings 보기</a>
-      <button type="button" data-cookie-accept data-i18n="cookie.accept">확인</button>
-    </div>
-  `;
-  document.body.appendChild(notice);
-};
-
-const closeCookieNotice = () => {
-  const notice = document.querySelector("[data-cookie-notice]");
-  if (!notice) return;
-
-  setStorageConsent();
-  notice.classList.add("is-closing");
-  window.setTimeout(() => notice.remove(), 190);
-};
-
 const setupCookieNotice = () => {
-  createCookieNotice();
-  document.querySelector("[data-cookie-accept]")?.addEventListener("click", closeCookieNotice);
+  document.querySelector("[data-cookie-notice]")?.remove();
+  if (isSystemRecoveryPage || hasStorageConsent() || localStorage.getItem(cookiePreferenceKey)) return;
+  showCookieSettingsDialog({ firstVisit: true });
 };
 
 const updateCookiePreferenceControls = (isOn, { pending = false } = {}) => {
@@ -3720,16 +3685,16 @@ const setCookiePreference = (isOn) => {
   saveCookiePreferences({ preferences: nextValue });
   updateCookiePreferenceControls(nextValue);
 
-  const notice = document.querySelector("[data-cookie-notice]");
-  if (notice) {
-    notice.classList.add("is-closing");
-    window.setTimeout(() => notice.remove(), 190);
-  }
 };
 
-const showCookieSettingsDialog = () => {
+const clearCookieFirstVisitState = () => {
+  cookieSettingsDialog?.removeAttribute("data-cookie-first-visit");
+};
+
+const showCookieSettingsDialog = ({ firstVisit = false } = {}) => {
   if (!cookieSettingsDialog) return;
 
+  if (firstVisit) cookieSettingsDialog.setAttribute("data-cookie-first-visit", "true");
   updateCookiePreferenceControls(getCookiePreferences().preferences);
   cookieSettingsDialog.classList.remove("is-closing");
   cookieSettingsDialog.hidden = false;
@@ -3738,6 +3703,10 @@ const showCookieSettingsDialog = () => {
 const closeCookieSettingsDialog = () => {
   if (!cookieSettingsDialog || cookieSettingsDialog.hidden) return;
 
+  if (cookieSettingsDialog.getAttribute("data-cookie-first-visit") === "true") {
+    setCookiePreference(false);
+    clearCookieFirstVisitState();
+  }
   cookieSettingsDialog.classList.add("is-closing");
   window.setTimeout(() => {
     cookieSettingsDialog.hidden = true;
@@ -3761,11 +3730,13 @@ const setupCookieSettingsDialog = () => {
   });
   cookieSettingsSave?.addEventListener("click", () => {
     setCookiePreference(Boolean(cookiePreferenceToggle?.classList.contains("is-on")));
+    clearCookieFirstVisitState();
     showCopyToast("settings.saved");
     window.setTimeout(closeCookieSettingsDialog, 220);
   });
   cookieSettingsEssential?.addEventListener("click", () => {
     setCookiePreference(false);
+    clearCookieFirstVisitState();
     showCopyToast("settings.saved");
     window.setTimeout(closeCookieSettingsDialog, 220);
   });
@@ -6512,7 +6483,7 @@ infoTabs.forEach((tab) => {
   });
 });
 
-import("/assets/js/firebase-auth.js?v=20260718-cookie-preferences5").catch(() => {
+import("/assets/js/firebase-auth.js?v=20260718-cookie-first-visit3").catch(() => {
   document.documentElement.dataset.authState = "unavailable";
   window.profileAuthUser = null;
   window.dispatchEvent(new CustomEvent("profile-auth-change"));

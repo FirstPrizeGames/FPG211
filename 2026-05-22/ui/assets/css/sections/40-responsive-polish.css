@@ -6542,6 +6542,19 @@ html[lang="ko"] .terms-official-hero h1 {
   line-height: 1.55;
 }
 
+.cookie-settings-dialog .cookie-first-visit-note {
+  display: none;
+}
+
+.cookie-settings-dialog[data-cookie-first-visit="true"] .cookie-first-visit-note {
+  display: block;
+  margin: 12px 0 0;
+  color: var(--cookie-muted);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
 .cookie-settings-dialog .cookie-settings-links {
   gap: 9px;
   margin-top: 18px;

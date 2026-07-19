@@ -4972,6 +4972,10 @@ main.shell .eyebrow {
   -webkit-backdrop-filter: blur(12px) saturate(0.86);
 }
 
+.cache-dialog {
+  z-index: 4200;
+}
+
 .cache-dialog-panel,
 .user-profile-panel,
 .settings-modal {
@@ -6755,6 +6759,58 @@ body .cookie-settings-dialog .cookie-settings-dialog-panel .cookie-settings-acti
     width: auto;
     max-height: calc(100dvh - 16px);
     padding: 20px 18px 18px;
+  }
+}
+
+/* Keep the official home menus deterministic for click, touch, and keyboard use. */
+.official-home-body
+  .official-home-menu.is-click-managed
+  .official-menu-item:focus-within:not(.is-open):not(:hover)
+  > button {
+  background: transparent !important;
+}
+
+.official-home-body
+  .official-home-menu.is-click-managed
+  .official-menu-item:focus-within:not(.is-open):not(:hover)
+  .official-mega-panel {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  transform: translate(-50%, 8px) !important;
+}
+
+.official-home-body
+  .official-home-menu.is-click-managed
+  .official-menu-item.is-open
+  > button {
+  background: var(--highlight-soft) !important;
+}
+
+.official-home-body
+  .official-home-menu.is-click-managed
+  .official-menu-item.is-open
+  .official-mega-panel {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+  transform: translate(-50%, 0) !important;
+}
+
+@media (max-width: 900px) {
+  .official-home-body
+    .official-home-menu.is-click-managed
+    .official-menu-item:not(.is-open)
+    .official-mega-panel {
+    display: none !important;
+  }
+
+  .official-home-body
+    .official-home-menu.is-click-managed
+    .official-menu-item.is-open
+    .official-mega-panel {
+    display: grid !important;
+    transform: none !important;
   }
 }
 

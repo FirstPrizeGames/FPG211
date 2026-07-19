@@ -87,7 +87,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../assets/css/styles.css?v=20260718-summary-reveal1" />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260719-stability-audit1" />
   </head>
   <body class="settings-body settings-modal-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -167,7 +167,14 @@
                 <strong data-i18n="settings.kidModeTitle">화면 표시 보조</strong>
                 <span data-i18n="settings.kidModeBody">글자와 버튼을 크게 하고 대비를 높이며 일부 전환 효과를 줄입니다.</span>
               </div>
-              <button class="toggle" type="button" aria-pressed="false" data-toggle-key="kid-mode"></button>
+              <button
+                class="toggle"
+                type="button"
+                aria-label="화면 표시 보조 꺼짐"
+                aria-pressed="false"
+                data-i18n-aria-label="settings.kidModeOff"
+                data-toggle-key="kid-mode"
+              ></button>
             </div>
             <div class="settings-modal-row">
               <div>
@@ -238,7 +245,14 @@
                   <strong data-i18n="profileDialog.visibility">프로필 표시</strong>
                   <span data-profile-visibility-status data-i18n="profileDialog.visibilityOn">표시 중</span>
                 </div>
-                <button class="toggle is-on" type="button" aria-pressed="true" data-profile-visibility-toggle></button>
+                <button
+                  class="toggle is-on"
+                  type="button"
+                  aria-label="프로필 표시: 표시 중"
+                  aria-pressed="true"
+                  data-i18n-aria-label="profileDialog.visibility"
+                  data-profile-visibility-toggle
+                ></button>
               </div>
             </div>
           </section>
@@ -310,7 +324,14 @@
                 <strong data-i18n="settings.cookiePreferenceTitle">설정 저장 쿠키</strong>
                 <small data-i18n="settings.cookiePreferenceBody">브라우저 저장 안내를 확인했다는 선택을 이 브라우저에 저장합니다.</small>
               </span>
-              <button class="cookie-switch" type="button" aria-pressed="false" data-cookie-preference-toggle></button>
+              <button
+                class="cookie-switch"
+                type="button"
+                aria-label="설정 저장 쿠키 꺼짐"
+                aria-pressed="false"
+                data-i18n-aria-label="settings.cookiePreferenceOff"
+                data-cookie-preference-toggle
+              ></button>
             </div>
           </div>
           <p class="cookie-settings-status" data-cookie-settings-status role="status" aria-live="polite"></p>
@@ -322,9 +343,9 @@
       </div>
     </main>
 
-    <script src="../assets/js/translations.js?v=20260718-summary-reveal1" defer></script>
+    <script src="../assets/js/translations.js?v=20260719-stability-audit1" defer></script>
 
 
-    <script src="../assets/js/script.js?v=20260718-summary-reveal1" defer></script>
+    <script src="../assets/js/script.js?v=20260719-stability-audit1" defer></script>
   </body>
 </html>

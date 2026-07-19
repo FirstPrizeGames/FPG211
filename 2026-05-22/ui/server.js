@@ -2,7 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const root = process.cwd();
+const root = __dirname;
 const port = Number(process.env.PORT || 4173);
 const types = {
   ".html": "text/html; charset=utf-8",
@@ -16,6 +16,7 @@ const types = {
   ".webp": "image/webp",
   ".xml": "application/xml; charset=utf-8",
   ".json": "application/json; charset=utf-8",
+  ".txt": "text/plain; charset=utf-8",
   ".webmanifest": "application/manifest+json; charset=utf-8",
 };
 

@@ -522,6 +522,20 @@
     width: 100%;
   }
 
+  .feedback-community-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .feedback-community-header .updates-action-link {
+    width: 100%;
+  }
+
+  .feedback-community-notice {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
   .accessibility-compliance-board {
     grid-template-columns: 1fr;
   }

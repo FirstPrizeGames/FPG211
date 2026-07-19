@@ -114,7 +114,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="assets/css/styles.css?v=20260718-summary-reveal1" />
+    <link rel="stylesheet" href="assets/css/styles.css?v=20260719-stability-audit1" />
   </head>
   <body class="home-body official-home-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -138,8 +138,14 @@
         <div class="nav-links official-home-menu" data-mobile-menu data-official-home-menu>
           <a class="official-menu-link is-active" href="/" data-i18n="nav.home">Home</a>
           <div class="official-menu-item">
-            <button type="button" data-i18n="officialNav.features">Features</button>
-            <div class="official-mega-panel">
+            <button
+              type="button"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls="official-features-panel"
+              data-i18n="officialNav.features"
+            >Features</button>
+            <div class="official-mega-panel" id="official-features-panel">
               <section>
                 <h2 data-i18n="officialNav.profileGroup">Profile</h2>
                 <a href="/portal" data-i18n="nav.portal">Portal</a>
@@ -164,8 +170,14 @@
             </div>
           </div>
           <div class="official-menu-item">
-            <button type="button" data-i18n="officialNav.learn">Learn</button>
-            <div class="official-mega-panel official-mega-panel-compact">
+            <button
+              type="button"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls="official-learn-panel"
+              data-i18n="officialNav.learn"
+            >Learn</button>
+            <div class="official-mega-panel official-mega-panel-compact" id="official-learn-panel">
               <section>
                 <h2 data-i18n="officialNav.creatorGroup">Creator</h2>
                 <a href="/Creator" data-i18n="nav.creator">Creator</a>
@@ -418,9 +430,9 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="assets/js/translations.js?v=20260718-summary-reveal1" defer></script>
+    <script src="assets/js/translations.js?v=20260719-stability-audit1" defer></script>
 
-    <script src="assets/js/script.js?v=20260718-summary-reveal1" defer></script>
+    <script src="assets/js/script.js?v=20260719-stability-audit1" defer></script>
   </body>
 </html>
 

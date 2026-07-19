@@ -65,7 +65,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260718-summary-reveal1`;
+  const repairUrl = `${guard.fallback}?v=20260719-stability-audit1`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -919,7 +919,7 @@ const createSettingsDialog = () => {
               <strong data-i18n="settings.kidModeTitle">화면 표시 보조</strong>
               <span data-i18n="settings.kidModeBody">글자와 버튼을 크게 하고 대비를 높이며 일부 전환 효과를 줄입니다.</span>
             </div>
-            <button class="toggle" type="button" aria-pressed="false" data-toggle-key="kid-mode"></button>
+            <button class="toggle" type="button" aria-label="화면 표시 보조 꺼짐" aria-pressed="false" data-i18n-aria-label="settings.kidModeOff" data-toggle-key="kid-mode"></button>
           </div>
           <div class="settings-modal-row">
             <div>
@@ -990,7 +990,7 @@ const createSettingsDialog = () => {
                 <strong data-i18n="profileDialog.visibility">프로필 표시</strong>
                 <span data-profile-visibility-status data-i18n="profileDialog.visibilityOn">표시 중</span>
               </div>
-              <button class="toggle is-on" type="button" aria-pressed="true" data-profile-visibility-toggle></button>
+              <button class="toggle is-on" type="button" aria-label="프로필 표시: 표시 중" aria-pressed="true" data-i18n-aria-label="profileDialog.visibility" data-profile-visibility-toggle></button>
             </div>
           </div>
         </section>
@@ -1060,7 +1060,7 @@ const createSettingsDialog = () => {
               <strong data-i18n="settings.cookiePreferenceTitle">설정 저장 쿠키</strong>
               <small data-i18n="settings.cookiePreferenceBody">브라우저 저장 안내를 확인했다는 선택을 이 브라우저에 저장합니다.</small>
             </span>
-            <button class="cookie-switch" type="button" aria-pressed="false" data-cookie-preference-toggle></button>
+            <button class="cookie-switch" type="button" aria-label="설정 저장 쿠키 꺼짐" aria-pressed="false" data-i18n-aria-label="settings.cookiePreferenceOff" data-cookie-preference-toggle></button>
           </div>
         </div>
         <p class="cookie-settings-status" data-cookie-settings-status role="status" aria-live="polite"></p>
@@ -2291,6 +2291,8 @@ const contextMoreMenu = document.querySelector("[data-context-more-menu]");
 const contextMenuActions = [...document.querySelectorAll("[data-context-action]")];
 const mobileMenuButton = document.querySelector("[data-mobile-menu-toggle]");
 const mobileMenu = document.querySelector("[data-mobile-menu]");
+const officialHomeMenu = document.querySelector("[data-official-home-menu]");
+const officialMenuItems = [...document.querySelectorAll(".official-menu-item")];
 const brandLogoImage = document.querySelector(".brand-logo img");
 const desktopSidebarQuery = window.matchMedia("(min-width: 1024px)");
 const feedbackOpenButtons = [...document.querySelectorAll("[data-feedback-open]")];
@@ -2486,6 +2488,12 @@ const syncUserProfileUI = () => {
   });
   document.querySelectorAll("[data-profile-visibility-toggle]").forEach((button) => {
     button.setAttribute("aria-pressed", String(isVisible));
+    button.setAttribute(
+      "aria-label",
+      `${translate("profileDialog.visibility")}: ${translate(
+        isVisible ? "profileDialog.visibilityOn" : "profileDialog.visibilityOff",
+      )}`,
+    );
   });
 };
 
@@ -3011,6 +3019,15 @@ const siteSearchIndex = [
     keywords: {
       ko: "feedback 피드백 버그 문의 개선 google forms",
       en: "feedback bug report contact improvement google forms",
+    },
+  },
+  {
+    titleKey: "search.communityTitle",
+    bodyKey: "search.communityBody",
+    url: "/community",
+    keywords: {
+      ko: "community 커뮤니티 공개 질문 아이디어 댓글 giscus github discussions",
+      en: "community public questions ideas comments giscus github discussions",
     },
   },
 ];
@@ -3805,7 +3822,7 @@ const normalizeSearchText = (value) => value.toLowerCase().replace(/\s+/g, " ").
 const getSearchCategory = (item) => {
   const url = item.url || "";
   if (["/settings", "/accessibility"].includes(url)) return "settings";
-  if (["/FAQ", "/feedback", "/updates", "/activity"].includes(url)) return "help";
+  if (["/FAQ", "/feedback", "/community", "/updates", "/activity"].includes(url)) return "help";
   if (["/privacy", "/license", "/terms", "/trust", "/security", "/status"].includes(url)) return "legal";
   return "pages";
 };
@@ -5760,6 +5777,45 @@ const setActiveLink = () => {
   });
 };
 
+const setOfficialMenuOpen = (activeItem, isOpen) => {
+  officialMenuItems.forEach((item) => {
+    const shouldOpen = item === activeItem && Boolean(isOpen);
+    item.classList.toggle("is-open", shouldOpen);
+    item.querySelector("button")?.setAttribute("aria-expanded", String(shouldOpen));
+  });
+};
+
+const closeOfficialMenus = () => setOfficialMenuOpen(null, false);
+
+const setupOfficialHomeMenus = () => {
+  if (!officialHomeMenu || !officialMenuItems.length) return;
+
+  officialHomeMenu.classList.add("is-click-managed");
+  officialMenuItems.forEach((item, index) => {
+    const button = item.querySelector("button");
+    const panel = item.querySelector(".official-mega-panel");
+    if (!button || !panel) return;
+
+    if (!panel.id) panel.id = `official-menu-panel-${index + 1}`;
+    button.setAttribute("aria-haspopup", "true");
+    button.setAttribute("aria-controls", panel.id);
+    button.setAttribute("aria-expanded", "false");
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      setOfficialMenuOpen(item, !item.classList.contains("is-open"));
+    });
+  });
+
+  officialHomeMenu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeOfficialMenus);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (event.target instanceof Element && officialHomeMenu.contains(event.target)) return;
+    closeOfficialMenus();
+  });
+};
+
 const syncNavigationToggleLabel = () => {
   if (!mobileMenuButton) return;
 
@@ -5787,6 +5843,7 @@ const setMobileMenuOpen = (isOpen) => {
   const topbar = mobileMenuButton?.closest(".topbar");
 
   topbar?.classList.toggle("is-open", isOpen);
+  if (!isOpen) closeOfficialMenus();
   syncNavigationToggleLabel();
 };
 
@@ -6385,6 +6442,7 @@ setupContextMenuModeDialog();
 setupCookieSettingsDialog();
 setupUserProfileDialog();
 setupToggleRightTrack();
+setupOfficialHomeMenus();
 setupBrandLogo();
 setKidMode(localStorage.getItem("profile-setting-kid-mode") || "off");
 setCurrency(localStorage.getItem("profile-currency") || (currentLanguage === "ko" ? "krw" : "usd"));
@@ -6464,6 +6522,7 @@ document.addEventListener("click", (event) => {
 document.addEventListener("keydown", (event) => {
   if (event.key !== "Escape") return;
   setMobileMenuOpen(false);
+  closeOfficialMenus();
   closeKeyboardShortcutsDialog();
   closeUsageLearnDialog();
 });
@@ -6883,7 +6942,7 @@ infoTabs.forEach((tab) => {
   });
 });
 
-import("/assets/js/firebase-auth.js?v=20260718-summary-reveal1").catch(() => {
+import("/assets/js/firebase-auth.js?v=20260719-stability-audit1").catch(() => {
   document.documentElement.dataset.authState = "unavailable";
   window.profileAuthUser = null;
   window.dispatchEvent(new CustomEvent("profile-auth-change"));

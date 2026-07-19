@@ -1728,6 +1728,94 @@ html[lang="ko"] .faq-feedback-strip h2 {
   line-height: 1.65;
 }
 
+.feedback-community {
+  display: grid;
+  gap: 18px;
+  padding-top: clamp(24px, 4vw, 38px);
+  border-top: 1px solid color-mix(in srgb, var(--line) 72%, transparent);
+}
+
+.feedback-community-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.feedback-community-copy {
+  max-width: 760px;
+}
+
+.feedback-community-copy .eyebrow {
+  margin: 0 0 8px;
+}
+
+.feedback-community-copy h2 {
+  color: var(--ink);
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.12;
+}
+
+.feedback-community-copy > p:last-child {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.feedback-community-header .updates-action-link {
+  flex: 0 0 auto;
+}
+
+.feedback-community-notice {
+  display: grid;
+  grid-template-columns: minmax(120px, 160px) minmax(0, 1fr);
+  gap: 20px;
+  padding: 14px 0;
+  border-top: 1px solid color-mix(in srgb, var(--line) 64%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 64%, transparent);
+}
+
+.feedback-community-notice strong {
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.feedback-community-notice p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.giscus-shell {
+  min-height: 220px;
+  padding: clamp(12px, 2vw, 20px);
+  border: 1px solid color-mix(in srgb, var(--line) 72%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel-solid) 90%, transparent);
+}
+
+.giscus,
+.giscus-frame {
+  width: 100%;
+}
+
+.giscus-frame {
+  color-scheme: light dark;
+}
+
+.giscus-noscript {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.giscus-noscript a {
+  color: var(--ink);
+}
+
 [data-theme="dark"] .setting-popup-button,
 [data-theme="dark"] .swipe-control,
 [data-theme="dark"] .setting-select-trigger,

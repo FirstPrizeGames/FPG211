@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260718-summary-reveal1";
+const CACHE_NAME = "profile-offline-20260719-community-route1";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
@@ -26,6 +26,7 @@ const PRECACHE_URLS = [
   "/coming-soon",
   "/terms",
   "/feedback",
+  "/community",
   "/assets/css/styles.css",
   "/assets/css/sections/00-foundation.css",
   "/assets/css/sections/10-layout-navigation.css",

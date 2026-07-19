@@ -51,6 +51,10 @@
       "destination": "/feedback/index.html"
     },
     {
+      "source": "/community",
+      "destination": "/community/index.html"
+    },
+    {
       "source": "/privacy",
       "destination": "/privacy/index.html"
     },

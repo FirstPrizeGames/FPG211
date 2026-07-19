@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260719-community-route1";
+const CACHE_NAME = "profile-offline-20260719-update-history2";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,

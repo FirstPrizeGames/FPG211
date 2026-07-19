@@ -6814,6 +6814,36 @@ body .cookie-settings-dialog .cookie-settings-dialog-panel .cookie-settings-acti
   }
 }
 
+@media (max-width: 720px) {
+  .updates-page .updates-release-board {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .updates-page .updates-release-rail {
+    position: static;
+    display: flex;
+    width: 100%;
+    max-width: none;
+    gap: 6px;
+    padding: 10px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+  }
+
+  .updates-page .updates-release-rail strong,
+  .updates-page .updates-release-rail a {
+    flex: 0 0 auto;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .updates-page .updates-release-rail strong {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 8px;
+  }
+}
+
 @media print {
   :root {
     color-scheme: light;

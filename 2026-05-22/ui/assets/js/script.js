@@ -77,244 +77,6 @@ const isOfflinePage =
   window.location.pathname.replace(/\/index\.html$/i, "").replace(/\/+$/, "") === "/offline";
 const isSystemRecoveryPage = isOfflinePage || document.body.classList.contains("error-body");
 
-const setupUsagePageEarlyRecovery = () => {
-  if (!document.querySelector(".usage-page")) return;
-
-  const now = Date.now();
-  const hourMs = 60 * 60 * 1000;
-  const dailyLimitMs = 5 * hourMs;
-  const weekMs = 7 * 24 * hourMs;
-  const monthMs = 30 * 24 * hourMs;
-  const weeklyLimitMs = 7 * dailyLimitMs;
-  const monthlyLimitMs = 30 * dailyLimitMs;
-  const resetLimit = 2;
-  const activeStartedAt = 0;
-  const accountingVersion = "signed-in-visible-v2";
-  if (localStorage.getItem("profile-browser-usage-accounting-version") !== accountingVersion) {
-    localStorage.setItem("profile-browser-usage-window-start-ms", String(now));
-    localStorage.setItem("profile-browser-usage-used-ms", "0");
-    localStorage.setItem("profile-browser-usage-week-start-ms", String(now));
-    localStorage.setItem("profile-browser-usage-week-used-ms", "0");
-    localStorage.setItem("profile-browser-usage-month-start-ms", String(now));
-    localStorage.setItem("profile-browser-usage-month-used-ms", "0");
-    localStorage.removeItem("profile-browser-usage-total-ms");
-    localStorage.removeItem("profile-browser-usage-auth-started");
-    localStorage.setItem("profile-browser-usage-accounting-version", accountingVersion);
-  }
-
-  const readNumber = (key, fallback) => {
-    const value = Number.parseInt(localStorage.getItem(key) || "", 10);
-    return Number.isFinite(value) && value >= 0 ? value : fallback;
-  };
-  const writeNumber = (key, value) => localStorage.setItem(key, String(value));
-  const isKoreanUsage = () => document.documentElement.lang === "ko";
-  const formatTime = (timestamp) =>
-    isKoreanUsage()
-      ? `${new Intl.DateTimeFormat("ko-KR", {
-          hour: "numeric",
-          minute: "2-digit",
-        }).format(new Date(timestamp))} 초기화`
-      : `Resets at ${new Intl.DateTimeFormat("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-    }).format(new Date(timestamp))}`;
-  const formatDate = (timestamp) =>
-    isKoreanUsage()
-      ? `${new Intl.DateTimeFormat("ko-KR", {
-          month: "long",
-          day: "numeric",
-        }).format(new Date(timestamp))} 초기화`
-      : `Resets on ${new Intl.DateTimeFormat("en-US", {
-      month: "long",
-      day: "numeric",
-    }).format(new Date(timestamp))}`;
-
-  let dailyStart = readNumber("profile-browser-usage-window-start-ms", now);
-  let dailyUsed = readNumber("profile-browser-usage-used-ms", 0);
-  let weeklyStart = readNumber("profile-browser-usage-week-start-ms", now);
-  let weeklyUsed = readNumber("profile-browser-usage-week-used-ms", 0);
-  let monthlyStart = readNumber("profile-browser-usage-month-start-ms", now);
-  let monthlyUsed = readNumber("profile-browser-usage-month-used-ms", 0);
-  let resetStart = readNumber("profile-browser-usage-reset-week-start-ms", 0);
-  let resetCount = readNumber("profile-browser-usage-reset-week-count", 0);
-
-  if (now - dailyStart >= dailyLimitMs) {
-    dailyStart = now;
-    dailyUsed = 0;
-  }
-  if (now - weeklyStart >= weekMs) {
-    weeklyStart = now;
-    weeklyUsed = 0;
-  }
-  if (now - monthlyStart >= monthMs) {
-    monthlyStart = now;
-    monthlyUsed = 0;
-  }
-  if (resetStart > 0 && now - resetStart >= weekMs) {
-    resetStart = now;
-    resetCount = 0;
-  }
-  if (resetStart <= 0) {
-    resetStart = now;
-    resetCount = 0;
-  }
-
-  writeNumber("profile-browser-usage-window-start-ms", dailyStart);
-  writeNumber("profile-browser-usage-used-ms", dailyUsed);
-  writeNumber("profile-browser-usage-week-start-ms", weeklyStart);
-  writeNumber("profile-browser-usage-week-used-ms", weeklyUsed);
-  writeNumber("profile-browser-usage-month-start-ms", monthlyStart);
-  writeNumber("profile-browser-usage-month-used-ms", monthlyUsed);
-  writeNumber("profile-browser-usage-reset-week-start-ms", resetStart);
-  writeNumber("profile-browser-usage-reset-week-count", resetCount);
-
-  const updateRow = (resetSelector, remainingSelector, barSelector, start, used, limit, resetWindowMs, dateFormatter) => {
-    const elapsed = activeStartedAt > 0 ? Math.max(0, now - Math.max(activeStartedAt, start)) : 0;
-    const total = Math.min(used + elapsed, limit);
-    const ratio = Math.max(1 - total / limit, 0);
-    const percent = Math.ceil(ratio * 100);
-    const reset = document.querySelector(resetSelector);
-    const remaining = document.querySelector(remainingSelector);
-    const bar = document.querySelector(barSelector);
-    if (reset) reset.textContent = dateFormatter(start + resetWindowMs);
-    if (remaining) remaining.textContent = `${percent}% left`;
-    if (bar) bar.style.transform = `scaleX(${ratio})`;
-  };
-
-  const updateUsageUi = () => {
-    updateRow("[data-browser-daily-reset]", "[data-browser-daily-remaining]", "[data-browser-daily-bar]", dailyStart, dailyUsed, dailyLimitMs, dailyLimitMs, formatTime);
-    updateRow("[data-browser-weekly-reset]", "[data-browser-weekly-remaining]", "[data-browser-weekly-bar]", weeklyStart, weeklyUsed, weeklyLimitMs, weekMs, formatDate);
-    updateRow("[data-browser-monthly-reset]", "[data-browser-monthly-remaining]", "[data-browser-monthly-bar]", monthlyStart, monthlyUsed, monthlyLimitMs, monthMs, formatDate);
-
-    const remaining = Math.max(resetLimit - resetCount, 0);
-    const status = document.querySelector("[data-usage-reset-status]");
-    const button = document.querySelector("[data-usage-reset-button]");
-    if (status) {
-      status.textContent =
-        remaining > 0
-          ? isKoreanUsage()
-            ? `이번 주 ${remaining}번 더 초기화할 수 있습니다.`
-            : `${remaining} resets left this week.`
-          : isKoreanUsage()
-            ? `이번 주 초기화 횟수를 모두 사용했습니다. ${new Intl.DateTimeFormat("ko-KR", { month: "long", day: "numeric" }).format(new Date(resetStart + weekMs))}에 다시 사용할 수 있습니다.`
-            : `No resets left this week. Resets on ${new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric" }).format(new Date(resetStart + weekMs))}.`;
-    }
-    if (button) {
-      const isSignedIn = document.documentElement.dataset.authState === "signed-in" && Boolean(window.profileAuthUser);
-      button.disabled = !isSignedIn || remaining <= 0;
-    }
-  };
-
-  const ensureUsageResetDialog = () => {
-    let dialog = document.querySelector("[data-usage-reset-warning]");
-    if (dialog) return dialog;
-    dialog = document.createElement("div");
-    dialog.className = "cache-dialog";
-    dialog.dataset.usageResetWarning = "";
-    dialog.hidden = true;
-    const isKo = isKoreanUsage();
-    dialog.innerHTML = `
-      <div class="cache-dialog-panel" role="dialog" aria-modal="true">
-        <button class="dialog-close-button" type="button" data-usage-reset-warning-close aria-label="${isKo ? "닫기" : "Close"}">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
-        </button>
-        <p class="eyebrow">${isKo ? "사용량 초기화" : "Usage reset"}</p>
-        <h2>${isKo ? "한도를 초기화할까요?" : "Reset usage limits?"}</h2>
-        <p>${isKo ? "5시간, 주간, 월간 사용 한도가 지금부터 다시 시작됩니다. 이번 주 초기화 가능 횟수 1회를 사용합니다." : "The 5-hour, weekly, and monthly usage limits will restart from now. This uses 1 reset from this week's allowance."}</p>
-        <div class="cache-warning-actions">
-          <button class="button cache-cancel-button" type="button" data-usage-reset-warning-close>${isKo ? "취소" : "Cancel"}</button>
-          <button class="button cache-confirm-button usage-reset-confirm-button" type="button" data-usage-reset-warning-confirm>${isKo ? "초기화" : "Reset"}</button>
-        </div>
-      </div>
-    `;
-    document.body.append(dialog);
-    return dialog;
-  };
-
-  const openResetDialog = () => {
-    if (document.documentElement.dataset.authState !== "signed-in" || !window.profileAuthUser) return;
-    const remaining = Math.max(resetLimit - resetCount, 0);
-    if (remaining <= 0) {
-      updateUsageUi();
-      return;
-    }
-    const dialog = ensureUsageResetDialog();
-    dialog.hidden = false;
-  };
-
-  const closeResetDialog = () => {
-    const dialog = document.querySelector("[data-usage-reset-warning]");
-    if (dialog) dialog.hidden = true;
-  };
-
-  const confirmReset = () => {
-    if (document.documentElement.dataset.authState !== "signed-in" || !window.profileAuthUser) return;
-    const current = Date.now();
-    dailyStart = current;
-    weeklyStart = current;
-    monthlyStart = current;
-    dailyUsed = 0;
-    weeklyUsed = 0;
-    monthlyUsed = 0;
-    resetCount = Math.min(resetCount + 1, resetLimit);
-    writeNumber("profile-browser-usage-window-start-ms", dailyStart);
-    writeNumber("profile-browser-usage-used-ms", 0);
-    writeNumber("profile-browser-usage-week-start-ms", weeklyStart);
-    writeNumber("profile-browser-usage-week-used-ms", 0);
-    writeNumber("profile-browser-usage-month-start-ms", monthlyStart);
-    writeNumber("profile-browser-usage-month-used-ms", 0);
-    writeNumber("profile-browser-usage-reset-week-start-ms", resetStart);
-    writeNumber("profile-browser-usage-reset-week-count", resetCount);
-    closeResetDialog();
-    updateUsageUi();
-  };
-
-  document.addEventListener(
-    "click",
-    (event) => {
-      const target = event.target instanceof Element ? event.target : null;
-      if (!target) return;
-      if (window.__profileUsageMainReady) return;
-      if (target.closest("[data-usage-reset-button]")) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        openResetDialog();
-        return;
-      }
-      if (target.closest("[data-usage-reset-warning-close]")) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        closeResetDialog();
-        return;
-      }
-      if (target.closest("[data-usage-reset-warning-confirm]")) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        confirmReset();
-        return;
-      }
-      if (target.closest("[data-usage-learn-open]")) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        const dialog = document.querySelector("[data-usage-learn-dialog]");
-        if (dialog) dialog.hidden = false;
-        return;
-      }
-      if (target.closest("[data-usage-learn-close]")) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        const dialog = document.querySelector("[data-usage-learn-dialog]");
-        if (dialog) dialog.hidden = true;
-      }
-    },
-    true,
-  );
-
-  updateUsageUi();
-};
-
-setupUsagePageEarlyRecovery();
-
 const setupSettingsPageEarlyRecovery = () => {
   if (!document.querySelector(".settings-page")) return;
 
@@ -2246,25 +2008,6 @@ const cookiePreferenceToggle = document.querySelector("[data-cookie-preference-t
 const cookieSettingsStatus = document.querySelector("[data-cookie-settings-status]");
 const cookieSettingsSave = document.querySelector("[data-cookie-settings-save]");
 const cookieSettingsEssential = document.querySelector("[data-cookie-settings-essential]");
-const browserUsageDailyReset = document.querySelector("[data-browser-daily-reset]");
-const browserUsageDailyRemaining = document.querySelector("[data-browser-daily-remaining]");
-const browserUsageDailyBar = document.querySelector("[data-browser-daily-bar]");
-const browserUsageWeeklyReset = document.querySelector("[data-browser-weekly-reset]");
-const browserUsageWeeklyRemaining = document.querySelector("[data-browser-weekly-remaining]");
-const browserUsageWeeklyBar = document.querySelector("[data-browser-weekly-bar]");
-const browserUsageMonthlyReset = document.querySelector("[data-browser-monthly-reset]");
-const browserUsageMonthlyRemaining = document.querySelector("[data-browser-monthly-remaining]");
-const browserUsageMonthlyBar = document.querySelector("[data-browser-monthly-bar]");
-const usageResetButton = document.querySelector("[data-usage-reset-button]");
-const usageResetStatus = document.querySelector("[data-usage-reset-status]");
-const usageAuthGate = document.querySelector("[data-usage-auth-gate]");
-const usageAuthContent = [...document.querySelectorAll("[data-usage-auth-content]")];
-let usageResetWarningDialog = document.querySelector("[data-usage-reset-warning]");
-let usageResetWarningCloseButtons = [...document.querySelectorAll("[data-usage-reset-warning-close]")];
-let usageResetWarningConfirm = document.querySelector("[data-usage-reset-warning-confirm]");
-const usageLearnOpen = document.querySelector("[data-usage-learn-open]");
-const usageLearnDialog = document.querySelector("[data-usage-learn-dialog]");
-const usageLearnCloseButtons = [...document.querySelectorAll("[data-usage-learn-close]")];
 const homeTabs = [...document.querySelectorAll("[data-home-tab]")];
 const homePanels = [...document.querySelectorAll("[data-home-panel]")];
 const infoTabs = [...document.querySelectorAll("[data-info-tab]")];
@@ -2379,6 +2122,10 @@ let currentLanguagePreference = getInitialLanguagePreference();
 let currentLanguage = getResolvedLanguage(currentLanguagePreference);
 
 const translate = (key) => translations[currentLanguage][key] || translations.ko[key] || key;
+window.profileI18n = {
+  translate: (key) => translate(key),
+  getLanguage: () => currentLanguage,
+};
 
 const USER_PROFILE_NAME_KEY = "profile-user-name";
 const USER_PROFILE_AVATAR_KEY = "profile-user-avatar";
@@ -3120,6 +2867,7 @@ const setLanguage = (language) => {
   syncQuickSettingsControls();
   syncUserProfileUI();
   syncAuthenticatedCheckoutUI();
+  window.dispatchEvent(new CustomEvent("profile-language-change", { detail: { language: resolvedLanguage } }));
 };
 
 const getToggleLabelKey = (key, isOn) => {
@@ -3527,34 +3275,6 @@ const createClipboardWarningDialog = () => {
   clipboardWarningDialog = document.querySelector("[data-clipboard-warning-dialog]");
   clipboardWarningCloseButtons = [...document.querySelectorAll("[data-clipboard-warning-close]")];
   clipboardWarningContinue = document.querySelector("[data-clipboard-warning-continue]");
-};
-
-const createUsageResetWarningDialog = () => {
-  if (!document.querySelector("[data-usage-reset-warning]")) {
-    const dialog = document.createElement("div");
-    dialog.className = "cache-dialog usage-reset-warning-dialog";
-    dialog.dataset.usageResetWarning = "";
-    dialog.hidden = true;
-    dialog.innerHTML = `
-      <div class="cache-dialog-panel usage-reset-warning-panel" role="dialog" aria-modal="true" aria-labelledby="usage-reset-warning-title">
-        <button class="dialog-close-button" type="button" data-usage-reset-warning-close aria-label="닫기" data-i18n-aria-label="share.close">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
-        </button>
-        <p class="eyebrow" data-i18n="usage.resetWarningEyebrow">Usage reset</p>
-        <h2 id="usage-reset-warning-title" data-i18n="usage.resetWarningTitle">한도를 초기화할까요?</h2>
-        <p data-i18n="usage.resetWarningBody">5시간, 주간, 월간 사용 한도가 모두 지금부터 다시 시작됩니다. 이번 주 초기화 가능 횟수 1회가 사용됩니다.</p>
-        <div class="cache-warning-actions">
-          <button class="button cache-cancel-button" type="button" data-usage-reset-warning-close data-i18n="usage.resetWarningCancel">취소</button>
-          <button class="button cache-confirm-button usage-reset-confirm-button" type="button" data-usage-reset-warning-confirm data-i18n="usage.resetWarningConfirm">초기화</button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(dialog);
-  }
-
-  usageResetWarningDialog = document.querySelector("[data-usage-reset-warning]");
-  usageResetWarningCloseButtons = [...document.querySelectorAll("[data-usage-reset-warning-close]")];
-  usageResetWarningConfirm = document.querySelector("[data-usage-reset-warning-confirm]");
 };
 
 const createWelcomeDialog = () => {
@@ -4425,455 +4145,6 @@ const formatBytes = (bytes) => {
   return `${value.toLocaleString(undefined, { maximumFractionDigits })} ${units[unitIndex]}`;
 };
 
-const browserUsageLimitMs = 5 * 60 * 60 * 1000;
-const browserUsageWeeklyLimitMs = 7 * browserUsageLimitMs;
-const browserUsageWeekMs = 7 * 24 * 60 * 60 * 1000;
-const browserUsageMonthlyLimitMs = 30 * browserUsageLimitMs;
-const browserUsageMonthMs = 30 * 24 * 60 * 60 * 1000;
-const browserUsageResetLimit = 2;
-const browserUsageStartedAt = Date.now();
-const browserUsageAccountingVersion = "signed-in-visible-v2";
-const browserUsageAuthStartedKey = "profile-browser-usage-auth-started";
-if (localStorage.getItem("profile-browser-usage-accounting-version") !== browserUsageAccountingVersion) {
-  localStorage.setItem("profile-browser-usage-window-start-ms", String(browserUsageStartedAt));
-  localStorage.setItem("profile-browser-usage-used-ms", "0");
-  localStorage.setItem("profile-browser-usage-week-start-ms", String(browserUsageStartedAt));
-  localStorage.setItem("profile-browser-usage-week-used-ms", "0");
-  localStorage.setItem("profile-browser-usage-month-start-ms", String(browserUsageStartedAt));
-  localStorage.setItem("profile-browser-usage-month-used-ms", "0");
-  localStorage.removeItem("profile-browser-usage-total-ms");
-  localStorage.removeItem(browserUsageAuthStartedKey);
-  localStorage.setItem("profile-browser-usage-accounting-version", browserUsageAccountingVersion);
-}
-let browserUsageActiveStartedAt = 0;
-let browserUsageWindowStart = Number.parseInt(localStorage.getItem("profile-browser-usage-window-start-ms") || "0", 10);
-let browserUsageBaseMs = Number.parseInt(
-  localStorage.getItem("profile-browser-usage-used-ms") || localStorage.getItem("profile-browser-usage-total-ms") || "0",
-  10,
-);
-let browserUsageWeeklyWindowStart = Number.parseInt(localStorage.getItem("profile-browser-usage-week-start-ms") || "0", 10);
-let browserUsageWeeklyBaseMs = Number.parseInt(localStorage.getItem("profile-browser-usage-week-used-ms") || "0", 10);
-let browserUsageMonthlyWindowStart = Number.parseInt(localStorage.getItem("profile-browser-usage-month-start-ms") || "0", 10);
-let browserUsageMonthlyBaseMs = Number.parseInt(localStorage.getItem("profile-browser-usage-month-used-ms") || "0", 10);
-let browserUsageResetWeekStart = Number.parseInt(
-  localStorage.getItem("profile-browser-usage-reset-week-start-ms") || "0",
-  10,
-);
-let browserUsageResetWeekCount = Number.parseInt(
-  localStorage.getItem("profile-browser-usage-reset-week-count") || "0",
-  10,
-);
-let browserUsageRedirected = false;
-let browserUsageWindowStateChanged = false;
-let browserUsageWeeklyWindowStateChanged = false;
-let browserUsageMonthlyWindowStateChanged = false;
-let browserUsageResetWindowStateChanged = false;
-let usageLimitNotice = null;
-let browserUsageAuthenticated = false;
-
-const isUsageAuthenticated = () =>
-  document.documentElement.dataset.authState === "signed-in" && Boolean(window.profileAuthUser);
-
-const initializeBrowserUsageForAuthentication = () => {
-  if (localStorage.getItem(browserUsageAuthStartedKey) === "true") return;
-
-  const now = Date.now();
-  browserUsageWindowStart = now;
-  browserUsageBaseMs = 0;
-  browserUsageWeeklyWindowStart = now;
-  browserUsageWeeklyBaseMs = 0;
-  browserUsageMonthlyWindowStart = now;
-  browserUsageMonthlyBaseMs = 0;
-  browserUsageResetWeekStart = now;
-  browserUsageResetWeekCount = 0;
-  browserUsageRedirected = false;
-  localStorage.setItem("profile-browser-usage-window-start-ms", String(now));
-  localStorage.setItem("profile-browser-usage-used-ms", "0");
-  localStorage.setItem("profile-browser-usage-week-start-ms", String(now));
-  localStorage.setItem("profile-browser-usage-week-used-ms", "0");
-  localStorage.setItem("profile-browser-usage-month-start-ms", String(now));
-  localStorage.setItem("profile-browser-usage-month-used-ms", "0");
-  localStorage.setItem("profile-browser-usage-reset-week-start-ms", String(now));
-  localStorage.setItem("profile-browser-usage-reset-week-count", "0");
-  localStorage.setItem(browserUsageAuthStartedKey, "true");
-  localStorage.removeItem("profile-browser-usage-total-ms");
-};
-if (!Number.isFinite(browserUsageWindowStart) || browserUsageWindowStart <= 0) {
-  browserUsageWindowStart = browserUsageStartedAt;
-  browserUsageWindowStateChanged = true;
-}
-if (!Number.isFinite(browserUsageBaseMs) || browserUsageBaseMs < 0) {
-  browserUsageBaseMs = 0;
-  browserUsageWindowStateChanged = true;
-}
-if (!Number.isFinite(browserUsageWeeklyWindowStart) || browserUsageWeeklyWindowStart <= 0) {
-  browserUsageWeeklyWindowStart = browserUsageStartedAt;
-  browserUsageWeeklyWindowStateChanged = true;
-}
-if (!Number.isFinite(browserUsageWeeklyBaseMs) || browserUsageWeeklyBaseMs < 0) {
-  browserUsageWeeklyBaseMs = 0;
-  browserUsageWeeklyWindowStateChanged = true;
-}
-if (!Number.isFinite(browserUsageMonthlyWindowStart) || browserUsageMonthlyWindowStart <= 0) {
-  browserUsageMonthlyWindowStart = browserUsageStartedAt;
-  browserUsageMonthlyWindowStateChanged = true;
-}
-if (!Number.isFinite(browserUsageMonthlyBaseMs) || browserUsageMonthlyBaseMs < 0) {
-  browserUsageMonthlyBaseMs = 0;
-  browserUsageMonthlyWindowStateChanged = true;
-}
-if (!Number.isFinite(browserUsageResetWeekStart) || browserUsageResetWeekStart <= 0) {
-  browserUsageResetWeekStart = 0;
-  browserUsageResetWindowStateChanged = true;
-}
-if (!Number.isFinite(browserUsageResetWeekCount) || browserUsageResetWeekCount < 0) {
-  browserUsageResetWeekCount = 0;
-  browserUsageResetWindowStateChanged = true;
-}
-if (browserUsageWindowStateChanged) {
-  localStorage.setItem("profile-browser-usage-window-start-ms", String(browserUsageWindowStart));
-  localStorage.setItem("profile-browser-usage-used-ms", String(browserUsageBaseMs));
-  localStorage.removeItem("profile-browser-usage-total-ms");
-}
-if (browserUsageWeeklyWindowStateChanged) {
-  localStorage.setItem("profile-browser-usage-week-start-ms", String(browserUsageWeeklyWindowStart));
-  localStorage.setItem("profile-browser-usage-week-used-ms", String(browserUsageWeeklyBaseMs));
-}
-if (browserUsageMonthlyWindowStateChanged) {
-  localStorage.setItem("profile-browser-usage-month-start-ms", String(browserUsageMonthlyWindowStart));
-  localStorage.setItem("profile-browser-usage-month-used-ms", String(browserUsageMonthlyBaseMs));
-}
-if (browserUsageResetWindowStateChanged) {
-  localStorage.setItem("profile-browser-usage-reset-week-start-ms", String(browserUsageResetWeekStart));
-  localStorage.setItem("profile-browser-usage-reset-week-count", String(browserUsageResetWeekCount));
-}
-
-const formatUsageResetTime = (timestamp) => {
-  const date = new Date(timestamp);
-  const locale = currentLanguage === "ko" ? "ko-KR" : "en-US";
-  const timeText = new Intl.DateTimeFormat(locale, {
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(date);
-
-  return translate("usage.resetAt").replace("{time}", timeText);
-};
-
-const formatUsageDateValue = (timestamp, includeYear = false) => {
-  const date = new Date(timestamp);
-  const locale = currentLanguage === "ko" ? "ko-KR" : "en-US";
-  return new Intl.DateTimeFormat(locale, {
-    ...(includeYear ? { year: "numeric" } : {}),
-    month: "long",
-    day: "numeric",
-  }).format(date);
-};
-
-const formatUsageResetDate = (timestamp) => {
-  const dateText = formatUsageDateValue(timestamp);
-
-  return translate("usage.resetOn").replace("{date}", dateText);
-};
-
-const formatUsageResetFullDate = (timestamp) => {
-  const dateText = formatUsageDateValue(timestamp, true);
-
-  return translate("usage.resetOn").replace("{date}", dateText);
-};
-
-const getUsageLimitNotice = () => {
-  if (usageLimitNotice) return usageLimitNotice;
-
-  usageLimitNotice = document.querySelector("[data-usage-limit-notice]");
-  if (usageLimitNotice) return usageLimitNotice;
-
-  usageLimitNotice = document.createElement("aside");
-  usageLimitNotice.className = "usage-limit-notice";
-  usageLimitNotice.dataset.usageLimitNotice = "";
-  usageLimitNotice.hidden = true;
-  usageLimitNotice.setAttribute("role", "alert");
-  usageLimitNotice.setAttribute("aria-live", "assertive");
-  usageLimitNotice.innerHTML = `
-    <strong data-i18n="usage.limitNoticeTitle">${translate("usage.limitNoticeTitle")}</strong>
-    <span data-i18n="usage.limitNoticeBody">${translate("usage.limitNoticeBody")}</span>
-    <a href="/Pricing" data-i18n="usage.limitNoticeButton">${translate("usage.limitNoticeButton")}</a>
-  `;
-  document.body.appendChild(usageLimitNotice);
-  return usageLimitNotice;
-};
-
-const setUsageLimitNoticeVisible = (isVisible) => {
-  const notice = getUsageLimitNotice();
-  notice.hidden = !isVisible;
-  notice.classList.toggle("is-visible", isVisible);
-};
-
-const refreshBrowserUsageWindow = () => {
-  const now = Date.now();
-  if (now - browserUsageWindowStart < browserUsageLimitMs) return;
-
-  browserUsageWindowStart = now;
-  browserUsageBaseMs = 0;
-  browserUsageRedirected = false;
-  setUsageLimitNoticeVisible(false);
-  localStorage.setItem("profile-browser-usage-window-start-ms", String(browserUsageWindowStart));
-  localStorage.setItem("profile-browser-usage-used-ms", "0");
-  localStorage.removeItem("profile-browser-usage-total-ms");
-};
-
-const refreshBrowserUsageWeeklyWindow = () => {
-  const now = Date.now();
-  if (now - browserUsageWeeklyWindowStart < browserUsageWeekMs) return;
-
-  browserUsageWeeklyWindowStart = now;
-  browserUsageWeeklyBaseMs = 0;
-  localStorage.setItem("profile-browser-usage-week-start-ms", String(browserUsageWeeklyWindowStart));
-  localStorage.setItem("profile-browser-usage-week-used-ms", "0");
-};
-
-const refreshBrowserUsageMonthlyWindow = () => {
-  const now = Date.now();
-  if (now - browserUsageMonthlyWindowStart < browserUsageMonthMs) return;
-
-  browserUsageMonthlyWindowStart = now;
-  browserUsageMonthlyBaseMs = 0;
-  localStorage.setItem("profile-browser-usage-month-start-ms", String(browserUsageMonthlyWindowStart));
-  localStorage.setItem("profile-browser-usage-month-used-ms", "0");
-};
-
-const refreshBrowserUsageResetWindow = () => {
-  const now = Date.now();
-  if (browserUsageResetWeekStart <= 0) return;
-  if (now - browserUsageResetWeekStart < browserUsageWeekMs) return;
-
-  browserUsageResetWeekStart = now;
-  browserUsageResetWeekCount = 0;
-  localStorage.setItem("profile-browser-usage-reset-week-start-ms", String(browserUsageResetWeekStart));
-  localStorage.setItem("profile-browser-usage-reset-week-count", "0");
-};
-
-refreshBrowserUsageWindow();
-refreshBrowserUsageWeeklyWindow();
-refreshBrowserUsageMonthlyWindow();
-refreshBrowserUsageResetWindow();
-
-const getUsageResetRemaining = () => {
-  refreshBrowserUsageResetWindow();
-  return Math.max(browserUsageResetLimit - browserUsageResetWeekCount, 0);
-};
-
-const updateUsageResetControl = () => {
-  if (!usageResetButton && !usageResetStatus) return;
-
-  if (!isUsageAuthenticated()) {
-    if (usageResetButton) usageResetButton.disabled = true;
-    if (usageResetStatus) usageResetStatus.textContent = translate("usage.signInStatus");
-    return;
-  }
-
-  const remaining = getUsageResetRemaining();
-  const resetDate = formatUsageDateValue(browserUsageResetWeekStart + browserUsageWeekMs, true);
-  if (usageResetButton) usageResetButton.disabled = remaining <= 0;
-  if (usageResetStatus) {
-    usageResetStatus.textContent =
-      remaining > 0
-        ? translate("usage.resetStatus").replace("{count}", String(remaining))
-        : translate("usage.resetStatusEmpty").replace("{date}", resetDate);
-  }
-};
-
-const resetBrowserUsageLimits = () => {
-  if (!isUsageAuthenticated()) return;
-  if (getUsageResetRemaining() <= 0) {
-    updateUsageResetControl();
-    return;
-  }
-
-  const now = Date.now();
-  refreshBrowserUsageResetWindow();
-  if (browserUsageResetWeekStart <= 0) {
-    browserUsageResetWeekStart = now;
-    browserUsageResetWeekCount = 0;
-  }
-  browserUsageWindowStart = now;
-  browserUsageBaseMs = 0;
-  browserUsageWeeklyWindowStart = now;
-  browserUsageWeeklyBaseMs = 0;
-  browserUsageMonthlyWindowStart = now;
-  browserUsageMonthlyBaseMs = 0;
-  browserUsageRedirected = false;
-  browserUsageResetWeekCount = Math.min(browserUsageResetWeekCount + 1, browserUsageResetLimit);
-  localStorage.setItem("profile-browser-usage-window-start-ms", String(browserUsageWindowStart));
-  localStorage.setItem("profile-browser-usage-used-ms", "0");
-  localStorage.setItem("profile-browser-usage-week-start-ms", String(browserUsageWeeklyWindowStart));
-  localStorage.setItem("profile-browser-usage-week-used-ms", "0");
-  localStorage.setItem("profile-browser-usage-month-start-ms", String(browserUsageMonthlyWindowStart));
-  localStorage.setItem("profile-browser-usage-month-used-ms", "0");
-  localStorage.setItem("profile-browser-usage-reset-week-start-ms", String(browserUsageResetWeekStart));
-  localStorage.setItem("profile-browser-usage-reset-week-count", String(browserUsageResetWeekCount));
-  localStorage.removeItem("profile-browser-usage-total-ms");
-  setUsageLimitNoticeVisible(false);
-  updateBrowserUsage();
-  updateUsageResetControl();
-};
-
-const showUsageResetWarningDialog = () => {
-  if (!isUsageAuthenticated()) return;
-  if (getUsageResetRemaining() <= 0) {
-    updateUsageResetControl();
-    return;
-  }
-
-  if (!usageResetWarningDialog) createUsageResetWarningDialog();
-  if (!usageResetWarningDialog) return;
-  usageResetWarningDialog.hidden = false;
-  usageResetWarningDialog.classList.remove("is-closing");
-  lockBodyScroll();
-  window.setTimeout(() => {
-    usageResetWarningConfirm?.focus({ preventScroll: true });
-  }, 30);
-};
-
-const closeUsageResetWarningDialog = () => {
-  if (!usageResetWarningDialog || usageResetWarningDialog.hidden) return;
-  usageResetWarningDialog.classList.add("is-closing");
-  window.setTimeout(() => {
-    usageResetWarningDialog.hidden = true;
-    usageResetWarningDialog.classList.remove("is-closing");
-    unlockBodyScroll();
-    usageResetButton?.focus({ preventScroll: true });
-  }, 160);
-};
-
-const confirmUsageResetWarningDialog = () => {
-  resetBrowserUsageLimits();
-  closeUsageResetWarningDialog();
-};
-
-const getBrowserUsageActiveElapsed = (windowStart) =>
-  browserUsageActiveStartedAt > 0
-    ? Math.max(0, Date.now() - Math.max(browserUsageActiveStartedAt, windowStart))
-    : 0;
-
-const getCurrentBrowserUsageMs = () => {
-  refreshBrowserUsageWindow();
-  return browserUsageBaseMs + getBrowserUsageActiveElapsed(browserUsageWindowStart);
-};
-
-const getCurrentWeeklyUsageMs = () => {
-  refreshBrowserUsageWeeklyWindow();
-  return browserUsageWeeklyBaseMs + getBrowserUsageActiveElapsed(browserUsageWeeklyWindowStart);
-};
-
-const getCurrentMonthlyUsageMs = () => {
-  refreshBrowserUsageMonthlyWindow();
-  return browserUsageMonthlyBaseMs + getBrowserUsageActiveElapsed(browserUsageMonthlyWindowStart);
-};
-
-const persistBrowserUsage = ({ restart = true } = {}) => {
-  refreshBrowserUsageWindow();
-  refreshBrowserUsageWeeklyWindow();
-  refreshBrowserUsageMonthlyWindow();
-  browserUsageBaseMs = Math.min(getCurrentBrowserUsageMs(), browserUsageLimitMs);
-  browserUsageWeeklyBaseMs = Math.min(getCurrentWeeklyUsageMs(), browserUsageWeeklyLimitMs);
-  browserUsageMonthlyBaseMs = Math.min(getCurrentMonthlyUsageMs(), browserUsageMonthlyLimitMs);
-  localStorage.setItem("profile-browser-usage-window-start-ms", String(browserUsageWindowStart));
-  localStorage.setItem("profile-browser-usage-used-ms", String(browserUsageBaseMs));
-  localStorage.setItem("profile-browser-usage-week-start-ms", String(browserUsageWeeklyWindowStart));
-  localStorage.setItem("profile-browser-usage-week-used-ms", String(browserUsageWeeklyBaseMs));
-  localStorage.setItem("profile-browser-usage-month-start-ms", String(browserUsageMonthlyWindowStart));
-  localStorage.setItem("profile-browser-usage-month-used-ms", String(browserUsageMonthlyBaseMs));
-  localStorage.removeItem("profile-browser-usage-total-ms");
-  browserUsageActiveStartedAt =
-    restart && isUsageAuthenticated() && document.visibilityState === "visible" ? Date.now() : 0;
-};
-
-const updateBrowserUsage = () => {
-  if (!isUsageAuthenticated()) {
-    if (usageLimitNotice) setUsageLimitNoticeVisible(false);
-    updateUsageResetControl();
-    return;
-  }
-
-  refreshBrowserUsageWindow();
-  refreshBrowserUsageWeeklyWindow();
-  refreshBrowserUsageMonthlyWindow();
-
-  const totalMs = Math.min(getCurrentBrowserUsageMs(), browserUsageLimitMs);
-  const weeklyMs = Math.min(getCurrentWeeklyUsageMs(), browserUsageWeeklyLimitMs);
-  const monthlyMs = Math.min(getCurrentMonthlyUsageMs(), browserUsageMonthlyLimitMs);
-  const dailyRemainingRatio = Math.max(1 - totalMs / browserUsageLimitMs, 0);
-  const weeklyRemainingRatio = Math.max(1 - weeklyMs / browserUsageWeeklyLimitMs, 0);
-  const monthlyRemainingRatio = Math.max(1 - monthlyMs / browserUsageMonthlyLimitMs, 0);
-  const dailyRemainingPercent = Math.ceil(dailyRemainingRatio * 100);
-  const weeklyRemainingPercent = Math.ceil(weeklyRemainingRatio * 100);
-  const monthlyRemainingPercent = Math.ceil(monthlyRemainingRatio * 100);
-  const hasReachedLimit =
-    totalMs >= browserUsageLimitMs ||
-    weeklyMs >= browserUsageWeeklyLimitMs ||
-    monthlyMs >= browserUsageMonthlyLimitMs;
-
-  setUsageLimitNoticeVisible(hasReachedLimit);
-  updateUsageResetControl();
-
-  if (
-    !browserUsageDailyRemaining &&
-    !browserUsageWeeklyRemaining &&
-    !browserUsageMonthlyRemaining
-  ) return;
-
-  if (browserUsageDailyReset) browserUsageDailyReset.textContent = formatUsageResetTime(browserUsageWindowStart + browserUsageLimitMs);
-  if (browserUsageDailyRemaining) {
-    browserUsageDailyRemaining.textContent = translate("usage.remainingPercent").replace("{percent}", String(dailyRemainingPercent));
-  }
-  if (browserUsageDailyBar) browserUsageDailyBar.style.transform = `scaleX(${dailyRemainingRatio})`;
-  if (browserUsageWeeklyReset) browserUsageWeeklyReset.textContent = formatUsageResetDate(browserUsageWeeklyWindowStart + browserUsageWeekMs);
-  if (browserUsageWeeklyRemaining) {
-    browserUsageWeeklyRemaining.textContent = translate("usage.remainingPercent").replace("{percent}", String(weeklyRemainingPercent));
-  }
-  if (browserUsageWeeklyBar) browserUsageWeeklyBar.style.transform = `scaleX(${weeklyRemainingRatio})`;
-  if (browserUsageMonthlyReset) browserUsageMonthlyReset.textContent = formatUsageResetDate(browserUsageMonthlyWindowStart + browserUsageMonthMs);
-  if (browserUsageMonthlyRemaining) {
-    browserUsageMonthlyRemaining.textContent = translate("usage.remainingPercent").replace("{percent}", String(monthlyRemainingPercent));
-  }
-  if (browserUsageMonthlyBar) browserUsageMonthlyBar.style.transform = `scaleX(${monthlyRemainingRatio})`;
-  if (hasReachedLimit && !browserUsageRedirected) {
-    browserUsageRedirected = true;
-    persistBrowserUsage();
-  }
-};
-
-const syncUsageAuthentication = () => {
-  const authState = document.documentElement.dataset.authState || "loading";
-  const isSignedIn = isUsageAuthenticated();
-  const isLoading = authState === "loading";
-
-  usageAuthContent.forEach((element) => {
-    element.hidden = !isSignedIn;
-  });
-  if (usageAuthGate) usageAuthGate.hidden = isSignedIn || isLoading;
-
-  if (browserUsageAuthenticated && !isSignedIn && browserUsageActiveStartedAt > 0) {
-    persistBrowserUsage({ restart: false });
-  }
-
-  browserUsageAuthenticated = isSignedIn;
-  if (isSignedIn) {
-    initializeBrowserUsageForAuthentication();
-    if (document.visibilityState === "visible" && browserUsageActiveStartedAt <= 0) {
-      browserUsageActiveStartedAt = Date.now();
-    }
-  } else {
-    browserUsageActiveStartedAt = 0;
-    if (usageLimitNotice) setUsageLimitNoticeVisible(false);
-    closeUsageResetWarningDialog();
-  }
-
-  updateBrowserUsage();
-};
-
-window.addEventListener("profile-auth-change", syncUsageAuthentication);
-
 const updateStorageEstimate = async () => {
   if (!storageMeter) return;
 
@@ -4926,12 +4197,6 @@ const showSubscribeWarning = (button) => {
   }
 
   subscribeWarning.hidden = false;
-};
-
-const showUsageLearnDialog = () => {
-  if (!usageLearnDialog) return;
-
-  usageLearnDialog.hidden = false;
 };
 
 const openFeedbackForm = () => {
@@ -5003,16 +4268,6 @@ const closeSubscribeWarning = () => {
     if (body) body.textContent = translate("pricing.subscribeWarningBody");
     if (subscribeConfirm) subscribeConfirm.hidden = false;
     if (subscribeCancel) subscribeCancel.textContent = translate("pricing.subscribeCancel");
-  }, 170);
-};
-
-const closeUsageLearnDialog = () => {
-  if (!usageLearnDialog || usageLearnDialog.hidden) return;
-
-  usageLearnDialog.classList.add("is-closing");
-  window.setTimeout(() => {
-    usageLearnDialog.hidden = true;
-    usageLearnDialog.classList.remove("is-closing");
   }, 170);
 };
 
@@ -6416,7 +5671,6 @@ createSourceDialog();
 createPrintDialog();
 createClipboardDialog();
 createClipboardWarningDialog();
-createUsageResetWarningDialog();
 createWelcomeDialog();
 createMobileQuickActions();
 setupCookieNotice();
@@ -6447,12 +5701,6 @@ setupBrandLogo();
 setKidMode(localStorage.getItem("profile-setting-kid-mode") || "off");
 setCurrency(localStorage.getItem("profile-currency") || (currentLanguage === "ko" ? "krw" : "usd"));
 updateStorageEstimate();
-updateBrowserUsage();
-const browserUsageIntervalId = window.setInterval(() => {
-  if (!isUsageAuthenticated() || document.visibilityState !== "visible") return;
-  updateBrowserUsage();
-  persistBrowserUsage();
-}, 1000);
 
 themeChoices.forEach((button) => {
   button.addEventListener("click", () => {
@@ -6524,7 +5772,6 @@ document.addEventListener("keydown", (event) => {
   setMobileMenuOpen(false);
   closeOfficialMenus();
   closeKeyboardShortcutsDialog();
-  closeUsageLearnDialog();
 });
 
 mobileMenu?.querySelectorAll("a, .nav-search-button, .nav-flyout-panel a").forEach((link) => {
@@ -6538,20 +5785,6 @@ clearCacheCancel?.addEventListener("click", () => {
 clearCacheConfirm?.addEventListener("click", clearSiteCache);
 clearCacheWarning?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === clearCacheWarning) closeClearCacheWarning();
-});
-window.addEventListener("pagehide", () => {
-  if (browserUsageActiveStartedAt > 0) persistBrowserUsage({ restart: false });
-  window.clearInterval(browserUsageIntervalId);
-});
-document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "hidden") {
-    if (browserUsageActiveStartedAt > 0) persistBrowserUsage({ restart: false });
-    browserUsageActiveStartedAt = 0;
-    return;
-  }
-
-  browserUsageActiveStartedAt = isUsageAuthenticated() ? Date.now() : 0;
-  updateBrowserUsage();
 });
 feedbackOpenButtons.forEach((button) => {
   button.addEventListener("click", showFeedbackWarning);
@@ -6586,22 +5819,6 @@ subscribeConfirm?.addEventListener("click", openSubscriptionCheckout);
 subscribeWarning?.addEventListener("click", (event) => {
   if (event.button === 0 && event.target === subscribeWarning) closeSubscribeWarning();
 });
-usageLearnOpen?.addEventListener("click", showUsageLearnDialog);
-usageLearnCloseButtons.forEach((button) => {
-  button.addEventListener("click", closeUsageLearnDialog);
-});
-usageLearnDialog?.addEventListener("click", (event) => {
-  if (event.button === 0 && event.target === usageLearnDialog) closeUsageLearnDialog();
-});
-usageResetButton?.addEventListener("click", showUsageResetWarningDialog);
-usageResetWarningCloseButtons.forEach((button) => {
-  button.addEventListener("click", closeUsageResetWarningDialog);
-});
-usageResetWarningConfirm?.addEventListener("click", confirmUsageResetWarningDialog);
-usageResetWarningDialog?.addEventListener("click", (event) => {
-  if (event.button === 0 && event.target === usageResetWarningDialog) closeUsageResetWarningDialog();
-});
-window.__profileUsageMainReady = true;
 shareLinkButton?.addEventListener("click", showShareDialog);
 shareClose?.addEventListener("click", closeShareDialog);
 shareCopy?.addEventListener("click", copyShareLink);
@@ -6942,7 +6159,7 @@ infoTabs.forEach((tab) => {
   });
 });
 
-import("/assets/js/firebase-auth.js?v=20260719-stability-audit1").catch(() => {
+import("/assets/js/firebase-auth.js?v=20260719-usage-module1").catch(() => {
   document.documentElement.dataset.authState = "unavailable";
   window.profileAuthUser = null;
   window.dispatchEvent(new CustomEvent("profile-auth-change"));

@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260719-update-history2";
+const CACHE_NAME = "profile-offline-20260719-usage-module1";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
@@ -35,6 +35,7 @@ const PRECACHE_URLS = [
   "/assets/css/sections/40-responsive-polish.css",
   "/assets/js/translations.js",
   "/assets/js/script.js",
+  "/assets/js/usage.js",
   "/assets/js/firebase-auth.js",
   "/assets/js/status.js",
   "/favicon.ico",

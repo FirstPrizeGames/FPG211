@@ -4455,7 +4455,8 @@ html[lang="ko"] .accessibility-official-hero h1 {
 }
 
 body.settings-dialog-open,
-body.welcome-dialog-open {
+body.welcome-dialog-open,
+body.usage-dialog-open {
   overflow: hidden;
   overscroll-behavior: none;
 }

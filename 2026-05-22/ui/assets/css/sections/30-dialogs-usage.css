@@ -969,6 +969,11 @@
     padding-bottom: calc(70px + env(safe-area-inset-bottom));
   }
 
+  .error-body,
+  .offline-body {
+    padding-bottom: 0;
+  }
+
   .copy-toast {
     bottom: calc(82px + env(safe-area-inset-bottom));
   }
@@ -1383,8 +1388,8 @@
   }
 
   .error-console {
-    order: -1;
-    min-height: 300px;
+    order: initial;
+    min-height: 220px;
   }
 
   .error-route-section {

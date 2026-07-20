@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260720-checkout-verify1";
+const CACHE_NAME = "profile-offline-20260720-context-css1";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
@@ -33,6 +33,7 @@ const PRECACHE_URLS = [
   "/community",
   "/assets/css/styles.css",
   "/assets/css/sections/00-foundation.css",
+  "/assets/css/sections/05-themes.css",
   "/assets/css/sections/10-layout-navigation.css",
   "/assets/css/sections/20-pages-components.css",
   "/assets/css/sections/30-dialogs-usage.css",

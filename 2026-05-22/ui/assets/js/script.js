@@ -67,7 +67,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260720-checkout-verify1`;
+  const repairUrl = `${guard.fallback}?v=20260720-context-css1`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -412,7 +412,6 @@ const createSidebarHelpMenu = () => {
 
   [
     { href: "/FAQ", icon: navIconMarkup.faq, labelKey: "nav.faq", fallback: "FAQ" },
-    { action: "keyboard-shortcuts", icon: navIconMarkup.keyboard, labelKey: "keyboardShortcuts.nav", fallback: "Keyboard shortcuts" },
     { href: "/feedback", icon: navIconMarkup.support, labelKey: "nav.support", fallback: "Support" },
     { href: "/status", icon: navIconMarkup.status, labelKey: "nav.status", fallback: "Status" },
     { divider: true },
@@ -431,12 +430,7 @@ const createSidebarHelpMenu = () => {
       return;
     }
 
-    const element = item.action ? document.createElement("button") : createNavAnchor(item);
-    if (item.action) {
-      element.type = "button";
-      element.dataset.keyboardShortcutsOpen = "";
-      element.innerHTML = `${item.icon}<span data-i18n="${item.labelKey}">${item.fallback}</span>`;
-    }
+    const element = createNavAnchor(item);
     element.classList.add("sidebar-help-link");
     element.setAttribute("role", "menuitem");
     panel.append(element);
@@ -617,6 +611,10 @@ const createSettingsDialog = () => {
           ${navIconMarkup.accessibility}
           <span data-i18n="nav.accessibility">Accessibility</span>
         </button>
+        <button class="settings-modal-tab" type="button" data-settings-modal-tab="keyboard">
+          ${navIconMarkup.keyboard}
+          <span data-i18n="settings.keyboardTab">키보드</span>
+        </button>
         <button class="settings-modal-tab" type="button" data-settings-modal-tab="security">
           ${navIconMarkup.security}
           <span data-i18n="nav.security">Security</span>
@@ -684,6 +682,24 @@ const createSettingsDialog = () => {
               <span data-i18n="settings.accessibilityBody">키보드 이동, 언어, 화면 표시 보조, 모바일 지원 범위를 확인합니다.</span>
             </div>
             <a class="settings-modal-link" href="/accessibility" data-i18n="settings.accessibilityOpen">Accessibility 열기</a>
+          </div>
+        </section>
+
+        <section class="settings-modal-panel" data-settings-modal-panel="keyboard" hidden>
+          <h2 data-i18n="settings.keyboardTab">키보드</h2>
+          <div class="settings-modal-row">
+            <div>
+              <strong data-i18n="settings.keyboardShortcutsTitle">사이트 단축키</strong>
+              <span data-i18n="settings.keyboardShortcutsBody">검색, 링크 복사, 공유 같은 사이트 전용 단축키를 사용합니다. 브라우저 기본 단축키는 그대로 유지됩니다.</span>
+            </div>
+            <button class="toggle is-on" type="button" aria-label="사이트 단축키 켜짐" aria-pressed="true" data-i18n-aria-label="settings.keyboardShortcutsOn" data-toggle-key="keyboard-shortcuts"></button>
+          </div>
+          <div class="settings-modal-row">
+            <div>
+              <strong data-i18n="keyboardShortcuts.title">키보드 단축키</strong>
+              <span data-i18n="settings.keyboardShortcutsListBody">현재 사용할 수 있는 사이트 단축키를 확인합니다.</span>
+            </div>
+            <button class="settings-modal-button" type="button" data-keyboard-shortcuts-open data-i18n="settings.keyboardShortcutsOpen">단축키 보기</button>
           </div>
         </section>
 
@@ -2130,6 +2146,10 @@ const normalizeBooleanSetting = (value, fallback = false) => {
   return fallback;
 };
 
+const SITE_KEYBOARD_SHORTCUTS_STORAGE_KEY = "profile-setting-keyboard-shortcuts";
+const areSiteKeyboardShortcutsEnabled = () =>
+  normalizeBooleanSetting(localStorage.getItem(SITE_KEYBOARD_SHORTCUTS_STORAGE_KEY), true);
+
 const getInitialSidebarCollapsed = () =>
   normalizeBooleanSetting(localStorage.getItem("profile-sidebar-collapsed"), false);
 
@@ -2945,6 +2965,7 @@ const setLanguage = (language) => {
 const getToggleLabelKey = (key, isOn) => {
   const labels = {
     "kid-mode": isOn ? "settings.kidModeOn" : "settings.kidModeOff",
+    "keyboard-shortcuts": isOn ? "settings.keyboardShortcutsOn" : "settings.keyboardShortcutsOff",
     "custom-context-menu": isOn ? "settings.contextMenuOn" : "settings.contextMenuOff",
   };
 
@@ -6022,6 +6043,8 @@ document.addEventListener("keydown", (event) => {
     return;
   }
 
+  if (!areSiteKeyboardShortcutsEnabled()) return;
+
   if (isTyping) return;
 
   if (key === "/" && !event.ctrlKey && !event.metaKey && !event.altKey) {
@@ -6243,7 +6266,7 @@ infoTabs.forEach((tab) => {
   });
 });
 
-import("/assets/js/firebase-auth.js?v=20260720-checkout-verify1").catch(() => {
+import("/assets/js/firebase-auth.js?v=20260720-context-css1").catch(() => {
   document.documentElement.dataset.authState = "unavailable";
   window.profileAuthUser = null;
   window.dispatchEvent(new CustomEvent("profile-auth-change"));

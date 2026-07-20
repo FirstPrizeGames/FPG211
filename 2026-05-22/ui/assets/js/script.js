@@ -306,6 +306,7 @@ const createNavAnchor = ({ href, icon, labelKey, fallback }) => {
   anchor.innerHTML = `${icon}<span data-i18n="${labelKey}">${fallback}</span>`;
   if (normalizeNavPath(window.location.pathname) === normalizeNavPath(href)) {
     anchor.classList.add("is-active");
+    anchor.setAttribute("aria-current", "page");
   }
   return anchor;
 };
@@ -838,11 +839,24 @@ const createSettingsDialog = () => {
   if (standaloneCookieDialog) document.body.append(standaloneCookieDialog);
 };
 
-const createMobileQuickActionButton = ({ type = "button", href, action, icon, labelKey, fallback }) => {
+const createMobileQuickActionButton = ({
+  type = "button",
+  href,
+  action,
+  icon,
+  labelKey,
+  fallback,
+  authRequired = false,
+}) => {
   const element = document.createElement(href ? "a" : "button");
   element.className = "mobile-quick-action";
   element.dataset.i18nAriaLabel = labelKey;
   element.setAttribute("aria-label", translate(labelKey));
+  if (authRequired) {
+    element.dataset.mobileProfileAction = "";
+    element.hidden = true;
+    element.setAttribute("aria-hidden", "true");
+  }
   if (href) {
     element.href = href;
     if (normalizeNavPath(window.location.pathname) === normalizeNavPath(href)) {
@@ -892,6 +906,13 @@ const createMobileQuickActions = () => {
       icon: navIconMarkup.settings,
       labelKey: "quickActions.settings",
       fallback: "Settings",
+    },
+    {
+      action: "profile",
+      icon: navIconMarkup.bio,
+      labelKey: "quickActions.profile",
+      fallback: "Profile",
+      authRequired: true,
     },
   ].forEach((item) => inner.append(createMobileQuickActionButton(item)));
 
@@ -2175,6 +2196,13 @@ const syncUserProfileUI = () => {
   document.querySelectorAll(".sidebar-account-item.is-auth-required").forEach((item) => {
     item.hidden = !isSignedIn;
     item.setAttribute("aria-hidden", String(!isSignedIn));
+  });
+  document.querySelectorAll("[data-mobile-profile-action]").forEach((item) => {
+    item.hidden = !isSignedIn;
+    item.setAttribute("aria-hidden", String(!isSignedIn));
+  });
+  document.querySelectorAll("[data-mobile-quick-actions]").forEach((bar) => {
+    bar.classList.toggle("has-profile", isSignedIn);
   });
 
   const settingsProfileLabelKey = isSignedIn ? "settings.profileTab" : "settings.loginTab";
@@ -3704,6 +3732,10 @@ const setupMobileQuickActions = () => {
       return;
     }
 
+    if (action === "profile") {
+      openUserProfileDialog();
+    }
+
   });
 };
 
@@ -5073,6 +5105,7 @@ const setupOfficialHomeMenus = () => {
 
 const syncNavigationToggleLabel = () => {
   if (!mobileMenuButton) return;
+  const visibleLabel = mobileMenuButton.querySelector("span");
 
   const isDesktopSidebar =
     desktopSidebarQuery.matches &&
@@ -5081,17 +5114,24 @@ const syncNavigationToggleLabel = () => {
 
   if (isDesktopSidebar) {
     const isCollapsed = document.documentElement.dataset.sidebarCollapsed === "true";
+    const labelKey = isCollapsed ? "nav.expandSidebar" : "nav.collapseSidebar";
     mobileMenuButton.setAttribute("aria-expanded", String(!isCollapsed));
-    mobileMenuButton.setAttribute(
-      "aria-label",
-      translate(isCollapsed ? "nav.expandSidebar" : "nav.collapseSidebar"),
-    );
+    mobileMenuButton.setAttribute("aria-label", translate(labelKey));
+    if (visibleLabel) {
+      visibleLabel.dataset.i18n = labelKey;
+      visibleLabel.textContent = translate(labelKey);
+    }
     return;
   }
 
   const isOpen = mobileMenuButton.closest(".topbar")?.classList.contains("is-open") ?? false;
+  const labelKey = isOpen ? "nav.closeMenu" : "nav.menu";
   mobileMenuButton.setAttribute("aria-expanded", String(isOpen));
-  mobileMenuButton.setAttribute("aria-label", translate(isOpen ? "nav.closeMenu" : "nav.menu"));
+  mobileMenuButton.setAttribute("aria-label", translate(labelKey));
+  if (visibleLabel) {
+    visibleLabel.dataset.i18n = labelKey;
+    visibleLabel.textContent = translate(labelKey);
+  }
 };
 
 const setMobileMenuOpen = (isOpen) => {

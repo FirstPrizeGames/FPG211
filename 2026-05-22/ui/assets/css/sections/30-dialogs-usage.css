@@ -1014,6 +1014,10 @@
     margin: 0 auto;
   }
 
+  .mobile-quick-actions.has-profile .mobile-quick-actions-inner {
+    grid-template-columns: repeat(5, 44px);
+  }
+
   .mobile-quick-action {
     display: grid;
     place-items: center;

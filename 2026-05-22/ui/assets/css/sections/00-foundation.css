@@ -1376,8 +1376,9 @@ summary {
 
   [data-nav-layout="sidebar"] .sidebar-account-panel {
     position: absolute;
-    right: -28px;
+    right: auto;
     bottom: calc(100% + 10px);
+    left: 0;
     z-index: 180;
     display: grid;
     grid-auto-rows: max-content;
@@ -1801,11 +1802,10 @@ summary {
   }
 
   [data-nav-layout="sidebar"][data-sidebar-collapsed="true"] .brand-logo::before {
-    width: 42px;
+    width: 44px;
     height: 46px;
     margin-inline: auto;
-    background-position: left center;
-    background-size: 92px auto;
+    background: url("../../logo-v2-sidebar.png") left center / 132px auto no-repeat;
   }
 
   [data-nav-layout="sidebar"][data-sidebar-collapsed="true"] .mobile-menu-button {

@@ -85,7 +85,7 @@
           : "false";
       })();
     </script>
-    <link rel="stylesheet" href="../assets/css/styles.css?v=20260720-sidebar-rail-balance1" />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260720-checkout-verify1" />
   </head>
   <body class="pricing-body">
     <div class="loading-bar" aria-hidden="true"></div>
@@ -134,7 +134,7 @@
 
       <div class="pricing-note" role="note">
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-5" /></svg>
-        <p data-i18n="pricing.adaptiveNote">Pro는 Google 로그인 후 Stripe 테스트 Checkout으로 이동하며, Team은 Google Forms에서 예약 문의를 받습니다.</p>
+        <p data-i18n="pricing.adaptiveNote">Pro Checkout과 Team 예약 문의는 Google 로그인 후 이용할 수 있습니다.</p>
       </div>
 
       <section class="pricing-grid pricing-grid-simple" aria-label="요금제 정보" data-i18n-aria-label="aria.pricingInfo">
@@ -169,7 +169,7 @@
             <h2 data-i18n="plans.proPrice" data-price-plan="pro">$20</h2>
             <span class="billing-pill" data-i18n="pricing.simpleProPill">개인</span>
           </div>
-          <span class="plan-price-detail" data-i18n="pricing.proPriceDetail">월 · 약 ₩28,000</span>
+          <span class="plan-price-detail" data-i18n="pricing.proPriceDetail">월 · 결제 시 환율 적용</span>
           <p data-i18n="pricing.simpleProBody">개인 사용자를 위한 유료 Checkout 옵션입니다. 결제 단계는 외부 Stripe에서 진행됩니다.</p>
           <ul>
             <li data-i18n="pricing.simpleProOne">Google 로그인 필요</li>
@@ -209,12 +209,15 @@
             <li data-i18n="pricing.teamFour">상담 후 범위와 비용 결정</li>
           </ul>
           <div class="pricing-card-footer">
-            <span data-i18n="pricing.teamStatus">로그인 없이 예약할 수 있습니다.</span>
+            <span data-i18n="pricing.teamStatus">Google 로그인 후 예약할 수 있습니다.</span>
             <button
               class="button ghost"
               type="button"
-              data-go-url="https://forms.gle/tbcrSAyqaK76N9AF7"
-              data-go-target="_blank"
+              data-subscribe-url="https://forms.gle/tbcrSAyqaK76N9AF7"
+              data-auth-required-checkout
+              data-authenticated-i18n="pricing.chooseTeam"
+              data-unauthenticated-i18n="pricing.signInToReserve"
+              data-auth-required-message="pricing.teamSignInRequired"
               data-i18n="pricing.chooseTeam"
             >
               Team 예약 문의
@@ -376,10 +379,10 @@
         <span data-i18n="context.settings">설정 열기</span>
       </button>
     </div>
-    <script src="../assets/js/translations.js?v=20260720-mobile-profile-nav1" defer></script>
+    <script src="../assets/js/translations.js?v=20260720-checkout-verify1" defer></script>
 
-    <script src="../assets/js/script.js?v=20260720-mobile-profile-nav1" defer></script>
-    <script src="../assets/js/usage.js?v=20260719-usage-module1" defer></script>
+    <script src="../assets/js/script.js?v=20260720-checkout-verify1" defer></script>
+    <script src="../assets/js/usage.js?v=20260720-checkout-verify1" defer></script>
   </body>
 </html>
 

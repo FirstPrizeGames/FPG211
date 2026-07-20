@@ -329,15 +329,7 @@ body {
 }
 
 .loading-bar::before {
-  content: "";
-  position: absolute;
-  inset: -7px 0;
-  background:
-    linear-gradient(90deg, transparent, color-mix(in srgb, var(--progress-color) 42%, transparent), transparent);
-  filter: blur(8px);
-  opacity: 0.8;
-  transform: translateX(-100%);
-  animation: loadingGlow 1200ms ease-in-out infinite;
+  content: none;
 }
 
 .loading-bar.is-hidden {
@@ -401,9 +393,7 @@ body {
   overflow: visible;
   border-radius: 0 999px 999px 0;
   background: var(--scrollbar-thumb);
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--scrollbar-thumb) 18%, transparent),
-    0 4px 18px color-mix(in srgb, var(--scrollbar-thumb) 34%, transparent);
+  box-shadow: none;
   transform: scaleX(0);
 }
 
@@ -416,7 +406,7 @@ body {
   height: 6px;
   border-radius: 999px;
   background: var(--scrollbar-thumb);
-  box-shadow: 0 0 18px color-mix(in srgb, var(--scrollbar-thumb) 70%, transparent);
+  box-shadow: none;
   transform: translateY(-50%);
 }
 

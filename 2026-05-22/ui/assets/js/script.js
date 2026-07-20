@@ -9,6 +9,8 @@ const navIconMarkup = {
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2" /><path d="M7 10h.01" /><path d="M11 10h.01" /><path d="M15 10h.01" /><path d="M19 10h.01" /><path d="M7 14h.01" /><path d="M11 14h6" /></svg>',
   home:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg>',
+  discover:
+    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="m15.5 8.5-2.1 4.9-4.9 2.1 2.1-4.9 4.9-2.1Z" /></svg>',
   creator:
     '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z" /><path d="m3 14 9 5 9-5" /><path d="m3 11 9 5 9-5" /></svg>',
   bio:
@@ -65,7 +67,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260719-stability-audit1`;
+  const repairUrl = `${guard.fallback}?v=20260720-checkout-verify1`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -89,11 +91,7 @@ const setupSettingsPageEarlyRecovery = () => {
       choiceSelector: "[data-theme-choice]",
       dataKey: "themeChoice",
       storageKey: "profile-theme",
-      apply: (value) => {
-        const resolved = ["dark", "lights-off"].includes(value) ? value : "dark";
-        document.documentElement.dataset.theme = resolved;
-        localStorage.setItem("profile-theme", resolved);
-      },
+      apply: (value) => setTheme(value),
     },
     {
       select: document.querySelector("[data-language-select]"),
@@ -143,18 +141,6 @@ const setupSettingsPageEarlyRecovery = () => {
     });
   };
 
-  const updateToggle = (button, isOn) => {
-    button.classList.toggle("is-on", isOn);
-    button.setAttribute("aria-pressed", String(isOn));
-
-    const key = button.dataset.toggleKey;
-    localStorage.setItem(`profile-setting-${key}`, String(isOn));
-    if (key === "kid-mode") {
-      document.documentElement.dataset.kidMode = isOn ? "strong" : "off";
-      localStorage.setItem("profile-setting-kid-mode", String(isOn));
-    }
-  };
-
   const openDialog = (selector) => {
     const dialog = document.querySelector(selector);
     if (!dialog) return;
@@ -192,7 +178,9 @@ const setupSettingsPageEarlyRecovery = () => {
       if (toggle instanceof HTMLButtonElement) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        updateToggle(toggle, !toggle.classList.contains("is-on"));
+        const nextValue = !toggle.classList.contains("is-on");
+        localStorage.setItem(`profile-setting-${toggle.dataset.toggleKey}`, String(nextValue));
+        updateSettingToggle(toggle, nextValue);
         showCopyToast("settings.saved");
         return;
       }
@@ -300,11 +288,17 @@ const normalizeNavPath = (path) => {
   return normalized || "/";
 };
 
+const isCurrentNavPath = (href) => {
+  const currentPath = normalizeNavPath(window.location.pathname).toLowerCase();
+  const targetPath = normalizeNavPath(href).toLowerCase();
+  return currentPath === targetPath || (targetPath !== "/" && currentPath.startsWith(`${targetPath}/`));
+};
+
 const createNavAnchor = ({ href, icon, labelKey, fallback }) => {
   const anchor = document.createElement("a");
   anchor.href = href;
   anchor.innerHTML = `${icon}<span data-i18n="${labelKey}">${fallback}</span>`;
-  if (normalizeNavPath(window.location.pathname) === normalizeNavPath(href)) {
+  if (isCurrentNavPath(href)) {
     anchor.classList.add("is-active");
     anchor.setAttribute("aria-current", "page");
   }
@@ -375,7 +369,7 @@ const createSidebarAccountItem = ({ href, action, icon, labelKey, fallback, clas
   if (className) item.classList.add(className);
   if (href) {
     item.href = href;
-    if (normalizeNavPath(window.location.pathname) === normalizeNavPath(href)) item.classList.add("is-active");
+    if (isCurrentNavPath(href)) item.classList.add("is-active");
   } else {
     item.type = "button";
     if (action) item.dataset.sidebarAccountAction = action;
@@ -859,7 +853,7 @@ const createMobileQuickActionButton = ({
   }
   if (href) {
     element.href = href;
-    if (normalizeNavPath(window.location.pathname) === normalizeNavPath(href)) {
+    if (isCurrentNavPath(href)) {
       element.classList.add("is-active");
       element.setAttribute("aria-current", "page");
     }
@@ -928,6 +922,7 @@ const enhanceSidebarNavigation = () => {
       items: [
         { href: "/", icon: navIconMarkup.home, labelKey: "nav.home", fallback: "Home" },
         { href: "/portal", icon: navIconMarkup.analytics, labelKey: "nav.portal", fallback: "Portal" },
+        { href: "/discover", icon: navIconMarkup.discover, labelKey: "nav.discover", fallback: "Discover" },
         { href: "/updates", icon: navIconMarkup.updates, labelKey: "nav.updates", fallback: "Latest updates" },
         { href: "/activity", icon: navIconMarkup.activity, labelKey: "nav.activity", fallback: "Activity" },
         { href: "/Creator", icon: navIconMarkup.creator, labelKey: "nav.creator", fallback: "Creator" },
@@ -1433,7 +1428,12 @@ const createContextMenuFallback = () => {
 const enhanceContextMenuActions = (menu) => {
   if (!menu) return menu;
 
-  if (!menu.querySelector('[data-context-action="cut"]')) {
+  const hasContextAction = (action) => Boolean(
+    menu.querySelector(`[data-context-action="${action}"]`) ||
+    document.querySelector(`[data-context-more-menu] [data-context-action="${action}"]`),
+  );
+
+  if (!hasContextAction("cut")) {
     const copySelectionButton = menu.querySelector('[data-context-action="copy-selection"]');
     copySelectionButton?.insertAdjacentHTML(
       "afterend",
@@ -1446,7 +1446,7 @@ const enhanceContextMenuActions = (menu) => {
     );
   }
 
-  if (!menu.querySelector('[data-context-action="select-all"]')) {
+  if (!hasContextAction("select-all")) {
     const copySelectionButton = menu.querySelector('[data-context-action="copy-selection"]');
     copySelectionButton?.insertAdjacentHTML(
       "beforebegin",
@@ -1459,7 +1459,7 @@ const enhanceContextMenuActions = (menu) => {
     );
   }
 
-  if (!menu.querySelector('[data-context-action="cast"]')) {
+  if (!hasContextAction("cast")) {
     const qrButton = menu.querySelector('[data-context-action="qr"]');
     qrButton?.insertAdjacentHTML(
       "afterend",
@@ -1472,7 +1472,7 @@ const enhanceContextMenuActions = (menu) => {
     );
   }
 
-  if (!menu.querySelector('[data-context-action="clipboard"]')) {
+  if (!hasContextAction("clipboard")) {
     const copyTitleButton = menu.querySelector('[data-context-action="copy-title"]');
     copyTitleButton?.insertAdjacentHTML(
       "afterend",
@@ -1485,7 +1485,7 @@ const enhanceContextMenuActions = (menu) => {
     );
   }
 
-  if (!menu.querySelector('[data-context-action="text-copy"]')) {
+  if (!hasContextAction("text-copy")) {
     const copyButton = menu.querySelector('[data-context-action="copy"]');
     copyButton?.insertAdjacentHTML(
       "afterend",
@@ -2044,6 +2044,14 @@ const ensureScrollActions = () => {
   controls.dataset.scrollActions = "";
   controls.setAttribute("aria-label", "Page actions");
   controls.setAttribute("data-i18n-aria-label", "aria.pageActions");
+  controls.innerHTML = `
+    <button type="button" data-scroll-to="top" aria-label="맨 위로 이동" data-i18n-aria-label="aria.scrollTop">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5 5 12"></path><path d="m12 5 7 7"></path><path d="M12 6v13"></path></svg>
+    </button>
+    <button type="button" data-scroll-to="bottom" aria-label="맨 아래로 이동" data-i18n-aria-label="aria.scrollBottom">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 19 5 12"></path><path d="m12 19 7-7"></path><path d="M12 18V5"></path></svg>
+    </button>
+  `;
   document.body.appendChild(controls);
   return controls;
 };
@@ -2284,7 +2292,7 @@ const syncAuthenticatedCheckoutUI = () => {
       ? "pricing.signInUnavailable"
       : isSignedIn
         ? button.dataset.authenticatedI18n || "pricing.choosePro"
-        : "pricing.signInToPay";
+        : button.dataset.unauthenticatedI18n || "pricing.signInToPay";
     button.dataset.i18n = labelKey;
     button.textContent = translate(labelKey);
     button.disabled = authState === "loading";
@@ -2617,12 +2625,48 @@ const siteSearchIndex = [
     },
   },
   {
+    titleKey: "search.discoverTitle",
+    bodyKey: "search.discoverBody",
+    url: "/discover",
+    keywords: {
+      ko: "discover 둘러보기 추천 프로젝트 최신 업데이트 커뮤니티 탐색",
+      en: "discover featured projects latest updates community explore browse",
+    },
+  },
+  {
     titleKey: "search.creatorTitle",
     bodyKey: "search.creatorBody",
     url: "/Creator",
     keywords: {
       ko: "creator unity 유니티 게임 개발 c# 스크립트 씬 가격 요금제 pricing personal pro enterprise industry",
       en: "creator unity game development c# script scene pricing personal pro enterprise industry",
+    },
+  },
+  {
+    titleKey: "search.baldiModsTitle",
+    bodyKey: "search.baldiModsBody",
+    url: "/Creator/baldimods",
+    keywords: {
+      ko: "baldi mods 발디 모드 creator 팬 프로젝트 배포 설치 호환성 릴리스",
+      en: "baldi mods creator fan project release install compatibility distribution",
+    },
+  },
+  {
+    titleKey: "search.newRobloxTitle",
+    bodyKey: "search.newRobloxBody",
+    url: "/Creator/newrobloxexperience",
+    keywords: {
+      ko: "new roblox experience 로블록스 게임 creator 프로젝트 공개 접속 기기 지원",
+      en: "new roblox experience creator project public access device support game",
+    },
+  },
+  {
+    titleKey: "search.uiuxTitle",
+    bodyKey: "search.uiuxBody",
+    url: "/Creator/uiux",
+    keywords: {
+      ko: "ui ux 디자인 사용자 경험 인터페이스 반응형 접근성 정보 구조 디자인 시스템 사례",
+      en: "ui ux design user experience interface responsive accessibility information architecture design system case study",
     },
   },
   {
@@ -5846,7 +5890,7 @@ subscribeButtons.forEach((button) => {
         return;
       }
       pendingAuthenticatedSubscribeButton = button;
-      showCopyToast("pricing.signInRequired");
+      showCopyToast(button.dataset.authRequiredMessage || "pricing.signInRequired");
       window.dispatchEvent(new CustomEvent("profile-auth-request"));
       return;
     }
@@ -6199,7 +6243,7 @@ infoTabs.forEach((tab) => {
   });
 });
 
-import("/assets/js/firebase-auth.js?v=20260719-usage-module1").catch(() => {
+import("/assets/js/firebase-auth.js?v=20260720-checkout-verify1").catch(() => {
   document.documentElement.dataset.authState = "unavailable";
   window.profileAuthUser = null;
   window.dispatchEvent(new CustomEvent("profile-auth-change"));

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <style id="initial-theme-lock">
+      html,
+      body {
+        min-height: 100%;
+        background: #111110;
+        color: #f4f3ee;
+        color-scheme: dark;
+      }
+
+      html[data-initial-language="en"]:not([data-i18n-ready="true"]) [data-i18n],
+      html[data-initial-language="en"]:not([data-i18n-ready="true"]) [data-sidebar-label-key] {
+        visibility: hidden;
+      }
+    </style>
+    <title>Baldi Mods · First PrizeGames</title>
+    <meta
+      name="description"
+      content="Project status, release planning, compatibility notes, and independent fan-project information for Baldi Mods."
+    />
+    <meta name="theme-color" content="#151514" />
+    <link rel="canonical" href="https://firstprizegames.info/Creator/baldimods" />
+    <meta property="og:title" content="Baldi Mods · First PrizeGames" />
+    <meta
+      property="og:description"
+      content="Project status, release planning, compatibility notes, and independent fan-project information for Baldi Mods."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="First PrizeGames" />
+    <meta property="og:url" content="https://firstprizegames.info/Creator/baldimods" />
+    <meta property="og:image" content="https://firstprizegames.info/assets/creator-studio-hero.jpg" />
+    <meta property="og:image:width" content="1672" />
+    <meta property="og:image:height" content="941" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Baldi Mods · First PrizeGames" />
+    <meta
+      name="twitter:description"
+      content="Project status, release planning, compatibility notes, and independent fan-project information for Baldi Mods."
+    />
+    <meta name="twitter:image" content="https://firstprizegames.info/assets/creator-studio-hero.jpg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="application-name" content="First PrizeGames" />
+    <meta name="msapplication-TileColor" content="#151514" />
+    <script>
+      (() => {
+        const normalizeTheme = (theme) => {
+          if (["dark", "lights-off"].includes(theme)) return theme;
+          if (theme === "light") return "dark";
+          if (["dim", "dark-mode", "true"].includes(theme)) return "dark";
+          if (["lightsout", "lights-out", "black", "off"].includes(theme)) return "lights-off";
+          return "";
+        };
+        const normalizeBoolean = (value, fallback = false) => {
+          if ([true, "true", "1", "on"].includes(value)) return true;
+          if ([false, "false", "0", "off"].includes(value)) return false;
+          return fallback;
+        };
+        const savedTheme = normalizeTheme(localStorage.getItem("profile-theme"));
+        document.documentElement.dataset.theme = savedTheme || "dark";
+        const savedLanguagePreference = ["auto", "ko", "en"].includes(localStorage.getItem("profile-language"))
+          ? localStorage.getItem("profile-language")
+          : "auto";
+        const browserLanguage = (((navigator.languages || [navigator.language]) || [])
+          .map((language) => String(language || "").toLowerCase())
+          .find((language) => language.startsWith("ko") || language.startsWith("en")) || "ko").startsWith("en")
+          ? "en"
+          : "ko";
+        document.documentElement.lang = savedLanguagePreference === "auto" ? browserLanguage : savedLanguagePreference;
+        document.documentElement.dataset.initialLanguage = document.documentElement.lang;
+        document.documentElement.dataset.navLayout = "sidebar";
+        document.documentElement.dataset.sidebarCollapsed = normalizeBoolean(
+          localStorage.getItem("profile-sidebar-collapsed"),
+          false,
+        )
+          ? "true"
+          : "false";
+      })();
+    </script>
+    <link rel="stylesheet" href="../../assets/css/styles.css?v=20260720-checkout-verify1" />
+  </head>
+  <body class="creator-body baldi-mods-body">
+    <div class="loading-bar" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
+    <div class="adblock-notice" data-adblock-notice hidden>
+      <p data-i18n="adblock.message">광고 차단기가 일부 사이트 기능을 제한할 수 있습니다.</p>
+      <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
+    </div>
+    <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
+
+    <main class="shell baldi-project-page" id="main-content" tabindex="-1">
+      <nav class="topbar" aria-label="Creator 메뉴" data-i18n-aria-label="aria.creatorMenu">
+        <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
+          <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
+          <span>FP</span>
+        </a>
+        <button class="mobile-menu-button" type="button" aria-expanded="false" data-mobile-menu-toggle>
+          <span data-i18n="nav.menu">Menu</span>
+          <svg class="mobile-menu-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>
+        </button>
+        <div class="nav-links" data-mobile-menu>
+          <a href="/"><span data-i18n="nav.home">Home</span></a>
+          <a class="is-active" href="/Creator"><span data-i18n="nav.creator">Creator</span></a>
+          <a href="/Bio"><span data-i18n="nav.bio">Bio</span></a>
+          <a href="/about"><span data-i18n="nav.aboutUs">About us</span></a>
+          <a href="/Pricing"><span data-i18n="nav.pricing">Pricing</span></a>
+        </div>
+      </nav>
+
+      <header class="baldi-project-hero">
+        <nav class="baldi-project-breadcrumb" aria-label="Breadcrumb">
+          <a href="/Creator" data-i18n="nav.creator">Creator</a>
+          <span aria-hidden="true">/</span>
+          <span>Baldi Mods</span>
+        </nav>
+        <p class="eyebrow" data-i18n="baldimods.eyebrow">Creator project</p>
+        <h1 data-i18n="baldimods.title">Baldi Mods</h1>
+        <p class="baldi-project-lead" data-i18n="baldimods.lead">
+          모드 프로젝트의 진행 상태, 배포 계획, 호환성 정보와 안전 안내를 한곳에 정리하는 전용 페이지입니다.
+        </p>
+        <div class="baldi-project-actions">
+          <a class="button primary" href="#project-status" data-i18n="baldimods.statusCta">프로젝트 상태 보기</a>
+          <a class="button ghost" href="/Creator" data-i18n="baldimods.creatorCta">Creator로 돌아가기</a>
+        </div>
+      </header>
+
+      <figure class="baldi-project-media">
+        <img src="../../assets/creator-studio-hero.jpg" alt="" width="1800" height="1000" loading="eager" decoding="async" />
+        <figcaption>
+          <span data-i18n="baldimods.mediaLabel">Project workspace</span>
+          <strong data-i18n="baldimods.mediaValue">실제 프로젝트 화면은 준비 후 추가됩니다.</strong>
+        </figcaption>
+      </figure>
+
+      <section class="baldi-project-ledger" aria-label="Baldi Mods 프로젝트 요약">
+        <div><span data-i18n="baldimods.statusLabel">Status</span><strong data-i18n="baldimods.statusValue">준비 중</strong></div>
+        <div><span data-i18n="baldimods.releaseLabel">Release</span><strong data-i18n="baldimods.releaseValue">미공개</strong></div>
+        <div><span data-i18n="baldimods.platformLabel">Platform</span><strong data-i18n="baldimods.platformValue">미정</strong></div>
+        <div><span data-i18n="baldimods.typeLabel">Type</span><strong data-i18n="baldimods.typeValue">비공식 팬 프로젝트</strong></div>
+      </section>
+
+      <section class="baldi-project-section" id="project-status">
+        <div class="baldi-project-section-heading">
+          <p class="eyebrow" data-i18n="baldimods.progressEyebrow">Project status</p>
+          <h2 data-i18n="baldimods.progressTitle">공개할 수 있는 정보부터 단계적으로 준비합니다.</h2>
+          <p data-i18n="baldimods.progressBody">
+            현재는 프로젝트 안내 경로만 먼저 열었습니다. 확인되지 않은 버전 번호나 다운로드 링크는 게시하지 않습니다.
+          </p>
+        </div>
+        <ol class="baldi-project-status-list">
+          <li>
+            <span>01</span>
+            <div><strong data-i18n="baldimods.pageTitle">프로젝트 페이지</strong><p data-i18n="baldimods.pageBody">전용 주소와 기본 안내를 사용할 수 있습니다.</p></div>
+            <em data-i18n="baldimods.readyState">완료</em>
+          </li>
+          <li>
+            <span>02</span>
+            <div><strong data-i18n="baldimods.buildTitle">플레이 가능한 빌드</strong><p data-i18n="baldimods.buildBody">검증된 배포 파일은 아직 게시되지 않았습니다.</p></div>
+            <em data-i18n="baldimods.pendingState">대기</em>
+          </li>
+          <li>
+            <span>03</span>
+            <div><strong data-i18n="baldimods.captureTitle">실제 화면과 호환성</strong><p data-i18n="baldimods.captureBody">테스트가 끝난 뒤 스크린샷과 지원 환경을 추가합니다.</p></div>
+            <em data-i18n="baldimods.pendingState">대기</em>
+          </li>
+        </ol>
+      </section>
+
+      <section class="baldi-project-section baldi-project-content-section">
+        <div class="baldi-project-section-heading">
+          <p class="eyebrow" data-i18n="baldimods.contentsEyebrow">What will be here</p>
+          <h2 data-i18n="baldimods.contentsTitle">배포 전에 필요한 기록을 같은 형식으로 관리합니다.</h2>
+        </div>
+        <div class="baldi-project-content-grid">
+          <article><strong data-i18n="baldimods.notesTitle">릴리스 노트</strong><p data-i18n="baldimods.notesBody">버전별 변경 사항과 수정된 문제를 기록합니다.</p></article>
+          <article><strong data-i18n="baldimods.installTitle">설치 안내</strong><p data-i18n="baldimods.installBody">필요한 파일, 설치 순서와 되돌리는 방법을 설명합니다.</p></article>
+          <article><strong data-i18n="baldimods.compatTitle">호환성 정보</strong><p data-i18n="baldimods.compatBody">확인된 운영체제와 알려진 충돌을 명확히 표시합니다.</p></article>
+          <article><strong data-i18n="baldimods.safetyTitle">안전한 배포</strong><p data-i18n="baldimods.safetyBody">검증된 공식 링크가 준비된 뒤에만 다운로드를 제공합니다.</p></article>
+        </div>
+      </section>
+
+      <section class="baldi-project-notice">
+        <div>
+          <p class="eyebrow" data-i18n="baldimods.noticeEyebrow">Independent project notice</p>
+          <h2 data-i18n="baldimods.noticeTitle">원작과 공식적으로 연결된 페이지가 아닙니다.</h2>
+          <p data-i18n="baldimods.noticeBody">
+            Baldi Mods는 비공식 팬 프로젝트 안내 페이지입니다. 원작의 이름, 상표와 저작물에 대한 권리는 각 권리자에게 있습니다.
+          </p>
+        </div>
+        <div class="baldi-project-notice-actions">
+          <a class="button" href="/feedback" data-i18n="baldimods.feedbackCta">프로젝트 문의</a>
+          <a class="button ghost" href="/community" data-i18n="baldimods.communityCta">커뮤니티 보기</a>
+        </div>
+      </section>
+    </main>
+
+    <script src="../../assets/js/translations.js?v=20260720-checkout-verify1" defer></script>
+    <script src="../../assets/js/script.js?v=20260720-checkout-verify1" defer></script>
+    <script src="../../assets/js/usage.js?v=20260720-checkout-verify1" defer></script>
+  </body>
+</html>

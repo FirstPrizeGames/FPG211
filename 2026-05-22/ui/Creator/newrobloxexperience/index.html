@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <style id="initial-theme-lock">
+      html,
+      body {
+        min-height: 100%;
+        background: #111110;
+        color: #f4f3ee;
+        color-scheme: dark;
+      }
+
+      html[data-initial-language="en"]:not([data-i18n-ready="true"]) [data-i18n],
+      html[data-initial-language="en"]:not([data-i18n-ready="true"]) [data-sidebar-label-key] {
+        visibility: hidden;
+      }
+    </style>
+    <title>New Roblox Experience · First PrizeGames</title>
+    <meta
+      name="description"
+      content="Development status, public access planning, compatibility notes, and independent project information for New Roblox Experience."
+    />
+    <meta name="theme-color" content="#151514" />
+    <link rel="canonical" href="https://firstprizegames.info/Creator/newrobloxexperience" />
+    <meta property="og:title" content="New Roblox Experience · First PrizeGames" />
+    <meta
+      property="og:description"
+      content="Development status, public access planning, compatibility notes, and independent project information for New Roblox Experience."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="First PrizeGames" />
+    <meta property="og:url" content="https://firstprizegames.info/Creator/newrobloxexperience" />
+    <meta property="og:image" content="https://firstprizegames.info/assets/official-home-operations-hero.jpg" />
+    <meta property="og:image:width" content="1672" />
+    <meta property="og:image:height" content="941" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="New Roblox Experience · First PrizeGames" />
+    <meta
+      name="twitter:description"
+      content="Development status, public access planning, compatibility notes, and independent project information for New Roblox Experience."
+    />
+    <meta name="twitter:image" content="https://firstprizegames.info/assets/official-home-operations-hero.jpg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="application-name" content="First PrizeGames" />
+    <meta name="msapplication-TileColor" content="#151514" />
+    <script>
+      (() => {
+        const normalizeTheme = (theme) => {
+          if (["dark", "lights-off"].includes(theme)) return theme;
+          if (theme === "light") return "dark";
+          if (["dim", "dark-mode", "true"].includes(theme)) return "dark";
+          if (["lightsout", "lights-out", "black", "off"].includes(theme)) return "lights-off";
+          return "";
+        };
+        const normalizeBoolean = (value, fallback = false) => {
+          if ([true, "true", "1", "on"].includes(value)) return true;
+          if ([false, "false", "0", "off"].includes(value)) return false;
+          return fallback;
+        };
+        const savedTheme = normalizeTheme(localStorage.getItem("profile-theme"));
+        document.documentElement.dataset.theme = savedTheme || "dark";
+        const savedLanguagePreference = ["auto", "ko", "en"].includes(localStorage.getItem("profile-language"))
+          ? localStorage.getItem("profile-language")
+          : "auto";
+        const browserLanguage = (((navigator.languages || [navigator.language]) || [])
+          .map((language) => String(language || "").toLowerCase())
+          .find((language) => language.startsWith("ko") || language.startsWith("en")) || "ko").startsWith("en")
+          ? "en"
+          : "ko";
+        document.documentElement.lang = savedLanguagePreference === "auto" ? browserLanguage : savedLanguagePreference;
+        document.documentElement.dataset.initialLanguage = document.documentElement.lang;
+        document.documentElement.dataset.navLayout = "sidebar";
+        document.documentElement.dataset.sidebarCollapsed = normalizeBoolean(
+          localStorage.getItem("profile-sidebar-collapsed"),
+          false,
+        )
+          ? "true"
+          : "false";
+      })();
+    </script>
+    <link rel="stylesheet" href="../../assets/css/styles.css?v=20260720-checkout-verify1" />
+  </head>
+  <body class="creator-body new-roblox-experience-body">
+    <div class="loading-bar" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="adblock-bait pub_300x250 adsbox text-ad" aria-hidden="true"></div>
+    <div class="adblock-notice" data-adblock-notice hidden>
+      <p data-i18n="adblock.message">광고 차단기가 일부 사이트 기능을 제한할 수 있습니다.</p>
+      <button type="button" data-adblock-dismiss data-i18n="adblock.dismiss">닫기</button>
+    </div>
+    <a class="skip-link" href="#main-content" data-i18n="accessibility.skip">Skip to main content</a>
+
+    <main class="shell baldi-project-page" id="main-content" tabindex="-1">
+      <nav class="topbar" aria-label="Creator 메뉴" data-i18n-aria-label="aria.creatorMenu">
+        <a class="brand-logo" href="/" aria-label="Home" data-i18n-aria-label="aria.home">
+          <img src="/assets/logo.png" alt="" width="537" height="532" loading="eager" decoding="async" draggable="false" />
+          <span>FP</span>
+        </a>
+        <button class="mobile-menu-button" type="button" aria-expanded="false" data-mobile-menu-toggle>
+          <span data-i18n="nav.menu">Menu</span>
+          <svg class="mobile-menu-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>
+        </button>
+        <div class="nav-links" data-mobile-menu>
+          <a href="/"><span data-i18n="nav.home">Home</span></a>
+          <a class="is-active" href="/Creator"><span data-i18n="nav.creator">Creator</span></a>
+          <a href="/discover"><span data-i18n="nav.discover">Discover</span></a>
+          <a href="/updates"><span data-i18n="nav.updates">Latest updates</span></a>
+          <a href="/community"><span data-i18n="nav.community">Community</span></a>
+        </div>
+      </nav>
+
+      <header class="baldi-project-hero">
+        <nav class="baldi-project-breadcrumb" aria-label="Breadcrumb">
+          <a href="/Creator" data-i18n="nav.creator">Creator</a>
+          <span aria-hidden="true">/</span>
+          <span>New Roblox Experience</span>
+        </nav>
+        <p class="eyebrow" data-i18n="newroblox.eyebrow">Creator project</p>
+        <h1 data-i18n="newroblox.title">New Roblox Experience</h1>
+        <p class="baldi-project-lead" data-i18n="newroblox.lead">
+          Roblox 경험의 개발 상태, 공개 계획, 지원 기기와 안전한 접속 경로를 한곳에 정리하는 전용 페이지입니다.
+        </p>
+        <div class="baldi-project-actions">
+          <a class="button primary" href="#project-status" data-i18n="newroblox.statusCta">프로젝트 상태 보기</a>
+          <a class="button ghost" href="/Creator" data-i18n="newroblox.creatorCta">Creator로 돌아가기</a>
+        </div>
+      </header>
+
+      <figure class="baldi-project-media">
+        <img src="../../assets/official-home-operations-hero.jpg" alt="" width="1672" height="941" loading="eager" decoding="async" />
+        <figcaption>
+          <span data-i18n="newroblox.mediaLabel">Experience workspace</span>
+          <strong data-i18n="newroblox.mediaValue">실제 Roblox 화면은 테스트 준비 후 추가됩니다.</strong>
+        </figcaption>
+      </figure>
+
+      <section class="baldi-project-ledger" aria-label="New Roblox Experience 프로젝트 요약">
+        <div><span data-i18n="newroblox.statusLabel">Status</span><strong data-i18n="newroblox.statusValue">준비 중</strong></div>
+        <div><span data-i18n="newroblox.releaseLabel">Release</span><strong data-i18n="newroblox.releaseValue">미공개</strong></div>
+        <div><span data-i18n="newroblox.platformLabel">Platform</span><strong>Roblox</strong></div>
+        <div><span data-i18n="newroblox.typeLabel">Type</span><strong data-i18n="newroblox.typeValue">독립 프로젝트</strong></div>
+      </section>
+
+      <section class="baldi-project-section" id="project-status">
+        <div class="baldi-project-section-heading">
+          <p class="eyebrow" data-i18n="newroblox.progressEyebrow">Project status</p>
+          <h2 data-i18n="newroblox.progressTitle">검증된 개발 정보부터 단계적으로 공개합니다.</h2>
+          <p data-i18n="newroblox.progressBody">
+            현재는 프로젝트 안내 경로만 먼저 열었습니다. 확인되지 않은 게임 링크나 출시일은 게시하지 않습니다.
+          </p>
+        </div>
+        <ol class="baldi-project-status-list">
+          <li>
+            <span>01</span>
+            <div><strong data-i18n="newroblox.pageTitle">프로젝트 페이지</strong><p data-i18n="newroblox.pageBody">전용 주소와 기본 안내를 사용할 수 있습니다.</p></div>
+            <em data-i18n="newroblox.readyState">완료</em>
+          </li>
+          <li>
+            <span>02</span>
+            <div><strong data-i18n="newroblox.buildTitle">Roblox 경험 빌드</strong><p data-i18n="newroblox.buildBody">공개 테스트가 가능한 빌드는 아직 게시되지 않았습니다.</p></div>
+            <em data-i18n="newroblox.pendingState">대기</em>
+          </li>
+          <li>
+            <span>03</span>
+            <div><strong data-i18n="newroblox.accessTitle">공개 접속과 기기 지원</strong><p data-i18n="newroblox.accessBody">테스트가 끝난 뒤 공식 게임 링크와 지원 기기를 추가합니다.</p></div>
+            <em data-i18n="newroblox.pendingState">대기</em>
+          </li>
+        </ol>
+      </section>
+
+      <section class="baldi-project-section baldi-project-content-section">
+        <div class="baldi-project-section-heading">
+          <p class="eyebrow" data-i18n="newroblox.contentsEyebrow">What will be here</p>
+          <h2 data-i18n="newroblox.contentsTitle">공개 전에 필요한 정보를 같은 형식으로 관리합니다.</h2>
+        </div>
+        <div class="baldi-project-content-grid">
+          <article><strong data-i18n="newroblox.notesTitle">업데이트 기록</strong><p data-i18n="newroblox.notesBody">버전별 변경 사항과 해결된 문제를 기록합니다.</p></article>
+          <article><strong data-i18n="newroblox.guideTitle">플레이 안내</strong><p data-i18n="newroblox.guideBody">기본 조작, 목표와 주요 시스템을 설명합니다.</p></article>
+          <article><strong data-i18n="newroblox.compatTitle">기기 호환성</strong><p data-i18n="newroblox.compatBody">확인된 PC와 모바일 환경, 알려진 제한을 표시합니다.</p></article>
+          <article><strong data-i18n="newroblox.linkTitle">공식 접속 링크</strong><p data-i18n="newroblox.linkBody">검증된 Roblox 게임 링크가 준비된 뒤에만 제공합니다.</p></article>
+        </div>
+      </section>
+
+      <section class="baldi-project-notice">
+        <div>
+          <p class="eyebrow" data-i18n="newroblox.noticeEyebrow">Independent project notice</p>
+          <h2 data-i18n="newroblox.noticeTitle">Roblox와 공식적으로 제휴한 페이지가 아닙니다.</h2>
+          <p data-i18n="newroblox.noticeBody">
+            New Roblox Experience는 독립 프로젝트 안내 페이지입니다. Roblox 이름과 상표, 플랫폼에 대한 권리는 Roblox Corporation에 있습니다.
+          </p>
+        </div>
+        <div class="baldi-project-notice-actions">
+          <a class="button" href="/feedback" data-i18n="newroblox.feedbackCta">프로젝트 문의</a>
+          <a class="button ghost" href="/community" data-i18n="newroblox.communityCta">커뮤니티 보기</a>
+        </div>
+      </section>
+    </main>
+
+    <script src="../../assets/js/translations.js?v=20260720-checkout-verify1" defer></script>
+    <script src="../../assets/js/script.js?v=20260720-checkout-verify1" defer></script>
+    <script src="../../assets/js/usage.js?v=20260720-checkout-verify1" defer></script>
+  </body>
+</html>

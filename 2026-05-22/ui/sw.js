@@ -1,14 +1,18 @@
-const CACHE_NAME = "profile-offline-20260720-sidebar-rail-balance1";
+const CACHE_NAME = "profile-offline-20260720-checkout-verify1";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
   "/",
+  "/discover",
   "/portal",
   "/accessibility",
   "/updates",
   "/search",
   "/activity",
   "/Creator",
+  "/Creator/baldimods",
+  "/Creator/newrobloxexperience",
+  "/Creator/uiux",
   "/Pricing",
   "/Bio",
   "/about",

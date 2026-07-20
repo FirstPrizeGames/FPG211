@@ -398,6 +398,26 @@
     margin-bottom: 0;
   }
 
+  [data-nav-layout="sidebar"][data-sidebar-collapsed="true"] .sidebar-account-trigger {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    margin-inline: auto;
+    padding: 0;
+  }
+
+  [data-nav-layout="sidebar"][data-sidebar-collapsed="true"] .sidebar-account-trigger .sidebar-account-copy,
+  [data-nav-layout="sidebar"][data-sidebar-collapsed="true"] .sidebar-account-trigger .nav-icon {
+    display: none;
+  }
+
+  [data-nav-layout="sidebar"][data-sidebar-collapsed="true"] .sidebar-account-avatar {
+    width: 30px;
+    height: 30px;
+  }
+
 @media (prefers-reduced-motion: reduce) {
     :root[data-nav-layout="sidebar"] {
       --sidebar-motion: 1ms linear;

@@ -1798,14 +1798,14 @@ summary {
   }
 
   [data-nav-layout="sidebar"][data-sidebar-collapsed="true"] .brand-logo {
-    height: 46px;
+    height: 44px;
   }
 
   [data-nav-layout="sidebar"][data-sidebar-collapsed="true"] .brand-logo::before {
     width: 44px;
-    height: 46px;
+    height: 44px;
     margin-inline: auto;
-    background: url("../../logo-v2-sidebar.png") left center / 132px auto no-repeat;
+    background: url("../../logo-v2-sidebar.png") 8px center / 88px auto no-repeat;
   }
 
   [data-nav-layout="sidebar"][data-sidebar-collapsed="true"] .mobile-menu-button {

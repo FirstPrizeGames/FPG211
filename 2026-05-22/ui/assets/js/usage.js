@@ -1,6 +1,24 @@
 (() => {
   if (window.__profileUsageReady) return;
 
+  const excludedUsagePaths = new Set([
+    "/404",
+    "/404.html",
+    "/500",
+    "/offline",
+    "/maintenance",
+    "/coming-soon",
+  ]);
+  const currentUsagePath = window.location.pathname.replace(/\/index\.html$/i, "").replace(/\/+$/, "") || "/";
+  const usageIsExcluded =
+    document.documentElement.hasAttribute("data-usage-excluded") || excludedUsagePaths.has(currentUsagePath);
+
+  if (usageIsExcluded) {
+    window.__profileUsageReady = true;
+    document.documentElement.dataset.usageTracking = "excluded";
+    return;
+  }
+
   const isUsagePage = Boolean(document.querySelector(".usage-page"));
   const dailyReset = document.querySelector("[data-browser-daily-reset]");
   const dailyRemaining = document.querySelector("[data-browser-daily-remaining]");

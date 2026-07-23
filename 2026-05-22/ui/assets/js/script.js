@@ -1,60 +1,3 @@
-const navIconMarkup = {
-  search:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m16 16 5 5" /></svg>',
-  chevron:
-    '<svg class="nav-flyout-chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6" /></svg>',
-  help:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M9.2 9a3 3 0 1 1 5.6 1.5c-.6.8-1.5 1.1-2.1 1.8-.5.5-.7.9-.7 1.7" /><path d="M12 17h.01" /></svg>',
-  keyboard:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2" /><path d="M7 10h.01" /><path d="M11 10h.01" /><path d="M15 10h.01" /><path d="M19 10h.01" /><path d="M7 14h.01" /><path d="M11 14h6" /></svg>',
-  home:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg>',
-  discover:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="m15.5 8.5-2.1 4.9-4.9 2.1 2.1-4.9 4.9-2.1Z" /></svg>',
-  creator:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z" /><path d="m3 14 9 5 9-5" /><path d="m3 11 9 5 9-5" /></svg>',
-  bio:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0" /><circle cx="12" cy="7" r="4" /></svg>',
-  about:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>',
-  faq:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 1 1 5.8 1c-.5.9-1.4 1.3-2.1 1.9-.6.5-.8.9-.8 2.1" /><path d="M12 17h.01" /></svg>',
-  pricing:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 10h18" /><path d="M7 15h4" /></svg>',
-  share:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.6 10.8 6.8-4.1" /><path d="m8.6 13.2 6.8 4.1" /></svg>',
-  settings:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3h.1A1.7 1.7 0 0 0 10 3.1V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1A1.7 1.7 0 0 0 20.9 10h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" /></svg>',
-  personalization:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v4" /><path d="M12 17v4" /><path d="M3 12h4" /><path d="M17 12h4" /><circle cx="12" cy="12" r="4" /><path d="m5.6 5.6 2.8 2.8" /><path d="m15.6 15.6 2.8 2.8" /><path d="m18.4 5.6-2.8 2.8" /><path d="m8.4 15.6-2.8 2.8" /></svg>',
-  store:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 10h16" /><path d="M5 10l1-5h12l1 5" /><path d="M6 10v9h12v-9" /><path d="M9 14h6" /><path d="M9 19v-5" /><path d="M15 19v-5" /></svg>',
-  support:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="M9.8 12.2 11.4 14l3.2-4" /></svg>',
-  analytics:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 20V10" /><path d="M10 20V6" /><path d="M16 20v-8" /><path d="M22 20H2" /></svg>',
-  updates:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5h10" /><path d="M4 12h16" /><path d="M4 19h10" /><path d="m17 4 3 3-3 3" /></svg>',
-  activity:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 19V5" /><path d="M4 19h16" /><path d="M8 15l3-4 3 2 4-6" /><circle cx="8" cy="15" r="1" /><circle cx="11" cy="11" r="1" /><circle cx="14" cy="13" r="1" /><circle cx="18" cy="7" r="1" /></svg>',
-  terms:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z" /><path d="M15 3v4h4" /><path d="M9 11h6" /><path d="M9 15h6" /><path d="M9 19h4" /></svg>',
-  accessibility:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2" /><path d="M5 8h14" /><path d="M12 8v13" /><path d="M8 21l4-8 4 8" /></svg>',
-  privacy:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-5" /></svg>',
-  license:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z" /><path d="M14 3v6h5" /><path d="M9 14h6" /><path d="M9 18h4" /><path d="M5 7v14" /></svg>',
-  trust:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.8 8.4 7 10 4.2-1.6 7-5.6 7-10V6l-7-3Z" /><path d="M8.5 12.5 11 15l4.5-5" /></svg>',
-  status:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 13h4l3-7 4 13 3-6h2" /><path d="M4 20h16" /></svg>',
-  security:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="6" y="10" width="12" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /><path d="M12 14v2" /></svg>',
-  login:
-    '<svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" /><path d="m10 17 5-5-5-5" /><path d="M15 12H3" /></svg>',
-};
-
 const routeDocumentGuards = [
   { path: "/settings", selector: ".settings-page", fallback: "/settings/index.html" },
   { path: "/usage", selector: ".usage-page", fallback: "/usage/index.html" },
@@ -67,7 +10,7 @@ const repairRouteDocumentMismatch = () => {
   if (sessionStorage.getItem(`route-repair:${currentPath}`) === "true") return false;
 
   sessionStorage.setItem(`route-repair:${currentPath}`, "true");
-  const repairUrl = `${guard.fallback}?v=20260720-context-css1`;
+  const repairUrl = `${guard.fallback}?v=20260721-member-news1`;
   window.location.replace(repairUrl);
   return true;
 };
@@ -282,209 +225,6 @@ const createPageLoader = () => {
 };
 
 const pageLoader = createPageLoader();
-
-const normalizeNavPath = (path) => {
-  const normalized = path.replace(/\/index\.html$/i, "").replace(/\/+$/, "");
-  return normalized || "/";
-};
-
-const isCurrentNavPath = (href) => {
-  const currentPath = normalizeNavPath(window.location.pathname).toLowerCase();
-  const targetPath = normalizeNavPath(href).toLowerCase();
-  return currentPath === targetPath || (targetPath !== "/" && currentPath.startsWith(`${targetPath}/`));
-};
-
-const createNavAnchor = ({ href, icon, labelKey, fallback }) => {
-  const anchor = document.createElement("a");
-  anchor.href = href;
-  anchor.innerHTML = `${icon}<span data-i18n="${labelKey}">${fallback}</span>`;
-  if (isCurrentNavPath(href)) {
-    anchor.classList.add("is-active");
-    anchor.setAttribute("aria-current", "page");
-  }
-  return anchor;
-};
-
-const createNavSearchButton = () => {
-  const button = document.createElement("button");
-  button.className = "nav-search-button";
-  button.type = "button";
-  button.dataset.siteSearchOpen = "";
-  button.innerHTML = `${navIconMarkup.search}<span data-i18n="nav.search">Search</span><kbd>Ctrl+K</kbd>`;
-  return button;
-};
-
-let navFlyoutId = 0;
-
-const createNavFlyout = ({ icon, labelKey, fallback, items = [] }) => {
-  const wrapper = document.createElement("div");
-  const flyoutId = `nav-flyout-${navFlyoutId++}`;
-  wrapper.className = "nav-flyout";
-
-  const trigger = document.createElement("button");
-  trigger.className = "nav-flyout-trigger";
-  trigger.type = "button";
-  trigger.dataset.navFlyoutTrigger = "";
-  trigger.setAttribute("aria-expanded", "false");
-  trigger.setAttribute("aria-haspopup", "menu");
-  trigger.setAttribute("aria-controls", flyoutId);
-  trigger.innerHTML = `${icon}<span data-i18n="${labelKey}">${fallback}</span>${navIconMarkup.chevron}`;
-
-  const panel = document.createElement("div");
-  panel.className = "nav-flyout-panel";
-  panel.id = flyoutId;
-  panel.hidden = true;
-  panel.setAttribute("role", "menu");
-
-  items.forEach((item) => {
-    const anchor = createNavAnchor(item);
-    anchor.setAttribute("role", "menuitem");
-    if (item.className) anchor.classList.add(item.className);
-    panel.append(anchor);
-  });
-
-  if (panel.querySelector(".is-active")) wrapper.classList.add("has-active-item");
-  wrapper.append(trigger, panel);
-  return wrapper;
-};
-
-const createTopSearchButton = () => {
-  if (isSystemRecoveryPage) return;
-  if (document.body.classList.contains("official-home-body")) return;
-  if (document.body.classList.contains("search-body")) return;
-  if (document.querySelector("[data-top-search]")) return;
-
-  const button = document.createElement("button");
-  button.className = "top-search-button";
-  button.type = "button";
-  button.dataset.topSearch = "";
-  button.dataset.siteSearchOpen = "";
-  button.innerHTML = `${navIconMarkup.search}<span data-i18n="nav.search">Search</span><kbd>Ctrl+K</kbd>`;
-  document.body.append(button);
-};
-
-const createSidebarAccountItem = ({ href, action, icon, labelKey, fallback, className }) => {
-  const item = document.createElement(href ? "a" : "button");
-  item.className = "sidebar-account-item";
-  if (className) item.classList.add(className);
-  if (href) {
-    item.href = href;
-    if (isCurrentNavPath(href)) item.classList.add("is-active");
-  } else {
-    item.type = "button";
-    if (action) item.dataset.sidebarAccountAction = action;
-  }
-  item.innerHTML = `${icon}<span data-i18n="${labelKey}">${fallback}</span>`;
-  return item;
-};
-
-const createSidebarHelpMenu = () => {
-  const wrapper = document.createElement("div");
-  wrapper.className = "sidebar-help-menu";
-
-  const trigger = document.createElement("button");
-  trigger.className = "sidebar-account-item sidebar-help-trigger";
-  trigger.type = "button";
-  trigger.dataset.sidebarHelpTrigger = "";
-  trigger.setAttribute("aria-expanded", "false");
-  trigger.setAttribute("aria-haspopup", "menu");
-  trigger.innerHTML = `${navIconMarkup.help}<span data-i18n="nav.help">Help</span>${navIconMarkup.chevron}`;
-  trigger.addEventListener("click", (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    const willOpen = !wrapper.classList.contains("is-open");
-    closeSidebarHelpMenus(wrapper);
-    closeNavFlyouts();
-    setSidebarHelpOpen(wrapper, willOpen);
-  });
-  trigger.addEventListener("contextmenu", (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    closeContextMenu();
-    closeSidebarHelpMenus(wrapper);
-    setSidebarHelpOpen(wrapper, true);
-  });
-
-  const panel = document.createElement("div");
-  panel.className = "sidebar-help-panel";
-  panel.hidden = true;
-  panel.setAttribute("role", "menu");
-
-  [
-    { href: "/FAQ", icon: navIconMarkup.faq, labelKey: "nav.faq", fallback: "FAQ" },
-    { href: "/feedback", icon: navIconMarkup.support, labelKey: "nav.support", fallback: "Support" },
-    { href: "/status", icon: navIconMarkup.status, labelKey: "nav.status", fallback: "Status" },
-    { divider: true },
-    { href: "/trust", icon: navIconMarkup.trust, labelKey: "nav.trustCenter", fallback: "Trust Center" },
-    { href: "/security", icon: navIconMarkup.security, labelKey: "nav.security", fallback: "Security" },
-    { href: "/privacy", icon: navIconMarkup.privacy, labelKey: "nav.privacy", fallback: "Privacy Policy" },
-    { divider: true },
-    { href: "/terms", icon: navIconMarkup.terms, labelKey: "nav.terms", fallback: "Terms" },
-    { href: "/license", icon: navIconMarkup.license, labelKey: "nav.license", fallback: "License" },
-  ].forEach((item) => {
-    if (item.divider) {
-      const divider = document.createElement("div");
-      divider.className = "sidebar-help-divider";
-      divider.setAttribute("role", "separator");
-      panel.append(divider);
-      return;
-    }
-
-    const element = createNavAnchor(item);
-    element.classList.add("sidebar-help-link");
-    element.setAttribute("role", "menuitem");
-    panel.append(element);
-  });
-
-  if (panel.querySelector(".is-active")) wrapper.classList.add("has-active-item");
-  wrapper.append(trigger, panel);
-  return wrapper;
-};
-
-const createSidebarAccountMenu = () => {
-  if (isSystemRecoveryPage) return;
-  if (document.querySelector("[data-sidebar-account]")) return;
-
-  document.querySelectorAll(".topbar:not([data-official-home-nav])").forEach((topbar, index) => {
-    const menuId = `sidebar-account-menu-${index}`;
-    const account = document.createElement("div");
-    account.className = "sidebar-account";
-    account.dataset.sidebarAccount = "";
-
-    const panel = document.createElement("div");
-    panel.className = "sidebar-account-panel";
-    panel.id = menuId;
-    panel.hidden = true;
-    panel.setAttribute("role", "menu");
-
-    [
-      { href: "/Pricing", icon: navIconMarkup.pricing, labelKey: "sidebar.upgrade", fallback: "Upgrade plan", className: "is-auth-required" },
-      { action: "profile", icon: navIconMarkup.bio, labelKey: "sidebar.profile", fallback: "Profile", className: "is-auth-required" },
-      { action: "google-auth", icon: navIconMarkup.login, labelKey: "auth.signIn", fallback: "Sign in with Google", className: "sidebar-auth-action" },
-      { href: "/settings", icon: navIconMarkup.settings, labelKey: "nav.settings", fallback: "Settings" },
-    ].forEach((item) => panel.append(createSidebarAccountItem(item)));
-
-    panel.append(createSidebarHelpMenu());
-
-    const trigger = document.createElement("button");
-    trigger.className = "sidebar-account-trigger";
-    trigger.type = "button";
-    trigger.dataset.sidebarAccountTrigger = "";
-    trigger.setAttribute("aria-expanded", "false");
-    trigger.setAttribute("aria-haspopup", "menu");
-    trigger.setAttribute("aria-controls", menuId);
-    trigger.innerHTML = `
-      <img class="sidebar-account-avatar" src="/assets/well-avatar.webp" alt="" width="192" height="192" loading="lazy" decoding="async" />
-      <span class="sidebar-account-copy">
-        <strong data-sidebar-account-name>Sign in with Google</strong>
-        <small data-sidebar-account-plan>Optional</small>
-      </span>
-    `;
-
-    account.append(panel, trigger);
-    topbar.append(account);
-  });
-};
 
 const createUserProfileDialog = () => {
   if (document.querySelector("[data-user-profile-dialog]")) return;
@@ -849,169 +589,6 @@ const createSettingsDialog = () => {
   if (standaloneCookieDialog) document.body.append(standaloneCookieDialog);
 };
 
-const createMobileQuickActionButton = ({
-  type = "button",
-  href,
-  action,
-  icon,
-  labelKey,
-  fallback,
-  authRequired = false,
-}) => {
-  const element = document.createElement(href ? "a" : "button");
-  element.className = "mobile-quick-action";
-  element.dataset.i18nAriaLabel = labelKey;
-  element.setAttribute("aria-label", translate(labelKey));
-  if (authRequired) {
-    element.dataset.mobileProfileAction = "";
-    element.hidden = true;
-    element.setAttribute("aria-hidden", "true");
-  }
-  if (href) {
-    element.href = href;
-    if (isCurrentNavPath(href)) {
-      element.classList.add("is-active");
-      element.setAttribute("aria-current", "page");
-    }
-  } else {
-    element.type = type;
-    if (action) element.dataset.mobileQuickAction = action;
-  }
-  element.innerHTML = `${icon}<span class="sr-only" data-i18n="${labelKey}">${fallback}</span>`;
-  return element;
-};
-
-const createMobileQuickActions = () => {
-  if (isSystemRecoveryPage) return;
-  if (document.querySelector("[data-mobile-quick-actions]")) return;
-
-  const bar = document.createElement("nav");
-  bar.className = "mobile-quick-actions";
-  bar.dataset.mobileQuickActions = "";
-  bar.setAttribute("aria-label", translate("quickActions.label"));
-  bar.innerHTML = '<div class="mobile-quick-actions-inner"></div>';
-
-  const inner = bar.querySelector(".mobile-quick-actions-inner");
-  [
-    {
-      href: "/",
-      icon: navIconMarkup.home,
-      labelKey: "quickActions.home",
-      fallback: "Home",
-    },
-    {
-      action: "search",
-      icon: navIconMarkup.search,
-      labelKey: "quickActions.search",
-      fallback: "Search",
-    },
-    {
-      action: "share",
-      icon: navIconMarkup.share,
-      labelKey: "quickActions.share",
-      fallback: "Share",
-    },
-    {
-      href: "/settings",
-      icon: navIconMarkup.settings,
-      labelKey: "quickActions.settings",
-      fallback: "Settings",
-    },
-    {
-      action: "profile",
-      icon: navIconMarkup.bio,
-      labelKey: "quickActions.profile",
-      fallback: "Profile",
-      authRequired: true,
-    },
-  ].forEach((item) => inner.append(createMobileQuickActionButton(item)));
-
-  document.body.append(bar);
-};
-
-const enhanceSidebarNavigation = () => {
-  if (isSystemRecoveryPage) return;
-  const navGroups = [
-    {
-      label: "MAIN",
-      labelKey: "nav.groupMain",
-      items: [
-        { href: "/", icon: navIconMarkup.home, labelKey: "nav.home", fallback: "Home" },
-        { href: "/portal", icon: navIconMarkup.analytics, labelKey: "nav.portal", fallback: "Portal" },
-        { href: "/discover", icon: navIconMarkup.discover, labelKey: "nav.discover", fallback: "Discover" },
-        { href: "/updates", icon: navIconMarkup.updates, labelKey: "nav.updates", fallback: "Latest updates" },
-        { href: "/activity", icon: navIconMarkup.activity, labelKey: "nav.activity", fallback: "Activity" },
-        { href: "/Creator", icon: navIconMarkup.creator, labelKey: "nav.creator", fallback: "Creator" },
-        { href: "/Bio", icon: navIconMarkup.bio, labelKey: "nav.bio", fallback: "Bio" },
-        { href: "/about", icon: navIconMarkup.about, labelKey: "nav.aboutUs", fallback: "About us" },
-      ],
-    },
-    {
-      label: "MANAGE",
-      labelKey: "nav.groupManage",
-      items: [
-        { href: "/Pricing", icon: navIconMarkup.pricing, labelKey: "nav.pricing", fallback: "Pricing" },
-        { href: "/usage", icon: navIconMarkup.analytics, labelKey: "usage.nav", fallback: "Usage" },
-      ],
-    },
-    {
-      label: "TRUST",
-      labelKey: "nav.groupTrust",
-      items: [
-        { href: "/accessibility", icon: navIconMarkup.accessibility, labelKey: "nav.accessibility", fallback: "Accessibility" },
-      ],
-    },
-  ];
-
-  document.querySelectorAll(".nav-links:not([data-official-home-menu])").forEach((nav) => {
-    nav.replaceChildren();
-
-    navGroups.forEach((group, index) => {
-      const groupElement = document.createElement("div");
-      groupElement.className = "nav-menu-group";
-      groupElement.dataset.navMenuGroup = group.label.toLowerCase();
-      const triggerId = `nav-group-${group.label.toLowerCase()}-${index}`;
-
-      const trigger = document.createElement("button");
-      trigger.className = "nav-group-trigger";
-      trigger.type = "button";
-      trigger.id = triggerId;
-      trigger.setAttribute("aria-expanded", "false");
-      trigger.innerHTML = `<span data-i18n="${group.labelKey}">${group.label}</span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>`;
-
-      const menu = document.createElement("div");
-      menu.className = "nav-group-menu";
-      menu.setAttribute("aria-labelledby", triggerId);
-
-      const sectionLabel = document.createElement("span");
-      sectionLabel.className = "nav-section-label";
-      sectionLabel.textContent = group.label;
-      sectionLabel.dataset.i18n = group.labelKey;
-      sectionLabel.setAttribute("aria-hidden", "true");
-      menu.append(sectionLabel);
-
-      group.items.forEach((item) => {
-        if (item.type === "search") {
-          menu.append(createNavSearchButton());
-          return;
-        }
-        if (item.type === "flyout") {
-          menu.append(createNavFlyout(item));
-          return;
-        }
-
-        const anchor = createNavAnchor(item);
-        if (item.className) anchor.classList.add(item.className);
-        menu.append(anchor);
-      });
-
-      if (menu.querySelector(".is-active")) groupElement.classList.add("has-active-item");
-      groupElement.append(trigger, menu);
-      nav.append(groupElement);
-    });
-  });
-};
-
 enhanceSidebarNavigation();
 createTopSearchButton();
 createSidebarAccountMenu();
@@ -1019,135 +596,7 @@ createUserProfileDialog();
 createKeyboardShortcutsDialog();
 createSettingsDialog();
 
-const createStandardFooter = () => {
-  if (isSystemRecoveryPage) return;
-  if (document.querySelector("[data-site-footer]")) return;
-
-  const footer = document.createElement("footer");
-  footer.className = "site-footer";
-  footer.dataset.siteFooter = "";
-  footer.innerHTML = `
-    <div class="site-footer-brand">
-      <strong data-i18n="footer.brand">First PrizeGames</strong>
-      <span data-i18n="footer.tagline">Trust, status, privacy, and support links in one place.</span>
-    </div>
-    <nav class="site-footer-links" aria-label="Footer links" data-i18n-aria-label="aria.footerLinks">
-      <a href="/trust" data-i18n="nav.trustCenter">Trust Center</a>
-      <a href="/status" data-i18n="nav.status">Status</a>
-      <a href="/security" data-i18n="nav.security">Security</a>
-      <a href="/privacy" data-i18n="nav.privacy">Privacy Policy</a>
-      <a href="/terms" data-i18n="nav.terms">Terms</a>
-      <a href="/accessibility" data-i18n="nav.accessibility">Accessibility</a>
-      <a href="/sitemap" data-i18n="nav.sitemap">Sitemap</a>
-    </nav>
-  `;
-
-  document.body.append(footer);
-};
-
 createStandardFooter();
-
-const setNavFlyoutOpen = (flyout, isOpen) => {
-  if (!(flyout instanceof HTMLElement)) return;
-  const trigger = flyout.querySelector("[data-nav-flyout-trigger]");
-  const panel = flyout.querySelector(".nav-flyout-panel");
-
-  flyout.classList.toggle("is-open", isOpen);
-  trigger?.setAttribute("aria-expanded", String(isOpen));
-  if (panel instanceof HTMLElement) panel.hidden = !isOpen;
-};
-
-const closeNavFlyouts = (exceptFlyout = null) => {
-  document.querySelectorAll(".nav-flyout.is-open").forEach((flyout) => {
-    if (flyout !== exceptFlyout) setNavFlyoutOpen(flyout, false);
-  });
-};
-
-const setSidebarAccountOpen = (account, isOpen) => {
-  if (!(account instanceof HTMLElement)) return;
-  if (!isOpen) account.querySelectorAll(".sidebar-help-menu.is-open").forEach((menu) => setSidebarHelpOpen(menu, false));
-  const trigger = account.querySelector("[data-sidebar-account-trigger]");
-  const panel = account.querySelector(".sidebar-account-panel");
-  account.classList.toggle("is-open", isOpen);
-  trigger?.setAttribute("aria-expanded", String(isOpen));
-  if (panel instanceof HTMLElement) panel.hidden = !isOpen;
-};
-
-const closeSidebarAccountMenus = (exceptAccount = null) => {
-  document.querySelectorAll(".sidebar-account.is-open").forEach((account) => {
-    if (account !== exceptAccount) setSidebarAccountOpen(account, false);
-  });
-};
-
-const resetSidebarHelpPanelPosition = (panel) => {
-  if (!(panel instanceof HTMLElement)) return;
-  ["position", "top", "right", "bottom", "left", "transform", "maxHeight"].forEach((property) => {
-    panel.style.removeProperty(property);
-  });
-};
-
-const positionSidebarHelpPanel = (menu) => {
-  if (!(menu instanceof HTMLElement)) return;
-  const trigger = menu.querySelector("[data-sidebar-help-trigger]");
-  const panel = menu.querySelector(".sidebar-help-panel");
-  if (!(trigger instanceof HTMLElement) || !(panel instanceof HTMLElement) || panel.hidden) return;
-
-  const margin = 12;
-  const gap = 12;
-  const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-  const maxPanelHeight = Math.max(220, viewportHeight - margin * 2);
-
-  panel.style.position = "fixed";
-  panel.style.right = "auto";
-  panel.style.bottom = "auto";
-  panel.style.left = "0px";
-  panel.style.top = "0px";
-  panel.style.transform = "none";
-  panel.style.maxHeight = `${maxPanelHeight}px`;
-
-  const triggerRect = trigger.getBoundingClientRect();
-  const panelRect = panel.getBoundingClientRect();
-  const panelWidth = panelRect.width || 246;
-  const panelHeight = Math.min(panel.scrollHeight || panelRect.height || 320, maxPanelHeight);
-  const preferredLeft = triggerRect.right + gap;
-  const fallbackLeft = triggerRect.left - panelWidth - gap;
-  const left =
-    preferredLeft + panelWidth <= viewportWidth - margin
-      ? preferredLeft
-      : Math.max(margin, Math.min(fallbackLeft, viewportWidth - panelWidth - margin));
-  const centeredTop = triggerRect.top + triggerRect.height / 2 - panelHeight / 2;
-  const top = Math.max(margin, Math.min(centeredTop, viewportHeight - panelHeight - margin));
-
-  panel.style.left = `${Math.round(left)}px`;
-  panel.style.top = `${Math.round(top)}px`;
-};
-
-const setSidebarHelpOpen = (menu, isOpen) => {
-  if (!(menu instanceof HTMLElement)) return;
-  const trigger = menu.querySelector("[data-sidebar-help-trigger]");
-  const panel = menu.querySelector(".sidebar-help-panel");
-  menu.classList.toggle("is-open", isOpen);
-  trigger?.setAttribute("aria-expanded", String(isOpen));
-  if (panel instanceof HTMLElement) {
-    panel.hidden = !isOpen;
-    if (isOpen) {
-      positionSidebarHelpPanel(menu);
-    } else {
-      resetSidebarHelpPanelPosition(panel);
-    }
-  }
-};
-
-const closeSidebarHelpMenus = (exceptMenu = null) => {
-  document.querySelectorAll(".sidebar-help-menu.is-open").forEach((menu) => {
-    if (menu !== exceptMenu) setSidebarHelpOpen(menu, false);
-  });
-};
-
-const repositionOpenSidebarHelpMenus = () => {
-  document.querySelectorAll(".sidebar-help-menu.is-open").forEach((menu) => positionSidebarHelpPanel(menu));
-};
 
 const openUserProfileDialog = () => {
   const dialog = document.querySelector("[data-user-profile-dialog]");
@@ -1989,10 +1438,6 @@ const themeStatuses = [...document.querySelectorAll("[data-theme-status]")];
 const storageBar = document.querySelector("[data-storage-bar]");
 const storageUsage = document.querySelector("[data-storage-usage]");
 const shareLinkButton = document.querySelector("[data-share-link]");
-const homeSubscribeForm = document.querySelector("[data-home-subscribe-form]");
-const homeSubscribeEmail = document.querySelector("[data-home-subscribe-email]");
-const homeSubscribeTopics = [...document.querySelectorAll("[data-home-subscribe-topic]")];
-const homeSubscribeStatus = document.querySelector("[data-home-subscribe-status]");
 let shareDialog = document.querySelector("[data-share-dialog]");
 let shareClose = document.querySelector("[data-share-close]");
 let shareCopy = document.querySelector("[data-share-copy]");
@@ -2955,7 +2400,6 @@ const setLanguage = (language) => {
   });
   updateCookiePreferenceControls(getCookiePreferences().preferences);
   updateStorageEstimate();
-  renderActivityPage();
   syncQuickSettingsControls();
   syncUserProfileUI();
   syncAuthenticatedCheckoutUI();
@@ -3739,7 +3183,7 @@ const showSiteSearchDialog = () => {
   const input = document.querySelector("[data-site-search-input]");
   if (!dialog || !input) return;
 
-  recordActivity("action", translate("activity.openSearch"));
+  window.profilePageFeatures?.recordActivity?.("action", translate("activity.openSearch"));
   dialog.classList.remove("is-closing");
   dialog.hidden = false;
   input.value = "";
@@ -3856,313 +3300,6 @@ const setupSearchPage = () => {
   });
 };
 
-const activityLogKey = "profile-activity-log";
-const homeSubscriptionKey = "profile-home-email-subscription";
-const maxActivityItems = 48;
-
-const getStoredHomeSubscription = () => {
-  try {
-    const value = JSON.parse(localStorage.getItem(homeSubscriptionKey) || "null");
-    return value && typeof value.email === "string" ? value : null;
-  } catch {
-    localStorage.removeItem(homeSubscriptionKey);
-    return null;
-  }
-};
-
-const setHomeSubscribeStatus = (key, type = "info") => {
-  if (!homeSubscribeStatus) return;
-  homeSubscribeStatus.textContent = translate(key);
-  homeSubscribeStatus.dataset.statusType = type;
-};
-
-const setupHomeSubscribeForm = () => {
-  if (!homeSubscribeForm || !homeSubscribeEmail) return;
-
-  const saved = getStoredHomeSubscription();
-  if (saved) {
-    homeSubscribeEmail.value = saved.email;
-    const selectedTopics = new Set(saved.topics || []);
-    homeSubscribeTopics.forEach((input) => {
-      input.checked = selectedTopics.has(input.value);
-    });
-    setHomeSubscribeStatus("home.subscribeSaved", "success");
-  }
-
-  homeSubscribeForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const email = homeSubscribeEmail.value.trim();
-    const topics = homeSubscribeTopics.filter((input) => input.checked).map((input) => input.value);
-    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-    if (!isValidEmail) {
-      setHomeSubscribeStatus("home.subscribeInvalid", "error");
-      homeSubscribeEmail.focus();
-      return;
-    }
-
-    if (topics.length === 0) {
-      setHomeSubscribeStatus("home.subscribeNeedTopic", "error");
-      return;
-    }
-
-    localStorage.setItem(
-      homeSubscriptionKey,
-      JSON.stringify({
-        email,
-        topics,
-        createdAt: new Date().toISOString(),
-      }),
-    );
-    setHomeSubscribeStatus("home.subscribeSaved", "success");
-    recordActivity("action", "Email subscription saved");
-  });
-};
-
-const getActivityLog = () => {
-  try {
-    const items = JSON.parse(localStorage.getItem(activityLogKey) || "[]");
-    return Array.isArray(items) ? items.filter((item) => item && item.createdAt) : [];
-  } catch {
-    return [];
-  }
-};
-
-const saveActivityLog = (items) => {
-  localStorage.setItem(activityLogKey, JSON.stringify(items.slice(0, maxActivityItems)));
-};
-
-const getPageActivityLabel = () => {
-  const activeNavLabel = document.querySelector(".nav-links .is-active span")?.textContent?.trim();
-  const heading = document.querySelector("h1")?.textContent?.trim();
-  return activeNavLabel || heading || document.title.replace(/\s*[·|-].*$/, "") || "Page";
-};
-
-const recordActivity = (type, label, url = window.location.pathname) => {
-  const now = Date.now();
-  const normalizedType = type === "action" ? "action" : "visit";
-  const items = getActivityLog();
-  const previous = items[0];
-
-  if (
-    previous &&
-    previous.type === normalizedType &&
-    previous.label === label &&
-    previous.url === url &&
-    now - Number(previous.createdAt) < 30000
-  ) {
-    return;
-  }
-
-  saveActivityLog([
-    {
-      id: `${now}-${Math.random().toString(36).slice(2, 8)}`,
-      type: normalizedType,
-      label,
-      url,
-      createdAt: now,
-    },
-    ...items,
-  ]);
-};
-
-const formatActivityTime = (createdAt) => {
-  const formatter = new Intl.DateTimeFormat(currentLanguage === "ko" ? "ko-KR" : "en-US", {
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-  return formatter.format(new Date(createdAt));
-};
-
-const formatActivityDate = (createdAt) => {
-  const formatter = new Intl.DateTimeFormat(currentLanguage === "ko" ? "ko-KR" : "en-US", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-  return formatter.format(new Date(createdAt));
-};
-
-const escapeActivityText = (value) =>
-  String(value ?? "").replace(/[&<>"']/g, (character) => {
-    const entities = {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;",
-    };
-    return entities[character];
-  });
-
-const getSafeActivityUrl = (url) => {
-  const value = String(url || "/");
-  return value.startsWith("/") && !value.startsWith("//") ? value : "/";
-};
-
-const formatActivityCount = (count) => {
-  const key = count === 1 ? "activity.itemCountOne" : "activity.itemCount";
-  return translate(key).replace("{count}", String(count));
-};
-
-const renderActivityPage = () => {
-  const list = document.querySelector("[data-activity-list]");
-  if (!list) return;
-
-  const items = getActivityLog();
-  const visits = items.filter((item) => item.type === "visit").length;
-  const actions = items.filter((item) => item.type === "action").length;
-  const latest = items[0]?.createdAt ? formatActivityTime(items[0].createdAt) : "--";
-
-  document.querySelectorAll("[data-activity-visits]").forEach((element) => {
-    element.textContent = String(visits);
-  });
-  document.querySelectorAll("[data-activity-actions]").forEach((element) => {
-    element.textContent = String(actions);
-  });
-  document.querySelectorAll("[data-activity-latest]").forEach((element) => {
-    element.textContent = latest;
-  });
-
-  if (!items.length) {
-    list.innerHTML = `
-      <article class="activity-empty">
-        <strong>${translate("activity.emptyTitle")}</strong>
-        <span>${translate("activity.emptyBody")}</span>
-      </article>
-    `;
-    return;
-  }
-
-  const activityGroups = items.reduce((groups, item) => {
-    const key = formatActivityDate(item.createdAt);
-    if (!groups.has(key)) groups.set(key, []);
-    groups.get(key).push(item);
-    return groups;
-  }, new Map());
-
-  list.innerHTML = Array.from(activityGroups.entries())
-    .map(([dateLabel, groupItems], groupIndex) => {
-      const contentId = `activity-date-content-${groupIndex}`;
-      const isExpanded = groupIndex === 0;
-
-      return `
-        <article class="activity-date-group${isExpanded ? " is-expanded" : ""}" data-activity-date-group>
-          <header>
-            <button class="activity-date-toggle" type="button" data-activity-date-toggle aria-expanded="${isExpanded}" aria-controls="${contentId}">
-              <span class="activity-date-toggle-main">
-                <time>${escapeActivityText(dateLabel)}</time>
-                <span class="activity-date-count">${escapeActivityText(formatActivityCount(groupItems.length))}</span>
-              </span>
-              <span class="activity-date-toggle-meta">
-                ${groupIndex === 0 ? `<span>${translate("activity.latest")}</span>` : ""}
-                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></svg>
-              </span>
-            </button>
-          </header>
-          <div id="${contentId}" data-activity-date-content${isExpanded ? "" : " hidden"}>
-            ${groupItems
-              .map((item) => {
-                const typeLabel = item.type === "action" ? translate("activity.typeAction") : translate("activity.typeVisit");
-                const href = getSafeActivityUrl(item.url);
-                return `
-                  <div class="activity-item">
-                    <span class="activity-type-badge">${escapeActivityText(typeLabel)}</span>
-                    <div>
-                      <strong>${escapeActivityText(item.label)}</strong>
-                      <span>${escapeActivityText(formatActivityTime(item.createdAt))}</span>
-                    </div>
-                    <a href="${escapeActivityText(href)}">${escapeActivityText(href)}</a>
-                  </div>
-                `;
-              })
-              .join("")}
-          </div>
-        </article>
-      `;
-    })
-    .join("");
-};
-
-const setupActivityPage = () => {
-  document.querySelectorAll("[data-activity-list]").forEach((list) => {
-    list.addEventListener("click", (event) => {
-      const toggle = event.target.closest("[data-activity-date-toggle]");
-      if (!toggle || !list.contains(toggle)) return;
-
-      const group = toggle.closest("[data-activity-date-group]");
-      const content = group?.querySelector("[data-activity-date-content]");
-      if (!group || !content) return;
-
-      const isExpanded = toggle.getAttribute("aria-expanded") === "true";
-      group.classList.toggle("is-expanded", !isExpanded);
-      toggle.setAttribute("aria-expanded", String(!isExpanded));
-      content.hidden = isExpanded;
-    });
-
-    list.addEventListener("keydown", (event) => {
-      const toggle = event.target.closest("[data-activity-date-toggle]");
-      if (!toggle || !list.contains(toggle) || !["Enter", " "].includes(event.key)) return;
-
-      event.preventDefault();
-      toggle.click();
-    });
-  });
-
-  document.querySelectorAll("[data-activity-clear]").forEach((clearButton) => clearButton.addEventListener("click", () => {
-    localStorage.removeItem(activityLogKey);
-    renderActivityPage();
-  }));
-  renderActivityPage();
-};
-
-const setReleaseGroupExpanded = (group, isExpanded) => {
-  const toggle = group?.querySelector("[data-release-toggle]");
-  const content = group?.querySelector("[data-release-content]");
-  if (!toggle || !content) return;
-
-  group.classList.toggle("is-expanded", isExpanded);
-  toggle.setAttribute("aria-expanded", String(isExpanded));
-  content.hidden = !isExpanded;
-};
-
-const setupReleaseGroups = () => {
-  const groups = [...document.querySelectorAll("[data-release-group]")];
-  if (!groups.length) return;
-
-  groups.forEach((group) => {
-    const toggle = group.querySelector("[data-release-toggle]");
-    if (!toggle) return;
-
-    setReleaseGroupExpanded(group, toggle.getAttribute("aria-expanded") === "true");
-    toggle.addEventListener("click", () => {
-      setReleaseGroupExpanded(group, toggle.getAttribute("aria-expanded") !== "true");
-    });
-  });
-
-  const revealHashGroup = () => {
-    const group = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
-    if (group?.matches("[data-release-group]")) setReleaseGroupExpanded(group, true);
-  };
-
-  document.querySelectorAll('.updates-release-rail a[href^="#release-"]').forEach((link) => {
-    link.addEventListener("click", () => {
-      const group = document.getElementById(link.hash.slice(1));
-      if (group?.matches("[data-release-group]")) setReleaseGroupExpanded(group, true);
-    });
-  });
-
-  window.addEventListener("hashchange", revealHashGroup);
-  revealHashGroup();
-};
-
-const recordPageActivity = () => {
-  recordActivity("visit", `${translate("activity.visit")}: ${getPageActivityLabel()}`);
-};
-
 const clearSiteCache = () => {
   closeClearCacheWarning();
 
@@ -4189,8 +3326,8 @@ const clearSiteCache = () => {
     "profile-browser-usage-reset-week-count",
     "profile-browser-usage-accounting-version",
     "profile-browser-usage-auth-started",
-    activityLogKey,
-    homeSubscriptionKey,
+    "profile-activity-log",
+    "profile-home-email-subscription",
   ].forEach((key) => localStorage.removeItem(key));
   clearStorageConsent();
   if (window.caches?.keys) {
@@ -4949,7 +4086,7 @@ const setupToggleRightTrack = () => {
 const showShareDialog = () => {
   if (!shareDialog) return;
 
-  recordActivity("action", translate("activity.openShare"));
+  window.profilePageFeatures?.recordActivity?.("action", translate("activity.openShare"));
   if (shareUrl) shareUrl.value = window.location.href;
   if (shareStatus) shareStatus.hidden = true;
   shareDialog.hidden = false;
@@ -4971,7 +4108,7 @@ const copyShareLink = async () => {
 
   shareLinkButton?.classList.add("is-copied");
   shareLinkButton?.setAttribute("aria-label", translate("share.copied"));
-  recordActivity("action", translate("activity.copyLink"));
+  window.profilePageFeatures?.recordActivity?.("action", translate("activity.copyLink"));
   if (shareStatus) shareStatus.hidden = false;
   window.setTimeout(() => {
     shareLinkButton?.classList.remove("is-copied");
@@ -5114,135 +4251,6 @@ const detectAdblock = () => {
   }, 700);
 };
 
-const setActiveLink = () => {
-  if (!sections.length) return;
-
-  const midpoint = window.scrollY + window.innerHeight * 0.42;
-  const activeSection =
-    sections.findLast((section) => section.offsetTop <= midpoint) || sections[0];
-
-  navLinks.forEach((link) => {
-    link.classList.toggle(
-      "is-active",
-      link.getAttribute("href") === `#${activeSection.id}`,
-    );
-  });
-};
-
-const setOfficialMenuOpen = (activeItem, isOpen) => {
-  officialMenuItems.forEach((item) => {
-    const shouldOpen = item === activeItem && Boolean(isOpen);
-    item.classList.toggle("is-open", shouldOpen);
-    item.querySelector("button")?.setAttribute("aria-expanded", String(shouldOpen));
-  });
-};
-
-const closeOfficialMenus = () => setOfficialMenuOpen(null, false);
-
-const setupOfficialHomeMenus = () => {
-  if (!officialHomeMenu || !officialMenuItems.length) return;
-
-  officialHomeMenu.classList.add("is-click-managed");
-  officialMenuItems.forEach((item, index) => {
-    const button = item.querySelector("button");
-    const panel = item.querySelector(".official-mega-panel");
-    if (!button || !panel) return;
-
-    if (!panel.id) panel.id = `official-menu-panel-${index + 1}`;
-    button.setAttribute("aria-haspopup", "true");
-    button.setAttribute("aria-controls", panel.id);
-    button.setAttribute("aria-expanded", "false");
-    button.addEventListener("click", (event) => {
-      event.stopPropagation();
-      setOfficialMenuOpen(item, !item.classList.contains("is-open"));
-    });
-  });
-
-  officialHomeMenu.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", closeOfficialMenus);
-  });
-
-  document.addEventListener("click", (event) => {
-    if (event.target instanceof Element && officialHomeMenu.contains(event.target)) return;
-    closeOfficialMenus();
-  });
-};
-
-const syncNavigationToggleLabel = () => {
-  if (!mobileMenuButton) return;
-  const visibleLabel = mobileMenuButton.querySelector("span");
-
-  const isDesktopSidebar =
-    desktopSidebarQuery.matches &&
-    document.documentElement.dataset.navLayout === "sidebar" &&
-    !document.body.classList.contains("official-home-body");
-
-  if (isDesktopSidebar) {
-    const isCollapsed = document.documentElement.dataset.sidebarCollapsed === "true";
-    const labelKey = isCollapsed ? "nav.expandSidebar" : "nav.collapseSidebar";
-    mobileMenuButton.setAttribute("aria-expanded", String(!isCollapsed));
-    mobileMenuButton.setAttribute("aria-label", translate(labelKey));
-    if (visibleLabel) {
-      visibleLabel.dataset.i18n = labelKey;
-      visibleLabel.textContent = translate(labelKey);
-    }
-    return;
-  }
-
-  const isOpen = mobileMenuButton.closest(".topbar")?.classList.contains("is-open") ?? false;
-  const labelKey = isOpen ? "nav.closeMenu" : "nav.menu";
-  mobileMenuButton.setAttribute("aria-expanded", String(isOpen));
-  mobileMenuButton.setAttribute("aria-label", translate(labelKey));
-  if (visibleLabel) {
-    visibleLabel.dataset.i18n = labelKey;
-    visibleLabel.textContent = translate(labelKey);
-  }
-};
-
-const setMobileMenuOpen = (isOpen) => {
-  const topbar = mobileMenuButton?.closest(".topbar");
-
-  topbar?.classList.toggle("is-open", isOpen);
-  if (!isOpen) closeOfficialMenus();
-  syncNavigationToggleLabel();
-};
-
-const setSidebarCollapsed = (isCollapsed, persist = true) => {
-  if (document.body.classList.contains("official-home-body")) {
-    setMobileMenuOpen(false);
-    return;
-  }
-
-  const resolved = Boolean(isCollapsed);
-
-  document.documentElement.dataset.sidebarCollapsed = String(resolved);
-  if (persist) localStorage.setItem("profile-sidebar-collapsed", String(resolved));
-
-  syncNavigationToggleLabel();
-};
-
-const toggleSidebarCollapsed = () => {
-  setMobileMenuOpen(false);
-  setSidebarCollapsed(document.documentElement.dataset.sidebarCollapsed !== "true");
-};
-
-const setupBrandLogo = () => {
-  if (!brandLogoImage) return;
-
-  brandLogoImage.setAttribute("draggable", "false");
-
-  brandLogoImage.addEventListener("load", () => {
-    brandLogoImage.closest(".brand-logo")?.classList.add("has-image");
-  });
-
-  brandLogoImage.addEventListener("error", () => {
-    brandLogoImage.closest(".brand-logo")?.classList.remove("has-image");
-  });
-
-  brandLogoImage.addEventListener("dragstart", (event) => event.preventDefault());
-  brandLogoImage.addEventListener("contextmenu", (event) => event.preventDefault());
-};
-
 const updateScrollProgress = () => {
   if (!scrollProgress) return;
 
@@ -5261,8 +4269,12 @@ const updateScrollActions = () => {
   const isPastTop = window.scrollY > 180;
   const isNearBottom = scrollableHeight - window.scrollY < 180;
   const hasPageSummary = Boolean(scrollActions.querySelector("[data-page-summary-open]"));
+  const hasSignedInNews = Boolean(scrollActions.querySelector("[data-site-news-open]:not([hidden])"));
 
-  scrollActions.classList.toggle("is-visible", hasPageSummary || (canScroll && (isPastTop || !isNearBottom)));
+  scrollActions.classList.toggle(
+    "is-visible",
+    hasPageSummary || hasSignedInNews || (canScroll && (isPastTop || !isNearBottom)),
+  );
   scrollActionButtons.forEach((button) => {
     const target = button.dataset.scrollTo;
     button.disabled =
@@ -5738,19 +4750,6 @@ const registerOfflineWorker = () => {
   });
 };
 
-const setupOfflineRetry = () => {
-  document.querySelectorAll("[data-offline-retry]").forEach((button) => {
-    button.addEventListener("click", () => {
-      if (navigator.onLine) {
-        window.location.href = "/";
-        return;
-      }
-
-      window.location.reload();
-    });
-  });
-};
-
 setActiveLink();
 registerOfflineWorker();
 window.addEventListener("scroll", setActiveLink, { passive: true });
@@ -5781,9 +4780,6 @@ createMobileQuickActions();
 setupCookieNotice();
 setLanguage(currentLanguagePreference);
 setupWelcomeDialog();
-recordPageActivity();
-setupActivityPage();
-setupReleaseGroups();
 if (homeTabs.length) {
   const activeHomeTab =
     homeTabs.find((button) => button.classList.contains("is-active"))?.dataset.homeTab ||
@@ -5793,8 +4789,6 @@ if (homeTabs.length) {
 setupSiteSearch();
 setupMobileQuickActions();
 setupSearchPage();
-setupHomeSubscribeForm();
-setupOfflineRetry();
 setTheme(getInitialTheme());
 setupSettingToggles();
 setupContextMenuModeDialog();
@@ -6266,7 +5260,8 @@ infoTabs.forEach((tab) => {
   });
 });
 
-import("/assets/js/firebase-auth.js?v=20260720-context-css1").catch(() => {
+import("/assets/js/site-notifications.js?v=20260721-member-news1").catch(() => {});
+import("/assets/js/firebase-auth.js?v=20260721-member-news1").catch(() => {
   document.documentElement.dataset.authState = "unavailable";
   window.profileAuthUser = null;
   window.dispatchEvent(new CustomEvent("profile-auth-change"));

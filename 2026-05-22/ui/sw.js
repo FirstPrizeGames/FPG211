@@ -1,4 +1,4 @@
-const CACHE_NAME = "profile-offline-20260720-context-css1";
+const CACHE_NAME = "profile-offline-20260721-member-news1";
 const OFFLINE_URL = "/offline";
 const PRECACHE_URLS = [
   OFFLINE_URL,
@@ -36,12 +36,17 @@ const PRECACHE_URLS = [
   "/assets/css/sections/05-themes.css",
   "/assets/css/sections/10-layout-navigation.css",
   "/assets/css/sections/20-pages-components.css",
+  "/assets/css/sections/25-context-menu.css",
   "/assets/css/sections/30-dialogs-usage.css",
+  "/assets/css/sections/35-settings-modal.css",
   "/assets/css/sections/40-responsive-polish.css",
   "/assets/js/translations.js",
+  "/assets/js/navigation.js",
   "/assets/js/script.js",
+  "/assets/js/page-features.js",
   "/assets/js/usage.js",
   "/assets/js/firebase-auth.js",
+  "/assets/js/site-notifications.js",
   "/assets/js/status.js",
   "/favicon.ico",
   "/site.webmanifest",
